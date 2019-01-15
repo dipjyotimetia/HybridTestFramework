@@ -1,34 +1,24 @@
-seleniumhub:
-  image: selenium/hub:3.0.0-dubnium
-  ports:
-    - 4444:4444
-  environment:
-    - no_proxy=localhost
+version: '2'
+services:
+  firefox:
+    image: selenium/node-firefox:3.14.0-gallium
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - hub
+    environment:
+      HUB_HOST: hub
 
-firefoxnode:
-  image: selenium/node-firefox-debug:3.0.0-dubnium
-  ports:
-    - 5900
-  environment:
-    - no_proxy=localhost
-  links:
-    - seleniumhub:hub
+  chrome:
+    image: selenium/node-chrome:3.14.0-gallium
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - hub
+    environment:
+      HUB_HOST: hub
 
-chromenode:
-  image: selenium/node-chrome-debug:3.0.0-dubnium
-  ports:
-    - 5900
-  environment:
-    - no_proxy=localhost
-  links:
-    - seleniumhub:hub
-
-functionaltest:
-  image: fastertests/javamvn
-  links:
-    - seleniumhub:localhost
-  container_name: tests
-  volumes:
-    - .:/home
-    - ./seluser/.m2:/root/.m2
-  command: bash -c "mvn clean test -DsuiteXmlFile=src/test/suite/testng.xml"
+  hub:
+    image: selenium/hub:3.14.0-gallium
+    ports:
+      - "4444:4444"

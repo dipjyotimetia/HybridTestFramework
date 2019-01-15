@@ -117,14 +117,14 @@ public class WebDriverController {
 
     @AfterClass
     public void tearDown() {
-        try {
-            Har har = proxy.getHar();
-            FileOutputStream fos = new FileOutputStream("C:\\temp\\perf.har");
-            har.writeTo(fos);
-            proxy.stop();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Har har = proxy.getHar();
+//            FileOutputStream fos = new FileOutputStream("C:\\temp\\perf.har");
+//            har.writeTo(fos);
+//            proxy.stop();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         _driverThread.quit();
     }
 
