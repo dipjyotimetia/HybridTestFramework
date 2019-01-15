@@ -27,7 +27,7 @@ import java.net.URL;
 public class WebDriverController {
 
     private static WebDriver _driverThread = null;
-    public static BrowserMobProxyServer proxy;
+    private static BrowserMobProxyServer proxy;
 
     @Parameters({"browser", "grid" ,"perf"})
     @BeforeClass
