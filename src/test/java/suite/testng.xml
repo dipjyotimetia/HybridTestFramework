@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="End To End User Journey" allow-return-values="true" parallel="tests" thread-count="2">
+    <listeners>
+        <listener class-name="com.reporting.Listeners.TestListener"/>
+        <listener class-name="com.reporting.Listeners.AnnotationTransformer"/>
+    </listeners>
+    <!--<test name="Feature Api Test Mobile">-->
+    <!--<classes>-->
+    <!--<class name=""/>-->
+    <!--</classes>-->
+    <!--</test>-->
+    <test name="E2E Tests Android">
+        <parameter name="browser" value="chrome"/>
+        <parameter name="grid" value="NO"/>
+        <classes>
+            <class name="com.TestDefinitionLayer.TC001_Test"/>
+        </classes>
+    </test>
+</suite>
