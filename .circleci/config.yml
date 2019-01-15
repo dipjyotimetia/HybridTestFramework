@@ -7,8 +7,7 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: selenium/standalone-chrome:3.1.0
-
+      - image: circleci/openjdk:8-jdk-browsers
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
