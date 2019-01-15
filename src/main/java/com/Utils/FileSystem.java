@@ -22,7 +22,7 @@ public class FileSystem {
     private static Logger logger = LogManager.getLogger(FileSystem.class);
 
     public static void downloadDriver(){
-        String fromFile="https://chromedriver.storage.googleapis.com/2.45/chromedriver_win32.zip";
+        String fromFile="https://chromedriver.storage.googleapis.com/2.45/chromedriver_linux64.zip";
         String toFile = "Driver/chromedriver.zip";
         try {
             FileUtils.copyURLToFile(new URL(fromFile), new File(toFile), 10000, 10000);
