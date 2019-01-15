@@ -48,7 +48,7 @@ public class WebDriverController {
                 }
             } else if (browser.equals("chrome")) {
                 //FileSystem.downloadDriver();
-                Thread.sleep(3000);
+                //Thread.sleep(3000);
                 _driverThread = new ChromeDriver(getChromeOptions(perf));
                 if (grid.equalsIgnoreCase("YES")) {
                     _driverThread = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), getChromeOptions(perf));
