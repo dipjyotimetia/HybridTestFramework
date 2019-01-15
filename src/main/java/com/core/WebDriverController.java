@@ -1,5 +1,6 @@
 package com.core;
 
+import com.Utils.FileSystem;
 import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.client.ClientUtil;
 import net.lightbody.bmp.core.har.Har;
@@ -46,6 +47,8 @@ public class WebDriverController {
                     _driverThread = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), getFirefoxOptions());
                 }
             } else if (browser.equals("chrome")) {
+                //FileSystem.downloadDriver();
+                Thread.sleep(3000);
                 _driverThread = new ChromeDriver(getChromeOptions(perf));
                 if (grid.equalsIgnoreCase("YES")) {
                     _driverThread = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), getChromeOptions(perf));

@@ -1,5 +1,7 @@
 package com.Utils;
 
+import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -7,6 +9,7 @@ import org.testng.Assert;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -17,6 +20,27 @@ import java.nio.file.Paths;
 public class FileSystem {
 
     private static Logger logger = LogManager.getLogger(FileSystem.class);
+
+    public void downloadDriver() {
+        String fromFile = "https://chromedriver.storage.googleapis.com/2.45/chromedriver_win32.zip";
+        String toFile = "Driver/chromedriver.zip";
+        String destination = "Driver";
+        try {
+            FileUtils.copyURLToFile(new URL(fromFile), new File(toFile), 10000, 10000);
+            unzip(toFile, destination);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void unzip(String source, String destination) {
+        try {
+            ZipFile zipFile = new ZipFile(source);
+            zipFile.extractAll(destination);
+        } catch (ZipException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Delete file path.
@@ -60,7 +84,7 @@ public class FileSystem {
      * @throws IOException When fail to write in file.
      */
     public static void appendFile(String filePath, String text) throws IOException {
-        FileUtils.writeStringToFile(new File(filePath), text, "UTF-8",true);
+        FileUtils.writeStringToFile(new File(filePath), text, "UTF-8", true);
     }
 
     /**
@@ -71,7 +95,7 @@ public class FileSystem {
      * @throws IOException When fail to write in file.
      */
     public static void writeFile(String filePath, String text) throws IOException {
-        FileUtils.writeStringToFile(new File(filePath), text,"UTF-8");
+        FileUtils.writeStringToFile(new File(filePath), text, "UTF-8");
     }
 
     /**

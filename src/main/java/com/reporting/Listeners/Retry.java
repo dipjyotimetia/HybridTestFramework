@@ -1,7 +1,8 @@
 package com.reporting.Listeners;
 
+import com.aventstack.extentreports.MediaEntityBuilder;
+import com.aventstack.extentreports.Status;
 import com.core.DriverManager;
-import com.relevantcodes.extentreports.LogStatus;
 import com.reporting.ExtentReports.ExtentTestManager;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -14,6 +15,7 @@ public class Retry extends DriverManager implements IRetryAnalyzer {
 
     /**
      * Retry Times
+     *
      * @param iTestResult
      * @return
      */
@@ -34,13 +36,17 @@ public class Retry extends DriverManager implements IRetryAnalyzer {
 
     /**
      * Report Fail Operation
+     *
      * @param iTestResult
      */
     public void extendReportsFailOperations(ITestResult iTestResult) {
-        Object testClass = iTestResult.getInstance();
-        this.driverThread = ((DriverManager) testClass).getDriver();
-        String base64Screenshot = "data:image/png;base64," + ((TakesScreenshot) driverThread).getScreenshotAs(OutputType.BASE64);
-        ExtentTestManager.getTest().log(LogStatus.FAIL, "Test Failed",
-                ExtentTestManager.getTest().addBase64ScreenShot(base64Screenshot));
+        try {
+            Object testClass = iTestResult.getInstance();
+            this.driverThread = ((DriverManager) testClass).getDriver();
+            String base64Screenshot = "data:image/png;base64," + ((TakesScreenshot) driverThread).getScreenshotAs(OutputType.BASE64);
+            ExtentTestManager.getTest().log(Status.FAIL,"Test Failed", MediaEntityBuilder.createScreenCaptureFromBase64String(base64Screenshot).build());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

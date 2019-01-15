@@ -35,13 +35,13 @@ public class UserActions extends DriverManager {
     private static int Counter = 0;
     private static String abc1 = null;
     private Dictionary dicttoread = new Hashtable();
-    private static String _dbusername;
-    private static String _dbpassword;
-    private static String _dburl;
+    private static String _dbusername = "";
+    private static String _dbpassword = "";
+    private static String _dburl = "";
     private static WebDriverWait wait;
     private static JavascriptExecutor jsExec;
 
-    public void navigate(String url){
+    public void navigate(String url) {
         driverThread.navigate().to(url);
     }
 
@@ -58,13 +58,13 @@ public class UserActions extends DriverManager {
         }
     }
 
-    public void click(WebElement element){
-        fluentWait(element,10);
+    public void click(WebElement element) {
+        fluentWait(element, 10);
         element.click();
     }
 
-    public void enter(WebElement element,String value){
-        fluentWait(element,10);
+    public void enter(WebElement element, String value) {
+        fluentWait(element, 10);
         element.sendKeys(value);
     }
 
@@ -78,10 +78,8 @@ public class UserActions extends DriverManager {
         //Wait for jQuery to load
         ExpectedCondition<Boolean> jQueryLoad = driver -> ((Long) ((JavascriptExecutor) driverThread)
                 .executeScript("return jQuery.active") == 0);
-
         //Get JQuery is Ready
         boolean jqueryReady = (Boolean) jsExec.executeScript("return jQuery.active==0");
-
         //Wait JQuery until it is Ready!
         if (!jqueryReady) {
             System.out.println("JQuery is NOT Ready!");
@@ -97,16 +95,12 @@ public class UserActions extends DriverManager {
     public void waitForAngularLoad() {
         WebDriverWait wait = new WebDriverWait(driverThread, 15);
         JavascriptExecutor jsExec = (JavascriptExecutor) driverThread;
-
         String angularReadyScript = "return angular.element(document).injector().get('$http').pendingRequests.length === 0";
-
         //Wait for ANGULAR to load
         ExpectedCondition<Boolean> angularLoad = driver -> Boolean.valueOf(((JavascriptExecutor) driver)
                 .executeScript(angularReadyScript).toString());
-
         //Get Angular is Ready
         boolean angularReady = Boolean.valueOf(jsExec.executeScript(angularReadyScript).toString());
-
         //Wait ANGULAR until it is Ready!
         if (!angularReady) {
             System.out.println("ANGULAR is NOT Ready!");
@@ -121,14 +115,11 @@ public class UserActions extends DriverManager {
     public void waitUntilJSReady() {
         WebDriverWait wait = new WebDriverWait(driverThread, 15);
         JavascriptExecutor jsExec = (JavascriptExecutor) driverThread;
-
         //Wait for Javascript to load
         ExpectedCondition<Boolean> jsLoad = driver -> ((JavascriptExecutor) driverThread)
                 .executeScript("return document.readyState").toString().equals("complete");
-
         //Get JS is Ready
         boolean jsReady = (Boolean) jsExec.executeScript("return document.readyState").toString().equals("complete");
-
         //Wait Javascript until it is Ready!
         if (!jsReady) {
             System.out.println("JS in NOT Ready!");
@@ -142,19 +133,15 @@ public class UserActions extends DriverManager {
     //Wait Until JQuery and JS Ready
     public void waitUntilJQueryReady() {
         JavascriptExecutor jsExec = (JavascriptExecutor) driverThread;
-
         //First check that JQuery is defined on the page. If it is, then wait AJAX
         Boolean jQueryDefined = (Boolean) jsExec.executeScript("return typeof jQuery != 'undefined'");
         if (jQueryDefined == true) {
             //Pre Wait for stability (Optional)
             sleep(20);
-
             //Wait JQuery Load
             waitForJQueryLoad();
-
             //Wait JS Load
             waitUntilJSReady();
-
             //Post Wait for stability (Optional)
             sleep(20);
         } else {
@@ -165,7 +152,6 @@ public class UserActions extends DriverManager {
     //Wait Until Angular and JS Ready
     public void waitUntilAngularReady() {
         JavascriptExecutor jsExec = (JavascriptExecutor) driverThread;
-
         //First check that ANGULAR is defined on the page. If it is, then wait ANGULAR
         Boolean angularUnDefined = (Boolean) jsExec.executeScript("return window.angular === undefined");
         if (!angularUnDefined) {
@@ -173,13 +159,10 @@ public class UserActions extends DriverManager {
             if (!angularInjectorUnDefined) {
                 //Pre Wait for stability (Optional)
                 sleep(20);
-
                 //Wait Angular Load
                 waitForAngularLoad();
-
                 //Wait JS Load
                 waitUntilJSReady();
-
                 //Post Wait for stability (Optional)
                 sleep(20);
             } else {

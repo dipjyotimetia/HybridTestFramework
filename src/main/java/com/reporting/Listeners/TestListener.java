@@ -1,9 +1,10 @@
 package com.reporting.Listeners;
 
+import com.aventstack.extentreports.MediaEntityBuilder;
+import com.aventstack.extentreports.Status;
 import com.core.DriverManager;
 import com.logging.ResultSender;
 import com.logging.TestStatus;
-import com.relevantcodes.extentreports.LogStatus;
 import com.reporting.ExtentReports.ExtentManager;
 import com.reporting.ExtentReports.ExtentTestManager;
 import org.apache.log4j.LogManager;
@@ -50,26 +51,30 @@ public class TestListener extends DriverManager implements ITestListener {
     public void onTestSuccess(ITestResult iTestResult) {
 //        this.sendStatus(iTestResult,"PASS");
         logger.info("I am in onTestSuccess method " + getTestMethodName(iTestResult) + " succeed");
-        ExtentTestManager.getTest().log(LogStatus.PASS, "Test passed");
+        ExtentTestManager.getTest().log(Status.PASS, "Test passed");
     }
 
     @Override
     public void onTestFailure(ITestResult iTestResult) {
+        try {
 //        this.sendStatus(iTestResult,"FAIL");
-        logger.error("I am in onTestFailure method " + getTestMethodName(iTestResult) + " failed");
-        Object testClass = iTestResult.getInstance();
-        this.driverThread = ((DriverManager) testClass).getDriver();
-        String base64Screenshot = "data:image/png;base64," + ((TakesScreenshot) driverThread).
-                getScreenshotAs(OutputType.BASE64);
-        ExtentTestManager.getTest().log(LogStatus.FAIL, "Test Failed",
-                ExtentTestManager.getTest().addBase64ScreenShot(base64Screenshot));
+            logger.error("I am in onTestFailure method " + getTestMethodName(iTestResult) + " failed");
+            Object testClass = iTestResult.getInstance();
+            this.driverThread = ((DriverManager) testClass).getDriver();
+            String base64Screenshot = "data:image/png;base64," + ((TakesScreenshot) driverThread).
+                    getScreenshotAs(OutputType.BASE64);
+            ExtentTestManager.getTest().log(Status.FAIL,"Test Failed", MediaEntityBuilder.createScreenCaptureFromBase64String(base64Screenshot).build());
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onTestSkipped(ITestResult iTestResult) {
 //        this.sendStatus(iTestResult,"SKIP");
         logger.warn("I am in onTestSkipped method " + getTestMethodName(iTestResult) + " skipped");
-        ExtentTestManager.getTest().log(LogStatus.SKIP, "Test Skipped");
+        ExtentTestManager.getTest().log(Status.SKIP, "Test Skipped");
     }
 
     @Override
