@@ -59,6 +59,10 @@ public class WebDriverController {
         }
     }
 
+    /**
+     * Added performance capability
+     * @return
+     */
     private DesiredCapabilities performance() {
         proxy = new BrowserMobProxyServer();
         proxy.start();
