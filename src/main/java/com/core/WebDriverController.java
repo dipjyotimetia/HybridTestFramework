@@ -75,7 +75,7 @@ public class WebDriverController {
             e.printStackTrace();
         }
         proxy.enableHarCaptureTypes(CaptureType.REQUEST_CONTENT, CaptureType.RESPONSE_CONTENT);
-        proxy.newHar("Test");
+        proxy.newHar("TestPerformance");
         DesiredCapabilities caps = new DesiredCapabilities();
         caps.setCapability(CapabilityType.PROXY, seleniumProxy);
         return caps;
