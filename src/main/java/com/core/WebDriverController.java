@@ -47,8 +47,7 @@ public class WebDriverController {
                     _driverThread = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), getFirefoxOptions());
                 }
             } else if (browser.equals("chrome")) {
-                FileSystem.downloadDriver();
-                FileSystem.unzip();
+                //FileSystem.downloadDriver();
                 Thread.sleep(3000);
                 _driverThread = new ChromeDriver(getChromeOptions(perf));
                 if (grid.equalsIgnoreCase("YES")) {
@@ -81,7 +80,7 @@ public class WebDriverController {
 
     //Get Chrome Options
     private ChromeOptions getChromeOptions(String perf) {
-        System.setProperty("webdriver.chrome.driver", "Driver/chromedriver");
+        System.setProperty("webdriver.chrome.driver", "Driver/chromedriver.exe");
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--start-maximized");
         options.addArguments("--ignore-certificate-errors");

@@ -1,6 +1,8 @@
 package com.reporting.ExtentReports;
 
-import com.relevantcodes.extentreports.ExtentReports;
+
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 
 public class ExtentManager {
     private static ExtentReports extent;
@@ -9,7 +11,10 @@ public class ExtentManager {
         if (extent == null) {
             //Set HTML reporting file location
             String workingDir = System.getProperty("user.dir");
-            extent = new ExtentReports(workingDir + "\\Reports\\ExtentReportResults.html", true);
+            ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter(workingDir + "\\Reports\\ExtentReportResults.html");
+            extent = new ExtentReports();
+            extent.attachReporter(htmlReporter);
+//            extent.attachReporter(workingDir + "\\Reports\\ExtentReportResults.html", true);
         }
         return extent;
     }

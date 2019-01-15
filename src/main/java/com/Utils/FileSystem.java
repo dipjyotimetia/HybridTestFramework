@@ -21,20 +21,19 @@ public class FileSystem {
 
     private static Logger logger = LogManager.getLogger(FileSystem.class);
 
-    public static void downloadDriver(){
-        String fromFile="https://chromedriver.storage.googleapis.com/2.45/chromedriver_linux64.zip";
+    public void downloadDriver() {
+        String fromFile = "https://chromedriver.storage.googleapis.com/2.45/chromedriver_win32.zip";
         String toFile = "Driver/chromedriver.zip";
+        String destination = "Driver";
         try {
             FileUtils.copyURLToFile(new URL(fromFile), new File(toFile), 10000, 10000);
+            unzip(toFile, destination);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void unzip(){
-        String source = "Driver/chromedriver.zip";
-        String destination = "Driver";
-
+    private void unzip(String source, String destination) {
         try {
             ZipFile zipFile = new ZipFile(source);
             zipFile.extractAll(destination);
@@ -85,7 +84,7 @@ public class FileSystem {
      * @throws IOException When fail to write in file.
      */
     public static void appendFile(String filePath, String text) throws IOException {
-        FileUtils.writeStringToFile(new File(filePath), text, "UTF-8",true);
+        FileUtils.writeStringToFile(new File(filePath), text, "UTF-8", true);
     }
 
     /**
@@ -96,7 +95,7 @@ public class FileSystem {
      * @throws IOException When fail to write in file.
      */
     public static void writeFile(String filePath, String text) throws IOException {
-        FileUtils.writeStringToFile(new File(filePath), text,"UTF-8");
+        FileUtils.writeStringToFile(new File(filePath), text, "UTF-8");
     }
 
     /**

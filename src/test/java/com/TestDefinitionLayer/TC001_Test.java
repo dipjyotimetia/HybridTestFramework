@@ -14,7 +14,7 @@ public class TC001_Test extends UserActions {
 
         LoginPage loginPage = new LoginPage();
 
-        ExtentTestManager.getTest().setDescription("");
+        ExtentTestManager.startTest("Test1","Test Description");
 
         try {
             loginPage.Login();
