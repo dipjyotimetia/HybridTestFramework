@@ -39,7 +39,7 @@ jobs:
 
       # run tests!
       - run: gradle build
-             gradle clean
+      - run: gradle clean
 
 
 
