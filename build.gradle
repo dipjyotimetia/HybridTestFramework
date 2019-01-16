@@ -3,6 +3,7 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'maven'
 apply plugin: 'groovy'
+apply plugin: 'com.avast.gradle.docker-compose'
 
 group 'webui'
 version '1.0-SNAPSHOT'
@@ -19,12 +20,15 @@ repositories {
 
 buildscript {
     repositories {
+        maven { url "http://repo.maven.apache.org/maven2" }
+        maven { url "https://plugins.gradle.org/m2/" }
         mavenCentral()
         jcenter()
     }
     dependencies {
 //        classpath "io.qameta.allure:allure-gradle:2.5"
 //        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.2"
+        classpath "gradle.plugin.com.avast.gradle:gradle-docker-compose-plugin:0.8.12"
     }
 }
 
@@ -42,6 +46,14 @@ sourceSets {
     }
 }
 
+
+dockerCompose {
+    useComposeFiles = ['docker-compose.yml']
+    startedServices = ['chrome','firefox']
+    scale = [chrome: 2, firefox: 2]
+    stopContainers = true
+    removeContainers = true
+}
 
 dependencies {
     compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'

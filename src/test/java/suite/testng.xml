@@ -12,8 +12,8 @@
     <!--</test>-->
     <test name="E2E Tests Android">
         <parameter name="browser" value="chrome"/>
-        <parameter name="grid" value="NO"/>
-        <parameter name="perf" value="YES"/>
+        <parameter name="grid" value="YES"/>
+        <parameter name="perf" value="NO"/>
         <classes>
             <class name="com.TestDefinitionLayer.TC001_Test"/>
         </classes>

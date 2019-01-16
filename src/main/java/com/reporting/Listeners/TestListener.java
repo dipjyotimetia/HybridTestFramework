@@ -3,7 +3,6 @@ package com.reporting.Listeners;
 import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
 import com.core.DriverManager;
-import com.logging.ResultSender;
 import com.logging.TestStatus;
 import com.reporting.ExtentReports.ExtentManager;
 import com.reporting.ExtentReports.ExtentTestManager;
@@ -15,7 +14,6 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
-import java.time.LocalDateTime;
 
 public class TestListener extends DriverManager implements ITestListener {
     private Logger logger = LogManager.getLogger(TestListener.class);

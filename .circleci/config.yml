@@ -40,6 +40,9 @@ jobs:
       # run tests!
       - run: gradle build
       - run: gradle clean
+      - run: gradle composeup
+      - run: gradle e2e
+      - run: gradle composedown
 
 
 
