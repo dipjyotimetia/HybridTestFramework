@@ -540,6 +540,17 @@ public class UserActions extends DriverManager {
         return mobNo;
     }
 
+    public ExpectedCondition<WebElement> visibilityOfElementLocated(final By locator) {
+        return new ExpectedCondition<WebElement>() {
+            public WebElement apply(WebDriver driver) {
+                WebElement toReturn = driver.findElement(locator);
+                if (toReturn.isDisplayed()) {
+                    return toReturn;
+                }
+                return null;
+            }
+        };
+    }
 
     protected void catchBlock(Exception e) {
         Counter = 0;
