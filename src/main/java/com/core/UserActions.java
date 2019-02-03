@@ -12,6 +12,9 @@ import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.awaitility.Awaitility;
+import static org.awaitility.Duration.*;
+import static org.hamcrest.Matchers.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.*;
 import org.testng.Assert;
@@ -26,7 +29,9 @@ import java.util.Date;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.NoSuchElementException;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserActions extends DriverManager {
     private static final Faker faker = new Faker();
@@ -56,6 +61,18 @@ public class UserActions extends DriverManager {
         } catch (ElementNotVisibleException e) {
             e.printStackTrace();
         }
+    }
+
+    private void loading(WebElement loadingElement){
+        //Wait for the loading to disappear
+        Awaitility.await("Wait for new user to load").atMost(5, TimeUnit.SECONDS)
+                .until(loadingElement::getText, not("loading..."));
+    }
+
+    private void loadingComplete(WebElement loadingElement){
+        //Wait for the loading to disappear
+        Awaitility.await("Wait for new user to load").atMost(5, TimeUnit.SECONDS)
+                .until(loadingElement::getText, is("Complete!"));
     }
 
     public void click(WebElement element) {
