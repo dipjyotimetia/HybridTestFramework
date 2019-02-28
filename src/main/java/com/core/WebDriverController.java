@@ -84,8 +84,10 @@ public class WebDriverController {
 
     //Get Chrome Options
     private ChromeOptions getChromeOptions(String perf) {
-        System.setProperty("webdriver.chrome.driver", "Driver/chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "Driver/chromedriver");
         ChromeOptions options = new ChromeOptions();
+        options.setHeadless(true);
+        options.addArguments("--window-size=1200x600");
         options.addArguments("--start-maximized");
         options.addArguments("--ignore-certificate-errors");
         options.addArguments("--disable-popup-blocking");

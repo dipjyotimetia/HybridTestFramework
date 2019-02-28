@@ -23,11 +23,18 @@ RUN echo "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64" >> ~/.bashrc
 ENV JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64/jre"
 ENV PATH $JAVA_HOME/bin:$PATH
 
-ADD ./build.gradle /
-ADD ./docker-compose.yml /
+COPY /src /app/src
+COPY /Driver /app/Driver
+COPY /gradle /app/gradle
+COPY /Reports /app/Reports
+COPY /build.gradle /app/build.gradle
+COPY /docker-compose.yml /app/docker-compose.yml
+COPY /gradle.properties /app/gradle.properties
+COPY /settings.gradle /app/settings.gradle
+
+WORKDIR /app
 
 EXPOSE 5920
 
-RUN cd home
-RUN gradle build
+#RUN gradle build
 RUN gradle task e2e
