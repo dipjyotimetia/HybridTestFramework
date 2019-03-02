@@ -3,11 +3,19 @@
 
 [![CircleCI](https://circleci.com/gh/TestautoDev/HybridTestFramewrok/tree/master.svg?style=svg)](https://circleci.com/gh/TestautoDev/HybridTestFramewrok/tree/master)
 
-
+```
 $ docker-compose up -d
+```
 Scaling up Chrome nodes
+```
 $ docker-compose scale chrome=5
-# Spawns four additional node-chrome instances linked to the hub
-Scaling up Firefox nodes
+```
+
+### Spawns four additional node-chrome instances linked to the hub
+Scaling up Firefox nodes  
+
+```
 $ docker-compose scale firefox=5
-# Spawns four additional node-firefox instances linked to the hub
+```  
+
+### Spawns four additional node-firefox instances linked to the hub   
