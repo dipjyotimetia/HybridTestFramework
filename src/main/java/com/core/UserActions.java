@@ -93,7 +93,7 @@ public class UserActions extends DriverManager {
     /**
      * wait for jquery load
      */
-    public void waitForJQueryLoad() {
+    private void waitForJQueryLoad() {
         ExpectedCondition<Boolean> jQueryLoad = driver -> ((Long) ((JavascriptExecutor) driverThread)
                 .executeScript("return jQuery.active") == 0);
         boolean jqueryReady = (Boolean) jsExec.executeScript("return jQuery.active==0");
@@ -108,7 +108,7 @@ public class UserActions extends DriverManager {
     /**
      * wait for angular load
      */
-    public void waitForAngularLoad() {
+    private void waitForAngularLoad() {
         WebDriverWait wait = new WebDriverWait(driverThread, 15);
         JavascriptExecutor jsExec = (JavascriptExecutor) driverThread;
         String angularReadyScript = "return angular.element(document).injector().get('$http').pendingRequests.length === 0";
@@ -126,7 +126,7 @@ public class UserActions extends DriverManager {
     /**
      * wait until js ready
      */
-    public void waitUntilJSReady() {
+    private void waitUntilJSReady() {
         WebDriverWait wait = new WebDriverWait(driverThread, 15);
         JavascriptExecutor jsExec = (JavascriptExecutor) driverThread;
         ExpectedCondition<Boolean> jsLoad = driver -> ((JavascriptExecutor) driverThread)
@@ -143,7 +143,7 @@ public class UserActions extends DriverManager {
     /**
      * wait until jquery ready
      */
-    public void waitUntilJQueryReady() {
+    private void waitUntilJQueryReady() {
         JavascriptExecutor jsExec = (JavascriptExecutor) driverThread;
         Boolean jQueryDefined = (Boolean) jsExec.executeScript("return typeof jQuery != 'undefined'");
         if (jQueryDefined == true) {
@@ -159,7 +159,7 @@ public class UserActions extends DriverManager {
     /**
      * wait for angular ready
      */
-    public void waitUntilAngularReady() {
+    private void waitUntilAngularReady() {
         JavascriptExecutor jsExec = (JavascriptExecutor) driverThread;
         Boolean angularUnDefined = (Boolean) jsExec.executeScript("return window.angular === undefined");
         if (!angularUnDefined) {
@@ -366,7 +366,7 @@ public class UserActions extends DriverManager {
      * @param p_testcaseName testcaseName
      * @throws IOException Exception
      */
-    public void captureImage(String p_testcaseName) throws IOException {
+    private void captureImage(String p_testcaseName) throws IOException {
         try {
             Counter = Counter + 1;
             File src = ((TakesScreenshot) driverThread).getScreenshotAs(OutputType.FILE);
@@ -427,7 +427,7 @@ public class UserActions extends DriverManager {
         file.delete();
     }
 
-    protected void SystemDateFormat() {
+    private void SystemDateFormat() {
         try {
             DateFormat date = new SimpleDateFormat("yyyy.MM.dd_hh.mm");
             Date date1 = new Date();
