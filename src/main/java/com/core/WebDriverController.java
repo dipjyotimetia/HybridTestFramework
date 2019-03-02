@@ -13,6 +13,8 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
@@ -48,30 +50,50 @@ public class WebDriverController {
         return _driverThread;
     }
 
+    /**
+     * Initialize driver
+     *
+     * @param browser browser
+     * @param grid    grid
+     * @param perf    perf
+     */
     private synchronized void initDriver(String browser, String grid, String perf) {
         try {
-            if (browser.equals("firefox") || browser.equals("f")) {
-                _driverThread = new FirefoxDriver(getFirefoxOptions());
-                if (grid.equalsIgnoreCase("YES")) {
-                    _driverThread = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), getFirefoxOptions());
-                }
-            } else if (browser.equals("chrome") || browser.equals("c")) {
-                //FileSystem.downloadDriver();
-                //Thread.sleep(3000);
-                _driverThread = new ChromeDriver(getChromeOptions(perf));
-                if (grid.equalsIgnoreCase("YES")) {
-                    _driverThread = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), getChromeOptions(perf));
-                }
+            switch (browser) {
+                case "firefox":
+                    _driverThread = new FirefoxDriver(getFirefoxOptions());
+                    _driverThread.manage().window().maximize();
+                    if (grid.equalsIgnoreCase("YES")) {
+                        _driverThread = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), getFirefoxOptions());
+                    }
+                    break;
+                case "chrome":
+                    //FileSystem.downloadDriver();
+                    _driverThread = new ChromeDriver(getChromeOptions(perf));
+                    _driverThread.manage().window().maximize();
+                    if (grid.equalsIgnoreCase("YES")) {
+                        _driverThread = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), getChromeOptions(perf));
+                    }
+                    break;
+                case "ie":
+                    _driverThread = new InternetExplorerDriver(getIEOptions());
+                    _driverThread.manage().window().maximize();
+                    if (grid.equalsIgnoreCase("YES")) {
+                        _driverThread = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), getIEOptions());
+                    }
+                    break;
+                default:
+                    logger.info("Please provide valid browser details");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e);
         }
     }
 
     /**
      * Added performance capability
      *
-     * @return
+     * @return capabilities
      */
     private DesiredCapabilities performance() {
         proxy = new BrowserMobProxyServer();
@@ -82,7 +104,7 @@ public class WebDriverController {
             seleniumProxy.setHttpProxy(hostIp + ":" + proxy.getPort());
             seleniumProxy.setSslProxy(hostIp + ":" + proxy.getPort());
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e);
         }
         proxy.enableHarCaptureTypes(CaptureType.REQUEST_CONTENT, CaptureType.RESPONSE_CONTENT);
         proxy.newHar("TestPerformance");
@@ -92,13 +114,16 @@ public class WebDriverController {
     }
 
 
-    //Get Chrome Options
+    /**
+     * get chrome options
+     *
+     * @param perf perf option
+     * @return chrome
+     */
     private ChromeOptions getChromeOptions(String perf) {
         System.setProperty("webdriver.chrome.driver", "Driver/win/chromedriver.exe");
         ChromeOptions options = new ChromeOptions();
         //options.setHeadless(true);
-        options.addArguments("--window-size=1200x600");
-        options.addArguments("--start-maximized");
         options.addArguments("--ignore-certificate-errors");
         options.addArguments("--disable-popup-blocking");
         //options.addArguments("--incognito");
@@ -106,29 +131,47 @@ public class WebDriverController {
             options.merge(performance());
         }
         return options;
-        /*ChromeDriverService service = new ChromeDriverService.Builder()
-                .usingAnyFreePort()
-                .build();
-        ChromeDriver driver = new ChromeDriver(service, options);*/
     }
 
-    //Get Firefox Options
+    /**
+     * get firefox options
+     *
+     * @return options
+     */
     private FirefoxOptions getFirefoxOptions() {
         System.setProperty("webdriver.gecko.driver", "Driver/win/geckodriver.exe");
-        System.setProperty(FirefoxDriver.SystemProperty.DRIVER_USE_MARIONETTE,"true");
-        System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE,"/dev/null");
+        System.setProperty(FirefoxDriver.SystemProperty.DRIVER_USE_MARIONETTE, "true");
+        System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE, "/dev/null");
         FirefoxOptions options = new FirefoxOptions();
         FirefoxProfile profile = new FirefoxProfile();
-        //Accept Untrusted Certificates
         profile.setAcceptUntrustedCertificates(true);
         profile.setAssumeUntrustedCertificateIssuer(false);
-        //Use No Proxy Settings
         profile.setPreference("network.proxy.type", 0);
-        //Set Firefox profile to capabilities
+        //options.setHeadless(true);
         options.setCapability(FirefoxDriver.PROFILE, profile);
         return options;
     }
 
+    /**
+     * get IE options
+     * @return options
+     */
+    private InternetExplorerOptions getIEOptions() {
+        System.setProperty("webdriver.ie.driver", "Driver/win/IEDriverServer.exe");
+        InternetExplorerOptions options = new InternetExplorerOptions();
+        options.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
+        options.setCapability(InternetExplorerDriver.ENABLE_PERSISTENT_HOVERING, true);
+        options.setCapability(InternetExplorerDriver.IGNORE_ZOOM_SETTING, true);
+        options.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
+        options.setCapability(InternetExplorerDriver.REQUIRE_WINDOW_FOCUS, true);
+        return options;
+    }
+
+    /**
+     * logging preference
+     *
+     * @return prefs
+     */
     private LoggingPreferences pref() {
         LoggingPreferences pref = new LoggingPreferences();
         pref.enable(LogType.BROWSER, Level.OFF);
@@ -140,7 +183,6 @@ public class WebDriverController {
 
         return pref;
     }
-
 
     @AfterClass
     public void tearDown() {
