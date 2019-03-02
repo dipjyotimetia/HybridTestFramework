@@ -366,7 +366,7 @@ public class UserActions extends DriverManager {
      * @param p_testcaseName testcaseName
      * @throws IOException Exception
      */
-    private void captureImage(String p_testcaseName) throws IOException {
+    protected void captureImage(String p_testcaseName) throws IOException {
         try {
             Counter = Counter + 1;
             File src = ((TakesScreenshot) driverThread).getScreenshotAs(OutputType.FILE);
