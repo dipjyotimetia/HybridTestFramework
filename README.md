@@ -1,5 +1,5 @@
 # HybridTestFramewrok
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/6c405f4d68214ee3be470b6050947c7b)](https://app.codacy.com/app/TestautoDev/HybridTestFramewrok?utm_source=github.com&utm_medium=referral&utm_content=TestautoDev/HybridTestFramewrok&utm_campaign=Badge_Grade_Dashboard)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/2ffd9c97725645c2bcda860988dc0baf)](https://www.codacy.com/app/dipjyotimetia/HybridTestFramewrok?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=TestautoDev/HybridTestFramewrok&amp;utm_campaign=Badge_Grade)
 
 [![CircleCI](https://circleci.com/gh/TestautoDev/HybridTestFramewrok/tree/master.svg?style=svg)](https://circleci.com/gh/TestautoDev/HybridTestFramewrok/tree/master)
 
