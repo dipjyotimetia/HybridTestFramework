@@ -1,10 +1,11 @@
 package com.core;
 
-import com.Utils.FileSystem;
 import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.client.ClientUtil;
 import net.lightbody.bmp.core.har.Har;
 import net.lightbody.bmp.proxy.CaptureType;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -12,6 +13,8 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -22,16 +25,22 @@ import org.testng.annotations.Parameters;
 import java.io.FileOutputStream;
 import java.net.Inet4Address;
 import java.net.URL;
+import java.util.logging.Level;
 
 
 public class WebDriverController {
 
+    private Logger logger = LogManager.getLogger(WebDriverController.class);
+
     private static WebDriver _driverThread = null;
     private static BrowserMobProxyServer proxy;
+    private String testName = null;
 
-    @Parameters({"browser", "grid" ,"perf"})
+
+    @Parameters({"browser", "grid", "perf"})
     @BeforeClass
     public void setup(String browser, String grid, String perf) {
+        testName = this.getClass().getName().substring(24);
         initDriver(browser, grid, perf);
     }
 
@@ -39,14 +48,14 @@ public class WebDriverController {
         return _driverThread;
     }
 
-    private synchronized void initDriver(String browser, String grid ,String perf) {
+    private synchronized void initDriver(String browser, String grid, String perf) {
         try {
-            if (browser.equals("firefox")) {
+            if (browser.equals("firefox") || browser.equals("f")) {
                 _driverThread = new FirefoxDriver(getFirefoxOptions());
                 if (grid.equalsIgnoreCase("YES")) {
                     _driverThread = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), getFirefoxOptions());
                 }
-            } else if (browser.equals("chrome")) {
+            } else if (browser.equals("chrome") || browser.equals("c")) {
                 //FileSystem.downloadDriver();
                 //Thread.sleep(3000);
                 _driverThread = new ChromeDriver(getChromeOptions(perf));
@@ -61,6 +70,7 @@ public class WebDriverController {
 
     /**
      * Added performance capability
+     *
      * @return
      */
     private DesiredCapabilities performance() {
@@ -84,15 +94,15 @@ public class WebDriverController {
 
     //Get Chrome Options
     private ChromeOptions getChromeOptions(String perf) {
-        System.setProperty("webdriver.chrome.driver", "Driver/chromedriver");
+        System.setProperty("webdriver.chrome.driver", "Driver/win/chromedriver.exe");
         ChromeOptions options = new ChromeOptions();
-        options.setHeadless(true);
+        //options.setHeadless(true);
         options.addArguments("--window-size=1200x600");
         options.addArguments("--start-maximized");
         options.addArguments("--ignore-certificate-errors");
         options.addArguments("--disable-popup-blocking");
         //options.addArguments("--incognito");
-        if (perf.equalsIgnoreCase("YES")){
+        if (perf.equalsIgnoreCase("YES")) {
             options.merge(performance());
         }
         return options;
@@ -104,6 +114,9 @@ public class WebDriverController {
 
     //Get Firefox Options
     private FirefoxOptions getFirefoxOptions() {
+        System.setProperty("webdriver.gecko.driver", "Driver/win/geckodriver.exe");
+        System.setProperty(FirefoxDriver.SystemProperty.DRIVER_USE_MARIONETTE,"true");
+        System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE,"/dev/null");
         FirefoxOptions options = new FirefoxOptions();
         FirefoxProfile profile = new FirefoxProfile();
         //Accept Untrusted Certificates
@@ -116,19 +129,31 @@ public class WebDriverController {
         return options;
     }
 
+    private LoggingPreferences pref() {
+        LoggingPreferences pref = new LoggingPreferences();
+        pref.enable(LogType.BROWSER, Level.OFF);
+        pref.enable(LogType.CLIENT, Level.OFF);
+        pref.enable(LogType.DRIVER, Level.OFF);
+        pref.enable(LogType.PERFORMANCE, Level.OFF);
+        pref.enable(LogType.PROFILER, Level.OFF);
+        pref.enable(LogType.SERVER, Level.OFF);
+
+        return pref;
+    }
+
 
     @AfterClass
     public void tearDown() {
-//        try {
-//            Har har = proxy.getHar();
-//            FileOutputStream fos = new FileOutputStream("C:\\temp\\perf.har");
-//            har.writeTo(fos);
-//            proxy.stop();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-        _driverThread.quit();
+        try {
+            Har har = proxy.getHar();
+            FileOutputStream fos = new FileOutputStream("Reports\\performance\\" + testName + ".har");
+            har.writeTo(fos);
+            proxy.stop();
+        } catch (Exception e) {
+            logger.info("Performance tests not included");
+        } finally {
+            _driverThread.quit();
+        }
     }
-
 }
 

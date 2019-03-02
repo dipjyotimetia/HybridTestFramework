@@ -5,14 +5,14 @@
         <listener class-name="com.reporting.Listeners.TestListener"/>
         <listener class-name="com.reporting.Listeners.AnnotationTransformer"/>
     </listeners>
-    <!--<test name="Feature Api Test Mobile">-->
+    <!--<test name="Feature Api Test">-->
     <!--<classes>-->
     <!--<class name=""/>-->
     <!--</classes>-->
     <!--</test>-->
-    <test name="E2E Tests Android">
-        <parameter name="browser" value="chrome"/>
-        <parameter name="grid" value="YES"/>
+    <test name="E2E Tests Web">
+        <parameter name="browser" value="f"/>
+        <parameter name="grid" value="NO"/>
         <parameter name="perf" value="NO"/>
         <classes>
             <class name="com.TestDefinitionLayer.TC001_Test"/>
