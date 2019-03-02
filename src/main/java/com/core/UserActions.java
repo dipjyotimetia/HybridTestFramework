@@ -47,7 +47,8 @@ public class UserActions extends DriverManager {
     private static WebDriverWait wait;
     private static JavascriptExecutor jsExec;
 
-    public void navigate(String url) {
+    protected void navigate(String url) {
+        SystemDateFormat();
         driverThread.navigate().to(url);
     }
 
@@ -74,12 +75,12 @@ public class UserActions extends DriverManager {
                 .until(loadingElement::getText, is("Complete!"));
     }
 
-    public void click(WebElement element) {
+    protected void click(WebElement element) {
         fluentWait(element, 10);
         element.click();
     }
 
-    public void enter(WebElement element, String value) {
+    protected void enter(WebElement element, String value) {
         fluentWait(element, 10);
         element.sendKeys(value);
     }
@@ -185,7 +186,7 @@ public class UserActions extends DriverManager {
      * sleep
      * @param seconds time
      */
-    public static void sleep(Integer seconds) {
+    private static void sleep(Integer seconds) {
         long secondsLong = (long) seconds;
         try {
             Thread.sleep(secondsLong);

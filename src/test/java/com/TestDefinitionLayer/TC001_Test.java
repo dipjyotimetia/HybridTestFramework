@@ -25,7 +25,7 @@ public class TC001_Test extends UserActions {
         ExtentTestManager.startTest("Test1","Test Description");
 
         try {
-            loginPage.Login();
+            loginPage.Login(tName);
             CreateImageDoc(tName);
         } catch (Exception e) {
             catchBlock(e);
