@@ -21,13 +21,14 @@ public class FileSystem {
 
     private static Logger logger = LogManager.getLogger(FileSystem.class);
 
-    public void downloadDriver() {
+    public void downloadDriver() throws Exception{
         String fromFile = "https://chromedriver.storage.googleapis.com/2.45/chromedriver_win32.zip";
         String toFile = "Driver/chromedriver.zip";
         String destination = "Driver";
         try {
             FileUtils.copyURLToFile(new URL(fromFile), new File(toFile), 10000, 10000);
             unzip(toFile, destination);
+            Thread.sleep(3000);
         } catch (IOException e) {
             e.printStackTrace();
         }
