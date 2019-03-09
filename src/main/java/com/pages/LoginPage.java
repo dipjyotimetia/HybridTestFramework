@@ -15,13 +15,16 @@ public class LoginPage extends UserActions {
     //Element that wont get changed
     @CacheLookup
     @FindBy(xpath = "//*[@id=\"header\"]/div[2]/div/div/nav/div[1]/a")
-    private WebElement link;
+    private WebElement signInLink;
 
     @FindBy(xpath = "//*[@id=\"email\"]")
     private WebElement username;
 
     @FindBy(xpath = "//*[@id=\"passwd\"]")
     private WebElement password;
+
+    @FindBy(xpath = "//*[@id=\"login_form\"]/div/p[1]/a")
+    private WebElement forgotPasswordLink;
 
     //Multiple element match
     @FindAll({@FindBy(how = How.XPATH, using = "//*[@id=\"SubmitLogin\"]"),
@@ -40,10 +43,11 @@ public class LoginPage extends UserActions {
     public void Login(String tcName) {
         try {
             navigate("http://automationpractice.com/index.php");
-            click(link);
+            click(signInLink);
             enter(username, "");
             enter(password, "");
             click(loginButton);
+
             captureImage(tcName);
         } catch (Exception e) {
             logger.error(e);
