@@ -4,6 +4,7 @@ import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.client.ClientUtil;
 import net.lightbody.bmp.core.har.Har;
 import net.lightbody.bmp.proxy.CaptureType;
+import org.apache.commons.lang.SystemUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Proxy;
@@ -27,6 +28,8 @@ import org.testng.annotations.Parameters;
 import java.io.FileOutputStream;
 import java.net.Inet4Address;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 
 
@@ -121,11 +124,12 @@ public class WebDriverController {
      * @return chrome
      */
     private ChromeOptions getChromeOptions(String perf) {
-        System.setProperty("webdriver.chrome.driver", "Driver/win/chromedriver.exe");
+        setChromeSystemProperty();
         ChromeOptions options = new ChromeOptions();
         //options.setHeadless(true);
         options.addArguments("--ignore-certificate-errors");
         options.addArguments("--disable-popup-blocking");
+        options.addArguments(getChromeSwitches());
         //options.addArguments("--incognito");
         if (perf.equalsIgnoreCase("YES")) {
             options.merge(performance());
@@ -139,7 +143,7 @@ public class WebDriverController {
      * @return options
      */
     private FirefoxOptions getFirefoxOptions() {
-        System.setProperty("webdriver.gecko.driver", "Driver/win/geckodriver.exe");
+        setFirefoxSystemProperty();
         System.setProperty(FirefoxDriver.SystemProperty.DRIVER_USE_MARIONETTE, "true");
         System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE, "/dev/null");
         FirefoxOptions options = new FirefoxOptions();
@@ -154,6 +158,7 @@ public class WebDriverController {
 
     /**
      * get IE options
+     *
      * @return options
      */
     private InternetExplorerOptions getIEOptions() {
@@ -166,6 +171,29 @@ public class WebDriverController {
         options.setCapability(InternetExplorerDriver.REQUIRE_WINDOW_FOCUS, true);
         return options;
     }
+
+    /**
+     * Set chrome system property
+     */
+    private void setChromeSystemProperty() {
+        if (SystemUtils.IS_OS_WINDOWS) {
+            System.setProperty("webdriver.chrome.driver", "Driver/win/chromedriver.exe");
+        } else {
+            System.setProperty("webdriver.chrome.driver", "Driver/linux/chromedriver");
+        }
+    }
+
+    /**
+     * Set firefox system property
+     */
+    private void setFirefoxSystemProperty() {
+        if (SystemUtils.IS_OS_WINDOWS) {
+            System.setProperty("webdriver.gecko.driver", "Driver/win/geckodriver.exe");
+        } else {
+            System.setProperty("webdriver.gecko.driver", "Driver/linux/geckodriver");
+        }
+    }
+
 
     /**
      * logging preference
@@ -182,6 +210,17 @@ public class WebDriverController {
         pref.enable(LogType.SERVER, Level.OFF);
 
         return pref;
+    }
+
+    /**
+     * Get chrome switches
+     * @return chromeOptions
+     */
+    private List<String> getChromeSwitches() {
+        List<String> chromeSwitches = new ArrayList<>();
+        chromeSwitches.add("--proxy-server=http://localhost:8888");
+        chromeSwitches.add("--ignore-certificate-errors");
+        return chromeSwitches;
     }
 
     @AfterClass
