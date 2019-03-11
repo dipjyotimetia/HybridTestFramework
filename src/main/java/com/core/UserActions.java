@@ -50,6 +50,7 @@ public class UserActions extends DriverManager {
     protected void navigate(String url) {
         SystemDateFormat();
         driverThread.navigate().to(url);
+        driverThread.manage().timeouts().pageLoadTimeout(5, TimeUnit.SECONDS);
     }
 
     private void fluentWait(WebElement element, int timeout) {
