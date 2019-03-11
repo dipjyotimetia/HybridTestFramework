@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="End To End User Journey" allow-return-values="true" parallel="tests" thread-count="2">
+<suite name="End To End User Journey" parallel="none" thread-count="2">
     <listeners>
         <listener class-name="com.reporting.Listeners.TestListener"/>
         <listener class-name="com.reporting.Listeners.AnnotationTransformer"/>
     </listeners>
-    <!--<test name="Feature Api Test">-->
-    <!--<classes>-->
-    <!--<class name=""/>-->
-    <!--</classes>-->
-    <!--</test>-->
+
+    <parameter name="grid" value="NO"/>
+    <parameter name="perf" value="NO"/>
+
     <test name="E2E Tests Web Firefox">
-        <parameter name="browser" value="chrome"/>
-        <parameter name="grid" value="NO"/>
-        <parameter name="perf" value="NO"/>
+        <parameter name="browser" value="firefox"/>
         <classes>
-            <class name="com.TestDefinitionLayer.TC002_SecurityTest"/>
+            <class name="com.TestDefinitionLayer.TC001_Test"/>
         </classes>
     </test>
+
 </suite>

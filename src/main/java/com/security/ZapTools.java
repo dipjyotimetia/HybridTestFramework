@@ -5,14 +5,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.zaproxy.clientapi.core.Alert;
 import org.zaproxy.clientapi.core.ClientApi;
 import org.zaproxy.clientapi.core.ClientApiException;
 import org.zaproxy.clientapi.core.ClientApiMain;
-import org.zaproxy.clientapi.gen.Spider;
 
 public class ZapTools {
 
