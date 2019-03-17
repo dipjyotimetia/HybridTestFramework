@@ -1,4 +1,4 @@
-package com.Utils;
+package com.utils;
 
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
@@ -15,7 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 /**
- * Utils for file system operations.
+ * utils for file system operations.
  */
 public class FileSystem {
 

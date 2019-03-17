@@ -1,4 +1,4 @@
-package com.Common;
+package com.common;
 
 import org.apache.commons.lang3.StringUtils;
 

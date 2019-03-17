@@ -9,14 +9,8 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.ie.InternetExplorerOptions;
-import org.openqa.selenium.logging.LogType;
-import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -27,12 +21,11 @@ import org.testng.annotations.Parameters;
 import java.io.FileOutputStream;
 import java.net.Inet4Address;
 import java.net.URL;
-import java.util.logging.Level;
 
 
-public class WebDriverController {
+public class WebDriverController extends DriverOptions {
 
-    private Logger logger = LogManager.getLogger(WebDriverController.class);
+    private static Logger logger = LogManager.getLogger(WebDriverController.class);
 
     private static WebDriver _driverThread = null;
     private static BrowserMobProxyServer proxy;
@@ -68,7 +61,6 @@ public class WebDriverController {
                     }
                     break;
                 case "chrome":
-                    //FileSystem.downloadDriver();
                     _driverThread = new ChromeDriver(getChromeOptions(perf));
                     _driverThread.manage().window().maximize();
                     if (grid.equalsIgnoreCase("YES")) {
@@ -95,7 +87,7 @@ public class WebDriverController {
      *
      * @return capabilities
      */
-    private DesiredCapabilities performance() {
+    protected static DesiredCapabilities performance() {
         proxy = new BrowserMobProxyServer();
         proxy.start();
         Proxy seleniumProxy = ClientUtil.createSeleniumProxy(proxy);
@@ -111,77 +103,6 @@ public class WebDriverController {
         DesiredCapabilities caps = new DesiredCapabilities();
         caps.setCapability(CapabilityType.PROXY, seleniumProxy);
         return caps;
-    }
-
-
-    /**
-     * get chrome options
-     *
-     * @param perf perf option
-     * @return chrome
-     */
-    private ChromeOptions getChromeOptions(String perf) {
-        System.setProperty("webdriver.chrome.driver", "Driver/win/chromedriver.exe");
-        ChromeOptions options = new ChromeOptions();
-        //options.setHeadless(true);
-        options.addArguments("--ignore-certificate-errors");
-        options.addArguments("--disable-popup-blocking");
-        //options.addArguments("--incognito");
-        if (perf.equalsIgnoreCase("YES")) {
-            options.merge(performance());
-        }
-        return options;
-    }
-
-    /**
-     * get firefox options
-     *
-     * @return options
-     */
-    private FirefoxOptions getFirefoxOptions() {
-        System.setProperty("webdriver.gecko.driver", "Driver/win/geckodriver.exe");
-        System.setProperty(FirefoxDriver.SystemProperty.DRIVER_USE_MARIONETTE, "true");
-        System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE, "/dev/null");
-        FirefoxOptions options = new FirefoxOptions();
-        FirefoxProfile profile = new FirefoxProfile();
-        profile.setAcceptUntrustedCertificates(true);
-        profile.setAssumeUntrustedCertificateIssuer(false);
-        profile.setPreference("network.proxy.type", 0);
-        //options.setHeadless(true);
-        options.setCapability(FirefoxDriver.PROFILE, profile);
-        return options;
-    }
-
-    /**
-     * get IE options
-     * @return options
-     */
-    private InternetExplorerOptions getIEOptions() {
-        System.setProperty("webdriver.ie.driver", "Driver/win/IEDriverServer.exe");
-        InternetExplorerOptions options = new InternetExplorerOptions();
-        options.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
-        options.setCapability(InternetExplorerDriver.ENABLE_PERSISTENT_HOVERING, true);
-        options.setCapability(InternetExplorerDriver.IGNORE_ZOOM_SETTING, true);
-        options.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
-        options.setCapability(InternetExplorerDriver.REQUIRE_WINDOW_FOCUS, true);
-        return options;
-    }
-
-    /**
-     * logging preference
-     *
-     * @return prefs
-     */
-    private LoggingPreferences pref() {
-        LoggingPreferences pref = new LoggingPreferences();
-        pref.enable(LogType.BROWSER, Level.OFF);
-        pref.enable(LogType.CLIENT, Level.OFF);
-        pref.enable(LogType.DRIVER, Level.OFF);
-        pref.enable(LogType.PERFORMANCE, Level.OFF);
-        pref.enable(LogType.PROFILER, Level.OFF);
-        pref.enable(LogType.SERVER, Level.OFF);
-
-        return pref;
     }
 
     @AfterClass
