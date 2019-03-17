@@ -3,23 +3,6 @@
 
 [![CircleCI](https://circleci.com/gh/TestautoDev/HybridTestFramewrok/tree/master.svg?style=svg)](https://circleci.com/gh/TestautoDev/HybridTestFramewrok/tree/master)
 
-### Security ZAP Testing
-[OWASP ZAP](https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project)
- Download it from [Github](https://github.com/zaproxy/zaproxy/wiki/Downloads)
-- Run it
-- Configure proxy: Tools -> Options -> Local Proxies. Set port to 8888
-- Get API key from your ZAP instance: Tools -> Options -> API
-
-Vulnerable application - system under test
-- Install docker and run docker service
-- Run bodgeit docker container (or any app)
-- Make sure it's running on http://localhost:8080/bodgeit/
-
-Selenium traffic will go through ZAP proxy in order to capture all traffic. It's not exactly necessary for the bodgeit shop, but in real-world applications spider would struggle to find URLs requiring logged in access.
-
-Report:
-<img src="https://github.com/dipjyotimetia/screenshots/blob/master/security/zapReport.png" width="300">
-
 ```
 $ docker-compose up -d
 ```
