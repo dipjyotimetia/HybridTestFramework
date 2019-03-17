@@ -2,7 +2,7 @@ package com.TestDefinitionLayer;
 
 import com.security.Zap;
 import com.security.ZapApi;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.zaproxy.clientapi.core.ClientApiException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -14,13 +14,22 @@ public class TC002_SecurityTest {
     private Zap zap = new Zap(zapApi);
 
     @Test
-    public void zapSecurityTest() throws ClientApiException, InterruptedException {
-        zap.doSpidering();
-        zap.doPassiveScan();
-        zap.doActiveScan();
+    public void zapSecurityTest() {
+        try {
+            zap.doSpidering();
+            zap.doPassiveScan();
+            zap.doActiveScan();
 
-        zapApi.generateHtmlReport("report.html");
+            zapApi.generateHtmlReport("report.html");
 
-        assertThat(zapApi.getNumberOfAlerts()).isZero();
+            assertThat(zapApi.getNumberOfAlerts()).isZero();
+        }
+        catch (ClientApiException ce){
+            ce.printStackTrace();
+        }
+        catch (InterruptedException ie){
+            ie.printStackTrace();
+        }
+
     }
 }
