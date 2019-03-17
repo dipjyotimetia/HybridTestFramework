@@ -13,9 +13,12 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.awaitility.Awaitility;
+
 import static org.awaitility.Duration.*;
 import static org.hamcrest.Matchers.*;
+
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.*;
 import org.testng.Assert;
 
@@ -31,6 +34,7 @@ import java.util.Hashtable;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserActions extends DriverManager {
@@ -66,15 +70,47 @@ public class UserActions extends DriverManager {
         }
     }
 
-    private void loading(WebElement loadingElement){
+    private void loading(WebElement loadingElement) {
         Awaitility.await("Wait for new user to load").atMost(5, TimeUnit.SECONDS)
                 .until(loadingElement::getText, not("loading..."));
     }
 
-    private void loadingComplete(WebElement loadingElement){
+    private void loadingComplete(WebElement loadingElement) {
         Awaitility.await("Wait for new user to load").atMost(5, TimeUnit.SECONDS)
                 .until(loadingElement::getText, is("Complete!"));
     }
+
+
+    protected void selectByValue(WebElement element, String value) {
+        try {
+            fluentWait(element, 10);
+            Select select = new Select(element);
+            select.selectByValue(value);
+        } catch (Exception e) {
+            logger.error(e);
+
+        }
+    }
+
+    protected void selectByIndex(WebElement element, int value) {
+        try {
+            fluentWait(element, 10);
+            Select select = new Select(element);
+            select.selectByIndex(value);
+        } catch (Exception e) {
+            logger.error(e);
+
+        }
+    }
+
+    protected void mouseOver(WebElement element) {
+        fluentWait(element, 10);
+        Actions action = new Actions(driverThread);
+        action.moveToElement(element);
+        action.click();
+        action.perform();
+    }
+
 
     protected void click(WebElement element) {
         fluentWait(element, 10);
@@ -86,6 +122,39 @@ public class UserActions extends DriverManager {
         element.sendKeys(value);
     }
 
+    /**
+     * This method clear the present field value
+     * @param element WebElement
+     */
+    protected void clear(WebElement element) {
+        fluentWait(element, 10);
+        element.clear();
+    }
+
+    /**
+     * This method return inner text from element
+     * @param element WebElement
+     * @return Inner Text
+     */
+    protected String getText(WebElement element) {
+        fluentWait(element, 10);
+        return element.getText();
+    }
+
+    /**
+     * This method utilises TestNG Asserts to compare Texts
+     * @param actual Actual Value
+     * @param expected Expected Value
+     */
+    protected void compareText(String actual,String expected){
+        try {
+            Assert.assertEquals(actual, expected);
+            logger.info("Text compared successfully");
+        }
+        catch (Exception e){
+            logger.error("Texts compare failed"+e);
+        }
+    }
     public void setDriver() {
         wait = new WebDriverWait(driverThread, 10);
         jsExec = (JavascriptExecutor) driverThread;
@@ -185,6 +254,7 @@ public class UserActions extends DriverManager {
 
     /**
      * sleep
+     *
      * @param seconds time
      */
     private static void sleep(Integer seconds) {
@@ -198,7 +268,8 @@ public class UserActions extends DriverManager {
 
     /**
      * find element
-     * @param locator locator
+     *
+     * @param locator        locator
      * @param timeoutSeconds timeout
      * @return webelement
      */
@@ -218,6 +289,7 @@ public class UserActions extends DriverManager {
 
     /**
      * click when ready
+     *
      * @param locator locator
      * @param timeout timeout
      */
