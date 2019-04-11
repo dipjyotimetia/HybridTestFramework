@@ -25,7 +25,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "io.qameta.allure:allure-gradle:2.5"
+        classpath "io.qameta.allure:allure-gradle:2.7.0"
         classpath "gradle.plugin.com.avast.gradle:gradle-docker-compose-plugin:0.8.12"
     }
 }
