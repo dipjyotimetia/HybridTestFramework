@@ -14,7 +14,6 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.awaitility.Awaitility;
 
-import static org.awaitility.Duration.*;
 import static org.hamcrest.Matchers.*;
 
 import org.openqa.selenium.*;
@@ -34,8 +33,6 @@ import java.util.Hashtable;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserActions extends DriverManager {
     private Logger logger = LogManager.getLogger(UserActions.class);
