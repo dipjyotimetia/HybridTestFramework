@@ -27,12 +27,12 @@ import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.*;
 import java.util.Date;
-import java.util.Dictionary;
-import java.util.Hashtable;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class UserActions extends DriverManager {
     private Logger logger = LogManager.getLogger(UserActions.class);
@@ -136,6 +136,65 @@ public class UserActions extends DriverManager {
     protected String getText(WebElement element) {
         fluentWait(element, 10);
         return element.getText();
+    }
+
+    /**
+     * Filter element
+     * @param elements element
+     * @return filtered elements list
+     */
+    public long filterElement(List<WebElement> elements) {
+        return elements.stream().filter(item -> item.isDisplayed()).count();
+    }
+
+    /**
+     * Enter visible element
+     * @param elements elements
+     * @param value value
+     */
+    public void enterVisibleElement(List<WebElement> elements,String value) {
+        elements.stream().filter(item -> item.isDisplayed()).findFirst().get().sendKeys(value);
+    }
+
+    /**
+     * Get all values
+     * @param elements elements
+     */
+    public void getAllValues(List<WebElement> elements){
+        elements.forEach(e -> System.out.println(e));
+    }
+
+    /**
+     * Switch to window
+     * @param title window title
+     */
+    public void switchToWindow (String title) {
+        driverThread.getWindowHandles()
+                .stream()
+                .map(windowHandle -> driverThread.switchTo().window(windowHandle).getTitle())
+                .filter(title::contains)
+                .findFirst()
+                .orElseThrow(() -> {
+                    throw new RuntimeException("No Such Window Exists!");
+                });
+    }
+
+    /**
+     * Click element by value
+     * @param elements element
+     * @param value value
+     */
+    public void clickElementByValue(List<WebElement> elements,String value){
+        elements.stream().filter(element -> element.getAttribute("value").matches(value))
+                .forEach(element ->element.click());
+    }
+
+    public static Map<String, String> get (Map<String, String> formParams) {
+        return formParams
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getValue() != null)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     /**
