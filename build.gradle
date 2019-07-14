@@ -65,14 +65,14 @@ dockerCompose {
 }
 
 dependencies {
-    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
-    compile group: 'org.seleniumhq.selenium', name: 'selenium-server', version: '3.141.59'
-    compile group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version: '3.141.59'
-    compile group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version: '3.141.59'
-    compile group: 'org.seleniumhq.selenium', name: 'selenium-remote-driver', version: '3.141.59'
-    compile group: 'org.seleniumhq.selenium', name: 'selenium-ie-driver', version: '3.141.59'
-    compile group: 'org.seleniumhq.selenium', name: 'selenium-edge-driver', version: '3.141.59'
-    compile group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.11.578'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.0.0-alpha-2'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-server', version: '4.0.0-alpha-2'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version: '4.0.0-alpha-2'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version: '4.0.0-alpha-2'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-remote-driver', version: '4.0.0-alpha-2'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-ie-driver', version: '4.0.0-alpha-2'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-edge-driver', version: '4.0.0-alpha-2'
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.11.592'
     compile group: 'net.reini', name: 'slf4-cdi', version: '1.0'
     compile group: 'org.assertj', name: 'assertj-core', version: '3.11.0'
     compile group: 'org.hamcrest', name: 'hamcrest-all', version: '1.3'
