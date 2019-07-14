@@ -18,6 +18,7 @@ import static org.hamcrest.Matchers.*;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.*;
 import org.testng.Assert;
 
@@ -37,6 +38,8 @@ import java.util.stream.Collectors;
 public class UserActions extends DriverManager {
     private Logger logger = LogManager.getLogger(UserActions.class);
 
+    @FindBy(xpath="//a")
+    private List<WebElement> AllLinks;
     private static final Faker faker = new Faker();
     private static String datetimeabc = null;
     private static int Counter = 0;
@@ -187,6 +190,14 @@ public class UserActions extends DriverManager {
     public void clickElementByValue(List<WebElement> elements,String value){
         elements.stream().filter(element -> element.getAttribute("value").matches(value))
                 .forEach(element ->element.click());
+    }
+
+    /**
+     * Get All Links
+     * @return all links
+     */
+    public List<String> getAllLinks(){
+        return AllLinks.stream().map(ele -> ele.getText().trim()).collect(Collectors.toList());
     }
 
     public static Map<String, String> get (Map<String, String> formParams) {
