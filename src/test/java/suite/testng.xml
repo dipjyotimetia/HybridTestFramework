@@ -10,7 +10,7 @@
     <parameter name="perf" value="NO"/>
 
     <test name="E2E Tests Web Firefox">
-        <parameter name="browser" value="firefox"/>
+        <parameter name="browser" value="chrome"/>
         <classes>
             <class name="com.TestDefinitionLayer.TC001_Test"/>
         </classes>
