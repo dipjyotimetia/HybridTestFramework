@@ -196,8 +196,8 @@ public class UserActions extends DriverManager {
      * Get All Links
      * @return all links
      */
-    public List<String> getAllLinks(){
-        return AllLinks.stream().map(ele -> ele.getText().trim()).collect(Collectors.toList());
+    public List<String> getAllLinks(List<WebElement> elements){
+        return elements.stream().map(ele -> ele.getText().trim()).collect(Collectors.toList());
     }
 
     public static Map<String, String> get (Map<String, String> formParams) {
@@ -709,5 +709,37 @@ public class UserActions extends DriverManager {
         Assert.fail("TestCase Failed", e);
     }
 
+    protected Boolean isDisplayed(WebElement element){
+        return element.isDisplayed();
+    }
+
+    protected Boolean isEnabled(WebElement element){
+        return element.isEnabled();
+    }
+
+    protected Boolean isSelected(WebElement element){
+        return element.isSelected();
+    }
+
+    protected void mouseOver(WebElement ele1,WebElement ele2){
+        Actions actions = new Actions(driverThread);
+        actions.moveToElement(ele1).pause(Duration.ofMillis(500)).click(ele2).build().perform();
+    }
+
+    protected void switchToNewWindow(){
+        String parentWindow = driverThread.getWindowHandle();
+       Set<String> handles = driverThread.getWindowHandles();
+       for (String windowHandle : handles){
+           if (!windowHandle.equals(parentWindow)){
+               driverThread.switchTo().window(windowHandle);
+
+               ///
+
+
+               driverThread.close();
+               driverThread.switchTo().window(parentWindow);
+           }
+       }
+    }
 
 }
