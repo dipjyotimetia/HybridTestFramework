@@ -37,6 +37,11 @@ abstract class DriverOptions {
         options.addArguments("--disable-popup-blocking");
         //options.addArguments(setChromeOWASP());
         //options.addArguments("--incognito");
+        //options.addArguments("enable-automation");
+        //options.addArguments("--no-sandbox");
+        //options.addArguments("--disable-extensions");
+        //options.addArguments("--dns-prefetch-disable");
+        //options.addArguments("--disable-gpu");
         if (perf.equalsIgnoreCase("YES")) {
             options.merge(WebDriverController.performance());
         }
