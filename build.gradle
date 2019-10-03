@@ -26,16 +26,16 @@ buildscript {
     }
     dependencies {
         classpath "io.qameta.allure:allure-gradle:2.8.1"
-        classpath "com.avast.gradle:gradle-docker-compose-plugin:0.9.4"
+        classpath "com.avast.gradle:gradle-docker-compose-plugin:0.9.5"
     }
 }
 
 allure {
     autoconfigure = true
     aspectjweaver = true
-    version = '2.12.1'
+    version = '2.13.0'
     useTestNG {
-        version = '2.12.1'
+        version = '2.13.0'
     }
     downloadLink = 'https://dl.bintray.com/qameta/maven/io/qameta/allure/allure-commandline/2.12.1/allure-commandline-2.12.1.zip'
 }
