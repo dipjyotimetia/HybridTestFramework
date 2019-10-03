@@ -1,7 +1,7 @@
 package com.logging;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mashape.unirest.http.Unirest;
+import kong.unirest.Unirest;
 
 public class ResultSender {
     private static final ObjectMapper OM = new ObjectMapper();
