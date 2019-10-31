@@ -13,10 +13,9 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.awaitility.Awaitility;
-
-import static org.hamcrest.Matchers.*;
-
 import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.*;
@@ -28,17 +27,20 @@ import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.*;
 import java.util.Date;
 import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+
 public class UserActions extends DriverManager {
     private Logger logger = LogManager.getLogger(UserActions.class);
 
-    @FindBy(xpath="//a")
+    @FindBy(xpath = "//a")
     private List<WebElement> AllLinks;
     private static final Faker faker = new Faker();
     private static String datetimeabc = null;
@@ -124,6 +126,7 @@ public class UserActions extends DriverManager {
 
     /**
      * This method clear the present field value
+     *
      * @param element WebElement
      */
     protected void clear(WebElement element) {
@@ -133,6 +136,7 @@ public class UserActions extends DriverManager {
 
     /**
      * This method return inner text from element
+     *
      * @param element WebElement
      * @return Inner Text
      */
@@ -143,6 +147,7 @@ public class UserActions extends DriverManager {
 
     /**
      * Filter element
+     *
      * @param elements element
      * @return filtered elements list
      */
@@ -152,26 +157,29 @@ public class UserActions extends DriverManager {
 
     /**
      * Enter visible element
+     *
      * @param elements elements
-     * @param value value
+     * @param value    value
      */
-    public void enterVisibleElement(List<WebElement> elements,String value) {
+    public void enterVisibleElement(List<WebElement> elements, String value) {
         elements.stream().filter(item -> item.isDisplayed()).findFirst().get().sendKeys(value);
     }
 
     /**
      * Get all values
+     *
      * @param elements elements
      */
-    public void getAllValues(List<WebElement> elements){
+    public void getAllValues(List<WebElement> elements) {
         elements.forEach(e -> System.out.println(e));
     }
 
     /**
      * Switch to window
+     *
      * @param title window title
      */
-    public void switchToWindow (String title) {
+    public void switchToWindow(String title) {
         driverThread.getWindowHandles()
                 .stream()
                 .map(windowHandle -> driverThread.switchTo().window(windowHandle).getTitle())
@@ -184,23 +192,25 @@ public class UserActions extends DriverManager {
 
     /**
      * Click element by value
+     *
      * @param elements element
-     * @param value value
+     * @param value    value
      */
-    public void clickElementByValue(List<WebElement> elements,String value){
+    public void clickElementByValue(List<WebElement> elements, String value) {
         elements.stream().filter(element -> element.getAttribute("value").matches(value))
-                .forEach(element ->element.click());
+                .forEach(element -> element.click());
     }
 
     /**
      * Get All Links
+     *
      * @return all links
      */
-    public List<String> getAllLinks(List<WebElement> elements){
+    public List<String> getAllLinks(List<WebElement> elements) {
         return elements.stream().map(ele -> ele.getText().trim()).collect(Collectors.toList());
     }
 
-    public static Map<String, String> get (Map<String, String> formParams) {
+    public static Map<String, String> get(Map<String, String> formParams) {
         return formParams
                 .entrySet()
                 .stream()
@@ -210,18 +220,19 @@ public class UserActions extends DriverManager {
 
     /**
      * This method utilises TestNG Asserts to compare Texts
-     * @param actual Actual Value
+     *
+     * @param actual   Actual Value
      * @param expected Expected Value
      */
-    protected void compareText(String actual,String expected){
+    protected void compareText(String actual, String expected) {
         try {
             Assert.assertEquals(actual, expected);
             logger.info("Text compared successfully");
-        }
-        catch (Exception e){
-            logger.error("Texts compare failed"+e);
+        } catch (Exception e) {
+            logger.error("Texts compare failed" + e);
         }
     }
+
     public void setDriver() {
         wait = new WebDriverWait(driverThread, 10);
         jsExec = (JavascriptExecutor) driverThread;
@@ -709,37 +720,45 @@ public class UserActions extends DriverManager {
         Assert.fail("TestCase Failed", e);
     }
 
-    protected Boolean isDisplayed(WebElement element){
+    protected Boolean isDisplayed(WebElement element) {
         return element.isDisplayed();
     }
 
-    protected Boolean isEnabled(WebElement element){
+    protected Boolean isEnabled(WebElement element) {
         return element.isEnabled();
     }
 
-    protected Boolean isSelected(WebElement element){
+    protected Boolean isSelected(WebElement element) {
         return element.isSelected();
     }
 
-    protected void mouseOver(WebElement ele1,WebElement ele2){
+    protected void mouseOver(WebElement ele1, WebElement ele2) {
         Actions actions = new Actions(driverThread);
         actions.moveToElement(ele1).pause(Duration.ofMillis(500)).click(ele2).build().perform();
     }
 
-    protected void switchToNewWindow(){
+    protected void switchToTab() {
+        driverThread.switchTo().newWindow(WindowType.TAB);
+    }
+
+    protected void switchToWindow() {
+        driverThread.switchTo().newWindow(WindowType.WINDOW);
+    }
+
+    protected void switchToNewWindow() {
         String parentWindow = driverThread.getWindowHandle();
-       Set<String> handles = driverThread.getWindowHandles();
-       for (String windowHandle : handles){
-           if (!windowHandle.equals(parentWindow)){
-               driverThread.switchTo().window(windowHandle);
+        Set<String> handles = driverThread.getWindowHandles();
+        for (String windowHandle : handles) {
+            if (!windowHandle.equals(parentWindow)) {
+                driverThread.switchTo().window(windowHandle);
 
-               ///
+                ///
 
 
-               driverThread.close();
-               driverThread.switchTo().window(parentWindow);
-           }
-       }
+                driverThread.close();
+                driverThread.switchTo().window(parentWindow);
+            }
+        }
     }
 
 }
