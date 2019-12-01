@@ -14,8 +14,6 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.awaitility.Awaitility;
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.*;
@@ -82,7 +80,6 @@ public class UserActions extends DriverManager {
                 .until(loadingElement::getText, is("Complete!"));
     }
 
-
     protected void selectByValue(WebElement element, String value) {
         try {
             fluentWait(element, 10);
@@ -90,7 +87,6 @@ public class UserActions extends DriverManager {
             select.selectByValue(value);
         } catch (Exception e) {
             logger.error(e);
-
         }
     }
 
@@ -101,7 +97,6 @@ public class UserActions extends DriverManager {
             select.selectByIndex(value);
         } catch (Exception e) {
             logger.error(e);
-
         }
     }
 
@@ -175,22 +170,6 @@ public class UserActions extends DriverManager {
     }
 
     /**
-     * Switch to window
-     *
-     * @param title window title
-     */
-    public void switchToWindow(String title) {
-        driverThread.getWindowHandles()
-                .stream()
-                .map(windowHandle -> driverThread.switchTo().window(windowHandle).getTitle())
-                .filter(title::contains)
-                .findFirst()
-                .orElseThrow(() -> {
-                    throw new RuntimeException("No Such Window Exists!");
-                });
-    }
-
-    /**
      * Click element by value
      *
      * @param elements element
@@ -234,7 +213,7 @@ public class UserActions extends DriverManager {
     }
 
     public void setDriver() {
-        wait = new WebDriverWait(driverThread, 10);
+        wait = new WebDriverWait(driverThread, Duration.ofSeconds(10));
         jsExec = (JavascriptExecutor) driverThread;
     }
 
@@ -257,7 +236,7 @@ public class UserActions extends DriverManager {
      * wait for angular load
      */
     private void waitForAngularLoad() {
-        WebDriverWait wait = new WebDriverWait(driverThread, 15);
+        WebDriverWait wait = new WebDriverWait(driverThread, Duration.ofSeconds(15));
         JavascriptExecutor jsExec = (JavascriptExecutor) driverThread;
         String angularReadyScript = "return angular.element(document).injector().get('$http').pendingRequests.length === 0";
         ExpectedCondition<Boolean> angularLoad = driver -> Boolean.valueOf(((JavascriptExecutor) driver)
@@ -275,7 +254,7 @@ public class UserActions extends DriverManager {
      * wait until js ready
      */
     private void waitUntilJSReady() {
-        WebDriverWait wait = new WebDriverWait(driverThread, 15);
+        WebDriverWait wait = new WebDriverWait(driverThread, Duration.ofSeconds(15));
         JavascriptExecutor jsExec = (JavascriptExecutor) driverThread;
         ExpectedCondition<Boolean> jsLoad = driver -> ((JavascriptExecutor) driverThread)
                 .executeScript("return document.readyState").toString().equals("complete");
@@ -372,7 +351,7 @@ public class UserActions extends DriverManager {
      * @param timeout timeout
      */
     public void clickWhenReady(By locator, int timeout) {
-        WebDriverWait wait = new WebDriverWait(driverThread, timeout);
+        WebDriverWait wait = new WebDriverWait(driverThread, Duration.ofSeconds(timeout));
         WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
         element.click();
     }
@@ -714,12 +693,6 @@ public class UserActions extends DriverManager {
         };
     }
 
-    protected void catchBlock(Exception e) {
-        Counter = 0;
-        logger.error("Error Description", e);
-        Assert.fail("TestCase Failed", e);
-    }
-
     protected Boolean isDisplayed(WebElement element) {
         return element.isDisplayed();
     }
@@ -751,14 +724,16 @@ public class UserActions extends DriverManager {
         for (String windowHandle : handles) {
             if (!windowHandle.equals(parentWindow)) {
                 driverThread.switchTo().window(windowHandle);
-
                 ///
-
-
                 driverThread.close();
                 driverThread.switchTo().window(parentWindow);
             }
         }
     }
 
+    protected void catchBlock(Exception e) {
+        Counter = 0;
+        logger.error("Error Description", e);
+        Assert.fail("TestCase Failed", e);
+    }
 }
