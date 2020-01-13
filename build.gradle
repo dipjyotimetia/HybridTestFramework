@@ -25,8 +25,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "io.qameta.allure:allure-gradle:2.8.1"
-        classpath "com.avast.gradle:gradle-docker-compose-plugin:0.9.5"
+        classpath "io.qameta.allure:allure-gradle:+"
+        classpath "com.avast.gradle:gradle-docker-compose-plugin:0.10.7"
     }
 }
 
@@ -91,9 +91,9 @@ dependencies {
     compile group: 'com.microsoft.sqlserver', name: 'mssql-jdbc', version: '7.4.1.jre8'
     compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.28'
     compile group: 'com.github.javafaker', name: 'javafaker', version: '1.0.1'
-    compile group: 'io.rest-assured', name: 'rest-assured', version: '4.1.1'
+    compile group: 'io.rest-assured', name: 'rest-assured', version: '4.1.2'
     compile group: 'org.json', name: 'json', version: '20190722'
-    compile group: 'com.konghq', name: 'unirest-java', version: '3.1.00'
+    compile group: 'com.konghq', name: 'unirest-java', version: '3.3.00'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.12.1'
     compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.12.1'
     compile group: 'com.github.tomakehurst', name: 'wiremock', version: '2.25.0'
