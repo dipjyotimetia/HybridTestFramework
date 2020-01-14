@@ -12,7 +12,7 @@ version '1.0-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
-    maven { url "http://repo.maven.apache.org/maven2" }
+    maven { url "https://repo.maven.apache.org/maven2" }
     maven { url "https://plugins.gradle.org/m2/" }
     mavenCentral()
     jcenter()
@@ -20,7 +20,7 @@ repositories {
 
 buildscript {
     repositories {
-        maven { url "http://repo.maven.apache.org/maven2" }
+        maven { url "https://repo.maven.apache.org/maven2" }
         maven { url "https://plugins.gradle.org/m2/" }
         mavenCentral()
     }
@@ -65,6 +65,7 @@ dockerCompose {
 }
 
 dependencies {
+    compile group: 'io.netty', name: 'netty-all', version: '4.1.44.Final'
     compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.0.0-alpha-4'
     compile group: 'org.seleniumhq.selenium', name: 'selenium-server', version: '4.0.0-alpha-2'
     compile group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version: '4.0.0-alpha-4'
@@ -79,7 +80,7 @@ dependencies {
     compile group: 'org.testng', name: 'testng', version: '7.0.0'
     compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
-    compile group: 'com.aventstack', name: 'extentreports', version: '4.10.0'
+    compile group: 'com.aventstack', name: 'extentreports', version: '4.1.1'
     compile group: 'net.sourceforge.javacsv', name: 'javacsv', version: '2.0'
     compile group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.0'
     compile group: 'org.apache.poi', name: 'poi-ooxml-schemas', version: '4.1.0'
