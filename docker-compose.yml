@@ -1,5 +1,6 @@
 version: '3'
 services:
+#Firefox server
   firefox:
     image: selenium/node-firefox:3.14.0-gallium
     volumes:
@@ -8,7 +9,7 @@ services:
       - hub
     environment:
       HUB_HOST: hub
-
+#Chrome Server
   chrome:
     image: selenium/node-chrome:3.14.0-gallium
     volumes:
@@ -17,12 +18,30 @@ services:
       - hub
     environment:
       HUB_HOST: hub
-
+#Selenium Server
   hub:
     image: selenium/hub:3.14.0-gallium
     ports:
       - "4444:4444"
+#Jenkins
+  jenkins:
+    image: jenkins/jenkins:lts
+    command: [
+      "mkdir ~/jenkins"
+    ]
+    privileged: true
+    user: root
+    ports:
+      - 8081:8080
+      - 50000:50000
+    container_name: jenkins
+    volumes:
+      - ~/jenkins:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/local/bin/docker:/usr/local/bin/docker
+#    docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
 
+#Zap proxy
   # Ref: https://github.com/zaproxy/zaproxy/wiki/Docker
   # Ref: https://github.com/zaproxy/zap-api-go/tree/master/example
   # Ref: https://github.com/zaproxy/zaproxy/wiki/WebSwing
