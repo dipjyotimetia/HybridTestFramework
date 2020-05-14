@@ -12,7 +12,7 @@
     <test name="E2E Tests Web">
         <parameter name="browser" value="chrome"/>
         <classes>
-            <class name="com.TestDefinitionLayer.TC002_GURU_Login"/>
+            <class name="com.TestDefinitionLayer.TC002_SecurityTest"/>
         </classes>
     </test>
 
