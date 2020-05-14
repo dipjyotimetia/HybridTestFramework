@@ -1,6 +1,8 @@
+# Complete infra creation for selenium chrome/firefox and owasp security testing
+
 version: '3'
+
 services:
-#Firefox server
   firefox:
     image: selenium/node-firefox:3.14.0-gallium
     volumes:
@@ -10,7 +12,6 @@ services:
     environment:
       HUB_HOST: hub
 
-#Chrome Server
   chrome:
     image: selenium/node-chrome:3.14.0-gallium
     volumes:
@@ -20,36 +21,25 @@ services:
     environment:
       HUB_HOST: hub
 
-#Selenium Server
   hub:
     image: selenium/hub:3.14.0-gallium
     ports:
       - "4444:4444"
 
-#Zap proxy
-  # Ref: https://github.com/zaproxy/zaproxy/wiki/Docker
-  # Ref: https://github.com/zaproxy/zap-api-go/tree/master/example
-  # Ref: https://github.com/zaproxy/zaproxy/wiki/WebSwing
-  # Ref: https://github.com/zaproxy/zap-core-help/wiki/HelpCmdline
   zaproxy:
     image: owasp/zap2docker-stable:latest
     command: [
-#      "zap.sh",
+      #"zap.sh",
       "zap-x.sh",
-#      "zap-webswing.sh",
+      #"zap-webswing.sh",
       "-daemon",
       "-host", "0.0.0.0", "-port", "8082",
       "-config", "api.disablekey=true",
       "-config", "api.addrs.addr.name=.*",
       "-config", "api.addrs.addr.regex=true",
       "-config", "api.key=d025okl6n7blpkrr0iee6c7hsi",
-#      "-addoninstall FOOXYZ",
+      #"-addoninstall FOOXYZ",
       "-addonupdate"
     ]
     ports:
       - "127.0.0.1:8082:8082"
-  #    volumes:
-  #      - "/tmp/.X11-unix:/tmp/.X11-unix"
-  #      - "${HOME}/.Xauthority:/home/zap/.Xauthority"
-  #    environment:
-  #      DISPLAY: "${IP}:0"
