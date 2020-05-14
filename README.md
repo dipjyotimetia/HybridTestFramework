@@ -51,6 +51,17 @@ Create new class and name as the TC00*_E2E_TEST-***
  - Write test
  - Use CatchBlock in try/catch section
 
+### Gradle command to spwan docker compose
+```groovy
+dockerCompose {
+    useComposeFiles = ['docker-compose.yml']
+    startedServices = ['chrome', 'firefox']
+    scale = [chrome: 2, firefox: 2]
+    stopContainers = true
+    removeContainers = true
+}
+```
+
 ### Spawns chrome, firefox, selenium hub and OWASP proxy server    
 ```shell script
 $ docker-compose up -d
