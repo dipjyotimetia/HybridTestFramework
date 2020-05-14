@@ -36,7 +36,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
 public class UserActions extends DriverManager {
-    private Logger logger = LogManager.getLogger(UserActions.class);
+    private final Logger logger = LogManager.getLogger(UserActions.class);
 
     @FindBy(xpath = "//a")
     private List<WebElement> AllLinks;

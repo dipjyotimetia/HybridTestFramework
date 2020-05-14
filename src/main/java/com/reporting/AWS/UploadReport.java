@@ -17,7 +17,7 @@ import org.testng.annotations.Test;
 import java.io.File;
 
 public class UploadReport {
-    private Logger logger = LogManager.getLogger(UploadReport.class);
+    private final Logger logger = LogManager.getLogger(UploadReport.class);
 
     @Test
     public void UploadToS3() throws Exception {

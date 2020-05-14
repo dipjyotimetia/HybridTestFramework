@@ -25,7 +25,7 @@ import java.net.URL;
 
 public class WebDriverController extends DriverOptions {
 
-    private static Logger logger = LogManager.getLogger(WebDriverController.class);
+    private static final Logger logger = LogManager.getLogger(WebDriverController.class);
 
     private static WebDriver _driverThread = null;
     private static BrowserMobProxyServer proxy;

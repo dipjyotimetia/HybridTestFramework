@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 abstract class DriverOptions {
-    private Logger logger = LogManager.getLogger(DriverOptions.class);
+    private final Logger logger = LogManager.getLogger(DriverOptions.class);
 
     /**
      * get chrome options
