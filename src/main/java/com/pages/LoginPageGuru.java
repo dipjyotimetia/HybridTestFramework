@@ -9,7 +9,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 
 public class LoginPageGuru extends UserActions {
-    private Logger logger = LogManager.getLogger(LoginPageGuru.class);
+    private final Logger logger = LogManager.getLogger(LoginPageGuru.class);
 
     @FindBy(id = "email")
     private WebElement email;

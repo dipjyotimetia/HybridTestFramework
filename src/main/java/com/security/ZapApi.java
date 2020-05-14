@@ -1,5 +1,7 @@
 package com.security;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.zaproxy.clientapi.core.ApiResponse;
 import org.zaproxy.clientapi.core.ApiResponseElement;
 import org.zaproxy.clientapi.core.ClientApi;
@@ -12,12 +14,14 @@ import java.nio.charset.StandardCharsets;
 
 public class ZapApi {
 
+    private final Logger logger = LogManager.getLogger(ZapApi.class);
+
     private static final String ZAP_ADDRESS = "localhost";
     private static final int ZAP_PORT = 8082;
     private static final String ZAP_API_KEY = "d025okl6n7blpkrr0iee6c7hsi";
 
-    private String target;
-    private ClientApi api;
+    private final String target;
+    private final ClientApi api;
 
     public ZapApi(String target) {
         this.target = target;
@@ -67,8 +71,8 @@ public class ZapApi {
 
     @SuppressWarnings("unused")
     public void printAlerts() throws ClientApiException {
-        System.out.println("Alerts:");
-        System.out.println(new String(api.core.xmlreport(), StandardCharsets.UTF_8));
+        logger.info("Alerts:");
+        logger.info(new String(api.core.xmlreport(), StandardCharsets.UTF_8));
     }
 
     private ApiResponse getSpideringApiResponse() throws ClientApiException {

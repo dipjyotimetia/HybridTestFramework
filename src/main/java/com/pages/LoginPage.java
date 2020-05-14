@@ -10,7 +10,7 @@ import java.util.List;
 
 public class LoginPage extends UserActions {
 
-    private Logger logger = LogManager.getLogger(LoginPage.class);
+    private final Logger logger = LogManager.getLogger(LoginPage.class);
 
     //Element that wont get changed
     @CacheLookup

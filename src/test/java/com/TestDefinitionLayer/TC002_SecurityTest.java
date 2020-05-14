@@ -10,8 +10,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TC002_SecurityTest {
     private static final String TARGET = "http://zero.webappsecurity.com/online-banking.html";
 
-    private ZapApi zapApi = new ZapApi(TARGET);
-    private Zap zap = new Zap(zapApi);
+    private final ZapApi zapApi = new ZapApi(TARGET);
+    private final Zap zap = new Zap(zapApi);
 
     @Test
     public void zapSecurityTest() {

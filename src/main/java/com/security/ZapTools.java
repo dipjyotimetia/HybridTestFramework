@@ -5,11 +5,16 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.zaproxy.clientapi.core.ClientApi;
 import org.zaproxy.clientapi.core.ClientApiException;
 import org.zaproxy.clientapi.core.ClientApiMain;
 
 public class ZapTools {
+
+    private final Logger logger = LogManager.getLogger(ZapTools.class);
 
     private String ZAP_LOCATION = "C:\\Program Files\\OWASP\\Zed Attack Proxy";
     private String SAVE_SESSION_DIRECTORY = "ZAPSessions\\";
@@ -36,10 +41,10 @@ public class ZapTools {
                     break;
                 }
             }
-            System.out.println("ZAP has started successfully.");
+            logger.info("ZAP has started successfully.");
             return true;
         } catch (Exception ex) {
-            System.out.println("ZAP was unable to start.");
+            logger.info("ZAP was unable to start.");
             ex.printStackTrace();
             return false;
         }
@@ -51,17 +56,17 @@ public class ZapTools {
 
     public void startSession(String zapaddr, int zapport) {
         ClientApiMain.main(new String[]{"newSession", "zapaddr=" + zapaddr, "zapport=" + zapport});
-        System.out.println("session started");
-        System.out.println("Session started successfully.");
+        logger.info("session started");
+        logger.info("Session started successfully.");
     }
 
     public void saveSession(ClientApi api, String fileName) {
         try {
             String path = this.SAVE_SESSION_DIRECTORY + fileName + ".session";
             api.core.saveSession(path, "true");
-            System.out.println("Session save successful (" + path + ").");
+            logger.info("Session save successful (" + path + ").");
         } catch (ClientApiException ex) {
-            System.out.println("Error saving session.");
+            logger.info("Error saving session.");
             ex.printStackTrace();
         }
     }
