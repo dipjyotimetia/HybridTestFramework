@@ -26,7 +26,9 @@ ENV PATH $JAVA_HOME/bin:$PATH
 RUN curl -o allure-commandline-${ALLURE_VERSION}.tgz -Ls https://dl.bintray.com/qameta/maven/io/qameta/allure/allure-commandline/${ALLURE_VERSION}/allure-commandline-${ALLURE_VERSION}.tgz && \
     tar -zxvf allure-commandline-${ALLURE_VERSION}.tgz -C /opt/ && ln -s /opt/allure-${ALLURE_VERSION}/bin/allure /usr/bin/allure && allure --version
 
-RUN groupadd -g 1000 jenkins && \
-   useradd -u 1000 -g 1000 -m -s /bin/bash jenkins
+USER root
 
-USER jenkins
+COPY . .
+
+RUN gradle clean
+RUN gradle task e2e

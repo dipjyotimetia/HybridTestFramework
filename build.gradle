@@ -7,7 +7,7 @@ apply plugin: 'io.qameta.allure'
 apply plugin: 'docker-compose'
 
 group 'webui'
-version '1.0-SNAPSHOT'
+version = '1.0'
 
 sourceCompatibility = 1.8
 
@@ -33,11 +33,11 @@ buildscript {
 allure {
     autoconfigure = true
     aspectjweaver = true
-    version = '2.13.1'
+    version = '2.13.3'
     useTestNG {
-        version = '2.13.1'
+        version = '2.13.3'
     }
-    downloadLink = 'https://dl.bintray.com/qameta/maven/io/qameta/allure/allure-commandline/2.13.1/allure-commandline-2.13.1.zip'
+    downloadLink = 'https://dl.bintray.com/qameta/maven/io/qameta/allure/allure-commandline/2.13.3/allure-commandline-2.13.3.zip'
 }
 
 sourceSets {

@@ -32,7 +32,7 @@ abstract class DriverOptions {
     protected ChromeOptions getChromeOptions(String perf) {
         setChromeSystemProperty();
         ChromeOptions options = new ChromeOptions();
-        //options.setHeadless(true);
+        options.setHeadless(true);
         options.addArguments("--ignore-certificate-errors");
         options.addArguments("--disable-popup-blocking");
         //options.addArguments(setChromeOWASP());
@@ -63,7 +63,7 @@ abstract class DriverOptions {
         profile.setAcceptUntrustedCertificates(true);
         profile.setAssumeUntrustedCertificateIssuer(false);
         profile.setPreference("network.proxy.type", 0);
-        //options.setHeadless(true);
+        options.setHeadless(true);
         options.setCapability(FirefoxDriver.PROFILE, profile);
         //setFirefoxOWASP(options);
         logger.info("Firefox options added");

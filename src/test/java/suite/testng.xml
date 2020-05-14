@@ -9,10 +9,10 @@
     <parameter name="grid" value="NO"/>
     <parameter name="perf" value="NO"/>
 
-    <test name="E2E Tests Web Firefox">
+    <test name="E2E Tests Web">
         <parameter name="browser" value="chrome"/>
         <classes>
-            <class name="com.TestDefinitionLayer.TC001_Test"/>
+            <class name="com.TestDefinitionLayer.TC002_GURU_Login"/>
         </classes>
     </test>
 
