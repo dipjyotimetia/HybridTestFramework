@@ -13,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 public class ZapApi {
 
     private static final String ZAP_ADDRESS = "localhost";
-    private static final int ZAP_PORT = 8888;
+    private static final int ZAP_PORT = 8082;
     private static final String ZAP_API_KEY = "d025okl6n7blpkrr0iee6c7hsi";
 
     private String target;
