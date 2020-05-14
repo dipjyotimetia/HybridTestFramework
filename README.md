@@ -2,7 +2,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/2ffd9c97725645c2bcda860988dc0baf)](https://www.codacy.com/manual/dipjyotimetia/HybridTestFramewrok?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dipjyotimetia/HybridTestFramewrok&amp;utm_campaign=Badge_Grade)
 
 ![HybridTestFramework](https://github.com/dipjyotimetia/HybridTestFramewrok/workflows/HybridTestFramework/badge.svg)
-### Full fledged WEB, API and Security testing framework using selenium and OWASP proxy
+### Full fledged WEB, API and Security testing framework using selenium and ZAP OWASP proxy
 
 ### Supported Platforms  
 This framework supports webui automation across a variety of browsers like Chrome, Firefox, IE. Each platform is supported by one or more "drivers".
