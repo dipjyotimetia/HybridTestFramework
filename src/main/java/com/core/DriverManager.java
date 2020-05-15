@@ -26,7 +26,7 @@ package com.core;
 
 import org.openqa.selenium.WebDriver;
 
-public class DriverManager extends WebDriverController {
+public class DriverManager<T> extends WebDriverController<T> {
 
     public WebDriver driverThread;
 

@@ -47,13 +47,25 @@ public class ApiActions<T> {
      * @param params jsonObject
      * @return returns httpRequest
      */
-    private RequestSpecification httpRequest(JSONObject params) {
+    private RequestSpecification httpRequestPost(JSONObject params) {
         return RestAssured
                 .given()
                 .with()
                 .contentType(ContentType.JSON)
                 .with()
                 .body(params.toJSONString());
+    }
+
+    /**
+     * http request with parameter
+     *
+     * @return returns httpRequest
+     */
+    private RequestSpecification httpRequest() {
+        return RestAssured
+                .given()
+                .with()
+                .contentType(ContentType.JSON);
     }
 
     /**
@@ -96,7 +108,7 @@ public class ApiActions<T> {
      * @return response
      */
     protected Response httpPost(JSONObject params, String path) {
-        return httpRequest(params).request(Method.POST, path);
+        return httpRequestPost(params).request(Method.POST, path);
     }
 
     /**
@@ -105,19 +117,18 @@ public class ApiActions<T> {
      * @param path endpoint
      * @return response
      */
-    protected Response httpGet(JSONObject params, String path) {
-        return httpRequest(params).request(Method.GET, path);
+    protected Response httpGet(String path) {
+        return httpRequest().request(Method.GET, path);
     }
 
     /**
      * http delete
      *
-     * @param params params
      * @param path   endpoint
      * @return response
      */
-    protected Response httpDelete(JSONObject params, String path) {
-        return httpRequest(params).request(Method.DELETE, path);
+    protected Response httpDelete(String path) {
+        return httpRequest().request(Method.DELETE, path);
     }
 
     /**
@@ -128,7 +139,7 @@ public class ApiActions<T> {
      * @return response
      */
     protected Response httpPut(JSONObject params, String path) {
-        return httpRequest(params).request(Method.PUT, path);
+        return httpRequestPost(params).request(Method.PUT, path);
     }
 
     /**

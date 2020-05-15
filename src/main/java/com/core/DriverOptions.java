@@ -26,6 +26,7 @@ package com.core;
 import org.apache.commons.lang.SystemUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -56,15 +57,19 @@ abstract class DriverOptions<T> {
         setChromeSystemProperty();
         ChromeOptions options = new ChromeOptions();
         options.setHeadless(true);
+        options.setPageLoadStrategy(PageLoadStrategy.NONE);
         options.addArguments("--ignore-certificate-errors");
         options.addArguments("--disable-popup-blocking");
         //options.addArguments(setChromeOWASP());
         //options.addArguments("--incognito");
-        //options.addArguments("enable-automation");
-        //options.addArguments("--no-sandbox");
         //options.addArguments("--disable-extensions");
         //options.addArguments("--dns-prefetch-disable");
-        //options.addArguments("--disable-gpu");
+        options.addArguments("enable-automation");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-infobars");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--disable-browser-side-navigation");
+        options.addArguments("--disable-gpu");
         if (perf.equalsIgnoreCase("YES")) {
             options.merge(WebDriverController.performance());
         }

@@ -32,7 +32,7 @@ import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.Test;
 
-public class TC002_GURU_Login extends UserActions {
+public class TC002_GURU_Login<T> extends UserActions<T> {
     @Link("https://jira.cloud.com")
     @Feature("Api1")
     @Feature("Api2")

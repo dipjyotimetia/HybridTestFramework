@@ -117,7 +117,7 @@ dependencies {
     compile group: 'com.microsoft.sqlserver', name: 'mssql-jdbc', version: '8.2.2.jre8'
     compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.28'
     compile group: 'com.github.javafaker', name: 'javafaker', version: '1.0.2'
-    compile group: 'io.rest-assured', name: 'rest-assured', version: '4.3.0'
+    compile group: 'io.rest-assured', name: 'rest-assured', version: '4.2.0'
     compile group: 'io.rest-assured', name: 'json-schema-validator', version: '4.3.0'
     compile group: 'org.json', name: 'json', version: '20190722'
     compile group: 'com.konghq', name: 'unirest-java', version: '3.7.02'
