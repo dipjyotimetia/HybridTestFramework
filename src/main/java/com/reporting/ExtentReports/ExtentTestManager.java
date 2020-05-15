@@ -30,6 +30,7 @@ import com.aventstack.extentreports.ExtentTest;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("unchecked")
 public class ExtentTestManager {
     static Map extentTestMap = new HashMap();
     static ExtentReports extent = ExtentManager.getReporter();

@@ -27,6 +27,7 @@ package com.reporting.ExtentReports;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 
+@SuppressWarnings("deprecation")
 public class ExtentManager {
     private static ExtentReports extent;
 

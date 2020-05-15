@@ -88,6 +88,7 @@ dockerCompose {
 }
 
 dependencies {
+    compile group: 'software.amazon.awssdk', name: 'aws-sdk-java', version: '2.13.16'
     compile group: 'io.netty', name: 'netty-all', version: '4.1.44.Final'
     compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.0.0-alpha-5'
     compile group: 'org.seleniumhq.selenium', name: 'selenium-server', version: '4.0.0-alpha-2'
@@ -116,7 +117,8 @@ dependencies {
     compile group: 'com.microsoft.sqlserver', name: 'mssql-jdbc', version: '8.2.2.jre8'
     compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.28'
     compile group: 'com.github.javafaker', name: 'javafaker', version: '1.0.2'
-    compile group: 'io.rest-assured', name: 'rest-assured', version: '4.3.0'
+    compile group: 'io.rest-assured', name: 'rest-assured', version: '4.2.0'
+    compile group: 'io.rest-assured', name: 'json-schema-validator', version: '4.3.0'
     compile group: 'org.json', name: 'json', version: '20190722'
     compile group: 'com.konghq', name: 'unirest-java', version: '3.7.02'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.13.2'
