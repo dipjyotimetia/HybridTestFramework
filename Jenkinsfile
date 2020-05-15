@@ -3,28 +3,20 @@ pipeline {
     stages {
           stage('Build') {
             steps {
-                bat 'gradle clean'
-            }
-          }
-
-          stage('SonarQube analysis') {
-            steps {
-              withSonarQubeEnv('My SonarQube Server') {
-                 bat 'gradle sonarqube'
-              }
+                sh 'gradle clean'
             }
           }
 
           stage('End to End Test'){
             steps {
-                bat 'gradle E2E -Pdownload=NO -Pcloud=YES'
+                sh 'gradle task E2E'
             }
           }
     }
 
     post {
       always {
-           bat 'gradle allureReport'
+           sh 'gradle allureReport'
               script {
                   allure([
                       includeProperties: false,
