@@ -80,6 +80,11 @@ public class UserActions<T> extends DriverManager<T> {
         driverThread.manage().timeouts().pageLoadTimeout(5, TimeUnit.SECONDS);
     }
 
+    /**
+     * Fluent Wait
+     * @param element element
+     * @param timeout timeout
+     */
     private void fluentWait(WebElement element, int timeout) {
         try {
             Wait wait = new FluentWait(driverThread)
@@ -93,16 +98,29 @@ public class UserActions<T> extends DriverManager<T> {
         }
     }
 
+    /**
+     * Loading
+     * @param loadingElement loadingElement
+     */
     private void loading(WebElement loadingElement) {
         Awaitility.await("Wait for new user to load").atMost(5, TimeUnit.SECONDS)
                 .until(loadingElement::getText, not("loading..."));
     }
 
+    /**
+     * Loading complete
+     * @param loadingElement loading Element
+     */
     private void loadingComplete(WebElement loadingElement) {
         Awaitility.await("Wait for new user to load").atMost(5, TimeUnit.SECONDS)
                 .until(loadingElement::getText, is("Complete!"));
     }
 
+    /**
+     * Select by value
+     * @param element element
+     * @param value value
+     */
     protected void selectByValue(WebElement element, String value) {
         try {
             fluentWait(element, 10);
