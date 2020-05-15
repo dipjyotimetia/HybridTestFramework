@@ -6,13 +6,14 @@
         <listener class-name="com.reporting.Listeners.AnnotationTransformer"/>
     </listeners>
 
-    <parameter name="grid" value="NO"/>
+    <parameter name="grid" value="NO"/> <!-- NO or LOCAL or CLOUD-->
     <parameter name="perf" value="NO"/>
 
-    <test name="E2E Tests Web">
+    <test name="E2E Tests for Web and Api">
         <parameter name="browser" value="chrome"/>
         <classes>
-            <class name="com.TestDefinitionLayer.TC002_SecurityTest"/>
+            <class name="com.TestDefinitionLayer.TC003_ApiTest"/>
+<!--            <class name="com.TestDefinitionLayer.TC002_GURU_Login"/>-->
         </classes>
     </test>
 

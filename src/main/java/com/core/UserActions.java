@@ -58,7 +58,7 @@ import java.util.stream.Collectors;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
-public class UserActions extends DriverManager {
+public class UserActions<T> extends DriverManager<T> {
     private final Logger logger = LogManager.getLogger(UserActions.class);
 
     @FindBy(xpath = "//a")

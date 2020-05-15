@@ -29,6 +29,7 @@ import net.lightbody.bmp.core.har.Har;
 import net.lightbody.bmp.proxy.CaptureType;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -40,13 +41,18 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.devicefarm.DeviceFarmClient;
+import software.amazon.awssdk.services.devicefarm.model.CreateTestGridUrlRequest;
+import software.amazon.awssdk.services.devicefarm.model.CreateTestGridUrlResponse;
 
 import java.io.FileOutputStream;
 import java.net.Inet4Address;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 
-public class WebDriverController extends DriverOptions {
+public class WebDriverController<T> extends DriverOptions<T> {
 
     private static final Logger logger = LogManager.getLogger(WebDriverController.class);
 
@@ -74,28 +80,30 @@ public class WebDriverController extends DriverOptions {
      * @param perf    perf
      */
     private synchronized void initDriver(String browser, String grid, String perf) {
+        DeviceFarmClient client = DeviceFarmClient.builder().region(Region.AP_SOUTHEAST_2).build();
+        CreateTestGridUrlRequest request = CreateTestGridUrlRequest.builder()
+                .expiresInSeconds(300)
+                .projectArn("arn:aws:devicefarm:ap-southeast-2:111122223333:testgrid-project:1111111-2222-3333-4444-555555555")
+                .build();
         try {
             switch (browser) {
                 case "firefox":
                     _driverThread = new FirefoxDriver(getFirefoxOptions());
                     _driverThread.manage().window().maximize();
-                    if (grid.equalsIgnoreCase("YES")) {
-                        _driverThread = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), getFirefoxOptions());
-                    }
+                    remoteWebDriver(browser, grid, perf, client, request);
+                    logger.info("Initiating firefox driver");
                     break;
                 case "chrome":
                     _driverThread = new ChromeDriver(getChromeOptions(perf));
                     _driverThread.manage().window().maximize();
-                    if (grid.equalsIgnoreCase("YES")) {
-                        _driverThread = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), getChromeOptions(perf));
-                    }
+                    remoteWebDriver(browser, grid, perf, client, request);
+                    logger.info("Initiating chrome driver");
                     break;
                 case "ie":
                     _driverThread = new InternetExplorerDriver(getIEOptions());
                     _driverThread.manage().window().maximize();
-                    if (grid.equalsIgnoreCase("YES")) {
-                        _driverThread = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), getIEOptions());
-                    }
+                    remoteWebDriver(browser, grid, perf, client, request);
+                    logger.info("Initiating ie driver");
                     break;
                 default:
                     logger.info("Please provide valid browser details");
@@ -106,11 +114,40 @@ public class WebDriverController extends DriverOptions {
     }
 
     /**
+     * Remote driver capabilities
+     *
+     * @param browser browser
+     * @param grid    grid client
+     * @param perf    performance
+     * @param client  cloud
+     * @param request request
+     * @throws MalformedURLException exception
+     */
+    private void remoteWebDriver(String browser, String grid, String perf, DeviceFarmClient client, CreateTestGridUrlRequest request) throws MalformedURLException {
+        switch (grid) {
+            case "CLOUD":
+                logger.info("Make sure that the environment variables AWS_ACCESS_KEY and AWS_SECRET_KEY are configured in your testing environment.");
+                CreateTestGridUrlResponse response = client.createTestGridUrl(request);
+                _driverThread = new RemoteWebDriver(new URL(response.url()), addCloudCapabilities(browser));
+                logger.info("Grid client setup for AWS Device farm successful");
+                break;
+            case "LOCAL":
+                logger.info("Make sure that docker containers are up and running");
+                _driverThread = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), (Capabilities) getBrowserOptions(browser, perf));
+                logger.info("Grid client setup for Docker containers successful");
+                break;
+            default:
+                logger.info("Running in local computer");
+        }
+    }
+
+    /**
      * Added performance capability
      *
      * @return capabilities
      */
     protected static DesiredCapabilities performance() {
+        logger.info("Make sure that Docker containers are up and running");
         proxy = new BrowserMobProxyServer();
         proxy.start();
         Proxy seleniumProxy = ClientUtil.createSeleniumProxy(proxy);
@@ -128,6 +165,38 @@ public class WebDriverController extends DriverOptions {
         return caps;
     }
 
+    /**
+     * Cloud capabilities
+     *
+     * @param browser browser
+     */
+    protected static DesiredCapabilities addCloudCapabilities(String browser) {
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        switch (browser) {
+            case "chrome":
+                capabilities.setCapability("browserName", "chrome");
+                capabilities.setCapability("browserVersion", "81");
+                capabilities.setCapability("platform", "windows");
+                logger.info("Adding aws chrome capabilities");
+                break;
+            case "firefox":
+                capabilities.setCapability("browserName", "firefox");
+                capabilities.setCapability("browserVersion", "75");
+                capabilities.setCapability("platform", "windows");
+                logger.info("Adding aws firefox capabilities");
+                break;
+            case "ie":
+                capabilities.setCapability("browserName", "internet explorer");
+                capabilities.setCapability("browserVersion", "11");
+                capabilities.setCapability("platform", "windows");
+                logger.info("Adding aws firefox capabilities");
+                break;
+            default:
+                logger.info("No supported browser provided");
+        }
+        return capabilities;
+    }
+
     @AfterClass
     public void tearDown() {
         try {
@@ -135,6 +204,7 @@ public class WebDriverController extends DriverOptions {
             FileOutputStream fos = new FileOutputStream("Reports\\performance\\" + testName + ".har");
             har.writeTo(fos);
             proxy.stop();
+            logger.info("Performance reports will be available at Report folder");
         } catch (Exception e) {
             logger.info("Performance tests not included");
         } finally {

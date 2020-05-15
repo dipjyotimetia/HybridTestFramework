@@ -26,6 +26,7 @@ package com.core;
 import org.apache.commons.lang.SystemUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -43,7 +44,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-abstract class DriverOptions {
+abstract class DriverOptions<T> {
     private final Logger logger = LogManager.getLogger(DriverOptions.class);
 
     /**
@@ -56,15 +57,19 @@ abstract class DriverOptions {
         setChromeSystemProperty();
         ChromeOptions options = new ChromeOptions();
         options.setHeadless(true);
+        options.setPageLoadStrategy(PageLoadStrategy.NONE);
         options.addArguments("--ignore-certificate-errors");
         options.addArguments("--disable-popup-blocking");
         //options.addArguments(setChromeOWASP());
         //options.addArguments("--incognito");
-        //options.addArguments("enable-automation");
-        //options.addArguments("--no-sandbox");
         //options.addArguments("--disable-extensions");
         //options.addArguments("--dns-prefetch-disable");
-        //options.addArguments("--disable-gpu");
+        options.addArguments("enable-automation");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-infobars");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--disable-browser-side-navigation");
+        options.addArguments("--disable-gpu");
         if (perf.equalsIgnoreCase("YES")) {
             options.merge(WebDriverController.performance());
         }
@@ -108,6 +113,18 @@ abstract class DriverOptions {
         options.setCapability(InternetExplorerDriver.REQUIRE_WINDOW_FOCUS, true);
         logger.info("IE options added");
         return options;
+    }
+
+    protected T getBrowserOptions(String browser, String perf) {
+        switch (browser) {
+            case "firefox":
+                return (T) getFirefoxOptions();
+            case "chrome":
+                return (T) getChromeOptions(perf);
+            case "ie":
+                return (T) getIEOptions();
+        }
+        return null;
     }
 
     /**
@@ -180,6 +197,7 @@ abstract class DriverOptions {
 
     /**
      * Set firefox profile
+     *
      * @param capabilities capability
      * @return capability
      */
