@@ -174,14 +174,20 @@ public class WebDriverController<T> extends DriverOptions<T> {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         switch (browser) {
             case "chrome":
-                capabilities.setCapability("browserName", "Chrome");
+                capabilities.setCapability("browserName", "chrome");
                 capabilities.setCapability("browserVersion", "81");
                 capabilities.setCapability("platform", "windows");
                 logger.info("Adding aws chrome capabilities");
                 break;
             case "firefox":
-                capabilities.setCapability("browserName", "Firefox");
+                capabilities.setCapability("browserName", "firefox");
                 capabilities.setCapability("browserVersion", "75");
+                capabilities.setCapability("platform", "windows");
+                logger.info("Adding aws firefox capabilities");
+                break;
+            case "ie":
+                capabilities.setCapability("browserName", "internet explorer");
+                capabilities.setCapability("browserVersion", "11");
                 capabilities.setCapability("platform", "windows");
                 logger.info("Adding aws firefox capabilities");
                 break;
