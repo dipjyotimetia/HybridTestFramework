@@ -32,30 +32,7 @@ import java.util.Properties;
 
 public enum Property {
 
-    BUILD("build"),
-    JIRA_URL("jiraURL"),
-    RESULT_VERSION("resultVersion"),
-    ZAPI_CYCLE_REGEX("zapiCycleRegEx"),
-    JQL_QUERY("jqlQuery"),
-    JIRA_USERNAME("jiraUsername"),
-    JIRA_PASSWORD("jiraPassword"),
-    SUT_NAME("sutName"),
-    SUT_VERSION("sutVersion"),
-    JIRA_RESULT_FIELD_NAME("jiraResultFieldName"),
-    JIRA_RESULT_TRANSITION("jiraResultTransition"),
-    PROXY("proxy"),
-    MAX_RETRY_COUNT("maxRetryCount"),
-    Android(""),
-    iOS(""),
-    Simulator(""),
-    Emulator(""),
-    baseURI("baseURI"),
-    tokenURI("tokenURI"),
-    userName("username"),
-    passWord("password"),
-    serverIp("serverIp"),
-    clientUser("clientUser"),
-    clientPassword("clientPassword");
+    BUILD("build");
 
     private static Properties properties = null;
     private String value;
