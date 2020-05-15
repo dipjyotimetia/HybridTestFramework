@@ -43,7 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-abstract class DriverOptions {
+abstract class DriverOptions<T> {
     private final Logger logger = LogManager.getLogger(DriverOptions.class);
 
     /**
@@ -108,6 +108,18 @@ abstract class DriverOptions {
         options.setCapability(InternetExplorerDriver.REQUIRE_WINDOW_FOCUS, true);
         logger.info("IE options added");
         return options;
+    }
+
+    protected T getBrowserOptions(String browser, String perf) {
+        switch (browser) {
+            case "firefox":
+                return (T) getFirefoxOptions();
+            case "chrome":
+                return (T) getChromeOptions(perf);
+            case "ie":
+                return (T) getIEOptions();
+        }
+        return null;
     }
 
     /**
@@ -180,6 +192,7 @@ abstract class DriverOptions {
 
     /**
      * Set firefox profile
+     *
      * @param capabilities capability
      * @return capability
      */
