@@ -115,6 +115,12 @@ abstract class DriverOptions<T> {
         return options;
     }
 
+    /**
+     * Get Browser options
+     * @param browser browser
+     * @param perf perf
+     * @return browserOption
+     */
     protected T getBrowserOptions(String browser, String perf) {
         switch (browser) {
             case "firefox":
@@ -123,8 +129,9 @@ abstract class DriverOptions<T> {
                 return (T) getChromeOptions(perf);
             case "ie":
                 return (T) getIEOptions();
+            default:
+                return (T) "";
         }
-        return null;
     }
 
     /**
@@ -198,10 +205,9 @@ abstract class DriverOptions<T> {
     /**
      * Set firefox profile
      *
-     * @param capabilities capability
      * @return capability
      */
-    private DesiredCapabilities fireFoxProfile(DesiredCapabilities capabilities) {
+    private DesiredCapabilities fireFoxProfile() {
         ProfilesIni allProfiles = new ProfilesIni();
         FirefoxProfile myProfile = allProfiles.getProfile("WebDriver");
         if (myProfile == null) {
@@ -214,9 +220,7 @@ abstract class DriverOptions<T> {
         myProfile.setAcceptUntrustedCertificates(true);
         myProfile.setAssumeUntrustedCertificateIssuer(true);
         myProfile.setPreference("webdriver.load.strategy", "unstable");
-        if (capabilities == null) {
-            capabilities = new DesiredCapabilities();
-        }
+        DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability(FirefoxDriver.PROFILE, myProfile);
         return capabilities;
     }
