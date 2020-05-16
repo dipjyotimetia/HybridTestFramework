@@ -37,7 +37,7 @@ This framework supports WebUi automation across a variety of browsers like Chrom
 ```shell script
 $ git clone 
 $ cd 
-$ import project from intelij as a gradle project
+$ import project from intellij as a gradle project
 $ gradle clean
 $ gradle build
 $ gradle task E2E
