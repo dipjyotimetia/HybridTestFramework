@@ -115,6 +115,12 @@ abstract class DriverOptions<T> {
         return options;
     }
 
+    /**
+     * Get Browser options
+     * @param browser browser
+     * @param perf perf
+     * @return browserOption
+     */
     protected T getBrowserOptions(String browser, String perf) {
         switch (browser) {
             case "firefox":
