@@ -82,6 +82,7 @@ public class UserActions<T> extends DriverManager<T> {
 
     /**
      * Fluent Wait
+     *
      * @param element element
      * @param timeout timeout
      */
@@ -100,6 +101,7 @@ public class UserActions<T> extends DriverManager<T> {
 
     /**
      * Loading
+     *
      * @param loadingElement loadingElement
      */
     private void loading(WebElement loadingElement) {
@@ -109,6 +111,7 @@ public class UserActions<T> extends DriverManager<T> {
 
     /**
      * Loading complete
+     *
      * @param loadingElement loading Element
      */
     private void loadingComplete(WebElement loadingElement) {
@@ -118,8 +121,9 @@ public class UserActions<T> extends DriverManager<T> {
 
     /**
      * Select by value
+     *
      * @param element element
-     * @param value value
+     * @param value   value
      */
     protected void selectByValue(WebElement element, String value) {
         try {
@@ -131,6 +135,12 @@ public class UserActions<T> extends DriverManager<T> {
         }
     }
 
+    /**
+     * Select By index
+     *
+     * @param element element
+     * @param value   value
+     */
     protected void selectByIndex(WebElement element, int value) {
         try {
             fluentWait(element, 10);
@@ -141,6 +151,11 @@ public class UserActions<T> extends DriverManager<T> {
         }
     }
 
+    /**
+     * Mouse over
+     *
+     * @param element element
+     */
     protected void mouseOver(WebElement element) {
         fluentWait(element, 10);
         Actions action = new Actions(driverThread);
@@ -149,12 +164,22 @@ public class UserActions<T> extends DriverManager<T> {
         action.perform();
     }
 
-
+    /**
+     * Click
+     *
+     * @param element click on element
+     */
     protected void click(WebElement element) {
         fluentWait(element, 10);
         element.click();
     }
 
+    /**
+     * Enter
+     *
+     * @param element element
+     * @param value   value
+     */
     protected void enter(WebElement element, String value) {
         fluentWait(element, 10);
         element.sendKeys(value);
@@ -345,6 +370,9 @@ public class UserActions<T> extends DriverManager<T> {
         }
     }
 
+    /**
+     * Wait jquery angular
+     */
     public void waitJQueryAngular() {
         waitUntilJQueryReady();
         waitUntilAngularReady();
@@ -396,7 +424,6 @@ public class UserActions<T> extends DriverManager<T> {
         WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
         element.click();
     }
-
 
     /**
      * Get data from csv
@@ -500,13 +527,12 @@ public class UserActions<T> extends DriverManager<T> {
         }
     }
 
-
     /**
      * Rename csv file
      *
      * @param source sourceFile
      * @param dest   destinationFile
-     * @return
+     * @return boolean
      */
     private boolean RenameCsvFile(String source, String dest) {
         boolean b = false;
@@ -598,6 +624,9 @@ public class UserActions<T> extends DriverManager<T> {
         file.delete();
     }
 
+    /**
+     * System date format
+     */
     private void SystemDateFormat() {
         try {
             DateFormat date = new SimpleDateFormat("yyyy.MM.dd_hh.mm");
@@ -671,22 +700,38 @@ public class UserActions<T> extends DriverManager<T> {
         return resultValue;
     }
 
-    protected String generateRandomFirstName() {
-        String name = faker.name().firstName();
-        logger.info("FirstName: " + name);
-        return name;
-    }
-
-    protected String generateRandomLastName() {
-        String name = faker.name().lastName();
-        logger.info("LastName: " + name);
-        return name;
-    }
-
-    protected String generateRandomUserName() {
-        String name = RandomStringUtils.randomAlphabetic(6);
-        logger.info("Username: " + name);
-        return name;
+    /**
+     * Generate random Data
+     *
+     * @param dataType randomType
+     * @return value
+     */
+    protected String generateRandomData(String dataType) {
+        String value = null;
+        switch (dataType) {
+            case "FirstName":
+                value = "testauto" + faker.name().firstName();
+                logger.info("FirstName: " + value);
+                break;
+            case "LastName":
+                value = faker.name().lastName();
+                logger.info("LastName: " + value);
+                break;
+            case "UserName":
+                value = RandomStringUtils.randomAlphabetic(6);
+                logger.info("Username: " + value);
+                break;
+            case "Email":
+                value = "testauto" + faker.internet().emailAddress();
+                logger.info("EmailAddress: " + value);
+            case "Mobile":
+                value = "0" + RandomStringUtils.randomNumeric(9);
+                logger.info("MobileNo: " + value);
+            default:
+                logger.info("Random type not found");
+                break;
+        }
+        return value;
     }
 
     /**
@@ -722,6 +767,12 @@ public class UserActions<T> extends DriverManager<T> {
         return mobNo;
     }
 
+    /**
+     * Visibility of element located
+     *
+     * @param locator locator
+     * @return condition
+     */
     public ExpectedCondition<WebElement> visibilityOfElementLocated(final By locator) {
         return new ExpectedCondition<WebElement>() {
             public WebElement apply(WebDriver driver) {
@@ -734,31 +785,155 @@ public class UserActions<T> extends DriverManager<T> {
         };
     }
 
-    protected Boolean isDisplayed(WebElement element) {
-        return element.isDisplayed();
+    /**
+     * Get mobile element
+     *
+     * @param webElement webElement
+     * @param elementBy  typeOf element
+     * @return element
+     * @throws Exception exception
+     */
+    private List<WebElement> getWebElements(String webElement, WebElementBy elementBy) throws Exception {
+        List<WebElement> element = new ArrayList<>();
+        switch (elementBy) {
+            case XPATH:
+                element = driverThread.findElements(By.xpath(webElement));
+                break;
+            case ID:
+                element = driverThread.findElements(By.id(webElement));
+                break;
+            case NAME:
+                element = driverThread.findElements(By.name(webElement));
+                break;
+            case CSS:
+                element = driverThread.findElements(By.cssSelector(webElement));
+                break;
+            case CLASS:
+                element = driverThread.findElements(By.className(webElement));
+                break;
+            default:
+                logger.info("Element type not found");
+                break;
+        }
+        if (element == null) {
+            logger.error("Web element not found");
+            throw new Exception(webElement + "not found");
+        }
+        return element;
     }
 
-    protected Boolean isEnabled(WebElement element) {
-        return element.isEnabled();
+    /**
+     * Get mobile element
+     *
+     * @param webElement webElement
+     * @param elementBy  typeOf element
+     * @return element
+     * @throws Exception exception
+     */
+    private WebElement getWebElement(String webElement, WebElementBy elementBy) throws Exception {
+        WebElement element = null;
+        switch (elementBy) {
+            case XPATH:
+                element = driverThread.findElement(By.xpath(webElement));
+                break;
+            case ID:
+                element = driverThread.findElement(By.id(webElement));
+                break;
+            case NAME:
+                element = driverThread.findElement(By.name(webElement));
+                break;
+            case CSS:
+                element = driverThread.findElement(By.cssSelector(webElement));
+                break;
+            case CLASS:
+                element = driverThread.findElement(By.className(webElement));
+                break;
+            default:
+                logger.info("Element type not found");
+                break;
+        }
+        if (element == null) {
+            logger.error("Web element not found");
+            throw new Exception(webElement + "not found");
+        }
+        return element;
     }
 
-    protected Boolean isSelected(WebElement element) {
-        return element.isSelected();
+    /**
+     * Is Exists
+     *
+     * @param element webElement
+     * @return boolean
+     */
+    protected boolean isExist(List<WebElement> element) {
+        if (element.size() != 0) {
+            logger.info(element + ": element is exists");
+            return true;
+        }
+        return false;
     }
 
+    public enum WebElementBy {
+        XPATH, ID, NAME, CLASS, CSS
+    }
+
+    /**
+     * isElement displayed
+     *
+     * @param element     element
+     * @param displayType displayType
+     * @return boolean
+     */
+    protected Boolean isElementDisplayed(WebElement element, DisplayType displayType) {
+        boolean returnValue = false;
+        switch (displayType) {
+            case IS_ENABLED:
+                returnValue = element.isEnabled();
+                break;
+            case IS_SELECTED:
+                returnValue = element.isSelected();
+                break;
+            case IS_DISPLAYED:
+                returnValue = element.isDisplayed();
+                break;
+            default:
+                logger.info("Element display type not available");
+        }
+        return returnValue;
+    }
+
+    public enum DisplayType {
+        IS_ENABLED, IS_SELECTED, IS_DISPLAYED
+    }
+
+    /**
+     * Mouseover
+     *
+     * @param ele1 element1
+     * @param ele2 element2
+     */
     protected void mouseOver(WebElement ele1, WebElement ele2) {
         Actions actions = new Actions(driverThread);
         actions.moveToElement(ele1).pause(Duration.ofMillis(500)).click(ele2).build().perform();
     }
 
+    /**
+     * SwitchToTab
+     */
     protected void switchToTab() {
         driverThread.switchTo().newWindow(WindowType.TAB);
     }
 
+    /**
+     * SwitchToWindow
+     */
     protected void switchToWindow() {
         driverThread.switchTo().newWindow(WindowType.WINDOW);
     }
 
+    /**
+     * SwitchToNewWindow
+     */
     protected void switchToNewWindow() {
         String parentWindow = driverThread.getWindowHandle();
         Set<String> handles = driverThread.getWindowHandles();
