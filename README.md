@@ -5,14 +5,15 @@
 ### Full fledged WEB, API and Security testing framework using selenium and ZAP OWASP proxy
 
 ### Supported Platforms  
-This framework supports webui automation across a variety of browsers like Chrome, Firefox, IE. Each platform is supported by one or more "drivers".
+This framework supports WebUi automation across a variety of browsers like Chrome, Firefox, IE. Each platform is supported by one or more "drivers".
 
 ### Capabilities
 * Cross browser support
-* Running tests in docker containers
+* Running tests in docker containers selenium grid
+* Running tests in AWS DeviceFarm selenium grid
 * Running tests in selenium server in docker containers
 * Security testing using OWASP, running in docker container
-* Api testing support(Coming soon...)
+* Api testing support using RestAssured
 * Database testing support(Coming Soon...)   
 * Can send logs to ElasticSearch for kibana dashboard
     
