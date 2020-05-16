@@ -23,52 +23,66 @@ SOFTWARE.
  */
 package com.reporting.AWS;
 
-import com.amazonaws.AmazonServiceException;
-import com.amazonaws.SdkClientException;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.transfer.MultipleFileUpload;
-import com.amazonaws.services.s3.transfer.TransferManager;
-import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.testng.annotations.Test;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.*;
 
 import java.io.File;
 
 public class UploadReport {
     private final Logger logger = LogManager.getLogger(UploadReport.class);
 
-    @Test
-    public void UploadToS3() throws Exception {
-        String bucketName = "";
-        String keyName = "Reports";
-        String filePath = "build/reports/allure-report";
+    String bucketName = "";
+    String key = "Reports";
+    String filePath = "build/reports/allure-report";
+    Region region = Region.AP_SOUTHEAST_2;
+    S3Client s3Client = S3Client.builder().region(region).build();
+
+    public void createBucket() {
 
         try {
-            BasicAWSCredentials awsCreds = new BasicAWSCredentials("/", "/");
-            AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
-                    .withRegion(Regions.AP_SOUTHEAST_2)
-                    .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
-                    .build();
-            s3Client.deleteObject(bucketName, keyName);
-
-            TransferManager tm = TransferManagerBuilder.standard()
-                    .withS3Client(s3Client)
-                    .build();
-
-            MultipleFileUpload upload = tm.uploadDirectory(bucketName, keyName, new File(filePath), true);
-            logger.info("Object upload started");
-
-            upload.waitForCompletion();
-            logger.info("Object upload complete");
-        } catch (AmazonServiceException e) {
-            logger.error("Amazon Service Exception", e);
-        } catch (SdkClientException e) {
-            logger.error("SDK client Exception", e);
+            s3Client.createBucket(CreateBucketRequest
+                    .builder()
+                    .bucket(bucketName)
+                    .createBucketConfiguration(
+                            CreateBucketConfiguration.builder()
+                                    .locationConstraint(region.id())
+                                    .build())
+                    .build());
+            logger.info(bucketName);
+        } catch (S3Exception e) {
+            logger.error(e.awsErrorDetails().errorMessage());
+            System.exit(1);
         }
+    }
+
+    public void deleteBucket(String bucket) {
+        DeleteBucketRequest deleteBucketRequest = DeleteBucketRequest.builder().bucket(bucket).build();
+        s3Client.deleteBucket(deleteBucketRequest);
+    }
+
+    private void multipartUpload(String bucketName) {
+        CreateMultipartUploadRequest createMultipartUploadRequest = CreateMultipartUploadRequest.builder()
+                .bucket(bucketName).key(key)
+                .build();
+        CreateMultipartUploadResponse response = s3Client.createMultipartUpload(createMultipartUploadRequest);
+        String uploadId = response.uploadId();
+        logger.info(uploadId);
+
+        UploadPartRequest uploadPartRequest1 = UploadPartRequest.builder().bucket(bucketName).key(key)
+                .uploadId(uploadId)
+                .partNumber(1).build();
+        String etag1 = s3Client.uploadPart(uploadPartRequest1, RequestBody.fromFile(new File(filePath))).eTag();
+        CompletedPart part1 = CompletedPart.builder().partNumber(1).eTag(etag1).build();
+
+        CompletedMultipartUpload completedMultipartUpload = CompletedMultipartUpload.builder().parts(part1).build();
+        CompleteMultipartUploadRequest completeMultipartUploadRequest =
+                CompleteMultipartUploadRequest.builder().bucket(bucketName).key(key).uploadId(uploadId)
+                        .multipartUpload(completedMultipartUpload).build();
+        s3Client.completeMultipartUpload(completeMultipartUploadRequest);
+        logger.info("Object upload complete");
     }
 }
