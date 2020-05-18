@@ -14,6 +14,8 @@ This framework supports WebUi automation across a variety of browsers like Chrom
 * Running tests in selenium server in docker containers
 * Security testing using OWASP, running in docker container
 * Api testing support using RestAssured
+* Visual regression testing using percy.io
+* Accessibility testing using axe-selenium
 * Database testing support(Coming Soon...)   
 * Can send logs to ElasticSearch for kibana dashboard
     

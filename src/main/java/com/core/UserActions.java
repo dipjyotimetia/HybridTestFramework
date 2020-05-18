@@ -25,6 +25,7 @@ package com.core;
 
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
+import com.deque.axe.AXE;
 import com.github.javafaker.Faker;
 import io.percy.selenium.Percy;
 import org.apache.commons.io.FileUtils;
@@ -37,6 +38,8 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.awaitility.Awaitility;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.*;
@@ -44,6 +47,7 @@ import org.testng.Assert;
 
 import java.io.*;
 import java.lang.reflect.Field;
+import java.net.URL;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -939,6 +943,7 @@ public class UserActions<T> extends DriverManager<T> {
 
     /**
      * Capture screen
+     *
      * @param name screenName
      */
     protected void captureScreen(String name) {
@@ -947,7 +952,8 @@ public class UserActions<T> extends DriverManager<T> {
 
     /**
      * Capture screen
-     * @param name screenName
+     *
+     * @param name  screenName
      * @param width width
      */
     protected void captureScreen(String name, List<Integer> width) {
@@ -956,12 +962,29 @@ public class UserActions<T> extends DriverManager<T> {
 
     /**
      * Capture Screen
-     * @param name screen name
-     * @param width width
+     *
+     * @param name      screen name
+     * @param width     width
      * @param minHeight minimum height
      */
     protected void captureScreen(String name, List<Integer> width, int minHeight) {
         percy.snapshot(name, width, minHeight);
+    }
+
+    /**
+     * Accessibility test
+     * @param scriptUrl url
+     */
+    protected void accessibilityTest(URL scriptUrl) {
+        AXE.inject(driverThread, scriptUrl);
+        JSONObject responseJSON = new AXE.Builder(driverThread, scriptUrl).analyze();
+        JSONArray violations = responseJSON.getJSONArray("violations");
+        if (violations.length() == 0) {
+            Assert.assertTrue(true, "No violations found");
+        } else {
+            AXE.writeResults("path & name of the file you want to save the  report", responseJSON);
+            Assert.fail(AXE.report(violations));
+        }
     }
 
     protected void catchBlock(Exception e) {
