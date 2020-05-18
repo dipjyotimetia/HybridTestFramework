@@ -61,8 +61,6 @@ import static org.hamcrest.Matchers.not;
 public class UserActions<T> extends DriverManager<T> {
     private final Logger logger = LogManager.getLogger(UserActions.class);
 
-    @FindBy(xpath = "//a")
-    private List<WebElement> AllLinks;
     private static final Faker faker = new Faker();
     private static String datetimeabc = null;
     private static int Counter = 0;
