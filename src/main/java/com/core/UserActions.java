@@ -25,7 +25,9 @@ package com.core;
 
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
+import com.deque.axe.AXE;
 import com.github.javafaker.Faker;
+import io.percy.selenium.Percy;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.LogManager;
@@ -36,14 +38,16 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.awaitility.Awaitility;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.*;
 import org.testng.Assert;
 
 import java.io.*;
 import java.lang.reflect.Field;
+import java.net.URL;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -59,20 +63,40 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
 public class UserActions<T> extends DriverManager<T> {
-    private final Logger logger = LogManager.getLogger(UserActions.class);
-
-    @FindBy(xpath = "//a")
-    private List<WebElement> AllLinks;
     private static final Faker faker = new Faker();
     private static String datetimeabc = null;
     private static int Counter = 0;
     private static String abc1 = null;
-    private Dictionary dicttoread = new Hashtable();
     private static String _dbusername = "";
     private static String _dbpassword = "";
     private static String _dburl = "";
     private static WebDriverWait wait;
     private static JavascriptExecutor jsExec;
+    private final Logger logger = LogManager.getLogger(UserActions.class);
+    private final Percy percy = new Percy(driverThread);
+    private Dictionary dicttoread = new Hashtable();
+
+    public static Map<String, String> get(Map<String, String> formParams) {
+        return formParams
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getValue() != null)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    /**
+     * sleep
+     *
+     * @param seconds time
+     */
+    private static void sleep(Integer seconds) {
+        long secondsLong = (long) seconds;
+        try {
+            Thread.sleep(secondsLong);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
     protected void navigate(String url) {
         SystemDateFormat();
@@ -232,7 +256,7 @@ public class UserActions<T> extends DriverManager<T> {
      * @param elements elements
      */
     public void getAllValues(List<WebElement> elements) {
-        elements.forEach(e -> System.out.println(e));
+        elements.forEach(e -> logger.info(e));
     }
 
     /**
@@ -253,14 +277,6 @@ public class UserActions<T> extends DriverManager<T> {
      */
     public List<String> getAllLinks(List<WebElement> elements) {
         return elements.stream().map(ele -> ele.getText().trim()).collect(Collectors.toList());
-    }
-
-    public static Map<String, String> get(Map<String, String> formParams) {
-        return formParams
-                .entrySet()
-                .stream()
-                .filter(entry -> entry.getValue() != null)
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     /**
@@ -376,20 +392,6 @@ public class UserActions<T> extends DriverManager<T> {
     public void waitJQueryAngular() {
         waitUntilJQueryReady();
         waitUntilAngularReady();
-    }
-
-    /**
-     * sleep
-     *
-     * @param seconds time
-     */
-    private static void sleep(Integer seconds) {
-        long secondsLong = (long) seconds;
-        try {
-            Thread.sleep(secondsLong);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -873,10 +875,6 @@ public class UserActions<T> extends DriverManager<T> {
         return false;
     }
 
-    public enum WebElementBy {
-        XPATH, ID, NAME, CLASS, CSS
-    }
-
     /**
      * isElement displayed
      *
@@ -900,10 +898,6 @@ public class UserActions<T> extends DriverManager<T> {
                 logger.info("Element display type not available");
         }
         return returnValue;
-    }
-
-    public enum DisplayType {
-        IS_ENABLED, IS_SELECTED, IS_DISPLAYED
     }
 
     /**
@@ -947,9 +941,63 @@ public class UserActions<T> extends DriverManager<T> {
         }
     }
 
+    /**
+     * Capture screen
+     *
+     * @param name screenName
+     */
+    protected void captureScreen(String name) {
+        percy.snapshot(name);
+    }
+
+    /**
+     * Capture screen
+     *
+     * @param name  screenName
+     * @param width width
+     */
+    protected void captureScreen(String name, List<Integer> width) {
+        percy.snapshot(name, width);
+    }
+
+    /**
+     * Capture Screen
+     *
+     * @param name      screen name
+     * @param width     width
+     * @param minHeight minimum height
+     */
+    protected void captureScreen(String name, List<Integer> width, int minHeight) {
+        percy.snapshot(name, width, minHeight);
+    }
+
+    /**
+     * Accessibility test
+     * @param scriptUrl url
+     */
+    protected void accessibilityTest(URL scriptUrl) {
+        AXE.inject(driverThread, scriptUrl);
+        JSONObject responseJSON = new AXE.Builder(driverThread, scriptUrl).analyze();
+        JSONArray violations = responseJSON.getJSONArray("violations");
+        if (violations.length() == 0) {
+            Assert.assertTrue(true, "No violations found");
+        } else {
+            AXE.writeResults("path & name of the file you want to save the  report", responseJSON);
+            Assert.fail(AXE.report(violations));
+        }
+    }
+
     protected void catchBlock(Exception e) {
         Counter = 0;
         logger.error("Error Description", e);
         Assert.fail("TestCase Failed", e);
+    }
+
+    public enum WebElementBy {
+        XPATH, ID, NAME, CLASS, CSS
+    }
+
+    public enum DisplayType {
+        IS_ENABLED, IS_SELECTED, IS_DISPLAYED
     }
 }
