@@ -13,6 +13,7 @@
         <parameter name="browser" value="chrome"/>
         <classes>
             <class name="com.TestDefinitionLayer.TC003_ApiTest"/>
+            <class name="com.TestDefinitionLayer.TC004_OpenBankTest"/>
 <!--            <class name="com.TestDefinitionLayer.TC002_GURU_Login"/>-->
         </classes>
     </test>
