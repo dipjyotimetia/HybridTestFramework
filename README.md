@@ -5,7 +5,7 @@
 ### Full fledged WEB, API and Security testing framework using selenium and ZAP OWASP proxy
 
 ### Supported Platforms  
-This framework supports WebUi automation across a variety of browsers like Chrome, Firefox, IE. Each platform is supported by one or more "drivers".
+This framework supports WebUi automation across a variety of browsers like Chrome, Firefox, IE, no only limited to this but extended to test rest api, security and visual testing.
 
 ### Capabilities
 * Cross browser support
