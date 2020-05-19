@@ -1,6 +1,7 @@
 package com.TestDefinitionLayer;
 
 import com.core.ApiActions;
+import io.qameta.allure.*;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.apache.log4j.LogManager;
@@ -8,10 +9,16 @@ import org.apache.log4j.Logger;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+@Link("https://jira.cloud.com")
+@Feature("Api1")
+@Feature("Api2")
 public class TC004_OpenBankTest<T> extends ApiActions<T> {
     private static final Logger logger = LogManager.getLogger(TC004_OpenBankTest.class);
 
-    @Test
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(description = "E2E test for all users")
+    @Description("Get All Beers")
+    @Story("Test Bank")
     public void AllUsers() {
         RestAssured.baseURI = "https://reqres.in";
 
@@ -24,7 +31,10 @@ public class TC004_OpenBankTest<T> extends ApiActions<T> {
         log("Avatar: " + avatar);
     }
 
-    @Test
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(description = "E2E test for all banks")
+    @Description("Get All Banks")
+    @Story("Test Beers")
     public void AllBanks() {
         RestAssured.baseURI = "https://apisandbox.openbankproject.com";
 
@@ -39,7 +49,10 @@ public class TC004_OpenBankTest<T> extends ApiActions<T> {
         log("fullName: " + fullName);
     }
 
-    @Test
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(description = "E2E test for all bank branches")
+    @Description("Get All Branches")
+    @Story("Test Beers")
     public void AllBranches() {
         RestAssured.baseURI = "https://apis-bank-test.apigee.net";
 

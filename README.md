@@ -43,7 +43,8 @@ $ import project from intellij as a gradle project
 $ gradle clean
 $ gradle build
 $ gradle task E2E
-$ allureServe
+$ gradle allureReport
+$ gradle allureServe
 ```
 
 ### Write your first user journey

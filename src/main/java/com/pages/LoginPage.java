@@ -24,6 +24,7 @@ SOFTWARE.
 package com.pages;
 
 import com.core.UserActions;
+import io.qameta.allure.Step;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebElement;
@@ -63,6 +64,7 @@ public class LoginPage extends UserActions {
         PageFactory.initElements(driverThread, this);
     }
 
+    @Step("Login step for test:{0}, for method: {method}")
     public void Login(String tcName) {
         try {
             navigate("http://automationpractice.com/index.php");

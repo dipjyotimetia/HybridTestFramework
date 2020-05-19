@@ -24,6 +24,7 @@ SOFTWARE.
 package com.pages;
 
 import com.core.UserActions;
+import io.qameta.allure.Step;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebElement;
@@ -63,6 +64,7 @@ public class LoginPageGuru extends UserActions {
         }
     }
 
+    @Step("Verify password step for test:{0}, for method: {method}")
     public void verifyPassword(String tcName) {
         try {
             navigate("http://live.guru99.com/index.php/customer/account/login/");
