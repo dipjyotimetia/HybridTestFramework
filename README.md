@@ -60,6 +60,11 @@ Create new class and name as the TC00*_E2E_TEST-***
 $ docker-compose up -d
 ```
 
+### Complete infrastructure creation for local run
+```shell script
+$ $ docker-compose -f docker-compose-infra up -d
+```
+
 ### Spawns four additional node-chrome/firefox instances linked to the hub
 ```shell script
 $ docker-compose scale chrome=5
