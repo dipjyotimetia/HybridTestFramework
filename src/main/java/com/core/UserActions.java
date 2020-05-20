@@ -460,7 +460,7 @@ public class UserActions<T> extends DriverManager<T> {
      * @return filtered elements list
      */
     public long filterElement(List<WebElement> elements) {
-        return elements.stream().filter(item -> item.isDisplayed()).count();
+        return elements.stream().filter(WebElement::isDisplayed).count();
     }
 
     /**
@@ -470,7 +470,7 @@ public class UserActions<T> extends DriverManager<T> {
      * @param value    value
      */
     public void enterVisibleElement(List<WebElement> elements, String value) {
-        elements.stream().filter(item -> item.isDisplayed()).findFirst().get().sendKeys(value);
+        elements.stream().filter(WebElement::isDisplayed).findFirst().get().sendKeys(value);
     }
 
     /**
@@ -479,7 +479,7 @@ public class UserActions<T> extends DriverManager<T> {
      * @param elements elements
      */
     public void getAllValues(List<WebElement> elements) {
-        elements.forEach(e -> logger.info(e));
+        elements.forEach(logger::info);
     }
 
     /**
@@ -490,7 +490,7 @@ public class UserActions<T> extends DriverManager<T> {
      */
     public void clickElementByValue(List<WebElement> elements, String value) {
         elements.stream().filter(element -> element.getAttribute("value").matches(value))
-                .forEach(element -> element.click());
+                .forEach(WebElement::click);
     }
 
     /**
@@ -544,9 +544,12 @@ public class UserActions<T> extends DriverManager<T> {
         WebDriverWait wait = new WebDriverWait(driverThread, Duration.ofSeconds(15));
         JavascriptExecutor jsExec = (JavascriptExecutor) driverThread;
         String angularReadyScript = "return angular.element(document).injector().get('$http').pendingRequests.length === 0";
-        ExpectedCondition<Boolean> angularLoad = driver -> Boolean.valueOf(((JavascriptExecutor) driver)
-                .executeScript(angularReadyScript).toString());
-        boolean angularReady = Boolean.valueOf(jsExec.executeScript(angularReadyScript).toString());
+        ExpectedCondition<Boolean> angularLoad = driver -> {
+            assert driver != null;
+            return Boolean.valueOf(((JavascriptExecutor) driver)
+                    .executeScript(angularReadyScript).toString());
+        };
+        boolean angularReady = Boolean.parseBoolean(jsExec.executeScript(angularReadyScript).toString());
         if (!angularReady) {
             System.out.println("ANGULAR is NOT Ready!");
             wait.until(angularLoad);
@@ -578,7 +581,7 @@ public class UserActions<T> extends DriverManager<T> {
     private void waitUntilJQueryReady() {
         JavascriptExecutor jsExec = (JavascriptExecutor) driverThread;
         Boolean jQueryDefined = (Boolean) jsExec.executeScript("return typeof jQuery != 'undefined'");
-        if (jQueryDefined == true) {
+        if (jQueryDefined) {
             sleep(20);
             waitForJQueryLoad();
             waitUntilJSReady();
@@ -657,7 +660,6 @@ public class UserActions<T> extends DriverManager<T> {
      * @param t_fieldName    filedName
      * @param t_instance     instance
      * @return fieldValue
-     * @throws Exception Exception
      */
     protected String getData(String t_testcaseName, String t_fieldName, int t_instance) {
         try {
@@ -682,10 +684,8 @@ public class UserActions<T> extends DriverManager<T> {
             if (flag == 1) {
                 logger.info("Not data present for testname" + t_testcaseName);
             }
-        } catch (FileNotFoundException ef) {
+        } catch (IOException ef) {
             logger.error(ef);
-        } catch (IOException e) {
-            logger.error(e);
         }
         return (String) dicttoread.get(t_fieldName);
     }
@@ -786,9 +786,8 @@ public class UserActions<T> extends DriverManager<T> {
      * Capture image
      *
      * @param p_testcaseName testcaseName
-     * @throws IOException Exception
      */
-    protected void captureImage(String p_testcaseName) throws IOException {
+    protected void captureImage(String p_testcaseName) {
         try {
             if (!SystemUtils.IS_OS_LINUX || !SystemUtils.IS_OS_MAC_OSX) {
                 Counter = Counter + 1;
@@ -904,8 +903,7 @@ public class UserActions<T> extends DriverManager<T> {
                         int columnCount = rsmd.getColumnCount();
                         for (int i = 1; i <= columnCount; i++) {
                             try {
-                                if (rs.getString(i).toString() == null && i != columnCount) {
-                                }
+                                rs.getString(i);
                             } catch (NullPointerException e) {
                                 resultValue = "NULL";
                                 logger.info("column name:" + columnName + "|" + "Column value:" + resultValue);
