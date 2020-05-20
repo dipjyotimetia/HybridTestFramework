@@ -68,6 +68,7 @@ public class LoginPageGuru extends UserActions {
     public void verifyPassword(String tcName) {
         try {
             navigate("http://live.guru99.com/index.php/customer/account/login/");
+            waitForElement(email);
             captureScreen("Home Page");
             enter(email, "testnow@gmail.com");
             enter(password, "12345");
