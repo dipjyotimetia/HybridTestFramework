@@ -21,16 +21,16 @@ pipeline {
 
     post {
       always {
-           sh 'gradle allureReport'
-              script {
-                  allure([
-                      includeProperties: false,
-                      jdk: '',
-                      properties: [],
-                      reportBuildPolicy: 'ALWAYS',
-                      results: [[path: 'build/allure-results']]
-                  ])
-              }
+           //sh 'gradle allureReport'
+           //   script {
+           //       allure([
+           //           includeProperties: false,
+           //          jdk: '',
+           //          properties: [],
+           //          reportBuildPolicy: 'ALWAYS',
+           //        results: [[path: 'build/allure-results']]
+           //   ])
+           //}
                 publishHTML target: [
                     allowMissing: false,
                     alwaysLinkToLastBuild: true,

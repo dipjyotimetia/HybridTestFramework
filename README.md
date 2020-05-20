@@ -60,6 +60,11 @@ Create new class and name as the TC00*_E2E_TEST-***
 $ docker-compose up -d
 ```
 
+### Complete infrastructure creation for local run
+```shell script
+$ $ docker-compose -f docker-compose-infra up -d
+```
+
 ### Spawns four additional node-chrome/firefox instances linked to the hub
 ```shell script
 $ docker-compose scale chrome=5
@@ -74,11 +79,17 @@ Search and modify the below line in .idea workspace.xml
 </component>
 ```
 ## Screens
-### LogsView
-<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/logs.png" width="600">  
+### Framework Structure
+<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/projectStructure.png" width="800">  
 
 ### JenkinsExecution
-<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/develop/Docs/screens/jenkinsExecution.png" width="600">
+<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/jenkinsExecution.png" width="800">  
 
 ### Allure Reporting
-<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/develop/Docs/screens/allureReport.png" width="600">
+<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/allureReport.png" width="800">  
+
+### Gradle Report
+<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/gradleReport.png" width="800">  
+
+### LogsView
+<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/logs.png" width="800">    
