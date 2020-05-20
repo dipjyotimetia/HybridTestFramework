@@ -205,7 +205,7 @@ abstract class DriverOptions<T> {
      */
     private List<String> setChromeOWASP() {
         List<String> chromeOWASP = new ArrayList<>();
-        chromeOWASP.add("--proxy-server=http://localhost:8888");
+        chromeOWASP.add("--proxy-server=http://localhost:8082");
         chromeOWASP.add("--ignore-certificate-errors");
         logger.info("OWASP for chrome added");
         return chromeOWASP;
@@ -220,7 +220,7 @@ abstract class DriverOptions<T> {
     private FirefoxOptions setFirefoxOWASP(FirefoxOptions options) {
         options.addPreference("network.proxy.type", 1);
         options.addPreference("network.proxy.http", "localhost");
-        options.addPreference("network.proxy.http_port", 8888);
+        options.addPreference("network.proxy.http_port", 8082);
         options.addPreference("network.proxy.share_proxy_settings", true);
         options.addPreference("network.proxy.no_proxies_on", "");
         logger.info("OWASP for firefox added");
