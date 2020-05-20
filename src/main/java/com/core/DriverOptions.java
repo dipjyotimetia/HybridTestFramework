@@ -28,6 +28,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
@@ -78,7 +79,7 @@ abstract class DriverOptions<T> {
     }
 
     /**
-     * get firefox options
+     * Get firefox options
      *
      * @return options
      */
@@ -99,7 +100,7 @@ abstract class DriverOptions<T> {
     }
 
     /**
-     * get IE options
+     * Get IE options
      *
      * @return options
      */
@@ -116,9 +117,27 @@ abstract class DriverOptions<T> {
     }
 
     /**
+     * Get Edge Options
+     *
+     * @return options
+     */
+    protected EdgeOptions getEdgeOptions() {
+        System.setProperty("webdriver.edge.driver", "Driver/win/msedgedriver.exe");
+        ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.setHeadless(true);
+        chromeOptions.setPageLoadStrategy(PageLoadStrategy.NONE);
+        chromeOptions.addArguments("--ignore-certificate-errors");
+        chromeOptions.addArguments("--disable-popup-blocking");
+        chromeOptions.setBinary(
+                "C:\\Program Files (x86)\\Microsoft\\Edge Dev\\Application\\msedge.exe");
+        return new EdgeOptions().merge(chromeOptions);
+    }
+
+    /**
      * Get Browser options
+     *
      * @param browser browser
-     * @param perf perf
+     * @param perf    perf
      * @return browserOption
      */
     protected T getBrowserOptions(String browser, String perf) {
@@ -129,6 +148,8 @@ abstract class DriverOptions<T> {
                 return (T) getChromeOptions(perf);
             case "ie":
                 return (T) getIEOptions();
+            case "edge":
+                return (T) getEdgeOptions();
             default:
                 return (T) "";
         }
@@ -140,8 +161,10 @@ abstract class DriverOptions<T> {
     private void setChromeSystemProperty() {
         if (SystemUtils.IS_OS_WINDOWS) {
             System.setProperty("webdriver.chrome.driver", "Driver/win/chromedriver.exe");
-        } else {
+        } else if (SystemUtils.IS_OS_LINUX) {
             System.setProperty("webdriver.chrome.driver", "Driver/linux/chromedriver");
+        } else if (SystemUtils.IS_OS_MAC_OSX) {
+            System.setProperty("webdriver.chrome.driver", "Driver/mac/chromedriver");
         }
     }
 
@@ -151,8 +174,10 @@ abstract class DriverOptions<T> {
     private void setFirefoxSystemProperty() {
         if (SystemUtils.IS_OS_WINDOWS) {
             System.setProperty("webdriver.gecko.driver", "Driver/win/geckodriver.exe");
-        } else {
+        } else if (SystemUtils.IS_OS_LINUX) {
             System.setProperty("webdriver.gecko.driver", "Driver/linux/geckodriver");
+        } else if (SystemUtils.IS_OS_MAC_OSX) {
+            System.setProperty("webdriver.gecko.driver", "Driver/mac/geckodriver");
         }
     }
 

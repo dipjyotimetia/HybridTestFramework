@@ -33,6 +33,7 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.CapabilityType;
@@ -104,6 +105,12 @@ public class WebDriverController<T> extends DriverOptions<T> {
                     _driverThread.manage().window().maximize();
                     remoteWebDriver(browser, grid, perf, client, request);
                     logger.info("Initiating ie driver");
+                    break;
+                case "edge":
+                    _driverThread = new EdgeDriver(getEdgeOptions());
+                    _driverThread.manage().window().maximize();
+                    remoteWebDriver(browser, grid, perf, client, request);
+                    logger.info("Initiating edge driver");
                     break;
                 default:
                     logger.info("Please provide valid browser details");
