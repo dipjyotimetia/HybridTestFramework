@@ -38,7 +38,7 @@ public class LoginPage extends UserActions {
 
     //Element that wont get changed
     @CacheLookup
-    @FindBy(xpath = "//*[@id=\"header\"]/div[2]/div/div/nav/div[1]/a")
+    @FindBy(css = "#header div.header_user_info a")
     private WebElement signInLink;
 
     @FindBy(xpath = "//*[@id=\"email\"]")
