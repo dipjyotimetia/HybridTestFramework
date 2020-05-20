@@ -11,7 +11,7 @@ jobs:
 
     runs-on: ubuntu-latest
     container:
-      image: Dockerfile
+      image: dipjyotimetia/hybridtestframework:2.0
 
     steps:
     - uses: actions/checkout@v2
