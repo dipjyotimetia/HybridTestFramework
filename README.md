@@ -79,6 +79,9 @@ Search and modify the below line in .idea workspace.xml
 </component>
 ```
 ## Screens
+### Framework Structure
+<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/projectStructure.png" width="800">  
+
 ### JenkinsExecution
 <img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/jenkinsExecution.png" width="800">  
 
@@ -89,4 +92,4 @@ Search and modify the below line in .idea workspace.xml
 <img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/gradleReport.png" width="800">  
 
 ### LogsView
-<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/logs.png" width="800">  
+<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/logs.png" width="800">    
