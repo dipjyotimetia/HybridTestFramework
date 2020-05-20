@@ -697,7 +697,6 @@ public class UserActions<T> extends DriverManager<T> {
      * @param t_field        filedName
      * @param t_value        value
      * @param t_instance     instance
-     * @throws IOException IOException
      */
     protected void writeData(String t_testcasename, String t_field, String t_value, int t_instance) {
         try {
