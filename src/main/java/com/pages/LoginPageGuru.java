@@ -73,7 +73,7 @@ public class LoginPageGuru extends UserActions {
             enter(email, "testnow@gmail.com");
             enter(password, "12345");
             click(loginButton);
-            //captureImage(tcName);
+            captureImage(tcName);
             String actualValue = "Please enter 6 or more characters without leading or trailing spaces.";
             compareText(actualValue, getText(errorText));
             captureScreen("Error Page");
@@ -81,7 +81,7 @@ public class LoginPageGuru extends UserActions {
             enter(password, "123456");
             click(loginButton);
             captureScreen("Login Page");
-            //captureImage(tcName);
+            captureImage(tcName);
         } catch (Exception e) {
             logger.error(e);
         }
