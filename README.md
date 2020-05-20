@@ -2,13 +2,13 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/2ffd9c97725645c2bcda860988dc0baf)](https://www.codacy.com/manual/dipjyotimetia/HybridTestFramewrok?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dipjyotimetia/HybridTestFramewrok&amp;utm_campaign=Badge_Grade)
 [![This project is using Percy.io for visual regression testing.](https://percy.io/static/images/percy-badge.svg)](https://percy.io/CypressTest/Selenium)
 ![HybridTestFramework](https://github.com/dipjyotimetia/HybridTestFramewrok/workflows/HybridTestFramework/badge.svg)
-### Full fledged WEB, API and Security testing framework using selenium and ZAP OWASP proxy
+### Full fledged WEB, API and Security testing framework using selenium,ZAP OWASP proxy and rest-assured
 
 ### Supported Platforms  
 This framework supports WebUi automation across a variety of browsers like Chrome, Firefox, IE, no only limited to this but extended to test rest api, security and visual testing.
 
 ### Capabilities
-* Cross browser support
+* Cross browser testing support
 * Running tests in docker containers selenium grid
 * Running tests in AWS DeviceFarm selenium grid
 * Running tests in selenium server in docker containers
@@ -16,11 +16,12 @@ This framework supports WebUi automation across a variety of browsers like Chrom
 * Api testing support using RestAssured
 * Visual regression testing using percy.io
 * Accessibility testing using axe-selenium
-* Database testing support(Coming Soon...)   
-* Can send logs to ElasticSearch for kibana dashboard
+* Can send logs to ElasticSearch for kibana dashboard visualization
+* Database testing support(Coming Soon...)
+* Kubernetes support(Coming soon...)   
     
 ### Setup & Tools
-* Install InteliJ Community Edition
+* Install intellij
   https://www.jetbrains.com/idea/download/
 * Install docker desktop 
   https://www.docker.com/products/docker-desktop    
@@ -80,7 +81,7 @@ Search and modify the below line in .idea workspace.xml
 ```
 ## Screens
 ### Framework Structure
-<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/projectStructure.png" width="800">  
+<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/projectStructure.png" width="500">  
 
 ### JenkinsExecution
 <img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/jenkinsExecution.png" width="800">  
