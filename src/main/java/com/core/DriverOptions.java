@@ -57,7 +57,7 @@ abstract class DriverOptions<T> {
     protected ChromeOptions getChromeOptions(String perf) {
         setChromeSystemProperty();
         ChromeOptions options = new ChromeOptions();
-        options.setHeadless(true);
+        options.setHeadless(SystemUtils.IS_OS_LINUX);
         options.setPageLoadStrategy(PageLoadStrategy.NONE);
         options.addArguments("--ignore-certificate-errors");
         options.addArguments("--disable-popup-blocking");
