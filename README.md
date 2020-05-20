@@ -80,13 +80,13 @@ Search and modify the below line in .idea workspace.xml
 ```
 ## Screens
 ### JenkinsExecution
-<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/develop/Docs/screens/jenkinsExecution.png" width="800">  
+<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/jenkinsExecution.png" width="800">  
 
 ### Allure Reporting
-<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/develop/Docs/screens/allureReport.png" width="800">  
+<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/allureReport.png" width="800">  
 
 ### Gradle Report
-<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/develop/Docs/screens/gradleReport.png" width="800">  
+<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/gradleReport.png" width="800">  
 
 ### LogsView
 <img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/logs.png" width="800">  
