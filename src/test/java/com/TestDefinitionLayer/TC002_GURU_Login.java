@@ -49,7 +49,7 @@ public class TC002_GURU_Login<T> extends UserActions<T> {
         try {
             //loginPage.login();
             loginPage.verifyPassword(tName);
-            CreateImageDoc(tName);
+            //CreateImageDoc(tName);
         } catch (Exception e) {
             catchBlock(e);
         } finally {
