@@ -10,8 +10,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-#    container:
-#      image: dipjyotimetia/hybridtestframework:2.0
+    container:
+      image: dipjyotimetia/hybridtestframework:2.0
 
     steps:
     - uses: actions/checkout@v2
