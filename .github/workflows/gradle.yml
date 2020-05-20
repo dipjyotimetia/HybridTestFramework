@@ -10,6 +10,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    container:
+      image: docker.pkg.github.com/dipjyotimetia/hybridtestframewrok/hybridtestframework:1.0
 
     steps:
     - uses: actions/checkout@v2
