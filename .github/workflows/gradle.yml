@@ -11,13 +11,4 @@ jobs:
 
     runs-on: ubuntu-latest
     container:
-      image: dipjyotimetia/hybridtestframework:1.0
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Build with Gradle
-      run: ./gradlew build
-    - name: End to End Test
-      run: ./gradlew task e2e
+      image: Dockerfile
