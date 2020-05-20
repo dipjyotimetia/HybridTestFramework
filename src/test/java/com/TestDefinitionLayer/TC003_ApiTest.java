@@ -25,6 +25,7 @@ SOFTWARE.
 package com.TestDefinitionLayer;
 
 import com.core.ApiActions;
+import io.qameta.allure.*;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.apache.log4j.LogManager;
@@ -32,10 +33,16 @@ import org.apache.log4j.Logger;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+@Link("https://jira.cloud.com")
+@Feature("Api1")
+@Feature("Api2")
 public class TC003_ApiTest<T> extends ApiActions<T> {
     private static final Logger logger = LogManager.getLogger(TC003_ApiTest.class);
 
-    @Test
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(description = "E2E test for all beers")
+    @Description("Get All Beers")
+    @Story("Test Beers")
     public void AllBeers() {
         RestAssured.baseURI = "https://api.punkapi.com";
 
@@ -48,7 +55,10 @@ public class TC003_ApiTest<T> extends ApiActions<T> {
         log("Description: " + description);
     }
 
-    @Test
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(description = "E2E test for random beers")
+    @Description("Get Random Beers")
+    @Story("Test Beers")
     public void RandomBeers() {
         RestAssured.baseURI = "https://api.punkapi.com";
 
@@ -61,7 +71,10 @@ public class TC003_ApiTest<T> extends ApiActions<T> {
         log("Description: " + description);
     }
 
-    @Test
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(description = "E2E test for single beers")
+    @Description("Get SIngle Beers")
+    @Story("Test Beers")
     public void SingleBeer() {
         RestAssured.baseURI = "https://api.punkapi.com";
 
@@ -74,7 +87,10 @@ public class TC003_ApiTest<T> extends ApiActions<T> {
         log("Description: " + description);
     }
 
-    @Test
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(description = "E2E test for brewery")
+    @Description("Get All Brewery")
+    @Story("Test Beers")
     public void Brewery() {
         RestAssured.baseURI = "https://api.openbrewerydb.org";
 

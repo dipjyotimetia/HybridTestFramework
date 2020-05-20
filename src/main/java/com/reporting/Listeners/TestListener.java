@@ -29,6 +29,7 @@ import com.core.DriverManager;
 import com.logging.TestStatus;
 import com.reporting.ExtentReports.ExtentManager;
 import com.reporting.ExtentReports.ExtentTestManager;
+import io.qameta.allure.Attachment;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.OutputType;
@@ -78,15 +79,17 @@ public class TestListener extends DriverManager implements ITestListener {
     @Override
     public void onTestFailure(ITestResult iTestResult) {
         try {
-//        this.sendStatus(iTestResult,"FAIL");
-            logger.error("I am in onTestFailure method " + getTestMethodName(iTestResult) + " failed");
-            Object testClass = iTestResult.getInstance();
-            this.driverThread = ((DriverManager) testClass).getDriver();
-            String base64Screenshot = "data:image/png;base64," + ((TakesScreenshot) driverThread).
-                    getScreenshotAs(OutputType.BASE64);
-            ExtentTestManager.getTest().log(Status.FAIL,"Test Failed", MediaEntityBuilder.createScreenCaptureFromBase64String(base64Screenshot).build());
-        }
-        catch (Exception e){
+            if (this.driverThread != null) {
+                //        this.sendStatus(iTestResult,"FAIL");
+                saveScreenshotPNG();
+                logger.error("I am in onTestFailure method " + getTestMethodName(iTestResult) + " failed");
+                Object testClass = iTestResult.getInstance();
+                this.driverThread = ((DriverManager) testClass).getDriver();
+                String base64Screenshot = "data:image/png;base64," + ((TakesScreenshot) driverThread).
+                        getScreenshotAs(OutputType.BASE64);
+                ExtentTestManager.getTest().log(Status.FAIL, "Test Failed", MediaEntityBuilder.createScreenCaptureFromBase64String(base64Screenshot).build());
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -103,6 +106,15 @@ public class TestListener extends DriverManager implements ITestListener {
         logger.error("Test failed but it is in defined success ratio " + getTestMethodName(iTestResult));
     }
 
+    @Attachment(value = "Page screenshot", type = "image/png")
+    public byte[] saveScreenshotPNG() {
+        return ((TakesScreenshot) this.driverThread).getScreenshotAs(OutputType.BYTES);
+    }
+
+    @Attachment(value = "0", type = "text/plain")
+    public static String saveTextLogs(String message) {
+        return message;
+    }
 //    private void sendStatus(ITestResult iTestResult, String status){
 //        this.testStatus.setTestClass(iTestResult.getTestClass().getName());
 //        this.testStatus.setDescription(iTestResult.getMethod().getDescription());

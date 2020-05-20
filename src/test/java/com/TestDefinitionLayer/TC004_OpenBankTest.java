@@ -1,6 +1,30 @@
+/*
+MIT License
+
+Copyright (c) 2020 Dipjyoti Metia
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+ */
 package com.TestDefinitionLayer;
 
 import com.core.ApiActions;
+import io.qameta.allure.*;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.apache.log4j.LogManager;
@@ -8,10 +32,16 @@ import org.apache.log4j.Logger;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+@Link("https://jira.cloud.com")
+@Feature("Api1")
+@Feature("Api2")
 public class TC004_OpenBankTest<T> extends ApiActions<T> {
     private static final Logger logger = LogManager.getLogger(TC004_OpenBankTest.class);
 
-    @Test
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(description = "E2E test for all users")
+    @Description("Get All Beers")
+    @Story("Test Bank")
     public void AllUsers() {
         RestAssured.baseURI = "https://reqres.in";
 
@@ -24,7 +54,10 @@ public class TC004_OpenBankTest<T> extends ApiActions<T> {
         log("Avatar: " + avatar);
     }
 
-    @Test
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(description = "E2E test for all banks")
+    @Description("Get All Banks")
+    @Story("Test Beers")
     public void AllBanks() {
         RestAssured.baseURI = "https://apisandbox.openbankproject.com";
 
@@ -39,7 +72,10 @@ public class TC004_OpenBankTest<T> extends ApiActions<T> {
         log("fullName: " + fullName);
     }
 
-    @Test
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(description = "E2E test for all bank branches")
+    @Description("Get All Branches")
+    @Story("Test Beers")
     public void AllBranches() {
         RestAssured.baseURI = "https://apis-bank-test.apigee.net";
 

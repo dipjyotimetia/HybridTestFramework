@@ -43,7 +43,8 @@ $ import project from intellij as a gradle project
 $ gradle clean
 $ gradle build
 $ gradle task E2E
-$ allureServe
+$ gradle allureReport
+$ gradle allureServe
 ```
 
 ### Write your first user journey
@@ -72,3 +73,12 @@ Search and modify the below line in .idea workspace.xml
     <property name="dynamic.classpath" value="true" />
 </component>
 ```
+## Screens
+### LogsView
+<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/logs.png" width="600">  
+
+### JenkinsExecution
+<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/develop/Docs/screens/jenkinsExecution.png" width="600">
+
+### Allure Reporting
+<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/develop/Docs/screens/allureReport.png" width="600">

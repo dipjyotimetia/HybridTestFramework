@@ -1,5 +1,10 @@
+String hybridtestframework = 'dipjyotimetia/hybridtestframework:2.0'
 pipeline {
-    agent  { label 'win-local' }
+    agent {
+      docker {
+          image "${hybridtestframework}"
+        }
+     }
     stages {
           stage('Build') {
             steps {

@@ -42,6 +42,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.Color;
 import org.openqa.selenium.support.ui.*;
 import org.testng.Assert;
 
@@ -101,7 +102,7 @@ public class UserActions<T> extends DriverManager<T> {
     protected void navigate(String url) {
         SystemDateFormat();
         driverThread.navigate().to(url);
-        driverThread.manage().timeouts().pageLoadTimeout(5, TimeUnit.SECONDS);
+        driverThread.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
     }
 
     /**
@@ -112,7 +113,7 @@ public class UserActions<T> extends DriverManager<T> {
      */
     private void fluentWait(WebElement element, int timeout) {
         try {
-            Wait wait = new FluentWait(driverThread)
+            Wait wait = new FluentWait<>(driverThread)
                     .withTimeout(Duration.ofSeconds(timeout))
                     .pollingEvery(Duration.ofMillis(5))
                     .ignoring(NoSuchElementException.class);
@@ -121,6 +122,153 @@ public class UserActions<T> extends DriverManager<T> {
         } catch (ElementNotVisibleException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * WaitForElement
+     *
+     * @param element element
+     */
+    protected void waitForElement(WebElement element) {
+        new WebDriverWait(driverThread, Duration.ofSeconds(30)).until(ExpectedConditions.visibilityOf(element));
+    }
+
+    /**
+     * WaitForAlert
+     */
+    protected void waitForAlert() {
+        new WebDriverWait(driverThread, Duration.ofSeconds(30)).until(ExpectedConditions.alertIsPresent());
+    }
+
+    /**
+     * WaitForElements
+     *
+     * @param elements elements
+     */
+    protected void waitForElements(List<WebElement> elements) {
+        new WebDriverWait(driverThread, Duration.ofSeconds(30)).until(ExpectedConditions.visibilityOfAllElements(elements));
+    }
+
+    /**
+     * WaitForElementToInvisible
+     *
+     * @param elements elements
+     */
+    protected void waitForElementToInvisible(WebElement elements) {
+        new WebDriverWait(driverThread, Duration.ofSeconds(30)).until(ExpectedConditions.invisibilityOf(elements));
+    }
+
+    /**
+     * WaitForElementsToInvisible
+     *
+     * @param elements elements
+     */
+    protected void waitForElementsToInvisible(List<WebElement> elements) {
+        new WebDriverWait(driverThread, Duration.ofSeconds(30)).until(ExpectedConditions.invisibilityOfAllElements(elements));
+    }
+
+    /**
+     * Accept alert
+     */
+    protected void acceptAlert() {
+        Alert alert = driverThread.switchTo().alert();
+        alert.accept();
+    }
+
+    /**
+     * Dismiss alert
+     */
+    protected void dismissAlert() {
+        Alert alert = driverThread.switchTo().alert();
+        alert.dismiss();
+    }
+
+    /**
+     * Get Alert Text
+     *
+     * @return alertText
+     */
+    protected String getAlertText() {
+        Alert alert = driverThread.switchTo().alert();
+        return alert.getText();
+    }
+
+    /**
+     * Double Click
+     *
+     * @param element element
+     */
+    protected void doubleClick(WebElement element) {
+        new Actions(driverThread).doubleClick(element).build().perform();
+    }
+
+    /**
+     * Drag and drop
+     *
+     * @param element1 element1
+     * @param element2 element2
+     */
+    protected void dragAndDrop(WebElement element1, WebElement element2) {
+        new Actions(driverThread).dragAndDrop(element1, element2).build().perform();
+    }
+
+    /**
+     * SwitchToFrame
+     *
+     * @param element element
+     */
+    protected void switchToFrame(WebElement element) {
+        driverThread.switchTo().frame(element);
+    }
+
+    /**
+     * SwitchToFrame
+     *
+     * @param index frameIndex
+     */
+    protected void switchToFrame(int index) {
+        driverThread.switchTo().frame(index);
+    }
+
+    /**
+     * SwitchToFrame
+     *
+     * @param frameId frameId
+     */
+    protected void switchToFrame(String frameId) {
+        driverThread.switchTo().frame(frameId);
+    }
+
+    /**
+     * SwitchToParentFrame
+     */
+    protected void switchToParentFrame() {
+        driverThread.switchTo().parentFrame();
+    }
+
+    /**
+     * Switch to default content
+     */
+    protected void switchToDefaultContent() {
+        driverThread.switchTo().defaultContent();
+    }
+
+    /**
+     * GetButtonColor
+     *
+     * @return color
+     */
+    protected Color getButtonColor() {
+        return Color.fromString(driverThread.findElement(By.xpath("")).getCssValue("color"));
+    }
+
+    /**
+     * GetBackgroundColor
+     *
+     * @return color
+     */
+    protected Color getBackgroundColor() {
+        return Color.fromString(driverThread.findElement(By.xpath("")).getCssValue("background-color"));
     }
 
     /**
@@ -141,38 +289,6 @@ public class UserActions<T> extends DriverManager<T> {
     private void loadingComplete(WebElement loadingElement) {
         Awaitility.await("Wait for new user to load").atMost(5, TimeUnit.SECONDS)
                 .until(loadingElement::getText, is("Complete!"));
-    }
-
-    /**
-     * Select by value
-     *
-     * @param element element
-     * @param value   value
-     */
-    protected void selectByValue(WebElement element, String value) {
-        try {
-            fluentWait(element, 10);
-            Select select = new Select(element);
-            select.selectByValue(value);
-        } catch (Exception e) {
-            logger.error(e);
-        }
-    }
-
-    /**
-     * Select By index
-     *
-     * @param element element
-     * @param value   value
-     */
-    protected void selectByIndex(WebElement element, int value) {
-        try {
-            fluentWait(element, 10);
-            Select select = new Select(element);
-            select.selectByIndex(value);
-        } catch (Exception e) {
-            logger.error(e);
-        }
     }
 
     /**
@@ -207,6 +323,112 @@ public class UserActions<T> extends DriverManager<T> {
     protected void enter(WebElement element, String value) {
         fluentWait(element, 10);
         element.sendKeys(value);
+    }
+
+    /**
+     * Select Element
+     *
+     * @param element  element
+     * @param selectBy selectBy
+     * @param t        t
+     */
+    protected void selectElement(WebElement element, SelectBy selectBy, T t) {
+        Select select = new Select(element);
+        switch (selectBy) {
+            case INDEX:
+                select.selectByIndex((Integer) t);
+                break;
+            case VALUE:
+                select.selectByValue((String) t);
+                break;
+            case TEXT:
+                select.selectByVisibleText((String) t);
+                break;
+            default:
+                logger.info("Provided option not found");
+        }
+    }
+
+    /**
+     * IsMultiple
+     *
+     * @param elements elements
+     * @return boolean
+     */
+    protected Boolean isMultiple(WebElement elements) {
+        Select select = new Select(elements);
+        return select.isMultiple();
+    }
+
+    /**
+     * GetAllSelectedOption
+     *
+     * @param elements elements
+     * @return allSelectedOptions
+     */
+    protected List<WebElement> getAllSelectedOption(WebElement elements) {
+        Select select = new Select(elements);
+        return select.getAllSelectedOptions();
+    }
+
+    /**
+     * GetOption
+     *
+     * @param elements elements
+     * @return options
+     */
+    protected List<WebElement> getOptions(WebElement elements) {
+        Select select = new Select(elements);
+        return select.getOptions();
+    }
+
+    /**
+     * GetFirstSelectedOption
+     *
+     * @param elements elements
+     * @return webElement
+     */
+    protected WebElement getFirstSelectedOption(WebElement elements) {
+        Select select = new Select(elements);
+        return select.getFirstSelectedOption();
+    }
+
+    /**
+     * DeselectElement
+     *
+     * @param element  element
+     * @param selectBy selectBy
+     * @param t        t
+     */
+    protected void deselectElement(WebElement element, SelectBy selectBy, T t) {
+        Select select = new Select(element);
+        switch (selectBy) {
+            case INDEX:
+                select.deselectByIndex((Integer) t);
+                break;
+            case VALUE:
+                select.deselectByValue((String) t);
+                break;
+            case TEXT:
+                select.deselectByVisibleText((String) t);
+                break;
+            default:
+                logger.info("Provided option not found");
+        }
+    }
+
+    /**
+     * Deselect ALl
+     *
+     * @param elements elements
+     */
+    protected void deselectAll(WebElement elements) {
+        Select select = new Select(elements);
+        select.deselectAll();
+    }
+
+    enum SelectBy {
+        INDEX, VALUE, TEXT
     }
 
     /**
@@ -973,6 +1195,7 @@ public class UserActions<T> extends DriverManager<T> {
 
     /**
      * Accessibility test
+     *
      * @param scriptUrl url
      */
     protected void accessibilityTest(URL scriptUrl) {
@@ -985,6 +1208,46 @@ public class UserActions<T> extends DriverManager<T> {
             AXE.writeResults("path & name of the file you want to save the  report", responseJSON);
             Assert.fail(AXE.report(violations));
         }
+    }
+
+    /**
+     * Add cookies
+     *
+     * @param key   key
+     * @param value value
+     */
+    protected void addCookie(String key, String value) {
+        driverThread.manage().addCookie(new Cookie(key, value));
+    }
+
+    /**
+     * Delete Cookie
+     *
+     * @param key key
+     */
+    protected void deleteCookie(String key) {
+        driverThread.manage().deleteCookieNamed(key);
+    }
+
+    /**
+     * Delete all cookie
+     *
+     * @param key key
+     */
+    protected void deleteAllCookie(String key) {
+        driverThread.manage().deleteAllCookies();
+    }
+
+    /**
+     * Get Named Cookie
+     *
+     * @param key   key
+     * @param value value
+     */
+    protected void getNamedCookie(String key, String value) {
+        driverThread.manage().addCookie(new Cookie(key, value));
+        Cookie cookie = driverThread.manage().getCookieNamed(key);
+        logger.info(cookie);
     }
 
     protected void catchBlock(Exception e) {

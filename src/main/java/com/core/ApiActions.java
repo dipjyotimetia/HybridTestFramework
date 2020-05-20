@@ -24,6 +24,7 @@ SOFTWARE.
 package com.core;
 
 import io.qameta.allure.Step;
+import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.http.Method;
@@ -50,6 +51,7 @@ public class ApiActions<T> {
     private RequestSpecification httpRequestPost(JSONObject params) {
         return RestAssured
                 .given()
+                .filter(new AllureRestAssured())
                 .with()
                 .contentType(ContentType.JSON)
                 .with()
@@ -64,6 +66,7 @@ public class ApiActions<T> {
     private RequestSpecification httpRequest() {
         return RestAssured
                 .given()
+                .filter(new AllureRestAssured())
                 .with()
                 .contentType(ContentType.JSON);
     }
