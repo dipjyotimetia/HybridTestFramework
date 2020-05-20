@@ -29,6 +29,7 @@ import com.deque.axe.AXE;
 import com.github.javafaker.Faker;
 import io.percy.selenium.Percy;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.SystemUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -789,9 +790,11 @@ public class UserActions<T> extends DriverManager<T> {
      */
     protected void captureImage(String p_testcaseName) throws IOException {
         try {
-            Counter = Counter + 1;
-            File src = ((TakesScreenshot) driverThread).getScreenshotAs(OutputType.FILE);
-            FileUtils.copyFile(src, new File(("ScreensDoc\\" + p_testcaseName + "\\" + datetimeabc + "\\" + Counter + ".png")));
+            if (!SystemUtils.IS_OS_LINUX || !SystemUtils.IS_OS_MAC_OSX) {
+                Counter = Counter + 1;
+                File src = ((TakesScreenshot) driverThread).getScreenshotAs(OutputType.FILE);
+                FileUtils.copyFile(src, new File(("ScreensDoc\\" + p_testcaseName + "\\" + datetimeabc + "\\" + Counter + ".png")));
+            }
         } catch (Exception e) {
             logger.error("Capture screenShot failed", e);
         }
@@ -801,35 +804,35 @@ public class UserActions<T> extends DriverManager<T> {
      * Create image doc
      *
      * @param p_testcaseName1 testcaseName
-     * @throws IOException            IoException
-     * @throws InvalidFormatException invalidFormatException
      */
     protected void CreateImageDoc(String p_testcaseName1) {
-        try (XWPFDocument doc = new XWPFDocument()) {
-            XWPFParagraph p = doc.createParagraph();
-            XWPFRun r = p.createRun();
-            for (int i = 1; i <= Counter; i++) {
-                String path = "ScreensDoc\\" + p_testcaseName1 + "\\" + datetimeabc + "\\" + i + ".png";
-                try (FileInputStream pic = new FileInputStream(path)) {
-                    r.addBreak();
-                    r.addCarriageReturn();
-                    r.addPicture(pic, XWPFDocument.PICTURE_TYPE_PNG, "ScreensDoc\\" + p_testcaseName1 + "\\" +
-                            datetimeabc + "\\" + i + ".png", Units.toEMU(300), Units.toEMU(400));
-                    FileOutputStream out = new FileOutputStream("ScreensDoc\\" + p_testcaseName1 + "\\" + datetimeabc + "\\" + p_testcaseName1 + ".docx");
-                    doc.write(out);
-                    pic.close();
-                    out.close();
-                } catch (IOException io) {
-                    logger.error(io);
+        if (!SystemUtils.IS_OS_LINUX || !SystemUtils.IS_OS_MAC_OSX) {
+            try (XWPFDocument doc = new XWPFDocument()) {
+                XWPFParagraph p = doc.createParagraph();
+                XWPFRun r = p.createRun();
+                for (int i = 1; i <= Counter; i++) {
+                    String path = "ScreensDoc\\" + p_testcaseName1 + "\\" + datetimeabc + "\\" + i + ".png";
+                    try (FileInputStream pic = new FileInputStream(path)) {
+                        r.addBreak();
+                        r.addCarriageReturn();
+                        r.addPicture(pic, XWPFDocument.PICTURE_TYPE_PNG, "ScreensDoc\\" + p_testcaseName1 + "\\" +
+                                datetimeabc + "\\" + i + ".png", Units.toEMU(300), Units.toEMU(400));
+                        FileOutputStream out = new FileOutputStream("ScreensDoc\\" + p_testcaseName1 + "\\" + datetimeabc + "\\" + p_testcaseName1 + ".docx");
+                        doc.write(out);
+                        pic.close();
+                        out.close();
+                    } catch (IOException io) {
+                        logger.error(io);
+                    }
                 }
+                for (int i = 1; i <= Counter; i++) {
+                    File src1 = new File("ScreensDoc\\" + p_testcaseName1 + "\\" + datetimeabc + "\\" + i + ".png");
+                    deleteDir(src1);
+                }
+                Counter = 0;
+            } catch (Exception e) {
+                logger.error(e);
             }
-            for (int i = 1; i <= Counter; i++) {
-                File src1 = new File("ScreensDoc\\" + p_testcaseName1 + "\\" + datetimeabc + "\\" + i + ".png");
-                deleteDir(src1);
-            }
-            Counter = 0;
-        } catch (Exception e) {
-            logger.error(e);
         }
     }
 
