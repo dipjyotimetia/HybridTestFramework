@@ -19,5 +19,7 @@ jobs:
       run: |
         chmod +x ./Driver/linux/InstallChrome.sh
          ./Driver/linux/InstallChrome.sh
-    - name: End to End Test
-      run: gradle task e2e
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew # give permission to Gradle to run the commands
+    - name: Build with Gradle
+      run: ./gradlew task e2e --info # Run our tests using Gradle
