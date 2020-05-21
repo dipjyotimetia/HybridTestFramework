@@ -16,9 +16,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install Google Chrome # Using shell script to install Google Chrome
-        run: |
-          chmod +x ./Driver/linux/InstallChrome.sh
-           ./Driver/linux/InstallChrome.sh
+      run: |
+        chmod +x ./Driver/linux/InstallChrome.sh
+         ./Driver/linux/InstallChrome.sh
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: End to End Test
