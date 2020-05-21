@@ -103,6 +103,7 @@ public class UserActions<T> extends DriverManager<T> {
     protected void navigate(String url) {
         SystemDateFormat();
         driverThread.navigate().to(url);
+        driverThread.manage().window().maximize();
         driverThread.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
     }
 

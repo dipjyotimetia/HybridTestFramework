@@ -49,7 +49,7 @@ import software.amazon.awssdk.services.devicefarm.model.CreateTestGridUrlRespons
 
 import java.io.FileOutputStream;
 import java.net.Inet4Address;
-import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 
 
@@ -87,64 +87,44 @@ public class WebDriverController<T> extends DriverOptions<T> {
                 .projectArn("arn:aws:devicefarm:ap-southeast-2:111122223333:testgrid-project:1111111-2222-3333-4444-555555555")
                 .build();
         try {
-            switch (browser) {
-                case "firefox":
-                    _driverThread = new FirefoxDriver(getFirefoxOptions());
-                    _driverThread.manage().window().maximize();
-                    remoteWebDriver(browser, grid, perf, client, request);
-                    logger.info("Initiating firefox driver");
+            switch (grid) {
+                case "CLOUD":
+                    logger.info("Make sure that the environment variables AWS_ACCESS_KEY and AWS_SECRET_KEY are configured in your testing environment.");
+                    CreateTestGridUrlResponse response = client.createTestGridUrl(request);
+                    _driverThread = new RemoteWebDriver(new URL(response.url()), addCloudCapabilities(browser));
+                    logger.info("Grid client setup for AWS Device farm successful");
                     break;
-                case "chrome":
-                    _driverThread = new ChromeDriver(getChromeOptions(perf));
-                    _driverThread.manage().window().maximize();
-                    remoteWebDriver(browser, grid, perf, client, request);
-                    logger.info("Initiating chrome driver");
+                case "LOCAL":
+                    logger.info("Make sure that docker containers are up and running");
+                    _driverThread = new RemoteWebDriver(URI.create("http://localhost:4444/").toURL(), (Capabilities) getBrowserOptions(browser, perf));
+                    logger.info("Grid client setup for Docker containers successful");
                     break;
-                case "ie":
-                    _driverThread = new InternetExplorerDriver(getIEOptions());
-                    _driverThread.manage().window().maximize();
-                    remoteWebDriver(browser, grid, perf, client, request);
-                    logger.info("Initiating ie driver");
-                    break;
-                case "edge":
-                    _driverThread = new EdgeDriver(getEdgeOptions());
-                    _driverThread.manage().window().maximize();
-                    remoteWebDriver(browser, grid, perf, client, request);
-                    logger.info("Initiating edge driver");
-                    break;
+                case "NO":
+                    switch (browser) {
+                        case "firefox":
+                            _driverThread = new FirefoxDriver(getFirefoxOptions());
+                            logger.info("Initiating firefox driver");
+                            break;
+                        case "chrome":
+                            _driverThread = new ChromeDriver(getChromeOptions(perf));
+                            logger.info("Initiating chrome driver");
+                            break;
+                        case "ie":
+                            _driverThread = new InternetExplorerDriver(getIEOptions());
+                            logger.info("Initiating ie driver");
+                            break;
+                        case "edge":
+                            _driverThread = new EdgeDriver(getEdgeOptions());
+                            logger.info("Initiating edge driver");
+                            break;
+                        default:
+                            logger.info("Browser listed not supported");
+                    }
                 default:
-                    logger.info("Please provide valid browser details");
+                    logger.info("Running in local docker container");
             }
         } catch (Exception e) {
             logger.error(e);
-        }
-    }
-
-    /**
-     * Remote driver capabilities
-     *
-     * @param browser browser
-     * @param grid    grid client
-     * @param perf    performance
-     * @param client  cloud
-     * @param request request
-     * @throws MalformedURLException exception
-     */
-    private void remoteWebDriver(String browser, String grid, String perf, DeviceFarmClient client, CreateTestGridUrlRequest request) throws MalformedURLException {
-        switch (grid) {
-            case "CLOUD":
-                logger.info("Make sure that the environment variables AWS_ACCESS_KEY and AWS_SECRET_KEY are configured in your testing environment.");
-                CreateTestGridUrlResponse response = client.createTestGridUrl(request);
-                _driverThread = new RemoteWebDriver(new URL(response.url()), addCloudCapabilities(browser));
-                logger.info("Grid client setup for AWS Device farm successful");
-                break;
-            case "LOCAL":
-                logger.info("Make sure that docker containers are up and running");
-                _driverThread = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), (Capabilities) getBrowserOptions(browser, perf));
-                logger.info("Grid client setup for Docker containers successful");
-                break;
-            default:
-                logger.info("Running in local computer");
         }
     }
 

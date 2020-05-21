@@ -4,7 +4,7 @@ version: '3'
 
 services:
   firefox:
-    image: selenium/node-firefox:3.14.0-gallium
+    image: selenium/node-firefox:4.0.0-alpha-5-20200515
     volumes:
       - /dev/shm:/dev/shm
     depends_on:
@@ -13,7 +13,7 @@ services:
       HUB_HOST: hub
 
   chrome:
-    image: selenium/node-chrome:3.14.0-gallium
+    image: selenium/node-chrome:4.0.0-alpha-5-20200515
     volumes:
       - /dev/shm:/dev/shm
     depends_on:
@@ -22,7 +22,7 @@ services:
       HUB_HOST: hub
 
   hub:
-    image: selenium/hub:3.14.0-gallium
+    image: selenium/hub:4.0.0-alpha-5-20200515
     ports:
       - "4444:4444"
 
