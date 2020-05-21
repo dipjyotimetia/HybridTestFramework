@@ -89,6 +89,9 @@ Search and modify the below line in .idea workspace.xml
 ### JenkinsExecution
 <img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/jenkinsExecution.png" width="800">  
 
+### GridServer 2.0
+<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/seleniumGrid.png" width="800">  
+
 ### Allure Reporting
 <img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/allureReport.png" width="800">  
 
