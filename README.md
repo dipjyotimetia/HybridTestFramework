@@ -4,6 +4,9 @@
 ![HybridTestFramework](https://github.com/dipjyotimetia/HybridTestFramewrok/workflows/HybridTestFramework/badge.svg)
 ### Full fledged WEB, API and Security testing framework using selenium,ZAP OWASP proxy and rest-assured
 
+### Framework Architecture
+<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/selenium.png" width="800">  
+
 ### Supported Platforms  
 This framework supports WebUi automation across a variety of browsers like Chrome, Firefox, IE, no only limited to this but extended to test rest api, security and visual testing.
 
