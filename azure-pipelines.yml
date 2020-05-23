@@ -14,6 +14,6 @@ container: dipjyotimetia/hybridtestframework:2.0
 steps:
 
 - script: |
-    chmod 777 *
+    chmod +x ./Driver/linux/chromedriver
     gradle task E2E
   displayName: 'End to End Test'
