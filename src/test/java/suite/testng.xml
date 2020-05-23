@@ -12,8 +12,8 @@
     <test name="E2E Tests for Web and Api">
         <parameter name="browser" value="firefox"/>
         <classes>
-<!--            <class name="com.TestDefinitionLayer.TC003_ApiTest"/>-->
-<!--            <class name="com.TestDefinitionLayer.TC004_OpenBankTest"/>-->
+            <class name="com.TestDefinitionLayer.TC003_ApiTest"/>
+            <class name="com.TestDefinitionLayer.TC004_OpenBankTest"/>
             <class name="com.TestDefinitionLayer.TC002_GURU_Login"/>
         </classes>
     </test>

@@ -13,13 +13,13 @@ jobs:
     container:
       image: dipjyotimetia/hybridtestframework:2.0
 
+    # give permission to Gradle to run the commands
     steps:
     - uses: actions/checkout@v2
-    - name: Install Google Chrome # Using shell script to install Google Chrome
-      run: |
-        chmod +x ./Driver/linux/InstallChrome.sh
-         ./Driver/linux/InstallChrome.sh
     - name: Grant execute permission for gradlew
-      run: chmod +x gradlew # give permission to Gradle to run the commands
+      run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew task e2e
+      run: |
+        chmod +x ./Driver/linux/chromedriver
+        chmod +x ./Driver/linux/geckodriver
+        ./gradlew task e2e
