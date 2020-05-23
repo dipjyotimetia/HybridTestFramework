@@ -12,8 +12,12 @@ pool:
 container: dipjyotimetia/hybridtestframework:2.0
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+
+- script: |
+    set -ex
+    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    apt-get install ./google-chrome-stable_current_amd64.deb
+  displayName: 'Install chrome driver'
 
 - script: gradle task E2E
-  displayName: 'Run a multi-line script'
+  displayName: 'End to End Test'
