@@ -13,13 +13,5 @@ container: dipjyotimetia/hybridtestframework:2.0
 
 steps:
 
-  - task: Gradle@2
-    gradleWrapperFile: './gradlew'
-    cwd: 'HybridTestFramework'
-    gradleOptions: '-Xmx3072m'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.8'
-    jdkArchitectureOption: 'x64'
-#    publishJUnitResults: false
-#    testResultsFiles: '**/TEST-*.xml'
-    tasks: 'e2e'
+- script: gradle task E2E
+  displayName: 'End to End Test'
