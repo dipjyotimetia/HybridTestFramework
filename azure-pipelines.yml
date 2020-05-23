@@ -13,5 +13,7 @@ container: dipjyotimetia/hybridtestframework:2.0
 
 steps:
 
-- script: gradle task E2E
+- script: |
+    chmod 777 *
+    gradle task E2E
   displayName: 'End to End Test'
