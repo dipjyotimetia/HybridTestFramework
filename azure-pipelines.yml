@@ -13,11 +13,13 @@ container: dipjyotimetia/hybridtestframework:2.0
 
 steps:
 
-- script: |
-    set -ex
-    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-    sudo apt-get install ./google-chrome-stable_current_amd64.deb
-  displayName: 'Install chrome driver'
-
-- script: gradle task E2E
-  displayName: 'End to End Test'
+  - task: Gradle@2
+    workingDirectory: ''
+    gradleWrapperFile: 'gradlew'
+    gradleOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+#    publishJUnitResults: false
+#    testResultsFiles: '**/TEST-*.xml'
+    tasks: 'e2e'
