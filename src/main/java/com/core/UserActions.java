@@ -27,13 +27,12 @@ import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
 import com.deque.axe.AXE;
 import com.github.javafaker.Faker;
-import io.percy.selenium.Percy;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+
 import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -75,7 +74,6 @@ public class UserActions<T> extends DriverManager<T> {
     private static WebDriverWait wait;
     private static JavascriptExecutor jsExec;
     private final Logger logger = LogManager.getLogger(UserActions.class);
-    private final Percy percy = new Percy(driverThread);
     private Dictionary dicttoread = new Hashtable();
 
     public static Map<String, String> get(Map<String, String> formParams) {
@@ -1162,36 +1160,6 @@ public class UserActions<T> extends DriverManager<T> {
                 driverThread.switchTo().window(parentWindow);
             }
         }
-    }
-
-    /**
-     * Capture screen
-     *
-     * @param name screenName
-     */
-    protected void captureScreen(String name) {
-        percy.snapshot(name);
-    }
-
-    /**
-     * Capture screen
-     *
-     * @param name  screenName
-     * @param width width
-     */
-    protected void captureScreen(String name, List<Integer> width) {
-        percy.snapshot(name, width);
-    }
-
-    /**
-     * Capture Screen
-     *
-     * @param name      screen name
-     * @param width     width
-     * @param minHeight minimum height
-     */
-    protected void captureScreen(String name, List<Integer> width, int minHeight) {
-        percy.snapshot(name, width, minHeight);
     }
 
     /**
