@@ -14,8 +14,8 @@ container: dipjyotimetia/hybridtestframework:2.0
 steps:
 
   - task: Gradle@2
-    workingDirectory: ''
     gradleWrapperFile: 'gradlew'
+    cwd: 'HybridTestFramework'
     gradleOptions: '-Xmx3072m'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.8'
