@@ -4,10 +4,14 @@
 # https://aka.ms/yaml
 
 trigger:
-  - master
+  - develop
 
 pool:
   vmImage: 'ubuntu-latest'
+
+variables:
+  BROWSERSTACK_USERNAME: $(BROWSERSTACK_USERNAME)
+  BROWSERSTACK_ACCESS_KEY: $(BROWSERSTACK_ACCESS_KEY)
 
 container: dipjyotimetia/hybridtestframework:2.0
 
