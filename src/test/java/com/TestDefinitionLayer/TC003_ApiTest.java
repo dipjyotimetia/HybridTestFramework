@@ -48,7 +48,7 @@ public class TC003_ApiTest<T> extends ApiActions<T> {
 
         Response response = httpGet("/v2/beers");
         Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
-        logger.info("Response Body is =>  " + getBody(response));
+        //logger.info("Response Body is =>  " + getBody(response));
         T tagLine = jsonPathEvaluator(response, "$[0].tagline");
         T description = jsonPathEvaluator(response, "$[0].description");
         log("Tag Line: " + tagLine);
@@ -64,7 +64,7 @@ public class TC003_ApiTest<T> extends ApiActions<T> {
 
         Response response = httpGet("/v2/beers/random");
         Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
-        logger.info("Response Body is =>  " + getBody(response));
+        //logger.info("Response Body is =>  " + getBody(response));
         T tagLine = jsonPathEvaluator(response, "$[0].tagline");
         T description = jsonPathEvaluator(response, "$[0].description");
         log("Tag Line: " + tagLine);
@@ -73,14 +73,14 @@ public class TC003_ApiTest<T> extends ApiActions<T> {
 
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "E2E test for single beers")
-    @Description("Get SIngle Beers")
+    @Description("Get Single Beers")
     @Story("Test Beers")
     public void SingleBeer() {
         RestAssured.baseURI = "https://api.punkapi.com";
 
         Response response = httpGet("/v2/beers/1");
         Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
-        logger.info("Response Body is =>  " + getBody(response));
+        //logger.info("Response Body is =>  " + getBody(response));
         T tagLine = jsonPathEvaluator(response, "$[0].tagline");
         T description = jsonPathEvaluator(response, "$[0].description");
         log("Tag Line: " + tagLine);
@@ -96,7 +96,7 @@ public class TC003_ApiTest<T> extends ApiActions<T> {
 
         Response response = httpGet("/breweries");
         Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
-        logger.info("Response Body is =>  " + getBody(response));
+        //logger.info("Response Body is =>  " + getBody(response));
         T name = jsonPathEvaluator(response, "$[0].name");
         T webSite = jsonPathEvaluator(response, "$[0].website_url");
         log("Name: " + name);

@@ -23,6 +23,8 @@ SOFTWARE.
  */
 package com.core;
 
+import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.client.WireMock;
 import io.qameta.allure.Step;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
@@ -38,6 +40,7 @@ import org.json.simple.JSONObject;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 public class ApiActions<T> {
     private final Logger logger = LogManager.getLogger(ApiActions.class);
@@ -127,7 +130,7 @@ public class ApiActions<T> {
     /**
      * http delete
      *
-     * @param path   endpoint
+     * @param path endpoint
      * @return response
      */
     protected Response httpDelete(String path) {
@@ -153,6 +156,16 @@ public class ApiActions<T> {
      */
     protected int getStatusCode(Response response) {
         return response.getStatusCode();
+    }
+
+    /**
+     * Get Content Type
+     *
+     * @param response response
+     * @return contentType
+     */
+    protected String getContentType(Response response) {
+        return response.getContentType();
     }
 
     /**
@@ -206,6 +219,52 @@ public class ApiActions<T> {
             logger.error(e);
         }
         return null;
+    }
+
+    /**
+     * Setup Mock data
+     *
+     * @param wireMockServer wireMockServer
+     * @param endPoint       endpoint
+     * @param mockData       mockData
+     */
+    protected void setupMockData(WireMockServer wireMockServer, String endPoint, String mockData) {
+        wireMockServer.stubFor(WireMock.get(WireMock.urlEqualTo(endPoint))
+                .willReturn(WireMock.aResponse().withHeader("Content-Type", "application/json")
+                        .withStatus(200)
+                        .withBodyFile(mockData)));
+    }
+
+    /**
+     * SetupMockInvalid Request
+     *
+     * @param endPoint endpoint
+     */
+    protected void setupMockInvalidRequest(String endPoint) {
+        WireMock.configureFor("127.0.0.1", 8082);
+        WireMock.stubFor(WireMock.get(WireMock.urlEqualTo(endPoint))
+                .withHeader("Accept", WireMock.matching("text/plain"))
+                .willReturn(WireMock.aResponse().
+                        withStatus(503).
+                        withHeader("Content-Type", "text/html").
+                        withBody("Service Not Available"))
+        );
+    }
+
+    /**
+     * Setup Mock Delay Request
+     *
+     * @param endPoint endpoint
+     */
+    protected void setupMockDelayRequest(String endPoint) {
+        WireMock.stubFor(WireMock.get(WireMock.urlEqualTo(endPoint))
+                .withHeader("Accept", WireMock.matching("application/json"))
+                .willReturn(WireMock.aResponse().
+                        withStatus(200).
+                        withHeader("Content-Type", "application/json")
+                        .withBody("{\"serviceStatus\": \"running\"}")
+                        .withFixedDelay(2500))
+        );
     }
 
     @Step("{0}")

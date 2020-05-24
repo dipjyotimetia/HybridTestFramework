@@ -1,0 +1,211 @@
+{
+  "Data": {
+    "Branches": [
+      {
+        "BranchIdentification": "Belfast City Branch",
+        "BranchName": "Bank of Ireland",
+        "Address": {
+          "PostCode": "BT119EB",
+          "Country": "GB",
+          "BuildingNumberOrName": "202",
+          "StreetName": "Anderstown Road",
+          "TownName": "Anderstown"
+        },
+        "BranchMediatedServiceName": [
+          "CounterServices",
+          "MortgageAdvisor",
+          "NightSafe",
+          "BureauDeChange",
+          "OnDemandCurrency"
+        ],
+        "BranchPhoto": "https://www.google.com/maps/@54.5996032,-5.9282088,3a,90y,327.98h,100.44t/data=!3m6!1e1!3m4!1s6UAgS6h2Y4ALDQaQ8EZytg!2e0!7i13312!8i6656!6m1!1e1?hl=en-IE",
+        "BranchSelfServeServiceName": [
+          "InternalAtmNoAudio",
+          "ExternalAtmNoAudio",
+          "OnlineBankingPoint",
+          "StatementPrinter",
+          "LodgementDevice",
+          "CashChequeDepositMachineNoCoin"
+        ],
+        "BranchType": "Physical",
+        "CustomerSegment": [
+          "Personal",
+          "Business",
+          "SME"
+        ],
+        "FaxNumber": [
+          "+44-2890234388"
+        ],
+        "OpeningTimes": [
+          {
+            "OpeningTime": "08:00:00",
+            "UnavailableStartTime": "20:00:00",
+            "OpeningDay": "Sunday",
+            "UnavailableFinishTime": "08:00:00",
+            "ClosingTime": "20:00:00"
+          },
+          {
+            "OpeningDay": "Monday",
+            "UnavailableFinishTime": "09:00:00",
+            "ClosingTime": "22:00:00",
+            "OpeningTime": "09:00:00",
+            "UnavailableStartTime": "22:00:00"
+          },
+          {
+            "OpeningDay": "Tuesday",
+            "UnavailableFinishTime": "08:00:00",
+            "ClosingTime": "20:00:00",
+            "OpeningTime": "08:00:00",
+            "UnavailableStartTime": "20:00:00"
+          },
+          {
+            "UnavailableStartTime": "20:00:00",
+            "OpeningDay": "Wednesday",
+            "UnavailableFinishTime": "08:00:00",
+            "ClosingTime": "20:00:00",
+            "OpeningTime": "08:00:00"
+          },
+          {
+            "OpeningDay": "Thursday",
+            "UnavailableFinishTime": "08:00:00",
+            "ClosingTime": "20:00:00",
+            "OpeningTime": "08:00:00",
+            "UnavailableStartTime": "20:00:00"
+          },
+          {
+            "UnavailableStartTime": "20:00:00",
+            "OpeningDay": "Friday",
+            "UnavailableFinishTime": "08:00:00",
+            "ClosingTime": "20:00:00",
+            "OpeningTime": "08:00:00"
+          },
+          {
+            "UnavailableStartTime": "20:00:00",
+            "OpeningDay": "Saturday",
+            "UnavailableFinishTime": "08:00:00",
+            "ClosingTime": "20:00:00",
+            "OpeningTime": "08:00:00"
+          }
+        ],
+        "Organisation": {
+          "ParentOrganisation": {
+            "OrganisationName": {
+              "LegalName": "Bank of Ireland (UK) plc"
+            },
+            "BIC": "BOFIGB2B"
+          },
+          "Brand": {
+            "TrademarkID": "00002056438",
+            "TrademarkIPOCode": "UK"
+          }
+        },
+        "TelephoneNumber": "+44-2890244901"
+      },
+      {
+        "BranchIdentification": "Sweden City Branch",
+        "BranchName": "Bank of Australia",
+        "Address": {
+          "PostCode": "BT119EB",
+          "Country": "GB",
+          "BuildingNumberOrName": "202",
+          "StreetName": "Anderstown Road",
+          "TownName": "Anderstown"
+        },
+        "BranchMediatedServiceName": [
+          "CounterServices",
+          "MortgageAdvisor",
+          "NightSafe",
+          "BureauDeChange",
+          "OnDemandCurrency"
+        ],
+        "BranchPhoto": "https://www.google.com/maps/@54.5996032,-5.9282088,3a,90y,327.98h,100.44t/data=!3m6!1e1!3m4!1s6UAgS6h2Y4ALDQaQ8EZytg!2e0!7i13312!8i6656!6m1!1e1?hl=en-IE",
+        "BranchSelfServeServiceName": [
+          "InternalAtmNoAudio",
+          "ExternalAtmNoAudio",
+          "OnlineBankingPoint",
+          "StatementPrinter",
+          "LodgementDevice",
+          "CashChequeDepositMachineNoCoin"
+        ],
+        "BranchType": "Physical",
+        "CustomerSegment": [
+          "Personal",
+          "Business"
+        ],
+        "FaxNumber": [
+          "+44-789065487"
+        ],
+        "Location": {
+          "longitude": -1.2556831,
+          "latitude": 51.7520044
+        },
+        "OpeningTimes": [
+          {
+            "UnavailableStartTime": "20:00:00",
+            "OpeningDay": "Sunday",
+            "UnavailableFinishTime": "08:00:00",
+            "ClosingTime": "20:00:00",
+            "OpeningTime": "08:00:00"
+          },
+          {
+            "UnavailableStartTime": "22:00:00",
+            "OpeningDay": "Monday",
+            "UnavailableFinishTime": "09:00:00",
+            "ClosingTime": "22:00:00",
+            "OpeningTime": "09:00:00"
+          },
+          {
+            "OpeningDay": "Tuesday",
+            "UnavailableFinishTime": "08:00:00",
+            "ClosingTime": "20:00:00",
+            "OpeningTime": "08:00:00",
+            "UnavailableStartTime": "20:00:00"
+          },
+          {
+            "UnavailableStartTime": "20:00:00",
+            "OpeningDay": "Wednesday",
+            "UnavailableFinishTime": "08:00:00",
+            "ClosingTime": "20:00:00",
+            "OpeningTime": "08:00:00"
+          },
+          {
+            "UnavailableStartTime": "20:00:00",
+            "OpeningDay": "Thursday",
+            "UnavailableFinishTime": "08:00:00",
+            "ClosingTime": "20:00:00",
+            "OpeningTime": "08:00:00"
+          },
+          {
+            "OpeningTime": "08:00:00",
+            "UnavailableStartTime": "20:00:00",
+            "OpeningDay": "Friday",
+            "UnavailableFinishTime": "08:00:00",
+            "ClosingTime": "20:00:00"
+          },
+          {
+            "OpeningDay": "Saturday",
+            "UnavailableFinishTime": "08:00:00",
+            "ClosingTime": "20:00:00",
+            "OpeningTime": "08:00:00",
+            "UnavailableStartTime": "20:00:00"
+          }
+        ],
+        "Organisation": {
+          "ParentOrganisation": {
+            "OrganisationName": {
+              "LegalName": "Bank of Australia plc"
+            },
+            "BIC": "BOFIGB2B"
+          },
+          "Brand": {
+            "TrademarkID": "00006789564",
+            "TrademarkIPOCode": "AU"
+          }
+        },
+        "TelephoneNumber": "+91-786456781"
+      }
+    ]
+  },
+  "Meta": {},
+  "Links": {}
+}

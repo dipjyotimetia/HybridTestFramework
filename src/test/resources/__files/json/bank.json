@@ -1,0 +1,11 @@
+{
+  "id": "rbs",
+  "short_name": "The Royal Bank of Scotland",
+  "full_name": "The Royal Bank of Scotland",
+  "logo": "http://www.red-bank-shoreditch.com/logo.gif",
+  "website": "http://www.red-bank-shoreditch.com",
+  "bank_routing": {
+    "scheme": "OBP",
+    "address": "rbs"
+  }
+}
