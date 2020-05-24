@@ -1,0 +1,91 @@
+{
+  "Data": {
+    "Atm": [
+      {
+        "AtmId": "90244201",
+        "AtmServices": [
+          "CashWithdrawal",
+          "Balance",
+          "PINChange",
+          "PINActivation",
+          "BillPayments"
+        ],
+        "Address": {
+          "PostCode": "BT119EB",
+          "Country": "GB",
+          "BuildingNumberOrName": "202",
+          "StreetName": "Anderstown Road",
+          "TownName": "Anderstown"
+        },
+        "Currency": [
+          "GBP"
+        ],
+        "Location": {
+          "longitude": -5.99325,
+          "latitude": 54.5728222
+        },
+        "LocationCategory": "BranchExternal",
+        "MinimumValueDispensed": "Â£10",
+        "Organisation": {
+          "ParentOrganisation": {
+            "OrganisationName": {
+              "LegalName": "Bank of Ireland (UK) plc"
+            },
+            "BIC": "BOFIGB2B"
+          },
+          "Brand": {
+            "TrademarkID": "00002056438",
+            "TrademarkIPOCode": "UK"
+          }
+        },
+        "SiteName": "Andersonstown",
+        "SupportedLanguages": [
+          "English"
+        ]
+      },
+      {
+        "AtmId": "99076543",
+        "AtmServices": [
+          "CashWithdrawal",
+          "Balance",
+          "PINChange"
+        ],
+        "Address": {
+          "PostCode": "AF56345",
+          "Country": "AF",
+          "BuildingNumberOrName": "789",
+          "StreetName": "Anderstown Road",
+          "TownName": "Anderstown"
+        },
+        "Currency": [
+          "EUR"
+        ],
+        "Location": {
+          "latitude": 51.7789454,
+          "longitude": -1.2657953
+        },
+        "LocationCategory": "BranchExternal",
+        "MinimumValueDispensed": "Â£10",
+        "Organisation": {
+          "ParentOrganisation": {
+            "OrganisationName": {
+              "LegalName": "Bank of Ireland (UK) plc"
+            },
+            "BIC": "BOFIGB2B"
+          },
+          "Brand": {
+            "TrademarkID": "0000897645",
+            "TrademarkIPOCode": "UK"
+          }
+        },
+        "SiteName": "Andersonstown",
+        "SupportedLanguages": [
+          "English",
+          "Hindi"
+        ]
+      }
+    ]
+  },
+  "Meta": {},
+  "Links": {}
+}
