@@ -73,7 +73,7 @@ public class TC004_OpenBankTest<T> extends ApiActions<T> {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(description = "E2E test for all bank branches")
+    //@Test(description = "E2E test for all bank branches")
     @Description("Get All Branches")
     @Story("Test Branches")
     public void AllBranches() {
