@@ -16,5 +16,17 @@ steps:
 - script: |
     chmod +x ./Driver/linux/chromedriver
     chmod +x ./Driver/linux/geckodriver
-    gradle task E2E
-  displayName: 'End to End Test'
+  displayName: 'Provide permissions'
+- task: Gradle@2
+  inputs:
+    gradleWrapperFile: 'gradlew'
+    tasks: 'e2e'
+    publishJUnitResults: true
+    testResultsFiles: '**/TEST-*.xml'
+    testRunTitle: 'Test'
+    javaHomeOption: 'JDKVersion'
+    sonarQubeRunAnalysis: false  
+- task: AllureGenerate@1
+  inputs:
+    resultsDir: 'allure-results'
+    targetDir: 'build/allure-report/$(Build.BuildNumber)'
