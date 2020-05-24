@@ -98,8 +98,8 @@ Search and modify the below line in .idea workspace.xml
 ### Gradle Report
 <img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/gradleReport.png" width="700">  
 
-### LogsView
-<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/testResults.png" width="400">    
+### TestResults
+<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/testResults.png" width="600">    
 
 ### LogsView
 <img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/logs.png" width="700">    
