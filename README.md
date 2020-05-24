@@ -19,6 +19,7 @@ This framework supports WebUi automation across a variety of browsers like Chrom
 * Api testing support using RestAssured
 * Visual regression testing using percy.io
 * Accessibility testing using axe-selenium
+* Stubbed api testing using WireMock
 * Can send logs to ElasticSearch for kibana dashboard visualization
 * Database testing support(Coming Soon...)
 * Kubernetes support(Coming soon...)   
