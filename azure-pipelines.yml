@@ -26,7 +26,3 @@ steps:
       testRunTitle: 'Test'
       javaHomeOption: 'JDKVersion'
       sonarQubeRunAnalysis: false
-  - task: AllureGenerate@1
-    inputs:
-      resultsDir: 'allure-results'
-      targetDir: 'build/allure-report/*.json'
