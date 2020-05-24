@@ -10,8 +10,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  BROWSERSTACK_USERNAME: $(BROWSERSTACK_USERNAME)
-  BROWSERSTACK_ACCESS_KEY: $(BROWSERSTACK_ACCESS_KEY)
+  - group: BrowserStack
 
 container: dipjyotimetia/hybridtestframework:2.0
 
