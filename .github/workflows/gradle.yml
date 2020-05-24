@@ -2,9 +2,9 @@ name: HybridTestFramework
 
 on:
   push:
-    branches: [ master ]
+    branches: [ develop ]
   pull_request:
-    branches: [ master ]
+    branches: [ develop ]
 
 jobs:
   build:
@@ -24,4 +24,7 @@ jobs:
       run: chmod +x ./Driver/linux/geckodriver
     - name: Build with Gradle
       run: ./gradlew task e2e
+      env:
+        BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+        BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
 

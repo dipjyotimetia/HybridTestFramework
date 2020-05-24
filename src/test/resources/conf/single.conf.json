@@ -1,0 +1,14 @@
+{
+  "server": "hub-cloud.browserstack.com",
+  "user": "",
+  "key": "",
+  "capabilities": {
+    "name": "Hybrid End To End Test",
+    "browserstack.debug": false
+  },
+  "environments": {
+    "chrome": {
+      "browser": "chrome"
+    }
+  }
+}
