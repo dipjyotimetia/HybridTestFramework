@@ -4,7 +4,7 @@
 # https://aka.ms/yaml
 
 trigger:
-  - master
+- master
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -13,20 +13,8 @@ container: dipjyotimetia/hybridtestframework:2.0
 
 steps:
 
-  - script: |
-      chmod +x ./Driver/linux/chromedriver
-      chmod +x ./Driver/linux/geckodriver
-    displayName: 'Provide permissions'
-  - task: Gradle@2
-    inputs:
-      gradleWrapperFile: 'gradlew'
-      tasks: 'e2e'
-      publishJUnitResults: true
-      testResultsFiles: '**/TEST-*.xml'
-      testRunTitle: 'Test'
-      javaHomeOption: 'JDKVersion'
-      sonarQubeRunAnalysis: false
-  - task: AllureGenerate@1
-    inputs:
-      resultsDir: 'allure-results'
-      targetDir: 'build/allure-report/$(Build.BuildNumber)'
+- script: |
+    chmod +x ./Driver/linux/chromedriver
+    chmod +x ./Driver/linux/geckodriver
+    gradle task E2E
+  displayName: 'End to End Test'
