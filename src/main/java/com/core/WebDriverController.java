@@ -194,13 +194,14 @@ public class WebDriverController<T> extends DriverOptions<T> {
      *
      * @throws Exception exception
      */
-    protected static void addBrowserStack() throws Exception {
+    protected void addBrowserStack() throws Exception {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("browser", "Chrome");
         capabilities.setCapability("browser_version", "81.0");
         capabilities.setCapability("os", "Windows");
         capabilities.setCapability("os_version", "10");
         capabilities.setCapability("build", "HybridTestFramework");
+        capabilities.setCapability("name", testName);
         String username = System.getenv("BROWSERSTACK_USERNAME");
         String accessKey = System.getenv("BROWSERSTACK_ACCESS_KEY");
         _driverThread = new RemoteWebDriver(new URL("http://" + username + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub"), capabilities);
