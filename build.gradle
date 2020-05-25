@@ -147,5 +147,4 @@ task E2E(type: Test) {
         junitXml.enabled = false
         html.enabled = true
     }
-    systemProperties=["BROWSERSTACK_USERNAME":"${BROWSERSTACK_USERNAME}","BROWSERSTACK_ACCESS_KEY":"${BROWSERSTACK_ACCESS_KEY}"]
 }

@@ -10,7 +10,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  - group: BrowserStack
+  - group: 'BrowserStack'
 
 container: dipjyotimetia/hybridtestframework:2.0
 
