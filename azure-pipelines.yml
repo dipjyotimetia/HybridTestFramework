@@ -15,13 +15,13 @@ steps:
       chmod +x ./Driver/linux/chromedriver
       chmod +x ./Driver/linux/geckodriver
     displayName: 'Provide permissions'
-  - task: BrowserStackConfig@0
-    inputs:
-      BrowserStackServiceEndPoint: 'BrowserStack'
   - bash: echo Providing env variables
   - script: gradle task e2e
     env:
       BROWSERSTACK_USERNAME: $(BROWSERSTACK_USERNAME)
       BROWSERSTACK_ACCESS_KEY: $(BROWSERSTACK_ACCESS_KEY)
     displayName: 'Running end to end test'
+  - task: BrowserStackConfig@0
+    inputs:
+      BrowserStackServiceEndPoint: 'BrowserStack'
   - task: BrowserStackResults@0
