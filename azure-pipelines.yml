@@ -20,12 +20,9 @@ steps:
       chmod +x ./Driver/linux/chromedriver
       chmod +x ./Driver/linux/geckodriver
     displayName: 'Provide permissions'
-  - task: Gradle@2
-    inputs:
-      gradleWrapperFile: 'gradlew'
-      tasks: 'e2e'
-      publishJUnitResults: true
-      testResultsFiles: '**/TEST-*.xml'
-      testRunTitle: 'Test'
-      javaHomeOption: 'JDKVersion'
-      sonarQubeRunAnalysis: false
+  - bash: echo Providing env variables
+  - script: gradle task e2e
+    env:
+      BROWSERSTACK_USERNAME: $(BROWSERSTACK_USERNAME)
+      BROWSERSTACK_ACCESS_KEY: $(BROWSERSTACK_ACCESS_KEY)
+    displayName: 'Running end to end test'
