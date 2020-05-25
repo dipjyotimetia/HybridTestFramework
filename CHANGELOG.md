@@ -44,3 +44,9 @@
 * Added WireMock support
 * Added stubbed api tests using wiremock
 * Added new api actions
+
+## v8
+* Added support for browserstack(Thanks to browserstack)
+* Updated github actions
+* Updated azure devops pipeline
+* Added screens and updated readme

@@ -12,6 +12,7 @@ This framework supports WebUi automation across a variety of browsers like Chrom
 
 ### Capabilities
 * Cross browser testing support
+* Added browserstack support for CrossBrowser testing
 * Running tests in docker containers selenium grid
 * Running tests in AWS DeviceFarm selenium grid
 * Running tests in selenium server in docker containers
@@ -101,6 +102,9 @@ Search and modify the below line in .idea workspace.xml
 
 ### TestResults
 <img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/testResults.png" width="600">    
+
+### BrowserStack Dashboard
+<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/browserStack.png" width="600">    
 
 ### LogsView
 <img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/logs.png" width="700">    

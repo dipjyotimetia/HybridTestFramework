@@ -1,13 +1,11 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
   - master
 
 pool:
   vmImage: 'ubuntu-latest'
+
+variables:
+  - group: 'BrowserStack'
 
 container: dipjyotimetia/hybridtestframework:2.0
 
@@ -17,12 +15,13 @@ steps:
       chmod +x ./Driver/linux/chromedriver
       chmod +x ./Driver/linux/geckodriver
     displayName: 'Provide permissions'
-  - task: Gradle@2
+  - bash: echo Providing env variables
+  - script: gradle task e2e
+    env:
+      BROWSERSTACK_USERNAME: $(BROWSERSTACK_USERNAME)
+      BROWSERSTACK_ACCESS_KEY: $(BROWSERSTACK_ACCESS_KEY)
+    displayName: 'Running end to end test'
+  - task: BrowserStackConfig@0
     inputs:
-      gradleWrapperFile: 'gradlew'
-      tasks: 'e2e'
-      publishJUnitResults: true
-      testResultsFiles: '**/TEST-*.xml'
-      testRunTitle: 'Test'
-      javaHomeOption: 'JDKVersion'
-      sonarQubeRunAnalysis: false
+      BrowserStackServiceEndPoint: 'BrowserStack'
+  - task: BrowserStackResults@0

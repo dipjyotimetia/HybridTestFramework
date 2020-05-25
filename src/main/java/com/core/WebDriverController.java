@@ -59,8 +59,9 @@ public class WebDriverController<T> extends DriverOptions<T> {
 
     private static WebDriver _driverThread = null;
     private static BrowserMobProxyServer proxy;
+    private final String username = System.getenv("BROWSERSTACK_USERNAME");
+    private final String accessKey = System.getenv("BROWSERSTACK_ACCESS_KEY");
     private String testName = null;
-
 
     @Parameters({"browser", "grid", "perf"})
     @BeforeClass
@@ -94,12 +95,17 @@ public class WebDriverController<T> extends DriverOptions<T> {
                     _driverThread = new RemoteWebDriver(new URL(response.url()), addCloudCapabilities(browser));
                     logger.info("Grid client setup for AWS Device farm successful");
                     break;
-                case "LOCAL":
+                case "DOCKER":
                     logger.info("Make sure that docker containers are up and running");
                     _driverThread = new RemoteWebDriver(URI.create("http://localhost:4444/").toURL(), (Capabilities) getBrowserOptions(browser, perf));
                     logger.info("Grid client setup for Docker containers successful");
                     break;
-                case "NO":
+                case "BROWSERSTACK":
+                    logger.info("Make sure that browserstack configs provided");
+                    _driverThread = new RemoteWebDriver(new URL("http://" + username + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub"), addBrowserStackCapabilities(browser, testName));
+                    logger.info("Grid client setup for browserstack successful");
+                    break;
+                case "LOCAL":
                     switch (browser) {
                         case "firefox":
                             _driverThread = new FirefoxDriver(getFirefoxOptions());
@@ -150,38 +156,6 @@ public class WebDriverController<T> extends DriverOptions<T> {
         DesiredCapabilities caps = new DesiredCapabilities();
         caps.setCapability(CapabilityType.PROXY, seleniumProxy);
         return caps;
-    }
-
-    /**
-     * Cloud capabilities
-     *
-     * @param browser browser
-     */
-    protected static DesiredCapabilities addCloudCapabilities(String browser) {
-        DesiredCapabilities capabilities = new DesiredCapabilities();
-        switch (browser) {
-            case "chrome":
-                capabilities.setCapability("browserName", "chrome");
-                capabilities.setCapability("browserVersion", "81");
-                capabilities.setCapability("platform", "windows");
-                logger.info("Adding aws chrome capabilities");
-                break;
-            case "firefox":
-                capabilities.setCapability("browserName", "firefox");
-                capabilities.setCapability("browserVersion", "75");
-                capabilities.setCapability("platform", "windows");
-                logger.info("Adding aws firefox capabilities");
-                break;
-            case "ie":
-                capabilities.setCapability("browserName", "internet explorer");
-                capabilities.setCapability("browserVersion", "11");
-                capabilities.setCapability("platform", "windows");
-                logger.info("Adding aws firefox capabilities");
-                break;
-            default:
-                logger.info("No supported browser provided");
-        }
-        return capabilities;
     }
 
     @AfterClass
