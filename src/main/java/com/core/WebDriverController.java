@@ -59,8 +59,9 @@ public class WebDriverController<T> extends DriverOptions<T> {
 
     private static WebDriver _driverThread = null;
     private static BrowserMobProxyServer proxy;
+    private final String username = System.getenv("BROWSERSTACK_USERNAME");
+    private final String accessKey = System.getenv("BROWSERSTACK_ACCESS_KEY");
     private String testName = null;
-
 
     @Parameters({"browser", "grid", "perf"})
     @BeforeClass
@@ -101,7 +102,7 @@ public class WebDriverController<T> extends DriverOptions<T> {
                     break;
                 case "BROWSERSTACK":
                     logger.info("Make sure that browserstack configs provided");
-                    addBrowserStack();
+                    _driverThread = new RemoteWebDriver(new URL("http://" + username + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub"), addBrowserStackCapabilities(browser, testName));
                     logger.info("Grid client setup for browserstack successful");
                     break;
                 case "LOCAL":
@@ -157,58 +158,8 @@ public class WebDriverController<T> extends DriverOptions<T> {
         return caps;
     }
 
-    /**
-     * Cloud capabilities
-     *
-     * @param browser browser
-     */
-    protected static DesiredCapabilities addCloudCapabilities(String browser) {
-        DesiredCapabilities capabilities = new DesiredCapabilities();
-        switch (browser) {
-            case "chrome":
-                capabilities.setCapability("browserName", "chrome");
-                capabilities.setCapability("browserVersion", "81");
-                capabilities.setCapability("platform", "windows");
-                logger.info("Adding aws chrome capabilities");
-                break;
-            case "firefox":
-                capabilities.setCapability("browserName", "firefox");
-                capabilities.setCapability("browserVersion", "75");
-                capabilities.setCapability("platform", "windows");
-                logger.info("Adding aws firefox capabilities");
-                break;
-            case "ie":
-                capabilities.setCapability("browserName", "internet explorer");
-                capabilities.setCapability("browserVersion", "11");
-                capabilities.setCapability("platform", "windows");
-                logger.info("Adding aws firefox capabilities");
-                break;
-            default:
-                logger.info("No supported browser provided");
-        }
-        return capabilities;
-    }
-
-    /**
-     * Add browserstack capabilities
-     *
-     * @throws Exception exception
-     */
-    protected void addBrowserStack() throws Exception {
-        DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("browser", "Chrome");
-        capabilities.setCapability("browser_version", "81.0");
-        capabilities.setCapability("os", "Windows");
-        capabilities.setCapability("os_version", "10");
-        capabilities.setCapability("build", "HybridTestFramework");
-        capabilities.setCapability("name", testName);
-        String username = System.getenv("BROWSERSTACK_USERNAME");
-        String accessKey = System.getenv("BROWSERSTACK_ACCESS_KEY");
-        _driverThread = new RemoteWebDriver(new URL("http://" + username + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub"), capabilities);
-    }
-
     @AfterClass
-    public void tearDown() throws Exception {
+    public void tearDown() {
         try {
             Har har = proxy.getHar();
             FileOutputStream fos = new FileOutputStream("Reports\\performance\\" + testName + ".har");

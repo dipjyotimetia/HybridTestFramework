@@ -156,6 +156,68 @@ abstract class DriverOptions<T> {
     }
 
     /**
+     * Cloud capabilities
+     *
+     * @param browser browser
+     */
+    protected DesiredCapabilities addCloudCapabilities(String browser) {
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        switch (browser) {
+            case "chrome":
+                capabilities.setCapability("browserName", "chrome");
+                capabilities.setCapability("browserVersion", "81");
+                capabilities.setCapability("platform", "windows");
+                logger.info("Adding aws chrome capabilities");
+                break;
+            case "firefox":
+                capabilities.setCapability("browserName", "firefox");
+                capabilities.setCapability("browserVersion", "75");
+                capabilities.setCapability("platform", "windows");
+                logger.info("Adding aws firefox capabilities");
+                break;
+            case "ie":
+                capabilities.setCapability("browserName", "internet explorer");
+                capabilities.setCapability("browserVersion", "11");
+                capabilities.setCapability("platform", "windows");
+                logger.info("Adding aws firefox capabilities");
+                break;
+            default:
+                logger.info("No supported browser provided");
+        }
+        return capabilities;
+    }
+
+    /**
+     * Add browserstack capabilities
+     */
+    protected DesiredCapabilities addBrowserStackCapabilities(String browser, String testName) {
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        capabilities.setCapability("os", "Windows");
+        capabilities.setCapability("os_version", "10");
+        capabilities.setCapability("build", "HybridTestFramework");
+        capabilities.setCapability("name", testName);
+        switch (browser) {
+            case "chrome":
+                capabilities.setCapability("browser", "Chrome");
+                capabilities.setCapability("browser_version", "81.0");
+                break;
+            case "firefox":
+                capabilities.setCapability("browser", "Firefox");
+                capabilities.setCapability("browser_version", "76.0");
+                break;
+            case "ie":
+                capabilities.setCapability("browser", "IE");
+                capabilities.setCapability("browser_version", "11.0");
+                break;
+            case "edge":
+                capabilities.setCapability("browser", "Edge");
+                capabilities.setCapability("browser_version", "81.0");
+                break;
+        }
+        return capabilities;
+    }
+
+    /**
      * Set chrome system property
      */
     private void setChromeSystemProperty() {
