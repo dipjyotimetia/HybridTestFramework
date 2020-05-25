@@ -16,8 +16,8 @@ steps:
       chmod +x ./Driver/linux/geckodriver
     displayName: 'Provide permissions'
   - task: BrowserStackConfig@0
-      inputs:
-        BrowserStackServiceEndPoint: 'BrowserStack'
+    inputs:
+      BrowserStackServiceEndPoint: 'BrowserStack'
   - bash: echo Providing env variables
   - script: gradle task e2e
     env:
