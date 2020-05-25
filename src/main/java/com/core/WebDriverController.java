@@ -23,15 +23,12 @@ SOFTWARE.
  */
 package com.core;
 
-import com.browserstack.local.Local;
 import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.client.ClientUtil;
 import net.lightbody.bmp.core.har.Har;
 import net.lightbody.bmp.proxy.CaptureType;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
@@ -51,13 +48,9 @@ import software.amazon.awssdk.services.devicefarm.model.CreateTestGridUrlRequest
 import software.amazon.awssdk.services.devicefarm.model.CreateTestGridUrlResponse;
 
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.net.Inet4Address;
 import java.net.URI;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 
 public class WebDriverController<T> extends DriverOptions<T> {
@@ -67,7 +60,6 @@ public class WebDriverController<T> extends DriverOptions<T> {
     private static WebDriver _driverThread = null;
     private static BrowserMobProxyServer proxy;
     private String testName = null;
-    private static Local l;
 
 
     @Parameters({"browser", "grid", "perf"})
@@ -197,50 +189,21 @@ public class WebDriverController<T> extends DriverOptions<T> {
         return capabilities;
     }
 
+    /**
+     * Add browserstack capabilities
+     *
+     * @throws Exception exception
+     */
     protected static void addBrowserStack() throws Exception {
-        JSONParser parser = new JSONParser();
-        JSONObject config = (JSONObject) parser.parse(new FileReader("src/test/resources/conf/" + "single.conf.json"));
-        JSONObject envs = (JSONObject) config.get("environments");
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        Map<String, String> envCapabilities = (Map<String, String>) envs.get("chrome");
-        Iterator it = envCapabilities.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry) it.next();
-            capabilities.setCapability(pair.getKey().toString(), pair.getValue().toString());
-        }
-
-        Map<String, String> commonCapabilities = (Map<String, String>) config.get("capabilities");
-        it = commonCapabilities.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry) it.next();
-            if (capabilities.getCapability(pair.getKey().toString()) == null) {
-                capabilities.setCapability(pair.getKey().toString(), pair.getValue().toString());
-            }
-        }
-
-        String username = System.getenv("BROWSERSTACK_USERNAME");
-        if (username == null) {
-            username = (String) config.get("user");
-        }
-
-        String accessKey = System.getenv("BROWSERSTACK_ACCESS_KEY");
-        if (accessKey == null) {
-            accessKey = (String) config.get("key");
-        }
-
-        String app = System.getenv("BROWSERSTACK_APP_ID");
-        if (app != null && !app.isEmpty()) {
-            capabilities.setCapability("app", app);
-        }
-
-        if (capabilities.getCapability("browserstack.local") != null && capabilities.getCapability("browserstack.local") == "true") {
-            l = new Local();
-            Map<String, String> options = new HashMap<>();
-            options.put("key", accessKey);
-            l.start(options);
-        }
+        capabilities.setCapability("browser", "Chrome");
+        capabilities.setCapability("browser_version", "81.0");
+        capabilities.setCapability("os", "Windows");
+        capabilities.setCapability("os_version", "10");
         capabilities.setCapability("build", "HybridTestFramework");
-        _driverThread = new RemoteWebDriver(new URL("http://" + username + ":" + accessKey + "@" + config.get("server") + "/wd/hub"), capabilities);
+        String username = System.getenv("BROWSERSTACK_USERNAME");
+        String accessKey = System.getenv("BROWSERSTACK_ACCESS_KEY");
+        _driverThread = new RemoteWebDriver(new URL("http://" + username + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub"), capabilities);
     }
 
     @AfterClass
@@ -255,9 +218,6 @@ public class WebDriverController<T> extends DriverOptions<T> {
             logger.info("Performance tests not included");
         } finally {
             _driverThread.quit();
-            if (l != null) {
-                l.stop();
-            }
         }
     }
 }
