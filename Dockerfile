@@ -3,7 +3,7 @@ FROM ubuntu:bionic-20200311
 
 LABEL maintainer="HybridTestFramework dipjyotimetia@gmail.com"
 
-ENV GRADLE_VERSION 6.4
+ENV GRADLE_VERSION 6.5
 ENV ALLURE_VERSION 2.13.3
 
 # install packages

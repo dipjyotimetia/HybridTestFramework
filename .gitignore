@@ -1,5 +1,6 @@
 .allure/**/**
 .idea/**/**
+.github/**/**
 .gradle/**/**
 Out
 Reports

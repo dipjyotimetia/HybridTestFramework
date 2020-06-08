@@ -29,8 +29,8 @@ apply plugin: 'groovy'
 apply plugin: 'io.qameta.allure'
 apply plugin: 'docker-compose'
 
-group 'webui'
-version = '1.0'
+group 'github.com.HybridTestFramework'
+version = '2.0'
 
 sourceCompatibility = 1.8
 
@@ -57,24 +57,7 @@ allure {
     autoconfigure = true
     aspectjweaver = true
     version = '2.13.3'
-    useTestNG {
-        version = '2.13.3'
-    }
     downloadLink = 'https://dl.bintray.com/qameta/maven/io/qameta/allure/allure-commandline/2.13.3/allure-commandline-2.13.3.zip'
-}
-
-sourceSets {
-    main {
-        java {
-            srcDir 'src/main/java'
-        }
-    }
-    test {
-        java.srcDir file('src/test/java')
-        resources.srcDir file('scr/test/resource')
-        compileClasspath = sourceSets.main.output + configurations.testRuntime
-        runtimeClasspath = output + compileClasspath
-    }
 }
 
 // dockerCompose.isRequiredBy(test)
@@ -88,7 +71,7 @@ dockerCompose {
 }
 
 dependencies {
-    compile group: 'software.amazon.awssdk', name: 'aws-sdk-java', version: '2.13.16'
+    compile group: 'software.amazon.awssdk', name: 'aws-sdk-java', version: '2.13.31'
     compile group: 'io.netty', name: 'netty-all', version: '4.1.44.Final'
     compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.0.0-alpha-6'
     compile group: 'org.seleniumhq.selenium', name: 'selenium-server', version: '4.0.0-alpha-2'
@@ -102,7 +85,7 @@ dependencies {
     compile group: 'org.testng', name: 'testng', version: '7.0.0'
     compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
-    compile group: 'com.aventstack', name: 'extentreports', version: '4.1.5'
+    compile group: 'com.aventstack', name: 'extentreports', version: '4.1.6'
     compile group: 'net.sourceforge.javacsv', name: 'javacsv', version: '2.0'
     compile group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.2'
     compile group: 'org.apache.poi', name: 'poi-ooxml-schemas', version: '4.1.2'
@@ -120,7 +103,6 @@ dependencies {
     compile group: 'com.konghq', name: 'unirest-java', version: '3.7.02'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.13.2'
     compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.13.2'
-    compile group: 'com.github.tomakehurst', name: 'wiremock', version: '2.26.3'
     compile group: 'net.lightbody.bmp', name: 'browsermob-core', version: '2.1.5'
     compile group: 'org.zaproxy', name: 'zap-clientapi', version: '1.8.0'
     compile group: 'org.zaproxy', name: 'zap', version: '2.9.0'
