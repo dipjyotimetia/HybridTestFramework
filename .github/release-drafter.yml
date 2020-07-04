@@ -5,6 +5,7 @@ categories:
     labels:
       - 'feature'
       - 'enhancement'
+      - 'test'
   - title: '🐛 Bug Fixes'
     labels:
       - 'fix'
