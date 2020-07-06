@@ -1,20 +1,6 @@
-name-template: 'v$RESOLVED_VERSION 🌈'
-tag-template: 'v$RESOLVED_VERSION'
-categories:
-  - title: '🚀 Features'
-    labels:
-      - 'feature'
-      - 'enhancement'
-      - 'test'
-  - title: '🐛 Bug Fixes'
-    labels:
-      - 'fix'
-      - 'bugfix'
-      - 'bug'
-  - title: '🧰 Maintenance'
-    label: 'chore'
-change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
+name-template: 'Release $PREVIOUS_TAG test'
+tag-template: $PREVIOUS_TAG
+change-template: '- $TITLE (#$NUMBER) @$AUTHOR'
 template: |
-  ## Changes
-
+  ## Upadtes
   $CHANGES
