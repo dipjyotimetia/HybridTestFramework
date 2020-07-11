@@ -56,8 +56,8 @@ buildscript {
 allure {
     autoconfigure = true
     aspectjweaver = true
-    version = '2.13.3'
-    downloadLink = 'https://dl.bintray.com/qameta/maven/io/qameta/allure/allure-commandline/2.13.3/allure-commandline-2.13.3.zip'
+    version = '2.13.5'
+    downloadLink = 'https://dl.bintray.com/qameta/maven/io/qameta/allure/allure-commandline/2.13.5/allure-commandline-2.13.5.zip'
 }
 
 // dockerCompose.isRequiredBy(test)
