@@ -50,3 +50,7 @@
 * Updated github actions
 * Updated azure devops pipeline
 * Added screens and updated readme
+
+## v9
+* Added automated release notes
+* Updated allure
