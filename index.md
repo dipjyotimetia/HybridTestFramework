@@ -87,25 +87,25 @@ Search and modify the below line in .idea workspace.xml
 ```
 ## Screens
 ### Framework Structure
-<img src="/Docs/screens/projectStructure.png" width="400">  
+![image](/Docs/screens/projectStructure.png)    
 
-### JenkinsExecution
-<img src="/Docs/screens/jenkinsExecution.png" width="700">  
+### JenkinsExecution  
+![image](/Docs/screens/jenkinsExecution.png)  
 
 ### GridServer 2.0
-<img src="/Docs/screens/seleniumGrid.png" width="500">  
+![image](/Docs/screens/seleniumGrid.png)    
 
 ### Allure Reporting
-<img src="/Docs/screens/allureReport.png" width="700">  
+![image](/Docs/screens/allureReport.png)    
 
 ### Gradle Report
-<img src="/Docs/screens/gradleReport.png" width="700">  
+![image](/Docs/screens/gradleReport.png)  
 
 ### TestResults
-<img src="/Docs/screens/testResults.png" width="600">    
+![image](/Docs/screens/testResults.png)    
 
 ### BrowserStack Dashboard
-<img src="/Docs/screens/browserStack.png" width="600">    
+![image](/Docs/screens/browserStack.png)      
 
 ### LogsView
-<img src="/Docs/screens/logs.png" width="700">    
+![image](/Docs/screens/logs.png)      
