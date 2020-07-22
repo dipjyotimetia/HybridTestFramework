@@ -85,9 +85,7 @@ Search and modify the below line in .idea workspace.xml
     <property name="dynamic.classpath" value="true" />
 </component>
 ```
-## Screens
-### Framework Structure
-<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/projectStructure.png" width="400">  
+## Screens  
 
 ### JenkinsExecution
 <img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/jenkinsExecution.png" width="700">  
