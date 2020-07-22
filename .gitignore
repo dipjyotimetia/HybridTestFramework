@@ -7,3 +7,4 @@ Reports
 allure-results/**/**
 ScreensDoc/**/**
 logs/logfile.log
+/build/
