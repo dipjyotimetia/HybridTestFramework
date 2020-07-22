@@ -3,10 +3,10 @@
 [![This project is using Percy.io for visual regression testing.](https://percy.io/static/images/percy-badge.svg)](https://percy.io/CypressTest/Selenium)
 ![HybridTestFramework](https://github.com/dipjyotimetia/HybridTestFramewrok/workflows/HybridTestFramework/badge.svg)
 [![Build Status](https://dev.azure.com/dipjyoti/OpensourceProjects/_apis/build/status/dipjyotimetia.HybridTestFramewrok?branchName=master)](https://dev.azure.com/dipjyoti/OpensourceProjects/_build/latest?definitionId=7&branchName=master)  
-[![SupportedBy JetBrains](https://github.com/TestautoDev/Tricks-And-Tips/blob/master/jetbrains.svg)](https://www.jetbrains.com/?from=HybridTestFramework)  
+[![SupportedBy JetBrains](/Docs/screens/jetbrains.svg)](https://www.jetbrains.com/?from=HybridTestFramework)  
 ### Full fledged WEB, API and Security testing framework using selenium,ZAP OWASP proxy and rest-assured
 
-<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/selenium.png" width="800">  
+<img src="/Docs/screens/selenium.png" width="800">  
 
 ### Supported Platforms  
 This framework supports WebUi automation across a variety of browsers like Chrome, Firefox, IE, no only limited to this but extended to test rest api, security and visual testing.
@@ -87,25 +87,25 @@ Search and modify the below line in .idea workspace.xml
 ```
 ## Screens
 ### Framework Structure
-<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/projectStructure.png" width="400">  
+<img src="/Docs/screens/projectStructure.png" width="400">  
 
 ### JenkinsExecution
-<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/jenkinsExecution.png" width="700">  
+<img src="/Docs/screens/jenkinsExecution.png" width="700">  
 
 ### GridServer 2.0
-<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/seleniumGrid.png" width="500">  
+<img src="/Docs/screens/seleniumGrid.png" width="500">  
 
 ### Allure Reporting
-<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/allureReport.png" width="700">  
+<img src="/Docs/screens/allureReport.png" width="700">  
 
 ### Gradle Report
-<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/gradleReport.png" width="700">  
+<img src="/Docs/screens/gradleReport.png" width="700">  
 
 ### TestResults
-<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/testResults.png" width="600">    
+<img src="/Docs/screens/testResults.png" width="600">    
 
 ### BrowserStack Dashboard
-<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/browserStack.png" width="600">    
+<img src="/Docs/screens/browserStack.png" width="600">    
 
 ### LogsView
-<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/logs.png" width="700">    
+<img src="/Docs/screens/logs.png" width="700">    
