@@ -6,7 +6,7 @@
 [![SupportedBy JetBrains](/Docs/screens/jetbrains.svg)](https://www.jetbrains.com/?from=HybridTestFramework)  
 ### Full fledged WEB, API and Security testing framework using selenium,ZAP OWASP proxy and rest-assured
 
-<img src="/Docs/screens/selenium.png" width="800">  
+[![Selenium](/Docs/screens/selenium.png)](https://www.selenium.dev/)  
 
 ### Supported Platforms  
 This framework supports WebUi automation across a variety of browsers like Chrome, Firefox, IE, no only limited to this but extended to test rest api, security and visual testing.
