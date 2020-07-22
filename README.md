@@ -85,25 +85,3 @@ Search and modify the below line in .idea workspace.xml
     <property name="dynamic.classpath" value="true" />
 </component>
 ```
-## Screens  
-
-### JenkinsExecution
-<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/jenkinsExecution.png" width="700">  
-
-### GridServer 2.0
-<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/seleniumGrid.png" width="500">  
-
-### Allure Reporting
-<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/allureReport.png" width="700">  
-
-### Gradle Report
-<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/gradleReport.png" width="700">  
-
-### TestResults
-<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/testResults.png" width="600">    
-
-### BrowserStack Dashboard
-<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/browserStack.png" width="600">    
-
-### LogsView
-<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/logs.png" width="700">    
