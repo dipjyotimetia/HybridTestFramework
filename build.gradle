@@ -71,7 +71,7 @@ dockerCompose {
 }
 
 dependencies {
-    compile group: 'software.amazon.awssdk', name: 'aws-sdk-java', version: '2.13.66'
+    compile group: 'software.amazon.awssdk', name: 'aws-sdk-java', version: '2.14.8'
     compile group: 'io.netty', name: 'netty-all', version: '4.1.51.Final'
     compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.0.0-alpha-6'
     compile group: 'org.seleniumhq.selenium', name: 'selenium-server', version: '4.0.0-alpha-2'
