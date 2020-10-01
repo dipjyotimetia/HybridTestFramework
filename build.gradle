@@ -78,7 +78,7 @@ dependencies {
     compile group: 'org.awaitility', name: 'awaitility', version: '4.0.3'
     compile group: 'com.deque', name: 'axe-selenium', version: '3.0'
     compile group: 'com.github.tomakehurst', name: 'wiremock', version: '2.26.3'
-    compile group: 'com.browserstack', name: 'browserstack-local-java', version: '1.0.3'
+    compile group: 'com.browserstack', name: 'browserstack-local-java', version: '1.0.5'
     compile group: 'net.reini', name: 'slf4-cdi', version: '1.0'
     compile group: 'org.assertj', name: 'assertj-core', version: '3.17.1'
     compile group: 'org.hamcrest', name: 'hamcrest-all', version: '1.3'
