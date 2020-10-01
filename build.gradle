@@ -85,7 +85,7 @@ dependencies {
     compile group: 'org.testng', name: 'testng', version: '7.0.0'
     compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
     compile group: 'commons-io', name: 'commons-io', version: '2.7'
-    compile group: 'com.aventstack', name: 'extentreports', version: '5.0.3'
+    compile group: 'com.aventstack', name: 'extentreports', version: '5.0.4'
     compile group: 'net.sourceforge.javacsv', name: 'javacsv', version: '2.0'
     compile group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.2'
     compile group: 'org.apache.poi', name: 'poi-ooxml-schemas', version: '4.1.2'
