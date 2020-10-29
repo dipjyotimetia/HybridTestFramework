@@ -2,6 +2,10 @@
 .idea/**/**
 .github/**/**
 .gradle/**/**
+.settings/**
+.project
+.classpath
+bin/**/**
 Out
 Reports
 allure-results/**/**
