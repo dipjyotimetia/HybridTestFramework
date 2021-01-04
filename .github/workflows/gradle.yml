@@ -1,4 +1,4 @@
-name: HybridTestFramework
+name: CI
 
 on:
   push:
