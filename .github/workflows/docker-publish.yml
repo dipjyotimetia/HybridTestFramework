@@ -1,10 +1,9 @@
 name: DockerImage
 
 on:
-  # Docker image will only publish for new release
   release:
-    types:
-      - published
+    # Only use the types keyword to narrow down the activity types that will trigger your workflow.
+    types: [published, created, edited]
 
 env:
   IMAGE_NAME: hybridtestframework
