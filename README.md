@@ -78,10 +78,5 @@ $ docker-compose scale chrome=5
 $ docker-compose scale firefox=5
 ```
 
-Error Handle for dynamic classpath error in intellij:
-Search and modify the below line in .idea workspace.xml
-```xml
-<component name="PropertiesComponent">
-    <property name="dynamic.classpath" value="true" />
-</component>
-```
+### Execution Gif
+![browserstack](https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/gif/videogif.gif)
