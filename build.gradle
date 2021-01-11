@@ -98,7 +98,7 @@ dependencies {
     compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.30'
     compile group: 'com.github.javafaker', name: 'javafaker', version: '1.0.2'
     compile group: 'io.rest-assured', name: 'rest-assured', version: '4.3.3'
-    compile group: 'io.rest-assured', name: 'json-schema-validator', version: '4.3.2'
+    compile group: 'io.rest-assured', name: 'json-schema-validator', version: '4.3.3'
     compile group: 'org.json', name: 'json', version: '20201115'
     compile group: 'com.konghq', name: 'unirest-java', version: '3.11.10'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.0'
