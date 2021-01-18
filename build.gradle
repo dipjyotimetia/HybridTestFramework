@@ -91,7 +91,7 @@ dependencies {
     compile group: 'org.apache.poi', name: 'poi-ooxml-schemas', version: '4.1.2'
     compile group: 'org.apache.poi', name: 'poi-excelant', version: '4.1.2'
     compile group: 'org.apache.poi', name: 'poi-examples', version: '4.1.2'
-    compile group: 'org.apache.poi', name: 'poi-scratchpad', version: '4.1.2'
+    compile group: 'org.apache.poi', name: 'poi-scratchpad', version: '5.0.0'
     compile group: 'org.apache.poi', name: 'poi', version: '4.1.2'
     compile group: 'org.apache.xmlbeans', name: 'xmlbeans', version: '4.0.0'
     compile group: 'com.microsoft.sqlserver', name: 'mssql-jdbc', version: '9.1.1.jre8-preview'
