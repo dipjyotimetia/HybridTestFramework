@@ -21,4 +21,4 @@ if: github.actor == 'dependabot[bot]'
               repo: context.payload.repository.name,
               pull_number: context.payload.pull_request.number
             })
-          github-token: ${{github.token}}
+          github-token: ${{GITHUB_TOKEN}}
