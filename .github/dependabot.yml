@@ -11,4 +11,8 @@ updates:
       interval: "daily"
       time: "19:00"
       timezone: Australia/Melbourne
+    rebase-strategy: "auto"
+    labels:
+      - "security"
+      - "dependencies"
     open-pull-requests-limit: 10  
