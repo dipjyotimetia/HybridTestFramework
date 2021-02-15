@@ -44,7 +44,7 @@ public class TC002_GURU_Login<T> extends UserActions<T> {
 
         LoginPageGuru loginPage = new LoginPageGuru();
 
-        ExtentTestManager.startTest("Test1", "Test Description guru");
+        ExtentTestManager.startTest("Test1", "Test Description guru99.com");
 
         try {
             //loginPage.login();
