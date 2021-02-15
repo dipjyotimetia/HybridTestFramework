@@ -33,6 +33,8 @@
   description: "Feature"
 - name: "enhancement"
   color: "a22eef"
+- name: "dependencies"
+  color: "4FB22E"  
 - name: "wontfix_it"
   color: "08A6C5"
   description: "This will not be worked on"
