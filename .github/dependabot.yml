@@ -9,7 +9,7 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "daily"
-      time: "19:00"
+      time: "10:00"
       timezone: Australia/Melbourne
     rebase-strategy: "auto"
     labels:
