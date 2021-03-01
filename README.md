@@ -80,3 +80,10 @@ $ docker-compose scale firefox=5
 
 ### Execution Gif
 ![browserstack](https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/gif/videogif.gif)
+
+### Kafka
+https://github.com/simplesteph/kafka-stack-docker-compose
+https://betterprogramming.pub/adding-schema-registry-to-kafka-in-your-local-docker-environment-49ada28c8a9b
+https://betterprogramming.pub/a-comprehensive-guide-to-build-an-event-driven-application-with-kotlin-kafka-and-dynamodb-a8d9bfb19e42
+https://github.com/billydh/kotlin-kafka-dynamo-demo
+https://www.sohamkamani.com/golang/working-with-kafka/
