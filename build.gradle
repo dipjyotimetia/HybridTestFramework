@@ -111,6 +111,11 @@ dependencies {
     compile group: 'io.qameta.allure', name: 'allure-testng', version: '2.13.8'
     compile group: 'io.qameta.allure', name: 'allure-rest-assured', version: '2.13.8'
     compile group: 'io.qameta.allure', name: 'allure-attachments', version: '2.13.8'
+    compile group: 'org.apache.kafka', name: 'kafka_2.13', version: '2.7.0'
+    compile group: 'org.apache.kafka', name: 'kafka-clients', version: '2.7.0'
+    compile group: 'org.apache.kafka', name: 'kafka-streams', version: '2.7.0'
+    compile group: 'org.testcontainers', name: 'selenium', version: '1.15.2'
+    compile group: 'org.testcontainers', name: 'kafka', version: '1.15.2'
 }
 
 task E2E(type: Test) {
