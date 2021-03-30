@@ -102,7 +102,7 @@ dependencies {
     compile group: 'org.json', name: 'json', version: '20201115'
     compile group: 'com.konghq', name: 'unirest-java', version: '3.11.11'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.0'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.0'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.1'
     compile group: 'net.lightbody.bmp', name: 'browsermob-core', version: '2.1.5'
     compile group: 'org.zaproxy', name: 'zap-clientapi', version: '1.9.0'
     compile group: 'org.zaproxy', name: 'zap', version: '2.10.0'
