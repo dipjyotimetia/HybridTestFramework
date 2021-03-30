@@ -93,7 +93,7 @@ dependencies {
     compile group: 'org.apache.poi', name: 'poi-examples', version: '5.0.0'
     compile group: 'org.apache.poi', name: 'poi-scratchpad', version: '5.0.0'
     compile group: 'org.apache.poi', name: 'poi', version: '5.0.0'
-    compile group: 'org.apache.xmlbeans', name: 'xmlbeans', version: '4.0.0'
+    compile group: 'org.apache.xmlbeans', name: 'xmlbeans', version: '5.0.0'
     compile group: 'com.microsoft.sqlserver', name: 'mssql-jdbc', version: '9.2.1.jre8'
     compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.30'
     compile group: 'com.github.javafaker', name: 'javafaker', version: '1.0.2'
