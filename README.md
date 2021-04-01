@@ -78,6 +78,12 @@ $ docker-compose scale chrome=5
 $ docker-compose scale firefox=5
 ```
 
+### Spawn kafka instances
+```shell
+$ docker-compose -f docker-compose-kafka.yml up
+$ docker-compose -f docker-compose-kafka.yml down --rmi all
+```
+
 ### Execution Gif
 ![browserstack](https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/gif/videogif.gif)
 
