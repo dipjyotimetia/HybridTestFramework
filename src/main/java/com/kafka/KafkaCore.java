@@ -1,11 +1,12 @@
 package com.kafka;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.testng.Assert;
 
 import java.util.Properties;
 
+@Slf4j
 public class KafkaCore {
     public void CreateTopic(String topic, String value, Properties properties) {
         // Create the producer
@@ -16,10 +17,10 @@ public class KafkaCore {
         producer.send(record, (metadata, e) -> {
             // Execute every time record is successfully send
             if (e == null) {
-                System.out.println((metadata.timestamp()));
-                Assert.assertEquals(topic, metadata.topic());
-                Assert.assertTrue(metadata.hasOffset());
-                Assert.assertTrue(metadata.hasTimestamp());
+                log.info(String.valueOf(metadata.timestamp()));
+                log.info(topic, metadata.topic());
+                log.info(String.valueOf(metadata.hasOffset()));
+                log.info(String.valueOf(metadata.hasTimestamp()));
             } else {
                 e.printStackTrace();
             }
