@@ -23,7 +23,8 @@ This framework supports WebUi automation across a variety of browsers like Chrom
 * Accessibility testing using axe-selenium
 * Stubbed api testing using WireMock
 * Can send logs to ElasticSearch for kibana dashboard visualization
-* Database testing support(Coming Soon...)
+* Database testing support
+* Kafka testing support
 * Kubernetes support(Coming soon...)   
     
 ### Setup & Tools
@@ -31,12 +32,12 @@ This framework supports WebUi automation across a variety of browsers like Chrom
   https://www.jetbrains.com/idea/download/
 * Install docker desktop 
   https://www.docker.com/products/docker-desktop    
-* Java SDK  
-  https://docs.aws.amazon.com/corretto/latest/corretto-8-ug/downloads-list.html or any latest version.
+* Java JDK_11  
+  https://adoptopenjdk.net/
 * Gradle
-  https://gradle.org/next-steps/?version=6.4&format=bin
+  https://gradle.org/next-steps/?version=6.8.3&format=bin
 * Allure
-  https://github.com/allure-framework/allure2/archive/2.13.3.zip    
+  https://github.com/allure-framework/allure2/archive/2.13.9.zip    
 * Set Environment variables      
     * JAVA_HOME: Pointing to the Java SDK folder\bin
     * GRADLE_HOME: Pointing to Gradle directory\bin.
