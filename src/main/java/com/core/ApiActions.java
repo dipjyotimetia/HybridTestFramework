@@ -33,16 +33,15 @@ import io.restassured.http.Method;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
 import io.restassured.specification.RequestSpecification;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@Slf4j
 public class ApiActions<T> {
-    private final Logger logger = LogManager.getLogger(ApiActions.class);
 
     /**
      * http request with parameter
@@ -215,7 +214,7 @@ public class ApiActions<T> {
             String abc1 = date.format(date1);
             return abc1;
         } catch (Exception e) {
-            logger.error(e);
+            log.error(e.getMessage());
         }
         return null;
     }
@@ -268,6 +267,6 @@ public class ApiActions<T> {
 
     @Step("{0}")
     protected void log(String message) {
-        logger.info(message);
+        log.info(message);
     }
 }

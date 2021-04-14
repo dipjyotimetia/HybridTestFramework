@@ -25,16 +25,14 @@ package com.pages;
 
 import com.core.UserActions;
 import io.qameta.allure.Step;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 
 import java.util.List;
 
+@Slf4j
 public class LoginPage extends UserActions {
-
-    private final Logger logger = LogManager.getLogger(LoginPage.class);
 
     //Element that wont get changed
     @CacheLookup
@@ -75,7 +73,7 @@ public class LoginPage extends UserActions {
 
             captureImage(tcName);
         } catch (Exception e) {
-            logger.error(e);
+            log.error(e.getMessage());
         }
 
     }

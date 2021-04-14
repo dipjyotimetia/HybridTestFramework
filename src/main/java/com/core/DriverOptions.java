@@ -23,9 +23,8 @@ SOFTWARE.
  */
 package com.core;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.SystemUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
@@ -45,8 +44,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
+@Slf4j
 abstract class DriverOptions<T> {
-    private final Logger logger = LogManager.getLogger(DriverOptions.class);
 
     /**
      * get chrome options
@@ -74,7 +73,7 @@ abstract class DriverOptions<T> {
         if (perf.equalsIgnoreCase("YES")) {
             options.merge(WebDriverController.performance());
         }
-        logger.info("Chrome options added");
+        log.info("Chrome options added");
         return options;
     }
 
@@ -95,7 +94,7 @@ abstract class DriverOptions<T> {
         options.setHeadless(SystemUtils.IS_OS_LINUX);
         options.setCapability(FirefoxDriver.PROFILE, profile);
         //setFirefoxOWASP(options);
-        logger.info("Firefox options added");
+        log.info("Firefox options added");
         return options;
     }
 
@@ -112,7 +111,7 @@ abstract class DriverOptions<T> {
         options.setCapability(InternetExplorerDriver.IGNORE_ZOOM_SETTING, true);
         options.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
         options.setCapability(InternetExplorerDriver.REQUIRE_WINDOW_FOCUS, true);
-        logger.info("IE options added");
+        log.info("IE options added");
         return options;
     }
 
@@ -167,22 +166,22 @@ abstract class DriverOptions<T> {
                 capabilities.setCapability("browserName", "chrome");
                 capabilities.setCapability("browserVersion", "81");
                 capabilities.setCapability("platform", "windows");
-                logger.info("Adding aws chrome capabilities");
+                log.info("Adding aws chrome capabilities");
                 break;
             case "firefox":
                 capabilities.setCapability("browserName", "firefox");
                 capabilities.setCapability("browserVersion", "75");
                 capabilities.setCapability("platform", "windows");
-                logger.info("Adding aws firefox capabilities");
+                log.info("Adding aws firefox capabilities");
                 break;
             case "ie":
                 capabilities.setCapability("browserName", "internet explorer");
                 capabilities.setCapability("browserVersion", "11");
                 capabilities.setCapability("platform", "windows");
-                logger.info("Adding aws firefox capabilities");
+                log.info("Adding aws firefox capabilities");
                 break;
             default:
-                logger.info("No supported browser provided");
+                log.info("No supported browser provided");
         }
         return capabilities;
     }
@@ -256,7 +255,7 @@ abstract class DriverOptions<T> {
         pref.enable(LogType.PERFORMANCE, Level.OFF);
         pref.enable(LogType.PROFILER, Level.OFF);
         pref.enable(LogType.SERVER, Level.OFF);
-        logger.info("Performance capability added");
+        log.info("Performance capability added");
         return pref;
     }
 
@@ -269,7 +268,7 @@ abstract class DriverOptions<T> {
         List<String> chromeOWASP = new ArrayList<>();
         chromeOWASP.add("--proxy-server=http://localhost:8082");
         chromeOWASP.add("--ignore-certificate-errors");
-        logger.info("OWASP for chrome added");
+        log.info("OWASP for chrome added");
         return chromeOWASP;
     }
 
@@ -285,7 +284,7 @@ abstract class DriverOptions<T> {
         options.addPreference("network.proxy.http_port", 8082);
         options.addPreference("network.proxy.share_proxy_settings", true);
         options.addPreference("network.proxy.no_proxies_on", "");
-        logger.info("OWASP for firefox added");
+        log.info("OWASP for firefox added");
         return options;
     }
 

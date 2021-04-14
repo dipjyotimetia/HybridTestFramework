@@ -30,17 +30,15 @@ import com.logging.TestStatus;
 import com.reporting.ExtentReports.ExtentManager;
 import com.reporting.ExtentReports.ExtentTestManager;
 import io.qameta.allure.Attachment;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
-
+@Slf4j
 public class TestListener extends DriverManager implements ITestListener {
-    private final Logger logger = LogManager.getLogger(TestListener.class);
 
     private TestStatus testStatus;
 //    private ResultSender rs= new ResultSender();
@@ -51,13 +49,13 @@ public class TestListener extends DriverManager implements ITestListener {
 
     @Override
     public void onStart(ITestContext iTestContext) {
-        logger.info("I am in onStart method " + iTestContext.getName());
+        log.info("I am in onStart method " + iTestContext.getName());
         iTestContext.setAttribute("WebDriver", this.driverThread);
     }
 
     @Override
     public void onFinish(ITestContext iTestContext) {
-        logger.info("I am in onFinish method " + iTestContext.getName());
+        log.info("I am in onFinish method " + iTestContext.getName());
         ExtentTestManager.endTest();
         ExtentManager.getReporter().flush();
     }
@@ -65,14 +63,14 @@ public class TestListener extends DriverManager implements ITestListener {
     @Override
     public void onTestStart(ITestResult iTestResult) {
         this.testStatus = new TestStatus();
-        logger.info("I am in onTestStart method " + getTestMethodName(iTestResult) + " start");
+        log.info("I am in onTestStart method " + getTestMethodName(iTestResult) + " start");
         ExtentTestManager.startTest(iTestResult.getMethod().getMethodName(), "");
     }
 
     @Override
     public void onTestSuccess(ITestResult iTestResult) {
 //        this.sendStatus(iTestResult,"PASS");
-        logger.info("I am in onTestSuccess method " + getTestMethodName(iTestResult) + " succeed");
+        log.info("I am in onTestSuccess method " + getTestMethodName(iTestResult) + " succeed");
         ExtentTestManager.getTest().log(Status.PASS, "Test passed");
     }
 
@@ -82,7 +80,7 @@ public class TestListener extends DriverManager implements ITestListener {
             if (this.driverThread != null) {
                 //        this.sendStatus(iTestResult,"FAIL");
                 saveScreenshotPNG();
-                logger.error("I am in onTestFailure method " + getTestMethodName(iTestResult) + " failed");
+                log.error("I am in onTestFailure method " + getTestMethodName(iTestResult) + " failed");
                 Object testClass = iTestResult.getInstance();
                 this.driverThread = ((DriverManager) testClass).getDriver();
                 String base64Screenshot = "data:image/png;base64," + ((TakesScreenshot) driverThread).
@@ -97,13 +95,13 @@ public class TestListener extends DriverManager implements ITestListener {
     @Override
     public void onTestSkipped(ITestResult iTestResult) {
 //        this.sendStatus(iTestResult,"SKIP");
-        logger.warn("I am in onTestSkipped method " + getTestMethodName(iTestResult) + " skipped");
+        log.warn("I am in onTestSkipped method " + getTestMethodName(iTestResult) + " skipped");
         ExtentTestManager.getTest().log(Status.SKIP, "Test Skipped");
     }
 
     @Override
     public void onTestFailedButWithinSuccessPercentage(ITestResult iTestResult) {
-        logger.error("Test failed but it is in defined success ratio " + getTestMethodName(iTestResult));
+        log.error("Test failed but it is in defined success ratio " + getTestMethodName(iTestResult));
     }
 
     @Attachment(value = "Page screenshot", type = "image/png")

@@ -29,4 +29,10 @@
         </classes>
     </test>
 
+    <test name="E2E Tests for Kafka">
+        <classes>
+            <class name="com.TestDefinitionLayer.TC006_KafkaTest"/>
+        </classes>
+    </test>
+
 </suite>

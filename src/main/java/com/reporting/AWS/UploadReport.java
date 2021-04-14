@@ -23,8 +23,7 @@ SOFTWARE.
  */
 package com.reporting.AWS;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -32,8 +31,8 @@ import software.amazon.awssdk.services.s3.model.*;
 
 import java.io.File;
 
+@Slf4j
 public class UploadReport {
-    private final Logger logger = LogManager.getLogger(UploadReport.class);
 
     String bucketName = "";
     String key = "Reports";
@@ -52,9 +51,9 @@ public class UploadReport {
                                     .locationConstraint(region.id())
                                     .build())
                     .build());
-            logger.info(bucketName);
+            log.info(bucketName);
         } catch (S3Exception e) {
-            logger.error(e.awsErrorDetails().errorMessage());
+            log.error(e.awsErrorDetails().errorMessage());
             System.exit(1);
         }
     }
@@ -70,7 +69,7 @@ public class UploadReport {
                 .build();
         CreateMultipartUploadResponse response = s3Client.createMultipartUpload(createMultipartUploadRequest);
         String uploadId = response.uploadId();
-        logger.info(uploadId);
+        log.info(uploadId);
 
         UploadPartRequest uploadPartRequest1 = UploadPartRequest.builder().bucket(bucketName).key(key)
                 .uploadId(uploadId)
@@ -83,6 +82,6 @@ public class UploadReport {
                 CompleteMultipartUploadRequest.builder().bucket(bucketName).key(key).uploadId(uploadId)
                         .multipartUpload(completedMultipartUpload).build();
         s3Client.completeMultipartUpload(completeMultipartUploadRequest);
-        logger.info("Object upload complete");
+        log.info("Object upload complete");
     }
 }
