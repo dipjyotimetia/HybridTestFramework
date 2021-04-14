@@ -25,7 +25,7 @@ This framework supports WebUi automation across a variety of browsers like Chrom
 * Can send logs to ElasticSearch for kibana dashboard visualization
 * Database testing support
 * Kafka testing support
-* Kubernetes support(Coming soon...)   
+* Kubernetes support   
     
 ### Setup & Tools
 * Install intellij
@@ -63,7 +63,7 @@ Create new class and name as the TC00*_E2E_TEST-***
  - Write test
  - Use CatchBlock in try/catch section
 
-### Spawns chrome, firefox, selenium hub and OWASP proxy server    
+### Spin-up chrome, firefox, selenium hub and OWASP proxy server    
 ```shell script
 $ docker-compose up -d
 ```
@@ -73,24 +73,31 @@ $ docker-compose up -d
 $ $ docker-compose -f docker-compose-infra up -d
 ```
 
-### Spawns four additional node-chrome/firefox instances linked to the hub
+### Spin-up four additional node-chrome/firefox instances linked to the hub
 ```shell script
 $ docker-compose scale chrome=5
 $ docker-compose scale firefox=5
 ```
 
-### Spawn kafka instances
+### Spin-up kafka instances
 ```shell
 $ docker-compose -f docker-compose-kafka.yml up
 $ docker-compose -f docker-compose-kafka.yml down --rmi all
 ```
 
+### Spin-up selenium hub in kubernetes instance
+```shell
+$ kubectl apply -f selenium-k8s-deploy-svc.yaml
+$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml
+$ kubectl proxy
+$ kubectl describe secret -n kube-system | grep deployment -A 12
+## To delete deployments
+$ kubectl delete deployment selenium-node-firefox
+$ kubectl delete deployment selenium-node-chrome
+$ kubectl delete deployment selenium-hub
+```
+navigate to `http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/`
+<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/kubernetes.png" width="600">
+
 ### Execution Gif
 ![browserstack](https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/gif/videogif.gif)
-
-### Kafka
-https://github.com/simplesteph/kafka-stack-docker-compose
-https://betterprogramming.pub/adding-schema-registry-to-kafka-in-your-local-docker-environment-49ada28c8a9b
-https://betterprogramming.pub/a-comprehensive-guide-to-build-an-event-driven-application-with-kotlin-kafka-and-dynamodb-a8d9bfb19e42
-https://github.com/billydh/kotlin-kafka-dynamo-demo
-https://www.sohamkamani.com/golang/working-with-kafka/
