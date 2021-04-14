@@ -27,11 +27,10 @@ import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
 import com.deque.axe.AXE;
 import com.github.javafaker.Faker;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -63,6 +62,7 @@ import java.util.stream.Collectors;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
+@Slf4j
 public class UserActions<T> extends DriverManager<T> {
     private static final Faker faker = new Faker();
     private static String datetimeabc = null;
@@ -73,7 +73,6 @@ public class UserActions<T> extends DriverManager<T> {
     private static String _dburl = "";
     private static WebDriverWait wait;
     private static JavascriptExecutor jsExec;
-    private final Logger logger = LogManager.getLogger(UserActions.class);
     private Dictionary dicttoread = new Hashtable();
 
     public static Map<String, String> get(Map<String, String> formParams) {
@@ -345,7 +344,7 @@ public class UserActions<T> extends DriverManager<T> {
                 select.selectByVisibleText((String) t);
                 break;
             default:
-                logger.info("Provided option not found");
+                log.info("Provided option not found");
         }
     }
 
@@ -413,7 +412,7 @@ public class UserActions<T> extends DriverManager<T> {
                 select.deselectByVisibleText((String) t);
                 break;
             default:
-                logger.info("Provided option not found");
+                log.info("Provided option not found");
         }
     }
 
@@ -478,7 +477,7 @@ public class UserActions<T> extends DriverManager<T> {
      * @param elements elements
      */
     public void getAllValues(List<WebElement> elements) {
-        elements.forEach(logger::info);
+        elements.forEach(e -> log.info(e.getText()));
     }
 
     /**
@@ -510,9 +509,9 @@ public class UserActions<T> extends DriverManager<T> {
     protected void compareText(String actual, String expected) {
         try {
             Assert.assertEquals(actual, expected);
-            logger.info("Text compared successfully");
+            log.info("Text compared successfully");
         } catch (Exception e) {
-            logger.error("Texts compare failed" + e);
+            log.error("Texts compare failed" + e);
         }
     }
 
@@ -681,10 +680,10 @@ public class UserActions<T> extends DriverManager<T> {
                 }
             }
             if (flag == 1) {
-                logger.info("Not data present for testname" + t_testcaseName);
+                log.info("Not data present for testname" + t_testcaseName);
             }
         } catch (IOException ef) {
-            logger.error(ef);
+            log.error(ef.getMessage());
         }
         return (String) dicttoread.get(t_fieldName);
     }
@@ -719,9 +718,9 @@ public class UserActions<T> extends DriverManager<T> {
                         if (p_filed.equalsIgnoreCase(t_field)) {
                             String p_field1 = csvobj.get("Value" + i).trim();
                             dicttoread.put(t_field, t_value);
-                            logger.info("value for the field: " + t_field + " is updated to: " + t_value + " Successfully");
+                            log.info("value for the field: " + t_field + " is updated to: " + t_value + " Successfully");
                             String stp = csvOutput.replace(FileContentPerRow, t_field + "," + p_field1, t_field + "," + t_value);
-                            logger.info(stp);
+                            log.info(stp);
                             FileContentPerRow = stp;
                             P_valuenotduplicated = 1;
                         }
@@ -730,9 +729,9 @@ public class UserActions<T> extends DriverManager<T> {
                         String p_field1 = csvobj.get("Value" + (i - 1)).trim();
                         dicttoread.put(t_field, t_value);
                         String stp1 = csvOutput.replace(FileContentPerRow, p_field1, p_field1 + "," + t_field + "," + t_value);
-                        logger.info(stp1);
+                        log.info(stp1);
                         FileContentPerRow = stp1;
-                        logger.info("New Field: " + t_field + " is added successfully with value: " + t_value);
+                        log.info("New Field: " + t_field + " is added successfully with value: " + t_value);
                     }
                     flag = 1;
                 }
@@ -743,10 +742,10 @@ public class UserActions<T> extends DriverManager<T> {
             csvobj.close();
             RenameCsvFile("input\\Datasheet1.csv", "input\\Datasheet.csv");
             if (flag == 0) {
-                logger.info("No data present for the testname");
+                log.info("No data present for the testname");
             }
         } catch (Exception e) {
-            logger.error(e);
+            log.error(e.getMessage());
         }
     }
 
@@ -769,13 +768,13 @@ public class UserActions<T> extends DriverManager<T> {
                 b1 = file1.delete();
             }
             Thread.sleep(500);
-            logger.info(b1);
+            log.info(String.valueOf(b1));
             File file = new File(source);
             final String st = dest;
             b = file.renameTo(new File(st));
-            logger.info(b);
+            log.info(String.valueOf(b));
         } catch (Exception e) {
-            logger.error(e);
+            log.error(e.getMessage());
         }
         return b;
     }
@@ -793,7 +792,7 @@ public class UserActions<T> extends DriverManager<T> {
                 FileUtils.copyFile(src, new File(("ScreensDoc\\" + p_testcaseName + "\\" + datetimeabc + "\\" + Counter + ".png")));
             }
         } catch (Exception e) {
-            logger.error("Capture screenShot failed", e);
+            log.error("Capture screenShot failed", e);
         }
     }
 
@@ -819,7 +818,7 @@ public class UserActions<T> extends DriverManager<T> {
                         pic.close();
                         out.close();
                     } catch (IOException io) {
-                        logger.error(io);
+                        log.error(io.getMessage());
                     }
                 }
                 for (int i = 1; i <= Counter; i++) {
@@ -828,7 +827,7 @@ public class UserActions<T> extends DriverManager<T> {
                 }
                 Counter = 0;
             } catch (Exception e) {
-                logger.error(e);
+                log.error(e.getMessage());
             }
         }
     }
@@ -858,7 +857,7 @@ public class UserActions<T> extends DriverManager<T> {
             abc1 = date.format(date1);
             datetimeabc = "Run_" + abc1;
         } catch (Exception e) {
-            logger.error(e);
+            log.error(e.getMessage());
         }
     }
 
@@ -874,7 +873,7 @@ public class UserActions<T> extends DriverManager<T> {
             sysPathFiled.setAccessible(true);
             sysPathFiled.set(null, null);
         } catch (Exception e) {
-            logger.error(e);
+            log.error(e.getMessage());
         }
     }
 
@@ -891,7 +890,7 @@ public class UserActions<T> extends DriverManager<T> {
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         } catch (ClassNotFoundException e) {
-            logger.error("Class not found", e);
+            log.error("Class not found", e);
         }
         try (Connection connection = java.sql.DriverManager.getConnection(_dburl, _dbusername, _dbpassword)) {
             try (Statement stmt = connection.createStatement()) {
@@ -904,21 +903,21 @@ public class UserActions<T> extends DriverManager<T> {
                                 rs.getString(i);
                             } catch (NullPointerException e) {
                                 resultValue = "NULL";
-                                logger.info("column name:" + columnName + "|" + "Column value:" + resultValue);
+                                log.info("column name:" + columnName + "|" + "Column value:" + resultValue);
                                 continue;
                             }
                             columnName = rsmd.getColumnName(i);
                             resultValue = rs.getString(i).toString();
-                            logger.info("column name:" + columnName + "|" + "Column value:" + resultValue);
+                            log.info("column name:" + columnName + "|" + "Column value:" + resultValue);
                         }
                     }
                 }
                 connection.close();
             } catch (SQLException sq) {
-                logger.error(sq);
+                log.error(sq.getMessage());
             }
         } catch (SQLException sq) {
-            logger.error(sq);
+            log.error(sq.getMessage());
         }
         return resultValue;
     }
@@ -934,24 +933,24 @@ public class UserActions<T> extends DriverManager<T> {
         switch (dataType) {
             case "FirstName":
                 value = "testauto" + faker.name().firstName();
-                logger.info("FirstName: " + value);
+                log.info("FirstName: " + value);
                 break;
             case "LastName":
                 value = faker.name().lastName();
-                logger.info("LastName: " + value);
+                log.info("LastName: " + value);
                 break;
             case "UserName":
                 value = RandomStringUtils.randomAlphabetic(6);
-                logger.info("Username: " + value);
+                log.info("Username: " + value);
                 break;
             case "Email":
                 value = "testauto" + faker.internet().emailAddress();
-                logger.info("EmailAddress: " + value);
+                log.info("EmailAddress: " + value);
             case "Mobile":
                 value = "0" + RandomStringUtils.randomNumeric(9);
-                logger.info("MobileNo: " + value);
+                log.info("MobileNo: " + value);
             default:
-                logger.info("Random type not found");
+                log.info("Random type not found");
                 break;
         }
         return value;
@@ -964,7 +963,7 @@ public class UserActions<T> extends DriverManager<T> {
      */
     public String generateRandomString() {
         String name = RandomStringUtils.randomAlphabetic(5);
-        logger.info(name);
+        log.info(name);
         return name;
     }
 
@@ -975,7 +974,7 @@ public class UserActions<T> extends DriverManager<T> {
      */
     protected String generateRandomEmail() {
         String email = faker.internet().emailAddress();
-        logger.info("EmailAddress: " + email);
+        log.info("EmailAddress: " + email);
         return email;
     }
 
@@ -986,7 +985,7 @@ public class UserActions<T> extends DriverManager<T> {
      */
     protected String generateRandomMobileNo() {
         String mobNo = "0" + RandomStringUtils.randomNumeric(9);
-        logger.info("MobileNo: " + mobNo);
+        log.info("MobileNo: " + mobNo);
         return mobNo;
     }
 
@@ -1035,11 +1034,11 @@ public class UserActions<T> extends DriverManager<T> {
                 element = driverThread.findElements(By.className(webElement));
                 break;
             default:
-                logger.info("Element type not found");
+                log.info("Element type not found");
                 break;
         }
         if (element == null) {
-            logger.error("Web element not found");
+            log.error("Web element not found");
             throw new Exception(webElement + "not found");
         }
         return element;
@@ -1072,11 +1071,11 @@ public class UserActions<T> extends DriverManager<T> {
                 element = driverThread.findElement(By.className(webElement));
                 break;
             default:
-                logger.info("Element type not found");
+                log.info("Element type not found");
                 break;
         }
         if (element == null) {
-            logger.error("Web element not found");
+            log.error("Web element not found");
             throw new Exception(webElement + "not found");
         }
         return element;
@@ -1090,7 +1089,7 @@ public class UserActions<T> extends DriverManager<T> {
      */
     protected boolean isExist(List<WebElement> element) {
         if (element.size() != 0) {
-            logger.info(element + ": element is exists");
+            log.info(element + ": element is exists");
             return true;
         }
         return false;
@@ -1116,7 +1115,7 @@ public class UserActions<T> extends DriverManager<T> {
                 returnValue = element.isDisplayed();
                 break;
             default:
-                logger.info("Element display type not available");
+                log.info("Element display type not available");
         }
         return returnValue;
     }
@@ -1216,12 +1215,12 @@ public class UserActions<T> extends DriverManager<T> {
     protected void getNamedCookie(String key, String value) {
         driverThread.manage().addCookie(new Cookie(key, value));
         Cookie cookie = driverThread.manage().getCookieNamed(key);
-        logger.info(cookie);
+        log.info(cookie.toString());
     }
 
     protected void catchBlock(Exception e) {
         Counter = 0;
-        logger.error("Error Description", e);
+        log.error("Error Description", e);
         Assert.fail("TestCase Failed", e);
     }
 

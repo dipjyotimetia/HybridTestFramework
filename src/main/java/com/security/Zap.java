@@ -23,13 +23,11 @@ SOFTWARE.
  */
 package com.security;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.zaproxy.clientapi.core.ClientApiException;
 
+@Slf4j
 public class Zap implements ZapFunctionalities {
-
-    private final Logger logger = LogManager.getLogger(Zap.class);
 
     private final ZapApi zapApi;
 
@@ -39,39 +37,39 @@ public class Zap implements ZapFunctionalities {
 
     @Override
     public void doSpidering() throws ClientApiException, InterruptedException {
-        logger.info("Spider started.");
+        log.info("Spider started.");
         int progress;
         String spiderTaskId = zapApi.getSpiderTaskId();
         do {
             Thread.sleep(1000);
             progress = zapApi.getSpiderProgress(spiderTaskId);
-            logger.info("Spider progress : " + progress + "%");
+            log.info("Spider progress : " + progress + "%");
         } while (progress < 100);
-        logger.info("Spider complete");
+        log.info("Spider complete");
     }
 
     @Override
     public void doPassiveScan() throws ClientApiException, InterruptedException {
-        logger.info("Passive scanning started.");
+        log.info("Passive scanning started.");
         int recordsToScan;
         do {
             Thread.sleep(500);
             recordsToScan = zapApi.getNumberOfUnscannedRecods();
-            logger.info("There is still " + recordsToScan + " records to scan");
+            log.info("There is still " + recordsToScan + " records to scan");
         } while (recordsToScan != 0);
-        logger.info("Passive scan completed");
+        log.info("Passive scan completed");
     }
 
     @Override
     public void doActiveScan() throws ClientApiException, InterruptedException {
-        logger.info("Active scanning started.");
+        log.info("Active scanning started.");
         String activeScanTaskId = zapApi.getActiveScanTaskId();
         int progress;
         do {
             Thread.sleep(5000);
             progress = zapApi.getActiveScanProgress(activeScanTaskId);
-            logger.info("Active Scan progress : " + progress + "%");
+            log.info("Active Scan progress : " + progress + "%");
         } while (progress < 100);
-        logger.info("Active Scan complete");
+        log.info("Active Scan complete");
     }
 }

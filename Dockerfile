@@ -3,12 +3,12 @@ FROM ubuntu:bionic-20200311
 
 LABEL maintainer="HybridTestFramework dipjyotimetia@gmail.com"
 
-ENV GRADLE_VERSION 6.8.1
-ENV ALLURE_VERSION 2.13.8
+ENV GRADLE_VERSION 6.8.3
+ENV ALLURE_VERSION 2.13.9
 
 # install packages
 RUN apt-get -o Acquire::Check-Valid-Until=false update
-RUN apt-get install -y openjdk-8-jdk vim wget curl zip unzip git python-pip python-dev build-essential
+RUN apt-get install -y openjdk-11-jdk vim wget curl zip unzip git python-pip python-dev build-essential
 
 # Install Gradle
 RUN wget https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip && \
@@ -18,9 +18,9 @@ RUN wget https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.
 ENV GRADLE_HOME /opt/gradle-${GRADLE_VERSION}
 ENV PATH $PATH:$GRADLE_HOME/bin
 
-RUN echo "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64" >> ~/.bashrc
+RUN echo "export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64" >> ~/.bashrc
 
-ENV JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64/jre"
+ENV JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64/jre"
 ENV PATH $JAVA_HOME/bin:$PATH
 
 # Install allure

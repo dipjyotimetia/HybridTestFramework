@@ -23,6 +23,7 @@ SOFTWARE.
  */
 package com.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import org.apache.commons.io.FileUtils;
@@ -40,11 +41,10 @@ import java.nio.file.Paths;
 /**
  * utils for file system operations.
  */
+@Slf4j
 public class FileSystem {
 
-    private static final Logger logger = LogManager.getLogger(FileSystem.class);
-
-    public void downloadDriver() throws Exception{
+    public void downloadDriver() throws Exception {
         String fromFile = "https://chromedriver.storage.googleapis.com/81.0.4044.138/chromedriver_win32.zip";
         String toFile = "Driver/chromedriver.zip";
         String destination = "Driver";
@@ -53,7 +53,7 @@ public class FileSystem {
             unzip(toFile, destination);
             Thread.sleep(3000);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
     }
 
@@ -62,7 +62,7 @@ public class FileSystem {
             ZipFile zipFile = new ZipFile(source);
             zipFile.extractAll(destination);
         } catch (ZipException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
     }
 
@@ -80,10 +80,10 @@ public class FileSystem {
             } else {
                 file.delete();
             }
-            logger.info("Delete " + path);
+            log.info("Delete " + path);
         } catch (Exception e) {
             String errorMessage = "Failed to delete " + path;
-            logger.fatal(errorMessage);
+            log.error(errorMessage);
             throw new IOException(errorMessage);
         }
     }
@@ -143,7 +143,7 @@ public class FileSystem {
         if (!file.exists()) {
             boolean result = file.mkdirs();
             if (!result) {
-                logger.error("Failed to create folder: " + directory);
+                log.error("Failed to create folder: " + directory);
             }
         }
     }

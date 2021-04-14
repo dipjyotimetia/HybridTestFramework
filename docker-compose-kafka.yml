@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  kafka-broker:
+    image: vectorized/redpanda:v21.3.7
+    ports:
+      - 9092:9092
+      - 29092:29092
+    hostname: kafka-broker
+    entrypoint: [/usr/bin/rpk, redpanda, start, --kafka-addr, "PLAINTEXT://0.0.0.0:29092,OUTSIDE://0.0.0.0:9092", --advertise-kafka-addr, "PLAINTEXT://kafka-broker:29092,OUTSIDE://localhost:9092"]
+
+  schema-registry:
+    image: confluentinc/cp-schema-registry:6.1.1
+    hostname: schema-registry
+    depends_on:
+      - kafka-broker
+    ports:
+      - 8081:8081
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: kafka-broker:29092
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop
+    restart: "no"
+    ports:
+      - "9000:9000"
+    hostname: kafdrop
+    environment:
+      KAFKA_BROKERCONNECT: "kafka-broker:29092"
+      JVM_OPTS: "-Xms16M -Xmx48M -Xss180K -XX:-TieredCompilation -XX:+UseStringDeduplication -noverify"
+    depends_on:
+      - "kafka-broker"
+
+  rest-proxy:
+    image: confluentinc/cp-kafka-rest:6.1.1
+    depends_on:
+      - kafka-broker
+      - schema-registry
+    ports:
+      - 8085:8085
+    hostname: rest-proxy
+    container_name: rest-proxy
+    environment:
+      KAFKA_REST_HOST_NAME: rest-proxy
+      KAFKA_REST_BOOTSTRAP_SERVERS: 'kafka-broker:29092'
+      KAFKA_REST_LISTENERS: "http://0.0.0.0:8085"
+      KAFKA_REST_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'

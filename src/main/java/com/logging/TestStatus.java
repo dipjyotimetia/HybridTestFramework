@@ -24,7 +24,9 @@ SOFTWARE.
 package com.logging;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Setter;
 
+@Setter
 public class TestStatus {
 
     @JsonProperty("testClass")
@@ -38,21 +40,5 @@ public class TestStatus {
 
     @JsonProperty("executionTime")
     private String executionTime;
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setExecutionDate(String executionTime) {
-        this.executionTime = executionTime;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public void setTestClass(String testClass) {
-        this.testClass = testClass;
-    }
 
 }

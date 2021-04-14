@@ -29,15 +29,13 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.zaproxy.clientapi.core.ClientApi;
 import org.zaproxy.clientapi.core.ClientApiException;
 import org.zaproxy.clientapi.core.ClientApiMain;
 
+@Slf4j
 public class ZapTools {
-
-    private final Logger logger = LogManager.getLogger(ZapTools.class);
 
     private String ZAP_LOCATION = "C:\\Program Files\\OWASP\\Zed Attack Proxy";
     private String SAVE_SESSION_DIRECTORY = "ZAPSessions\\";
@@ -64,10 +62,10 @@ public class ZapTools {
                     break;
                 }
             }
-            logger.info("ZAP has started successfully.");
+            log.info("ZAP has started successfully.");
             return true;
         } catch (Exception ex) {
-            logger.info("ZAP was unable to start.");
+            log.info("ZAP was unable to start.");
             ex.printStackTrace();
             return false;
         }
@@ -79,17 +77,17 @@ public class ZapTools {
 
     public void startSession(String zapaddr, int zapport) {
         ClientApiMain.main(new String[]{"newSession", "zapaddr=" + zapaddr, "zapport=" + zapport});
-        logger.info("session started");
-        logger.info("Session started successfully.");
+        log.info("session started");
+        log.info("Session started successfully.");
     }
 
     public void saveSession(ClientApi api, String fileName) {
         try {
             String path = this.SAVE_SESSION_DIRECTORY + fileName + ".session";
             api.core.saveSession(path, "true");
-            logger.info("Session save successful (" + path + ").");
+            log.info("Session save successful (" + path + ").");
         } catch (ClientApiException ex) {
-            logger.info("Error saving session.");
+            log.info("Error saving session.");
             ex.printStackTrace();
         }
     }

@@ -23,8 +23,7 @@ SOFTWARE.
  */
 package com.security;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.zaproxy.clientapi.core.ApiResponse;
 import org.zaproxy.clientapi.core.ApiResponseElement;
 import org.zaproxy.clientapi.core.ClientApi;
@@ -35,9 +34,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+@Slf4j
 public class ZapApi {
-
-    private final Logger logger = LogManager.getLogger(ZapApi.class);
 
     private static final String ZAP_ADDRESS = "localhost";
     private static final int ZAP_PORT = 8082;
@@ -94,8 +92,8 @@ public class ZapApi {
 
     @SuppressWarnings("unused")
     public void printAlerts() throws ClientApiException {
-        logger.info("Alerts:");
-        logger.info(new String(api.core.xmlreport(), StandardCharsets.UTF_8));
+        log.info("Alerts:");
+        log.info(new String(api.core.xmlreport(), StandardCharsets.UTF_8));
     }
 
     private ApiResponse getSpideringApiResponse() throws ClientApiException {

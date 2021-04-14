@@ -25,14 +25,13 @@ package com.pages;
 
 import com.core.UserActions;
 import io.qameta.allure.Step;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+@Slf4j
 public class LoginPageGuru extends UserActions {
-    private final Logger logger = LogManager.getLogger(LoginPageGuru.class);
 
     @FindBy(id = "email")
     private WebElement email;
@@ -60,7 +59,7 @@ public class LoginPageGuru extends UserActions {
             click(loginButton);
             // captureImage(tcName);
         } catch (Exception e) {
-            logger.error(e);
+            log.error(e.getMessage());
         }
     }
 
@@ -80,7 +79,7 @@ public class LoginPageGuru extends UserActions {
             click(loginButton);
             // captureImage(tcName);
         } catch (Exception e) {
-            logger.error(e);
+            log.error(e.getMessage());
         }
     }
 }
