@@ -96,8 +96,8 @@ $ kubectl delete deployment selenium-node-firefox
 $ kubectl delete deployment selenium-node-chrome
 $ kubectl delete deployment selenium-hub
 ```
-navigate to `http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/`
-<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/kubernetes.png" width="600">
+navigate to `http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/`   
+<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/kubernetes.png" width="800">
 
 ### Execution Gif
 ![browserstack](https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/gif/videogif.gif)
