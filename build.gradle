@@ -107,7 +107,7 @@ dependencies {
     implementation group: 'io.qameta.allure', name: 'allure-attachments', version: '2.13.9'
     implementation group: 'org.apache.kafka', name: 'kafka_2.13', version: '2.7.0'
     implementation group: 'org.apache.kafka', name: 'kafka-clients', version: '2.7.0'
-    implementation group: 'org.apache.kafka', name: 'kafka-streams', version: '2.7.0'
+    implementation group: 'org.apache.kafka', name: 'kafka-streams', version: '2.8.0'
     implementation group: 'org.testcontainers', name: 'selenium', version: '1.15.2'
     implementation group: 'org.testcontainers', name: 'kafka', version: '1.15.2'
     implementation "org.testcontainers:testcontainers:1.15.2"
