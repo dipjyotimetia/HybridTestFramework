@@ -115,10 +115,6 @@ public class WebDriverController<T> extends DriverOptions<T> {
                             _driverThread = new ChromeDriver(getChromeOptions(perf));
                             logger.info("Initiating chrome driver");
                             break;
-                        case "ie":
-                            _driverThread = new InternetExplorerDriver(getIEOptions());
-                            logger.info("Initiating ie driver");
-                            break;
                         case "edge":
                             _driverThread = new EdgeDriver(getEdgeOptions());
                             logger.info("Initiating edge driver");
