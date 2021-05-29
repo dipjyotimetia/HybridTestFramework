@@ -15,12 +15,6 @@ jobs:
     # give permission to Gradle to run the commands
     steps:
     - uses: actions/checkout@v2
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Grant execute permission for chromedriver
-      run: chmod +x ./Driver/linux/chromedriver
-    - name: Grant execute permission for geckodriver
-      run: chmod +x ./Driver/linux/geckodriver
     - name: Build with Gradle
       run: ./gradlew task e2e
       env:
