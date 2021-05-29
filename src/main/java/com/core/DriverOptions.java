@@ -23,6 +23,7 @@ SOFTWARE.
  */
 package com.core;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.SystemUtils;
 import org.openqa.selenium.PageLoadStrategy;
@@ -32,11 +33,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.firefox.ProfilesIni;
-import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
-import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.io.File;
@@ -54,7 +52,7 @@ abstract class DriverOptions<T> {
      * @return chrome
      */
     protected ChromeOptions getChromeOptions(String perf) {
-        setChromeSystemProperty();
+        WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
         options.setHeadless(SystemUtils.IS_OS_LINUX);
         options.setPageLoadStrategy(PageLoadStrategy.NONE);
@@ -83,7 +81,7 @@ abstract class DriverOptions<T> {
      * @return options
      */
     protected FirefoxOptions getFirefoxOptions() {
-        setFirefoxSystemProperty();
+        WebDriverManager.firefoxdriver().setup();
         System.setProperty(FirefoxDriver.SystemProperty.DRIVER_USE_MARIONETTE, "true");
         System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE, "/dev/null");
         FirefoxOptions options = new FirefoxOptions();
@@ -99,29 +97,12 @@ abstract class DriverOptions<T> {
     }
 
     /**
-     * Get IE options
-     *
-     * @return options
-     */
-    protected InternetExplorerOptions getIEOptions() {
-        System.setProperty("webdriver.ie.driver", "Driver/win/IEDriverServer.exe");
-        InternetExplorerOptions options = new InternetExplorerOptions();
-        options.setCapability(CapabilityType.ForSeleniumServer.ENSURING_CLEAN_SESSION, true);
-        options.setCapability(InternetExplorerDriver.ENABLE_PERSISTENT_HOVERING, true);
-        options.setCapability(InternetExplorerDriver.IGNORE_ZOOM_SETTING, true);
-        options.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
-        options.setCapability(InternetExplorerDriver.REQUIRE_WINDOW_FOCUS, true);
-        log.info("IE options added");
-        return options;
-    }
-
-    /**
      * Get Edge Options
      *
      * @return options
      */
     protected EdgeOptions getEdgeOptions() {
-        System.setProperty("webdriver.edge.driver", "Driver/win/msedgedriver.exe");
+        WebDriverManager.edgedriver().setup();
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.setHeadless(true);
         chromeOptions.setPageLoadStrategy(PageLoadStrategy.NONE);
@@ -145,8 +126,6 @@ abstract class DriverOptions<T> {
                 return (T) getFirefoxOptions();
             case "chrome":
                 return (T) getChromeOptions(perf);
-            case "ie":
-                return (T) getIEOptions();
             case "edge":
                 return (T) getEdgeOptions();
             default:
@@ -164,19 +143,19 @@ abstract class DriverOptions<T> {
         switch (browser) {
             case "chrome":
                 capabilities.setCapability("browserName", "chrome");
-                capabilities.setCapability("browserVersion", "81");
+                capabilities.setCapability("browserVersion", "90");
                 capabilities.setCapability("platform", "windows");
                 log.info("Adding aws chrome capabilities");
                 break;
             case "firefox":
                 capabilities.setCapability("browserName", "firefox");
-                capabilities.setCapability("browserVersion", "75");
+                capabilities.setCapability("browserVersion", "88");
                 capabilities.setCapability("platform", "windows");
                 log.info("Adding aws firefox capabilities");
                 break;
-            case "ie":
-                capabilities.setCapability("browserName", "internet explorer");
-                capabilities.setCapability("browserVersion", "11");
+            case "edge":
+                capabilities.setCapability("browserName", "edge");
+                capabilities.setCapability("browserVersion", "90");
                 capabilities.setCapability("platform", "windows");
                 log.info("Adding aws firefox capabilities");
                 break;
@@ -198,48 +177,18 @@ abstract class DriverOptions<T> {
         switch (browser) {
             case "chrome":
                 capabilities.setCapability("browser", "Chrome");
-                capabilities.setCapability("browser_version", "81.0");
+                capabilities.setCapability("browser_version", "90.0");
                 break;
             case "firefox":
                 capabilities.setCapability("browser", "Firefox");
-                capabilities.setCapability("browser_version", "76.0");
-                break;
-            case "ie":
-                capabilities.setCapability("browser", "IE");
-                capabilities.setCapability("browser_version", "11.0");
+                capabilities.setCapability("browser_version", "88.0");
                 break;
             case "edge":
                 capabilities.setCapability("browser", "Edge");
-                capabilities.setCapability("browser_version", "81.0");
+                capabilities.setCapability("browser_version", "90.0");
                 break;
         }
         return capabilities;
-    }
-
-    /**
-     * Set chrome system property
-     */
-    private void setChromeSystemProperty() {
-        if (SystemUtils.IS_OS_WINDOWS) {
-            System.setProperty("webdriver.chrome.driver", "Driver/win/chromedriver.exe");
-        } else if (SystemUtils.IS_OS_LINUX) {
-            System.setProperty("webdriver.chrome.driver", "Driver/linux/chromedriver");
-        } else if (SystemUtils.IS_OS_MAC_OSX) {
-            System.setProperty("webdriver.chrome.driver", "Driver/mac/chromedriver");
-        }
-    }
-
-    /**
-     * Set firefox system property
-     */
-    private void setFirefoxSystemProperty() {
-        if (SystemUtils.IS_OS_WINDOWS) {
-            System.setProperty("webdriver.gecko.driver", "Driver/win/geckodriver.exe");
-        } else if (SystemUtils.IS_OS_LINUX) {
-            System.setProperty("webdriver.gecko.driver", "Driver/linux/geckodriver");
-        } else if (SystemUtils.IS_OS_MAC_OSX) {
-            System.setProperty("webdriver.gecko.driver", "Driver/mac/geckodriver");
-        }
     }
 
     /**
