@@ -102,7 +102,7 @@ public class WebDriverController<T> extends DriverOptions<T> {
                     break;
                 case "BROWSERSTACK":
                     logger.info("Make sure that browserstack configs provided");
-                    _driverThread = new RemoteWebDriver(new URL("http://" + username + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub"), addBrowserStackCapabilities(browser, testName));
+                    _driverThread = new RemoteWebDriver(new URL("https://" + username + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub"), addBrowserStackCapabilities(browser, testName));
                     logger.info("Grid client setup for browserstack successful");
                     break;
                 case "LOCAL":

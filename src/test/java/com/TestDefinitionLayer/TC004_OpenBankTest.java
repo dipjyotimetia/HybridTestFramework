@@ -23,7 +23,7 @@ SOFTWARE.
  */
 package com.TestDefinitionLayer;
 
-import com.core.ApiActions;
+import com.api.ApiActions;
 import io.qameta.allure.*;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;

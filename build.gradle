@@ -110,6 +110,7 @@ dependencies {
     implementation group: 'org.apache.kafka', name: 'kafka_2.13', version: '2.8.0'
     implementation group: 'org.apache.kafka', name: 'kafka-clients', version: '2.8.0'
     implementation group: 'org.apache.kafka', name: 'kafka-streams', version: '2.8.0'
+    implementation group: 'cloud.localstack', name: 'localstack-utils', version: '0.2.11'
     implementation "org.testcontainers:testcontainers:1.15.3"
     implementation group: 'org.testcontainers', name: 'selenium', version: '1.15.3'
     implementation group: 'org.testcontainers', name: 'kafka', version: '1.15.3'
@@ -117,6 +118,7 @@ dependencies {
     implementation group: 'org.testcontainers', name: 'cassandra', version: '1.15.3'
     implementation group: 'org.testcontainers', name: 'couchbase', version: '1.15.3'
     implementation group: 'org.testcontainers', name: 'vault', version: '1.15.3'
+    implementation group: 'org.testcontainers', name: 'localstack', version: '1.15.3'
     implementation 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
 }
