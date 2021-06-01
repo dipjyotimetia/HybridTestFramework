@@ -8,7 +8,7 @@ services:
     environment:
       - AWS_DEFAULT_REGION=ap-southeast-2
       - EDGE_PORT=4566
-      - SERVICES=s3,sns,sqs,apigateway,lambda,dynamodb,dynamodbstreams,cloudformation
+      - SERVICES=s3,sns,sqs,lambda,dynamodb,kinesis,firehose
       - DEBUG=1
     ports:
       - '4566:4566'

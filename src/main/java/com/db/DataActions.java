@@ -35,7 +35,7 @@ import java.sql.*;
 @Slf4j
 public class DataActions<T> extends ApiActions<T> {
 
-    private static String JDBC_URL = "jdbc:sqlserver://databaseserver;databaseName=Database;integratedSecurity=true";
+    private static final String JDBC_URL = "jdbc:sqlserver://databaseserver;databaseName=Database;integratedSecurity=true";
 
     /**
      * Get DB connection
@@ -84,8 +84,7 @@ public class DataActions<T> extends ApiActions<T> {
                         int columnCount = rsmd.getColumnCount();
                         for (int i = 1; i <= columnCount; i++) {
                             try {
-                                if (rs.getString(i).toString() == null && i != columnCount) {
-                                }
+                                rs.getString(i);
                             } catch (NullPointerException e) {
                                 resultValue = "NULL";
                                 log.info("column name:" + columnName + "|" + "Column value:" + resultValue);

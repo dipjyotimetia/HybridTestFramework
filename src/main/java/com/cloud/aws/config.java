@@ -28,6 +28,7 @@ public class config {
                 break;
             default:
                 log.info("");
+                break;
         }
         return client;
     }
@@ -50,6 +51,7 @@ public class config {
                 break;
             default:
                 log.info("");
+                break;
         }
         return client;
     }
