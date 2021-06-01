@@ -94,7 +94,7 @@ dependencies {
     implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.30'
     implementation group: 'com.github.javafaker', name: 'javafaker', version: '1.0.2'
     implementation group: 'io.rest-assured', name: 'rest-assured', version: '4.3.3'
-    implementation group: 'io.rest-assured', name: 'json-schema-validator', version: '4.3.3'
+    implementation group: 'io.rest-assured', name: 'json-schema-validator', version: '4.4.0'
     implementation group: 'com.atlassian.oai', name: 'swagger-request-validator-restassured', version: '2.18.0'
     implementation group: 'org.json', name: 'json', version: '20210307'
     implementation group: 'com.konghq', name: 'unirest-java', version: '3.11.11'
