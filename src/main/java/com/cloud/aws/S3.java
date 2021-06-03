@@ -1,3 +1,26 @@
+/*
+MIT License
+
+Copyright (c) 2020 Dipjyoti Metia
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+ */
 package com.cloud.aws;
 
 import lombok.extern.slf4j.Slf4j;
@@ -9,37 +32,53 @@ import software.amazon.awssdk.services.s3.model.*;
 import java.io.File;
 
 @Slf4j
-public class S3 extends config {
-
-    String bucketName = "test-bucket";
-    String key = "Reports";
-    String filePath = "build/reports/allure-report";
+public class S3 extends Config {
     Region region = Region.AP_SOUTHEAST_2;
-    S3Client s3Client = SetupS3(region, "DEV");
+//    S3Client s3Client = SetupS3(region, "DEV");
 
-    public void createBucket() {
+    /**
+     * Create Bucket
+     *
+     * @param s3Client s3Client
+     * @param bucket   bucketName
+     */
+    public void createBucket(S3Client s3Client, String bucket) {
         try {
             s3Client.createBucket(CreateBucketRequest
                     .builder()
-                    .bucket(bucketName)
+                    .bucket(bucket)
                     .createBucketConfiguration(
                             CreateBucketConfiguration.builder()
                                     .locationConstraint(region.id())
                                     .build())
                     .build());
-            log.info(bucketName);
+            log.info(bucket);
         } catch (S3Exception e) {
             log.error(e.awsErrorDetails().errorMessage());
             System.exit(1);
         }
     }
 
-    public void deleteBucket(String bucket) {
+    /**
+     * DeleteBucket
+     *
+     * @param s3Client s3Client
+     * @param bucket   bucketName
+     */
+    public void deleteBucket(S3Client s3Client, String bucket) {
         DeleteBucketRequest deleteBucketRequest = DeleteBucketRequest.builder().bucket(bucket).build();
         s3Client.deleteBucket(deleteBucketRequest);
     }
 
-    private void multipartUpload(String bucketName) {
+    /**
+     * Multipart Upload
+     *
+     * @param s3Client   s3Client
+     * @param bucketName bucketName
+     * @param key        key
+     * @param filePath   path
+     */
+    private void multipartUpload(S3Client s3Client, String bucketName, String key, String filePath) {
         CreateMultipartUploadRequest createMultipartUploadRequest = CreateMultipartUploadRequest.builder()
                 .bucket(bucketName).key(key)
                 .build();
