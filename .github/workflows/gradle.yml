@@ -12,11 +12,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ap-southeast-2
     - name: Setup AWS Localstack
       run: docker-compose -f docker-compose.localstack.yml up -d
     - name: Grant execute permission for gradlew
@@ -26,3 +21,7 @@ jobs:
       env:
         BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
         BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+        DEFAULT_REGION: ap-southeast-2
+        AWS_ACCOUNT_ID: "000000000000"
+        AWS_ACCESS_KEY_ID: dummy-access-key
+        AWS_SECRET_ACCESS_KEY: dummy-secret-key
