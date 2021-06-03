@@ -26,7 +26,7 @@ package com.cloud.aws;
 import software.amazon.awssdk.services.sns.SnsClient;
 import software.amazon.awssdk.services.sns.model.*;
 
-public class Sns {
+public class Sns extends Config {
 
     /**
      * CreateSNSTopic
@@ -35,7 +35,7 @@ public class Sns {
      * @param topicName topicName
      * @return topic
      */
-    public static String createSNSTopic(SnsClient snsClient, String topicName) {
+    public String createSNSTopic(SnsClient snsClient, String topicName) {
         CreateTopicResponse result = null;
         try {
             CreateTopicRequest request = CreateTopicRequest.builder()
@@ -56,7 +56,7 @@ public class Sns {
      *
      * @param snsClient snsClient
      */
-    public static void listSNSTopics(SnsClient snsClient) {
+    public void listSNSTopics(SnsClient snsClient) {
         try {
             ListTopicsRequest request = ListTopicsRequest.builder()
                     .build();
@@ -77,7 +77,7 @@ public class Sns {
      * @param topicArn  topicARN
      * @param email     email
      */
-    public static void subEmail(SnsClient snsClient, String topicArn, String email) {
+    public void subEmail(SnsClient snsClient, String topicArn, String email) {
         try {
             SubscribeRequest request = SubscribeRequest.builder()
                     .protocol("email")
@@ -102,7 +102,7 @@ public class Sns {
      * @param message   message
      * @param topicArn  topicArn
      */
-    public static void pubTopic(SnsClient snsClient, String message, String topicArn) {
+    public void pubTopic(SnsClient snsClient, String message, String topicArn) {
         try {
             PublishRequest request = PublishRequest.builder()
                     .message(message)
@@ -124,7 +124,7 @@ public class Sns {
      * @param snsClient       snsClient
      * @param subscriptionArn subscriptionArn
      */
-    public static void unSub(SnsClient snsClient, String subscriptionArn) {
+    public void unSub(SnsClient snsClient, String subscriptionArn) {
         try {
             UnsubscribeRequest request = UnsubscribeRequest.builder()
                     .subscriptionArn(subscriptionArn)
@@ -147,7 +147,7 @@ public class Sns {
      * @param snsClient snsClient
      * @param topicArn  topicArn
      */
-    public static void deleteSNSTopic(SnsClient snsClient, String topicArn) {
+    public void deleteSNSTopic(SnsClient snsClient, String topicArn) {
         try {
             DeleteTopicRequest request = DeleteTopicRequest.builder()
                     .topicArn(topicArn)

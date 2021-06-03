@@ -35,4 +35,10 @@
         </classes>
     </test>
 
+    <test name="E2E Tests for AWS">
+        <classes>
+            <class name="com.TestDefinitionLayer.TC007_AwsTest"/>
+        </classes>
+    </test>
+
 </suite>

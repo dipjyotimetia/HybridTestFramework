@@ -24,7 +24,6 @@ SOFTWARE.
 package com.cloud.aws;
 
 import software.amazon.awssdk.core.waiters.WaiterResponse;
-import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.*;
 import software.amazon.awssdk.services.dynamodb.waiters.DynamoDbWaiter;
@@ -32,9 +31,6 @@ import software.amazon.awssdk.services.dynamodb.waiters.DynamoDbWaiter;
 import java.util.List;
 
 public class DynamoDB extends Config {
-
-    //    DynamoDbClient table = SetupDynamoDB(region, "DEV");
-    Region region = Region.AP_SOUTHEAST_2;
 
     /**
      * Create Table
@@ -87,7 +83,7 @@ public class DynamoDB extends Config {
      * @param ddb       dynamoClient
      * @param tableName tableName
      */
-    public static void describeDymamoDBTable(DynamoDbClient ddb, String tableName) {
+    public void describeDynamoDBTable(DynamoDbClient ddb, String tableName) {
         DescribeTableRequest request = DescribeTableRequest.builder()
                 .tableName(tableName)
                 .build();

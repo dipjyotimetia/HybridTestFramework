@@ -52,7 +52,7 @@ public class S3 extends Config {
                                     .locationConstraint(region.id())
                                     .build())
                     .build());
-            log.info(bucket);
+            log.info("Bucket Created: " + bucket);
         } catch (S3Exception e) {
             log.error(e.awsErrorDetails().errorMessage());
             System.exit(1);
@@ -68,6 +68,7 @@ public class S3 extends Config {
     public void deleteBucket(S3Client s3Client, String bucket) {
         DeleteBucketRequest deleteBucketRequest = DeleteBucketRequest.builder().bucket(bucket).build();
         s3Client.deleteBucket(deleteBucketRequest);
+        log.info("Bucket Deleted: " + bucket);
     }
 
     /**
