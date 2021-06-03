@@ -36,7 +36,7 @@ public class Sqs {
      * @param sqsClient sqsClient
      * @param queueName queueName
      */
-    public void CreateQueue(SqsClient sqsClient, String queueName) {
+    public void createQueue(SqsClient sqsClient, String queueName) {
         CreateQueueRequest createQueueRequest = CreateQueueRequest.builder()
                 .queueName(queueName)
                 .build();
@@ -50,7 +50,7 @@ public class Sqs {
      * @param sqsClient sqsClient
      * @param prefix    prefix
      */
-    public void ListQueue(SqsClient sqsClient, String prefix) {
+    public void listQueue(SqsClient sqsClient, String prefix) {
 
         try {
             ListQueuesRequest listQueuesRequest = ListQueuesRequest.builder().queueNamePrefix(prefix).build();
@@ -73,7 +73,7 @@ public class Sqs {
      * @param queueName queueName
      * @return url
      */
-    public String GetQueueURL(SqsClient sqsClient, String queueName) {
+    public String getQueueURL(SqsClient sqsClient, String queueName) {
         try {
             GetQueueUrlResponse getQueueUrlResponse =
                     sqsClient.getQueueUrl(GetQueueUrlRequest.builder().queueName(queueName).build());
@@ -117,7 +117,7 @@ public class Sqs {
      * @param sqsClient sqsClient
      * @param queueUrl  queueUrl
      */
-    public void SendMessage(SqsClient sqsClient, String queueUrl) {
+    public void sendMessage(SqsClient sqsClient, String queueUrl) {
         sqsClient.sendMessage(SendMessageRequest.builder()
                 .queueUrl(queueUrl)
                 .messageBody("Hello world!")
@@ -132,7 +132,7 @@ public class Sqs {
      * @param queueUrl  queueUrl
      * @return message
      */
-    public List<Message> ReceiveMessage(SqsClient sqsClient, String queueUrl) {
+    public List<Message> receiveMessage(SqsClient sqsClient, String queueUrl) {
         try {
             ReceiveMessageRequest receiveMessageRequest = ReceiveMessageRequest.builder()
                     .queueUrl(queueUrl)
@@ -153,7 +153,7 @@ public class Sqs {
      * @param messages  message
      * @param queueUrl  queueUrl
      */
-    public void DeleteMessage(SqsClient sqsClient, List<Message> messages, String queueUrl) {
+    public void deleteMessage(SqsClient sqsClient, List<Message> messages, String queueUrl) {
         try {
             for (Message message : messages) {
                 DeleteMessageRequest deleteMessageRequest = DeleteMessageRequest.builder()

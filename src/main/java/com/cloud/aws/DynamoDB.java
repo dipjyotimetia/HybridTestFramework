@@ -39,7 +39,7 @@ public class DynamoDB extends Config {
      * @param tableName tableName
      * @return table
      */
-    public String CreateTable(DynamoDbClient ddb, String tableName) {
+    public String createTable(DynamoDbClient ddb, String tableName) {
         DynamoDbWaiter dbWaiter = ddb.waiter();
         CreateTableRequest request = CreateTableRequest.builder()
                 .attributeDefinitions(AttributeDefinition.builder()

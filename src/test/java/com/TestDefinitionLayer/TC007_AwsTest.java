@@ -13,10 +13,10 @@ import software.amazon.awssdk.services.sqs.SqsClient;
 public class TC007_AwsTest extends Config {
 
     Region region = Region.AP_SOUTHEAST_2;
-    S3Client s3Client = SetupS3(region, "DEV");
-    DynamoDbClient dynamoDB = SetupDynamoDB(region, "DEV");
-    SnsClient snsClient = SetupSNS(region, "DEV");
-    SqsClient sqsClient = SetupSQS(region, "DEV");
+    S3Client s3Client = setupS3(region, "DEV");
+    DynamoDbClient dynamoDB = setupDynamoDB(region, "DEV");
+    SnsClient snsClient = setupSNS(region, "DEV");
+    SqsClient sqsClient = setupSQS(region, "DEV");
 
     S3 s3 = new S3();
     DynamoDB db = new DynamoDB();
@@ -31,7 +31,7 @@ public class TC007_AwsTest extends Config {
 
     @Test
     public void TestDynamoDB() {
-        String table = db.CreateTable(dynamoDB, "newtable");
+        String table = db.createTable(dynamoDB, "newtable");
         db.describeDynamoDBTable(dynamoDB, table);
     }
 
@@ -45,9 +45,9 @@ public class TC007_AwsTest extends Config {
 
     @Test
     public void TestSQS() {
-        sqs.CreateQueue(sqsClient, "newsqs");
-        String queueUrl = sqs.GetQueueURL(sqsClient, "newsqs");
-        sqs.SendMessage(sqsClient, queueUrl);
+        sqs.createQueue(sqsClient, "newsqs");
+        String queueUrl = sqs.getQueueURL(sqsClient, "newsqs");
+        sqs.sendMessage(sqsClient, queueUrl);
     }
 }
 

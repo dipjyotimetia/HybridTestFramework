@@ -68,7 +68,7 @@ public class DataActions<T> extends ApiActions<T> {
      * @param query query
      * @return result
      */
-    private String ExecuteQuery(String query) {
+    private String executeQuery(String query) {
         String resultValue = "";
         String columnName = "";
         try {

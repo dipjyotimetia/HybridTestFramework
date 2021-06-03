@@ -43,7 +43,7 @@ public class Config {
      * @param env    environment
      * @return s3client
      */
-    public S3Client SetupS3(Region region, String env) {
+    public S3Client setupS3(Region region, String env) {
         S3Client client = S3Client.builder().region(region).build();
         switch (env) {
             case "DEV":
@@ -66,7 +66,7 @@ public class Config {
      * @param env    environment
      * @return dynamoClient
      */
-    public DynamoDbClient SetupDynamoDB(Region region, String env) {
+    public DynamoDbClient setupDynamoDB(Region region, String env) {
         DynamoDbClient client = DynamoDbClient.builder().region(region).build();
         switch (env) {
             case "DEV":
@@ -89,7 +89,7 @@ public class Config {
      * @param env    environment
      * @return sqsClient
      */
-    public SqsClient SetupSQS(Region region, String env) {
+    public SqsClient setupSQS(Region region, String env) {
         SqsClient client = SqsClient.builder().region(region).build();
         switch (env) {
             case "DEV":
@@ -112,7 +112,7 @@ public class Config {
      * @param env    environment
      * @return snsClient
      */
-    public SnsClient SetupSNS(Region region, String env) {
+    public SnsClient setupSNS(Region region, String env) {
         SnsClient client = SnsClient.builder().region(region).build();
         switch (env) {
             case "DEV":
@@ -135,7 +135,7 @@ public class Config {
      * @param env    environment
      * @return lambdaClient
      */
-    public LambdaClient SetupLambda(Region region, String env) {
+    public LambdaClient setupLambda(Region region, String env) {
         LambdaClient client = LambdaClient.builder().region(region).build();
         switch (env) {
             case "DEV":
