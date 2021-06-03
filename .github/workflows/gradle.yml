@@ -9,12 +9,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: dipjyotimetia/hybridtestframework:2.0
-
-    # give permission to Gradle to run the commands
     steps:
     - uses: actions/checkout@v2
+    - name: Setup AWS Localstack
+      run: docker-compose -f docker-compose.localstack.yml up -d
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
