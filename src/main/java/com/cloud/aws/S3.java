@@ -21,7 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package com.reporting.AWS;
+package com.cloud.aws;
 
 import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -32,38 +32,54 @@ import software.amazon.awssdk.services.s3.model.*;
 import java.io.File;
 
 @Slf4j
-public class UploadReport {
-
-    String bucketName = "";
-    String key = "Reports";
-    String filePath = "build/reports/allure-report";
+public class S3 extends Config {
     Region region = Region.AP_SOUTHEAST_2;
-    S3Client s3Client = S3Client.builder().region(region).build();
+//    S3Client s3Client = SetupS3(region, "DEV");
 
-    public void createBucket() {
-
+    /**
+     * Create Bucket
+     *
+     * @param s3Client s3Client
+     * @param bucket   bucketName
+     */
+    public void createBucket(S3Client s3Client, String bucket) {
         try {
             s3Client.createBucket(CreateBucketRequest
                     .builder()
-                    .bucket(bucketName)
+                    .bucket(bucket)
                     .createBucketConfiguration(
                             CreateBucketConfiguration.builder()
                                     .locationConstraint(region.id())
                                     .build())
                     .build());
-            log.info(bucketName);
+            log.info("Bucket Created: " + bucket);
         } catch (S3Exception e) {
             log.error(e.awsErrorDetails().errorMessage());
             System.exit(1);
         }
     }
 
-    public void deleteBucket(String bucket) {
+    /**
+     * DeleteBucket
+     *
+     * @param s3Client s3Client
+     * @param bucket   bucketName
+     */
+    public void deleteBucket(S3Client s3Client, String bucket) {
         DeleteBucketRequest deleteBucketRequest = DeleteBucketRequest.builder().bucket(bucket).build();
         s3Client.deleteBucket(deleteBucketRequest);
+        log.info("Bucket Deleted: " + bucket);
     }
 
-    private void multipartUpload(String bucketName) {
+    /**
+     * Multipart Upload
+     *
+     * @param s3Client   s3Client
+     * @param bucketName bucketName
+     * @param key        key
+     * @param filePath   path
+     */
+    private void multipartUpload(S3Client s3Client, String bucketName, String key, String filePath) {
         CreateMultipartUploadRequest createMultipartUploadRequest = CreateMultipartUploadRequest.builder()
                 .bucket(bucketName).key(key)
                 .build();
