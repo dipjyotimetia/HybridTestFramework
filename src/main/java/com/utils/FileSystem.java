@@ -44,12 +44,17 @@ import java.nio.file.Paths;
 @Slf4j
 public class FileSystem {
 
-    public void downloadDriver() throws Exception {
-        String fromFile = "https://chromedriver.storage.googleapis.com/81.0.4044.138/chromedriver_win32.zip";
+    /**
+     * Download From file
+     *
+     * @param fromFileUrl from url
+     * @throws Exception exception
+     */
+    public void downloadFile(String fromFileUrl) throws Exception {
         String toFile = "Driver/chromedriver.zip";
         String destination = "Driver";
         try {
-            FileUtils.copyURLToFile(new URL(fromFile), new File(toFile), 10000, 10000);
+            FileUtils.copyURLToFile(new URL(fromFileUrl), new File(toFile), 10000, 10000);
             unzip(toFile, destination);
             Thread.sleep(3000);
         } catch (IOException e) {
@@ -72,7 +77,7 @@ public class FileSystem {
      * @param path Path to file for folder.
      * @throws IOException When fail to delete it.
      */
-    public static void deletePath(String path) throws IOException {
+    public void deletePath(String path) throws IOException {
         try {
             File file = new File(path);
             if (file.isDirectory()) {
@@ -95,7 +100,7 @@ public class FileSystem {
      * @return Content of file as String.
      * @throws IOException When fail to read file.
      */
-    public static String readFile(String filePath) throws IOException {
+    public String readFile(String filePath) throws IOException {
         byte[] encoded = Files.readAllBytes(Paths.get(filePath));
         return new String(encoded, Charset.defaultCharset());
     }
@@ -154,7 +159,7 @@ public class FileSystem {
      * @param path Path to file.
      * @return Size of file in kB.
      */
-    public static long getFileSize(String path) {
+    public long getFileSize(String path) {
         File file;
         long size = 0;
         file = new File(path);
@@ -166,7 +171,7 @@ public class FileSystem {
         return size;
     }
 
-    public static void writeCsvFile(String storageFilePath, String log, String header) {
+    public void writeCsvFile(String storageFilePath, String log, String header) {
         FileSystem.ensureFolderExists(new File(storageFilePath).getParent());
 
         try {
