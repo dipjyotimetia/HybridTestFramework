@@ -24,7 +24,6 @@ SOFTWARE.
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
-apply plugin: 'maven'
 apply plugin: 'groovy'
 apply plugin: 'io.qameta.allure'
 apply plugin: 'docker-compose'
