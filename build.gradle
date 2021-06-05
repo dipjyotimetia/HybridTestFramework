@@ -28,6 +28,7 @@ apply plugin: 'maven'
 apply plugin: 'groovy'
 apply plugin: 'io.qameta.allure'
 apply plugin: 'docker-compose'
+apply plugin: "org.openapi.generator"
 
 group 'github.com.HybridTestFramework'
 version = '2.0'
@@ -48,12 +49,13 @@ buildscript {
     dependencies {
         classpath "io.qameta.allure:allure-gradle:+"
         classpath "com.avast.gradle:gradle-docker-compose-plugin:+"
+        classpath "org.openapitools:openapi-generator-gradle-plugin:5.1.1"
     }
 }
 
 allure {
     version = '2.13.9'
-    downloadLink = 'https://dl.bintray.com/qameta/maven/io/qameta/allure/allure-commandline/2.13.9/allure-commandline-2.13.9.zip'
+    downloadLink = 'https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.14.0/allure-commandline-2.14.0.zip'
 }
 
 // dockerCompose.isRequiredBy(test)
@@ -66,8 +68,20 @@ dockerCompose {
     removeContainers = true
 }
 
+openApiGenerate {
+    generatorName = "java"
+    inputSpec = "$rootDir/specs/xray-v2.0.yaml".toString()
+    outputDir = "$buildDir/generated".toString()
+    apiPackage = "org.openapi.client.api"
+    invokerPackage = "org.openapi.client.invoker"
+    modelPackage = "org.openapi.client.model"
+    configOptions = [
+            dateLibrary: "java11"
+    ]
+}
+
 dependencies {
-    implementation group: 'software.amazon.awssdk', name: 'aws-sdk-java', version: '2.16.74'
+    implementation group: 'software.amazon.awssdk', name: 'aws-sdk-java', version: '2.16.77'
     implementation group: 'io.netty', name: 'netty-all', version: '4.1.65.Final'
     implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.0.0-beta-3'
     implementation group: 'org.seleniumhq.selenium', name: 'selenium-server', version: '4.0.0-alpha-2'
@@ -104,9 +118,9 @@ dependencies {
     implementation group: 'net.lingala.zip4j', name: 'zip4j', version: '2.8.0'
     implementation group: 'io.github.bonigarcia', name: 'webdrivermanager', version: '4.4.3'
     implementation group: 'io.qameta.allure', name: 'allure-gradle', version: '2.8.1'
-    implementation group: 'io.qameta.allure', name: 'allure-testng', version: '2.13.9'
-    implementation group: 'io.qameta.allure', name: 'allure-rest-assured', version: '2.13.9'
-    implementation group: 'io.qameta.allure', name: 'allure-attachments', version: '2.13.9'
+    implementation group: 'io.qameta.allure', name: 'allure-testng', version: '2.14.0'
+    implementation group: 'io.qameta.allure', name: 'allure-rest-assured', version: '2.14.0'
+    implementation group: 'io.qameta.allure', name: 'allure-attachments', version: '2.14.0'
     implementation group: 'org.apache.kafka', name: 'kafka_2.13', version: '2.8.0'
     implementation group: 'org.apache.kafka', name: 'kafka-clients', version: '2.8.0'
     implementation group: 'org.apache.kafka', name: 'kafka-streams', version: '2.8.0'
@@ -121,6 +135,8 @@ dependencies {
     implementation group: 'org.testcontainers', name: 'localstack', version: '1.15.3'
     implementation 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
+    implementation group: 'io.swagger.codegen.v3', name: 'swagger-codegen', version: '3.0.26'
+    implementation group: 'org.openapitools', name: 'openapi-generator-core', version: '5.1.1'
 }
 
 task E2E(type: Test) {
