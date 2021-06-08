@@ -52,7 +52,7 @@ buildscript {
 }
 
 allure {
-    version = '2.13.9'
+    version = '2.14.0'
     downloadLink = 'https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.14.0/allure-commandline-2.14.0.zip'
 }
 
@@ -79,8 +79,8 @@ openApiGenerate {
 }
 
 dependencies {
-    implementation group: 'software.amazon.awssdk', name: 'aws-sdk-java', version: '2.16.77'
-    implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.0.0-beta-3'
+    implementation group: 'software.amazon.awssdk', name: 'aws-sdk-java', version: '2.16.79'
+    implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.0.0-beta-4'
     implementation group: 'org.seleniumhq.selenium', name: 'selenium-server', version: '4.0.0-alpha-2'
     implementation group: 'io.github.bonigarcia', name: 'webdrivermanager', version: '4.4.3'
     implementation group: 'com.browserstack', name: 'browserstack-local-java', version: '1.0.6'
