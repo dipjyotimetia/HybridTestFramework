@@ -32,5 +32,4 @@ Explain the **motivation** for making this change: here are some points to help 
 
 - [ ] I have tested this on all browsers
 - [ ] I added the documentation in `README.md`
-- [ ] I mentioned this change in `CHANGELOG.md`
 - [ ] I updated function description
