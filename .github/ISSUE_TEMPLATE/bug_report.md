@@ -20,19 +20,16 @@ Steps to reproduce the behavior:
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
+**Desktop (please complete the following information):**
+- OS: [e.g. Windows,Linux,Mac]
+- Browser [e.g. chrome, firefox]
+- Version [e.g. 90]
+
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-**Desktop (please complete the following information):**
- - OS: [e.g. Windows,Linux,Mac]
- - Browser [e.g. chrome, firefox, safari]
- - Version [e.g. 83]
-
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone8]
- - OS: [e.g. iOS12.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 15]
+**Logs**
+If applicable, add logs to help explain your problem.
 
 **Additional context**
 Add any other context about the problem here.

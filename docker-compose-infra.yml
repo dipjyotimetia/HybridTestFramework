@@ -20,7 +20,7 @@ services:
     #docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
 
   sonarqube:
-    image: sonarqube:8.6.0-community
+    image: sonarqube:8.9.0-community
     container_name: sonarqube
     hostname: sonarqube
     expose:

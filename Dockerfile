@@ -3,8 +3,8 @@ FROM ubuntu:bionic-20200311
 
 LABEL maintainer="HybridTestFramework dipjyotimetia@gmail.com"
 
-ENV GRADLE_VERSION 6.8.3
-ENV ALLURE_VERSION 2.13.9
+ENV GRADLE_VERSION 6.9
+ENV ALLURE_VERSION 2.14.0
 
 # install packages
 RUN apt-get -o Acquire::Check-Valid-Until=false update
