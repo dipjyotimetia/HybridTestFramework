@@ -134,7 +134,7 @@ dependencies {
     implementation group: 'org.testcontainers', name: 'localstack', version: '1.15.3'
     implementation 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
-    implementation group: 'io.swagger.codegen.v3', name: 'swagger-codegen', version: '3.0.26'
+    implementation group: 'io.swagger.codegen.v3', name: 'swagger-codegen', version: '3.0.27'
     implementation group: 'org.openapitools', name: 'openapi-generator-core', version: '5.1.1'
 }
 
