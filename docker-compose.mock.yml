@@ -1,0 +1,9 @@
+#  https://dev.to/goodidea/how-to-fake-aws-locally-with-localstack-27me
+version: '3.0'
+
+services:
+  stripemock:
+    image: stripemock/stripe-mock:latest
+    container_name: stripemock
+    ports:
+      - '12111-12112:12111-12112'
