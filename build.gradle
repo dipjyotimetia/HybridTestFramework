@@ -115,7 +115,7 @@ dependencies {
     implementation group: 'net.lightbody.bmp', name: 'browsermob-core', version: '2.1.5'
     implementation group: 'org.zaproxy', name: 'zap-clientapi', version: '1.9.0'
     implementation group: 'org.zaproxy', name: 'zap', version: '2.10.0'
-    implementation group: 'net.lingala.zip4j', name: 'zip4j', version: '2.8.0'
+    implementation group: 'net.lingala.zip4j', name: 'zip4j', version: '2.9.0'
     implementation group: 'io.qameta.allure', name: 'allure-gradle', version: '2.8.1'
     implementation group: 'io.qameta.allure', name: 'allure-testng', version: '2.14.0'
     implementation group: 'io.qameta.allure', name: 'allure-rest-assured', version: '2.14.0'
