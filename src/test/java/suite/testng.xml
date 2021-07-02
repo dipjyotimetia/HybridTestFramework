@@ -26,6 +26,7 @@
     <test name="E2E Tests for Mock Api">
         <classes>
             <class name="com.TestDefinitionLayer.TC005_WireMockTest"/>
+            <class name="com.TestDefinitionLayer.TC008_StripeApi"/>
         </classes>
     </test>
 

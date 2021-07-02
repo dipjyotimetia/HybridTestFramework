@@ -29,6 +29,7 @@ import io.qameta.allure.Step;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import io.restassured.http.Header;
 import io.restassured.http.Method;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
@@ -39,6 +40,7 @@ import org.json.simple.JSONObject;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 @Slf4j
 public class ApiActions<T> {
@@ -123,6 +125,20 @@ public class ApiActions<T> {
      */
     protected Response httpGet(String path) {
         return httpRequest().request(Method.GET, path);
+    }
+
+    /**
+     * http get with headers
+     *
+     * @param path    endpoint
+     * @param headers headers
+     * @return response
+     */
+    protected Response httpGet(String path, Header headers) {
+        return httpRequest()
+                .with()
+                .header(headers)
+                .request(Method.GET, path);
     }
 
     /**
