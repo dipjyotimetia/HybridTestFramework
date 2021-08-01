@@ -126,7 +126,7 @@ dependencies {
     implementation group: 'cloud.localstack', name: 'localstack-utils', version: '0.2.11'
     implementation "org.testcontainers:testcontainers:1.15.3"
     implementation group: 'org.testcontainers', name: 'selenium', version: '1.15.3'
-    implementation group: 'org.testcontainers', name: 'kafka', version: '1.15.3'
+    implementation group: 'org.testcontainers', name: 'kafka', version: '1.16.0'
     implementation group: 'org.testcontainers', name: 'localstack', version: '1.15.3'
     implementation group: 'org.testcontainers', name: 'cassandra', version: '1.15.3'
     implementation group: 'org.testcontainers', name: 'couchbase', version: '1.15.3'
