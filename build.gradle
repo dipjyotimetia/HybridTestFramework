@@ -47,7 +47,7 @@ buildscript {
     dependencies {
         classpath "io.qameta.allure:allure-gradle:+"
         classpath "com.avast.gradle:gradle-docker-compose-plugin:+"
-        classpath "org.openapitools:openapi-generator-gradle-plugin:5.1.1"
+        classpath "org.openapitools:openapi-generator-gradle-plugin:5.2.1"
     }
 }
 
