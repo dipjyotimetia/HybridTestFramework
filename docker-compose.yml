@@ -12,8 +12,8 @@ services:
     ports:
       - "5050:5050"
     volumes:
-      - ${PWD}/allure-results:/app/allure-results
-      - ${PWD}/allure-reports:/app/default-reports
+      - "./build/allure-results:/app/allure-results"
+      - "./build/allure-reports:/app/default-reports"
 
   allure-ui:
     image: "frankescobar/allure-docker-service-ui"
@@ -24,7 +24,7 @@ services:
       - "5252:5252"
 
   firefox:
-    image: selenium/node-firefox:4.0.0-beta-4-20210608
+    image: selenium/node-firefox:4.0.0-rc-1-prerelease-20210823
     volumes:
       - /dev/shm:/dev/shm
     depends_on:
@@ -33,7 +33,7 @@ services:
       HUB_HOST: hub
 
   chrome:
-    image: selenium/node-chrome:4.0.0-beta-4-20210608
+    image: selenium/node-chrome:4.0.0-rc-1-prerelease-20210823
     volumes:
       - /dev/shm:/dev/shm
     depends_on:
@@ -42,7 +42,7 @@ services:
       HUB_HOST: hub
 
   hub:
-    image: selenium/hub:4.0.0-beta-4-20210608
+    image: selenium/hub:4.0.0-rc-1-prerelease-20210823
     ports:
       - "4444:4444"
 
