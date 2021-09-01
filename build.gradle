@@ -27,7 +27,6 @@ apply plugin: 'idea'
 apply plugin: 'groovy'
 apply plugin: 'io.qameta.allure'
 apply plugin: 'docker-compose'
-apply plugin: "org.openapi.generator"
 
 group 'github.com.HybridTestFramework'
 version = '2.0'
@@ -47,7 +46,6 @@ buildscript {
     dependencies {
         classpath "io.qameta.allure:allure-gradle:+"
         classpath "com.avast.gradle:gradle-docker-compose-plugin:+"
-        classpath "org.openapitools:openapi-generator-gradle-plugin:5.1.1"
     }
 }
 
@@ -70,8 +68,8 @@ dockerCompose {
 }
 
 dependencies {
-    implementation group: 'software.amazon.awssdk', name: 'aws-sdk-java', version: '2.17.24'
-    implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.0.0-beta-4'
+    implementation group: 'software.amazon.awssdk', name: 'aws-sdk-java', version: '2.17.29'
+    implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.0.0-rc-1'
     implementation group: 'org.seleniumhq.selenium', name: 'selenium-server', version: '4.0.0-alpha-2'
     implementation group: 'io.github.bonigarcia', name: 'webdrivermanager', version: '4.4.3'
     implementation group: 'com.browserstack', name: 'browserstack-local-java', version: '1.0.6'
@@ -95,14 +93,14 @@ dependencies {
     implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: '5.0.0'
     implementation group: 'org.apache.poi', name: 'poi', version: '5.0.0'
     implementation group: 'org.apache.xmlbeans', name: 'xmlbeans', version: '5.0.1'
-    implementation group: 'com.microsoft.sqlserver', name: 'mssql-jdbc', version: '9.4.0.jre11'
+    implementation group: 'com.microsoft.sqlserver', name: 'mssql-jdbc', version: '9.2.1.jre11'
     implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.32'
     implementation group: 'com.github.javafaker', name: 'javafaker', version: '1.0.2'
     implementation group: 'io.rest-assured', name: 'rest-assured', version: '4.4.0'
     implementation group: 'io.rest-assured', name: 'json-schema-validator', version: '4.4.0'
     implementation group: 'com.atlassian.oai', name: 'swagger-request-validator-restassured', version: '2.18.1'
     implementation group: 'org.json', name: 'json', version: '20210307'
-    implementation group: 'com.konghq', name: 'unirest-java', version: '3.11.12'
+    implementation group: 'com.konghq', name: 'unirest-java', version: '3.11.13'
     implementation group: 'net.lightbody.bmp', name: 'browsermob-core', version: '2.1.5'
     implementation group: 'org.zaproxy', name: 'zap-clientapi', version: '1.9.0'
     implementation group: 'org.zaproxy', name: 'zap', version: '2.10.0'

@@ -45,23 +45,10 @@ import java.nio.file.Paths;
 public class FileSystem {
 
     /**
-     * Download From file
-     *
-     * @param fromFileUrl from url
-     * @throws Exception exception
+     * unzip file
+     * @param source source
+     * @param destination destination
      */
-    public void downloadFile(String fromFileUrl) throws Exception {
-        String toFile = "Driver/chromedriver.zip";
-        String destination = "Driver";
-        try {
-            FileUtils.copyURLToFile(new URL(fromFileUrl), new File(toFile), 10000, 10000);
-            unzip(toFile, destination);
-            Thread.sleep(3000);
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        }
-    }
-
     private void unzip(String source, String destination) {
         try {
             ZipFile zipFile = new ZipFile(source);
@@ -106,28 +93,6 @@ public class FileSystem {
     }
 
     /**
-     * Append content of String to file.
-     *
-     * @param filePath File path as String.
-     * @param text     Content to be written in file.
-     * @throws IOException When fail to write in file.
-     */
-    public static void appendFile(String filePath, String text) throws IOException {
-        FileUtils.writeStringToFile(new File(filePath), text, "UTF-8", true);
-    }
-
-    /**
-     * Write content of String to file.
-     *
-     * @param filePath File path as String.
-     * @param text     Content to be written in file.
-     * @throws IOException When fail to write in file.
-     */
-    public static void writeFile(String filePath, String text) throws IOException {
-        FileUtils.writeStringToFile(new File(filePath), text, "UTF-8");
-    }
-
-    /**
      * Check if path exists.
      *
      * @param path Path as String.
@@ -169,20 +134,5 @@ public class FileSystem {
             Assert.fail("File '" + file + "' does not exist!");
         }
         return size;
-    }
-
-    public void writeCsvFile(String storageFilePath, String log, String header) {
-        FileSystem.ensureFolderExists(new File(storageFilePath).getParent());
-
-        try {
-            if (FileSystem.exist(storageFilePath)) {
-                FileSystem.appendFile(storageFilePath, System.lineSeparator() + log);
-            } else {
-                String content = header + System.lineSeparator() + log;
-                FileSystem.writeFile(storageFilePath, content);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
