@@ -1,11 +1,4 @@
 # HybridTestFramework
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/2ffd9c97725645c2bcda860988dc0baf)](https://www.codacy.com/manual/dipjyotimetia/HybridTestFramework?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dipjyotimetia/HybridTestFramework&amp;utm_campaign=Badge_Grade)
-[![This project is using Percy.io for visual regression testing.](https://percy.io/static/images/percy-badge.svg)](https://percy.io/CypressTest/Selenium)
-![CI](https://github.com/dipjyotimetia/HybridTestFramework/workflows/CI/badge.svg)
-[![Build Status](https://dev.azure.com/dipjyoti/OpensourceProjects/_apis/build/status/dipjyotimetia.HybridTestFramework?branchName=master)](https://dev.azure.com/dipjyoti/OpensourceProjects/_build/latest?definitionId=7&branchName=master)  
-[![SupportedBy JetBrains](/docs/screens/jetbrains.svg)](https://www.jetbrains.com/?from=HybridTestFramework)
-### Full fledged WEB, API and Security testing framework using selenium,ZAP OWASP proxy and rest-assured
-
 ![Selenium](/docs/screens/selenium.png)
 
 ### Supported Platforms
@@ -87,22 +80,22 @@ Search and modify the below line in .idea workspace.xml
 ```    
 
 ### JenkinsExecution
-![image](/docs/screens/jenkinsExecution.png)
+![image](/screens/jenkinsExecution.png)
 
 ### GridServer 2.0
-![image](/docs/screens/seleniumGrid.png)
+![image](/screens/seleniumGrid.png)
 
 ### Allure Reporting
-![image](/docs/screens/allureReport.png)
+![image](/screens/allureReport.png)
 
 ### Gradle Report
-![image](/docs/screens/gradleReport.png)
+![image](/screens/gradleReport.png)
 
 ### TestResults
-![image](/docs/screens/testResults.png)
+![image](/screens/testResults.png)
 
 ### BrowserStack Dashboard
-![image](/docs/screens/browserStack.png)
+![image](/screens/browserStack.png)
 
 ### LogsView
-![image](/docs/screens/logs.png)      
+![image](/screens/logs.png)      
