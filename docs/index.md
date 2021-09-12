@@ -1,8 +1,8 @@
 # HybridTestFramework
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/2ffd9c97725645c2bcda860988dc0baf)](https://www.codacy.com/manual/dipjyotimetia/HybridTestFramewrok?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dipjyotimetia/HybridTestFramewrok&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/2ffd9c97725645c2bcda860988dc0baf)](https://www.codacy.com/manual/dipjyotimetia/HybridTestFramework?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dipjyotimetia/HybridTestFramework&amp;utm_campaign=Badge_Grade)
 [![This project is using Percy.io for visual regression testing.](https://percy.io/static/images/percy-badge.svg)](https://percy.io/CypressTest/Selenium)
-![CI](https://github.com/dipjyotimetia/HybridTestFramewrok/workflows/CI/badge.svg)
-[![Build Status](https://dev.azure.com/dipjyoti/OpensourceProjects/_apis/build/status/dipjyotimetia.HybridTestFramewrok?branchName=master)](https://dev.azure.com/dipjyoti/OpensourceProjects/_build/latest?definitionId=7&branchName=master)  
+![CI](https://github.com/dipjyotimetia/HybridTestFramework/workflows/CI/badge.svg)
+[![Build Status](https://dev.azure.com/dipjyoti/OpensourceProjects/_apis/build/status/dipjyotimetia.HybridTestFramework?branchName=master)](https://dev.azure.com/dipjyoti/OpensourceProjects/_build/latest?definitionId=7&branchName=master)  
 [![SupportedBy JetBrains](/docs/screens/jetbrains.svg)](https://www.jetbrains.com/?from=HybridTestFramework)
 ### Full fledged WEB, API and Security testing framework using selenium,ZAP OWASP proxy and rest-assured
 
@@ -31,8 +31,8 @@ This framework supports WebUi automation across a variety of browsers like Chrom
   https://www.jetbrains.com/idea/download/
 * Install docker desktop
   https://www.docker.com/products/docker-desktop
-* Java SDK  
-  https://docs.aws.amazon.com/corretto/latest/corretto-8-ug/downloads-list.html or any latest version.
+* Java JDK_11  
+  https://adoptopenjdk.net/ or any latest version.
 * Gradle
   https://gradle.org/next-steps/?version=6.4&format=bin
 * Allure
