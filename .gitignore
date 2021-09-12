@@ -1,6 +1,5 @@
 .allure/**/**
 .idea/**/**
-.github/**/**
 .gradle/**/**
 .settings/**
 .project

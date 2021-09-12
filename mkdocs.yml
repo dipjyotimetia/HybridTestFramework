@@ -1,0 +1,24 @@
+site_name: HybridTestFramework
+theme:
+  name: material
+  palette:
+    primary: deep purple
+  features:
+    - search.suggest
+    - search.highlight
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.indexes
+  icon:
+    repo: fontawesome/brands/git-alt
+plugins:
+  - search
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/dipjyotimetia
+    - icon: fontawesome/brands/linkedin
+      link: https://linkedin.com/in/dipjyotimetia/
+    - icon: fontawesome/brands/medium
+      link: https://medium.com/@dipjyotimetia
+copyright: Copyright &copy; 2018 - 2021 Dipjyoti Metia
