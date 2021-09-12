@@ -1,5 +1,7 @@
 # HybridTestFramework
-![Selenium](/docs/screens/selenium.png)
+
+### Architecture
+![Selenium](https://github.com/dipjyotimetia/HybridTestFramework/blob/master/docs/screens/selenium.png)
 
 ### Supported Platforms
 This framework supports WebUi automation across a variety of browsers like Chrome, Firefox, IE, no only limited to this but extended to test rest api, security and visual testing.
@@ -80,22 +82,22 @@ Search and modify the below line in .idea workspace.xml
 ```    
 
 ### JenkinsExecution
-![image](/screens/jenkinsExecution.png)
+![image](https://github.com/dipjyotimetia/HybridTestFramework/blob/master/docs/screens/jenkinsExecution.png)
 
 ### GridServer 2.0
-![image](/screens/seleniumGrid.png)
+![image](https://github.com/dipjyotimetia/HybridTestFramework/blob/master/docs/screens/seleniumGrid.png)
 
 ### Allure Reporting
-![image](/screens/allureReport.png)
+![image](https://github.com/dipjyotimetia/HybridTestFramework/blob/master/docs/screens/allureReport.png)
 
 ### Gradle Report
-![image](/screens/gradleReport.png)
+![image](https://github.com/dipjyotimetia/HybridTestFramework/blob/master/docs/screens/gradleReport.png)
 
 ### TestResults
-![image](/screens/testResults.png)
+![image](https://github.com/dipjyotimetia/HybridTestFramework/blob/master/docs/screens/testResults.png)
 
 ### BrowserStack Dashboard
-![image](/screens/browserStack.png)
+![image](https://github.com/dipjyotimetia/HybridTestFramework/blob/master/docs/screens/browserStack.png)
 
 ### LogsView
-![image](/screens/logs.png)      
+![image](https://github.com/dipjyotimetia/HybridTestFramework/blob/master/docs/screens/logs.png)      
