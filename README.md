@@ -1,11 +1,11 @@
-# HybridTestFramewrok
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/2ffd9c97725645c2bcda860988dc0baf)](https://www.codacy.com/manual/dipjyotimetia/HybridTestFramewrok?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dipjyotimetia/HybridTestFramewrok&amp;utm_campaign=Badge_Grade)
+# HybridTestFramework
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/2ffd9c97725645c2bcda860988dc0baf)](https://www.codacy.com/manual/dipjyotimetia/HybridTestFramework?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dipjyotimetia/HybridTestFramework&amp;utm_campaign=Badge_Grade)
 [![This project is using Percy.io for visual regression testing.](https://percy.io/static/images/percy-badge.svg)](https://percy.io/CypressTest/Selenium)
-![CI](https://github.com/dipjyotimetia/HybridTestFramewrok/workflows/CI/badge.svg)  
+![CI](https://github.com/dipjyotimetia/HybridTestFramework/workflows/CI/badge.svg)  
 [![SupportedBy JetBrains](https://github.com/TestautoDev/Tricks-And-Tips/blob/master/jetbrains.svg)](https://www.jetbrains.com/?from=HybridTestFramework)  
 ### Full fledged WEB, API and Security testing framework using selenium,ZAP OWASP proxy and rest-assured
 
-<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/selenium.png" width="800">  
+<img src="https://github.com/dipjyotimetia/HybridTestFramework/blob/master/Docs/screens/selenium.png" width="800">  
 
 ### Supported Platforms  
 This framework supports WebUi automation across a variety of browsers like Chrome, Firefox, IE, no only limited to this but extended to test rest api, security and visual testing.
@@ -96,7 +96,7 @@ $ kubectl delete deployment selenium-node-chrome
 $ kubectl delete deployment selenium-hub
 ```
 navigate to `http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/`   
-<img src="https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/screens/kubernetes.png" width="800">
+<img src="https://github.com/dipjyotimetia/HybridTestFramework/blob/master/Docs/screens/kubernetes.png" width="800">
 
 ### Execution Gif
-![browserstack](https://github.com/dipjyotimetia/HybridTestFramewrok/blob/master/Docs/gif/videogif.gif)
+![browserstack](https://github.com/dipjyotimetia/HybridTestFramework/blob/master/Docs/gif/videogif.gif)
