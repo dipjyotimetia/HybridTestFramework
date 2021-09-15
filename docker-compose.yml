@@ -24,7 +24,7 @@ services:
       - "5252:5252"
 
   firefox:
-    image: selenium/node-firefox:4.0.0-rc-1-prerelease-20210823
+    image: selenium/node-firefox:4.0.0-rc-2-prerelease-20210915
     volumes:
       - /dev/shm:/dev/shm
     depends_on:
@@ -33,7 +33,7 @@ services:
       HUB_HOST: hub
 
   chrome:
-    image: selenium/node-chrome:4.0.0-rc-1-prerelease-20210823
+    image: selenium/node-chrome:4.0.0-rc-2-prerelease-20210915
     volumes:
       - /dev/shm:/dev/shm
     depends_on:
@@ -42,7 +42,7 @@ services:
       HUB_HOST: hub
 
   hub:
-    image: selenium/hub:4.0.0-rc-1-prerelease-20210823
+    image: selenium/hub:4.0.0-rc-2-prerelease-20210915
     ports:
       - "4444:4444"
 
