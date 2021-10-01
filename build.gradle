@@ -68,7 +68,7 @@ dockerCompose {
 }
 
 dependencies {
-    implementation group: 'software.amazon.awssdk', name: 'aws-sdk-java', version: '2.17.29'
+    implementation group: 'software.amazon.awssdk', name: 'aws-sdk-java', version: '2.17.50'
     implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.0.0-rc-1'
     implementation group: 'org.seleniumhq.selenium', name: 'selenium-server', version: '4.0.0-alpha-2'
     implementation group: 'io.github.bonigarcia', name: 'webdrivermanager', version: '5.0.1'
