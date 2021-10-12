@@ -111,7 +111,7 @@ dependencies {
     implementation group: 'io.qameta.allure', name: 'allure-attachments', version: '2.15.0'
     implementation group: 'org.apache.kafka', name: 'kafka_2.13', version: '2.8.0'
     implementation group: 'org.apache.kafka', name: 'kafka-clients', version: '2.8.0'
-    implementation group: 'org.apache.kafka', name: 'kafka-streams', version: '2.8.0'
+    implementation group: 'org.apache.kafka', name: 'kafka-streams', version: '3.0.0'
     implementation group: 'cloud.localstack', name: 'localstack-utils', version: '0.2.15'
     implementation 'org.testcontainers:testcontainers:1.16.0'
     implementation group: 'org.testcontainers', name: 'selenium', version: '1.16.0'
