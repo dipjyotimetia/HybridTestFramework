@@ -74,7 +74,7 @@ dependencies {
     implementation group: 'io.github.bonigarcia', name: 'webdrivermanager', version: '5.0.3'
     implementation group: 'com.browserstack', name: 'browserstack-local-java', version: '1.0.6'
     implementation group: 'com.deque', name: 'axe-selenium', version: '3.0'
-    implementation group: 'org.awaitility', name: 'awaitility', version: '4.1.0'
+    implementation group: 'org.awaitility', name: 'awaitility', version: '4.1.1'
     implementation group: 'com.github.tomakehurst', name: 'wiremock', version: '2.27.2'
     implementation group: 'net.reini', name: 'slf4-cdi', version: '1.0'
     implementation group: 'io.netty', name: 'netty-all', version: '4.1.69.Final'
