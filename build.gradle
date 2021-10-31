@@ -114,7 +114,7 @@ dependencies {
     implementation group: 'org.apache.kafka', name: 'kafka-streams', version: '3.0.0'
     implementation group: 'cloud.localstack', name: 'localstack-utils', version: '0.2.15'
     implementation 'org.testcontainers:testcontainers:1.16.0'
-    implementation group: 'org.testcontainers', name: 'selenium', version: '1.16.0'
+    implementation group: 'org.testcontainers', name: 'selenium', version: '1.16.2'
     implementation group: 'org.testcontainers', name: 'kafka', version: '1.16.0'
     implementation group: 'org.testcontainers', name: 'localstack', version: '1.16.0'
     implementation group: 'org.testcontainers', name: 'cassandra', version: '1.16.0'
