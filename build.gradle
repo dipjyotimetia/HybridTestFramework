@@ -108,7 +108,7 @@ dependencies {
     implementation group: 'io.qameta.allure', name: 'allure-gradle', version: '2.8.1'
     implementation group: 'io.qameta.allure', name: 'allure-testng', version: '2.16.0'
     implementation group: 'io.qameta.allure', name: 'allure-rest-assured', version: '2.16.0'
-    implementation group: 'io.qameta.allure', name: 'allure-attachments', version: '2.16.0'
+    implementation group: 'io.qameta.allure', name: 'allure-attachments', version: '2.16.1'
     implementation group: 'org.apache.kafka', name: 'kafka_2.13', version: '3.0.0'
     implementation group: 'org.apache.kafka', name: 'kafka-clients', version: '3.0.0'
     implementation group: 'org.apache.kafka', name: 'kafka-streams', version: '3.0.0'
