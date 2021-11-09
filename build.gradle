@@ -54,7 +54,7 @@ allure {
     useTestNG {
         version = '2.16.0'
     }
-    downloadLink = 'https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.16.0/allure-commandline-2.16.0.zip'
+    downloadLink = 'https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.16.1/allure-commandline-2.16.1.zip'
 }
 
 // dockerCompose.isRequiredBy(test)
