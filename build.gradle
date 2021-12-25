@@ -50,11 +50,11 @@ buildscript {
 }
 
 allure {
-    version = '2.17.1'
+    version = '2.17.2'
     useTestNG {
-        version = '2.17.1'
+        version = '2.17.2'
     }
-    downloadLink = 'https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.17.1/allure-commandline-2.17.1.zip'
+    downloadLink = 'https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.17.2/allure-commandline-2.17.2.zip'
 }
 
 // dockerCompose.isRequiredBy(test)
@@ -91,7 +91,7 @@ dependencies {
     implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: '5.0.0'
     implementation group: 'org.apache.poi', name: 'poi', version: '5.0.0'
     implementation group: 'org.apache.xmlbeans', name: 'xmlbeans', version: '5.0.2'
-    implementation group: 'com.microsoft.sqlserver', name: 'mssql-jdbc', version: '9.4.0.jre11'
+    implementation group: 'com.microsoft.sqlserver', name: 'mssql-jdbc', version: '9.4.1.jre11'
     implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.32'
     implementation group: 'com.github.javafaker', name: 'javafaker', version: '1.0.2'
     implementation group: 'io.rest-assured', name: 'rest-assured', version: '4.4.0'
@@ -104,13 +104,13 @@ dependencies {
     implementation group: 'org.zaproxy', name: 'zap', version: '2.11.1'
     implementation group: 'net.lingala.zip4j', name: 'zip4j', version: '2.9.1'
     implementation group: 'io.qameta.allure', name: 'allure-gradle', version: '2.8.1'
-    implementation group: 'io.qameta.allure', name: 'allure-testng', version: '2.17.1'
-    implementation group: 'io.qameta.allure', name: 'allure-rest-assured', version: '2.17.1'
-    implementation group: 'io.qameta.allure', name: 'allure-attachments', version: '2.17.1'
+    implementation group: 'io.qameta.allure', name: 'allure-testng', version: '2.17.2'
+    implementation group: 'io.qameta.allure', name: 'allure-rest-assured', version: '2.17.2'
+    implementation group: 'io.qameta.allure', name: 'allure-attachments', version: '2.17.2'
     implementation group: 'org.apache.kafka', name: 'kafka_2.13', version: '3.0.0'
     implementation group: 'org.apache.kafka', name: 'kafka-clients', version: '3.0.0'
     implementation group: 'org.apache.kafka', name: 'kafka-streams', version: '3.0.0'
-    implementation group: 'cloud.localstack', name: 'localstack-utils', version: '0.2.17'
+    implementation group: 'cloud.localstack', name: 'localstack-utils', version: '0.2.19'
     implementation 'org.testcontainers:testcontainers:1.16.2'
     implementation group: 'org.testcontainers', name: 'selenium', version: '1.16.2'
     implementation group: 'org.testcontainers', name: 'kafka', version: '1.16.2'
