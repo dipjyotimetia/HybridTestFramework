@@ -34,7 +34,7 @@ import java.util.List;
 @Slf4j
 public class LoginPage extends UserActions {
 
-    //Element that wont get changed
+    //Element that won't get changed
     @CacheLookup
     @FindBy(css = "#header div.header_user_info a")
     private WebElement signInLink;
