@@ -35,7 +35,7 @@ import org.testng.annotations.Test;
 @Link("https://jira.cloud.com")
 @Feature("Api1")
 @Feature("Api2")
-public class TC001_Test<T> extends UserActions<T> {
+public class TC001_Test extends UserActions {
 
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "E2E test for App")

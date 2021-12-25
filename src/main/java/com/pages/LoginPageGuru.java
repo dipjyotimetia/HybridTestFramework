@@ -31,7 +31,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 @Slf4j
-public class LoginPageGuru<T> extends UserActions<T> {
+public class LoginPageGuru extends UserActions {
 
     @FindBy(id = "email")
     private WebElement email;

@@ -32,7 +32,7 @@ import org.openqa.selenium.support.*;
 import java.util.List;
 
 @Slf4j
-public class LoginPage<T> extends UserActions<T> {
+public class LoginPage extends UserActions {
 
     //Element that won't get changed
     @CacheLookup
