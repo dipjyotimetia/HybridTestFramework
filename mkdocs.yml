@@ -1,10 +1,25 @@
 site_name: HybridTestFramework
 repo_name: dipjyotimetia/HybridTestFramework
 repo_url: https://github.com/dipjyotimetia/HybridTestFramework
+nav:
+  - Home: index.md
+  - Selenium: selenium.md
+  - Api: api.md
+  - Kafka: kafka.md
+  - AWS: aws.md
 theme:
   name: material
   palette:
-    primary: deep purple
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
   features:
     - search.suggest
     - search.highlight
