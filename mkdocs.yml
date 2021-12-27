@@ -5,10 +5,6 @@ theme:
   name: material
   palette:
     primary: deep purple
-  prev_next_buttons_location: both
-    navigation_depth: 4
-    titles_only: False
-    sticky_navigation: True
   features:
     - search.suggest
     - search.highlight
@@ -17,32 +13,6 @@ theme:
     - navigation.indexes
   icon:
     repo: fontawesome/brands/git-alt
-markdown_extensions:
-  - smarty
-  - sane_lists
-  - fenced_code
-  - meta
-  - admonition
-  - attr_list
-  - pymdownx.arithmatex
-  - pymdownx.betterem:
-      smart_enable: all
-  - pymdownx.caret
-  - pymdownx.critic
-  - pymdownx.details
-  - pymdownx.inlinehilite
-  - pymdownx.magiclink
-  - pymdownx.mark
-  - pymdownx.smartsymbols
-  - pymdownx.superfences
-  - pymdownx.tasklist:
-      custom_checkbox: true
-  - pymdownx.tabbed
-  - pymdownx.tilde
-  - codehilite
-  - footnotes
-  - toc:
-      permalink: true
 plugins:
   - search
 extra:
