@@ -36,7 +36,7 @@ This framework supports WebUi automation across a variety of browsers like Chrom
 * Gradle
   https://gradle.org/next-steps/?version=6.8.3&format=bin
 * Allure
-  https://github.com/allure-framework/allure2/archive/2.13.9.zip    
+  https://github.com/allure-framework/allure2/archive/2.17.2.zip    
 * Set Environment variables      
     * JAVA_HOME: Pointing to the Java SDK folder\bin
     * GRADLE_HOME: Pointing to Gradle directory\bin.

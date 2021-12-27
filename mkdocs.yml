@@ -3,6 +3,11 @@ theme:
   name: material
   palette:
     primary: deep purple
+    accent: 'indigo'
+  prev_next_buttons_location: both
+    navigation_depth: 4
+    titles_only: False
+    sticky_navigation: True
   features:
     - search.suggest
     - search.highlight
@@ -11,6 +16,32 @@ theme:
     - navigation.indexes
   icon:
     repo: fontawesome/brands/git-alt
+markdown_extensions:
+  - smarty
+  - sane_lists
+  - fenced_code
+  - meta
+  - admonition
+  - attr_list
+  - pymdownx.arithmatex
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tabbed
+  - pymdownx.tilde
+  - codehilite
+  - footnotes
+  - toc:
+      permalink: true
 plugins:
   - search
 extra:
@@ -21,4 +52,4 @@ extra:
       link: https://linkedin.com/in/dipjyotimetia/
     - icon: fontawesome/brands/medium
       link: https://medium.com/@dipjyotimetia
-copyright: Copyright &copy; 2018 - 2021 Dipjyoti Metia
+copyright: 2021 <a href="https://github.com/dipjyotimetia">Dipjyoti Metia</a>.

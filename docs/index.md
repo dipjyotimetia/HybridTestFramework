@@ -1,7 +1,7 @@
 # HybridTestFramework
 
 ### Architecture
-![Selenium](https://github.com/dipjyotimetia/HybridTestFramework/blob/master/docs/screens/selenium.png)
+![Selenium](img/selenium.png)
 
 ### Supported Platforms
 This framework supports WebUi automation across a variety of browsers like Chrome, Firefox, IE, no only limited to this but extended to test rest api, security and visual testing.
@@ -18,8 +18,9 @@ This framework supports WebUi automation across a variety of browsers like Chrom
 * Accessibility testing using axe-selenium
 * Stubbed api testing using WireMock
 * Can send logs to ElasticSearch for kibana dashboard visualization
-* Database testing support(Coming Soon...)
-* Kubernetes support(Coming soon...)
+* Database testing support
+* Kafka testing support
+* Kubernetes support
 
 ### Setup & Tools
 * Install intellij
@@ -31,7 +32,7 @@ This framework supports WebUi automation across a variety of browsers like Chrom
 * Gradle
   https://gradle.org/next-steps/?version=6.4&format=bin
 * Allure
-  https://github.com/allure-framework/allure2/archive/2.13.3.zip
+  https://github.com/allure-framework/allure2/archive/2.17.2.zip
 * Set Environment variables
     * JAVA_HOME: Pointing to the Java SDK folder\bin
     * GRADLE_HOME: Pointing to Gradle directory\bin.
@@ -82,22 +83,22 @@ Search and modify the below line in .idea workspace.xml
 ```    
 
 ### JenkinsExecution
-![image](https://github.com/dipjyotimetia/HybridTestFramework/blob/master/docs/screens/jenkinsExecution.png)
+![image](img/jenkinsExecution.png)
 
 ### GridServer 2.0
-![image](https://github.com/dipjyotimetia/HybridTestFramework/blob/master/docs/screens/seleniumGrid.png)
+![image](img/seleniumGrid.png)
 
 ### Allure Reporting
-![image](https://github.com/dipjyotimetia/HybridTestFramework/blob/master/docs/screens/allureReport.png)
+![image](img/allureReport.png)
 
 ### Gradle Report
-![image](https://github.com/dipjyotimetia/HybridTestFramework/blob/master/docs/screens/gradleReport.png)
+![image](img/gradleReport.png)
 
 ### TestResults
-![image](https://github.com/dipjyotimetia/HybridTestFramework/blob/master/docs/screens/testResults.png)
+![image](img/testResults.png)
 
 ### BrowserStack Dashboard
-![image](https://github.com/dipjyotimetia/HybridTestFramework/blob/master/docs/screens/browserStack.png)
+![image](img/browserStack.png)
 
 ### LogsView
-![image](https://github.com/dipjyotimetia/HybridTestFramework/blob/master/docs/screens/logs.png)      
+![image](img/logs.png)      
