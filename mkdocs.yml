@@ -1,9 +1,10 @@
 site_name: HybridTestFramework
+repo_name: dipjyotimetia/HybridTestFramework
+repo_url: https://github.com/dipjyotimetia/HybridTestFramework
 theme:
   name: material
   palette:
     primary: deep purple
-    accent: 'indigo'
   prev_next_buttons_location: both
     navigation_depth: 4
     titles_only: False
