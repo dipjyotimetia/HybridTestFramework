@@ -41,8 +41,9 @@ plugins:
 
 nav:
   - Home: index.md
+  - Setup: setup.md
   - Selenium: selenium.md
-  - Api: api.md
+  - Apis: api.md
   - Kafka: kafka.md
   - AWS: aws.md
 
