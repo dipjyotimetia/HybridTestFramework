@@ -1,26 +1,33 @@
 site_name: HybridTestFramework
+site_author: Dipjyoti Metia
+site_url: https://dipjyotimetia.github.io/HybridTestFramework/
+site_description: >-
+  Use this framework as a template of your test automation journey
+  let this be as your tool to close the gap between exploratory and automation tests.
+
 repo_name: dipjyotimetia/HybridTestFramework
 repo_url: https://github.com/dipjyotimetia/HybridTestFramework
-nav:
-  - Home: index.md
-  - Selenium: selenium.md
-  - Api: api.md
-  - Kafka: kafka.md
-  - AWS: aws.md
+
 theme:
   name: material
   palette:
-    - media: "(prefers-color-scheme: light)"
-      scheme: default
-      toggle:
-        icon: material/toggle-switch-off-outline
-        name: Switch to dark mode
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
+    - scheme: default
+      primary: indigo
+      accent: indigo
       toggle:
         icon: material/toggle-switch
+        name: Switch to dark mode
+    - scheme: slate
+      primary: red
+      accent: red
+      toggle:
+        icon: material/toggle-switch-off-outline
         name: Switch to light mode
+  font:
+    text: Roboto
+    code: Roboto Mono
   features:
+    - content.code.annotate
     - search.suggest
     - search.highlight
     - navigation.tabs
@@ -28,8 +35,57 @@ theme:
     - navigation.indexes
   icon:
     repo: fontawesome/brands/git-alt
+
 plugins:
   - search
+
+nav:
+  - Home: index.md
+  - Selenium: selenium.md
+  - Api: api.md
+  - Kafka: kafka.md
+  - AWS: aws.md
+
+markdown_extensions:
+  - admonition
+  - abbr
+  - attr_list
+  - def_list
+  - footnotes
+  - meta
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink:
+      repo_url_shorthand: true
+      user: squidfunk
+      repo: mkdocs-material
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
 extra:
   social:
     - icon: fontawesome/brands/github
@@ -38,4 +94,5 @@ extra:
       link: https://linkedin.com/in/dipjyotimetia/
     - icon: fontawesome/brands/medium
       link: https://medium.com/@dipjyotimetia
+
 copyright: 2021 <a href="https://github.com/dipjyotimetia">Dipjyoti Metia</a>.
