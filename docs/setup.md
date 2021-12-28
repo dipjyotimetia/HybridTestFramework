@@ -15,10 +15,9 @@
     * GRADLE_HOME: Pointing to Gradle directory\bin.
     * ALLURE_HOME: Pointing to allure directory\bin.
 
-## Java 8 JDK Installation
+## Java 11 JDK Installation and config
 * Download Java 11 JDK from [here](https://adoptopenjdk.net/)
 * Install downloaded Java 11 JDK.
-* ### **Configure environment variables:**
 * System Properties -> Environment Variables -> System Variables -> New -> `JAVA_HOME` and Value as `C:\Program Files\Eclipse Adoptium\jdk-11.0.13.8-hotspot` (path where JDK is installed)
 * System Properties -> Environment Variables -> System Variables -> Select `Path` and Edit -> Add `%JAVA_HOME%\bin`
 * Once Environment variables are configured, open command prompt and run `java -v` and `echo $JAVA_HOME` to check whether java version installed is returned. e.g <br/>
