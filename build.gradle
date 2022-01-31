@@ -110,7 +110,7 @@ dependencies {
     implementation group: 'org.apache.kafka', name: 'kafka_2.13', version: '3.0.0'
     implementation group: 'org.apache.kafka', name: 'kafka-clients', version: '3.0.0'
     implementation group: 'org.apache.kafka', name: 'kafka-streams', version: '3.0.0'
-    implementation group: 'cloud.localstack', name: 'localstack-utils', version: '0.2.19'
+    implementation group: 'cloud.localstack', name: 'localstack-utils', version: '0.2.20'
     implementation 'org.testcontainers:testcontainers:1.16.3'
     implementation group: 'org.testcontainers', name: 'selenium', version: '1.16.3'
     implementation group: 'org.testcontainers', name: 'kafka', version: '1.16.2'
