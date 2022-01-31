@@ -98,7 +98,7 @@ dependencies {
     implementation group: 'io.rest-assured', name: 'json-schema-validator', version: '4.5.0'
     implementation group: 'com.atlassian.oai', name: 'swagger-request-validator-restassured', version: '2.24.0'
     implementation group: 'org.json', name: 'json', version: '20211205'
-    implementation group: 'com.konghq', name: 'unirest-java', version: '3.13.4'
+    implementation group: 'com.konghq', name: 'unirest-java', version: '3.13.6'
     implementation group: 'net.lightbody.bmp', name: 'browsermob-core', version: '2.1.5'
     implementation group: 'org.zaproxy', name: 'zap-clientapi', version: '1.10.0'
     implementation group: 'org.zaproxy', name: 'zap', version: '2.11.1'
