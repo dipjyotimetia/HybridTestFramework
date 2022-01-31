@@ -96,7 +96,7 @@ dependencies {
     implementation group: 'com.github.javafaker', name: 'javafaker', version: '1.0.2'
     implementation group: 'io.rest-assured', name: 'rest-assured', version: '4.5.0'
     implementation group: 'io.rest-assured', name: 'json-schema-validator', version: '4.5.0'
-    implementation group: 'com.atlassian.oai', name: 'swagger-request-validator-restassured', version: '2.23.0'
+    implementation group: 'com.atlassian.oai', name: 'swagger-request-validator-restassured', version: '2.24.0'
     implementation group: 'org.json', name: 'json', version: '20211205'
     implementation group: 'com.konghq', name: 'unirest-java', version: '3.13.4'
     implementation group: 'net.lightbody.bmp', name: 'browsermob-core', version: '2.1.5'
