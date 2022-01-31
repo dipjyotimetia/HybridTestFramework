@@ -114,11 +114,11 @@ dependencies {
     implementation 'org.testcontainers:testcontainers:1.16.2'
     implementation group: 'org.testcontainers', name: 'selenium', version: '1.16.2'
     implementation group: 'org.testcontainers', name: 'kafka', version: '1.16.2'
-    implementation group: 'org.testcontainers', name: 'localstack', version: '1.16.2'
+    implementation group: 'org.testcontainers', name: 'localstack', version: '1.16.3'
     implementation group: 'org.testcontainers', name: 'cassandra', version: '1.16.2'
     implementation group: 'org.testcontainers', name: 'couchbase', version: '1.16.2'
     implementation group: 'org.testcontainers', name: 'vault', version: '1.16.2'
-    implementation group: 'org.testcontainers', name: 'localstack', version: '1.16.2'
+    implementation group: 'org.testcontainers', name: 'localstack', version: '1.16.3'
     implementation 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
 }
