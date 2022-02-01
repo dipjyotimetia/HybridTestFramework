@@ -23,9 +23,11 @@ SOFTWARE.
  */
 package com.cloud.aws;
 
+import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.services.sns.SnsClient;
 import software.amazon.awssdk.services.sns.model.*;
 
+@Slf4j
 public class Sns extends Config {
 
     /**
@@ -45,7 +47,7 @@ public class Sns extends Config {
             result = snsClient.createTopic(request);
             return result.topicArn();
         } catch (SnsException e) {
-            System.err.println(e.awsErrorDetails().errorMessage());
+            log.error(e.awsErrorDetails().errorMessage());
             System.exit(1);
         }
         return "";
@@ -62,7 +64,7 @@ public class Sns extends Config {
                     .build();
 
             ListTopicsResponse result = snsClient.listTopics(request);
-            System.out.println("Status was " + result.sdkHttpResponse().statusCode() + "\n\nTopics\n\n" + result.topics());
+            log.info("Status was " + result.sdkHttpResponse().statusCode() + "\n\nTopics\n\n" + result.topics());
 
         } catch (SnsException e) {
             System.err.println(e.awsErrorDetails().errorMessage());
@@ -87,10 +89,10 @@ public class Sns extends Config {
                     .build();
 
             SubscribeResponse result = snsClient.subscribe(request);
-            System.out.println("Subscription ARN: " + result.subscriptionArn() + "\n\n Status was " + result.sdkHttpResponse().statusCode());
+            log.info("Subscription ARN: " + result.subscriptionArn() + "\n\n Status was " + result.sdkHttpResponse().statusCode());
 
         } catch (SnsException e) {
-            System.err.println(e.awsErrorDetails().errorMessage());
+            log.error(e.awsErrorDetails().errorMessage());
             System.exit(1);
         }
     }
@@ -110,10 +112,10 @@ public class Sns extends Config {
                     .build();
 
             PublishResponse result = snsClient.publish(request);
-            System.out.println(result.messageId() + " Message sent. Status was " + result.sdkHttpResponse().statusCode());
+            log.info(result.messageId() + " Message sent. Status was " + result.sdkHttpResponse().statusCode());
 
         } catch (SnsException e) {
-            System.err.println(e.awsErrorDetails().errorMessage());
+            log.error(e.awsErrorDetails().errorMessage());
             System.exit(1);
         }
     }
@@ -132,11 +134,11 @@ public class Sns extends Config {
 
             UnsubscribeResponse result = snsClient.unsubscribe(request);
 
-            System.out.println("\n\nStatus was " + result.sdkHttpResponse().statusCode()
+            log.info("\n\nStatus was " + result.sdkHttpResponse().statusCode()
                     + "\n\nSubscription was removed for " + request.subscriptionArn());
 
         } catch (SnsException e) {
-            System.err.println(e.awsErrorDetails().errorMessage());
+            log.error(e.awsErrorDetails().errorMessage());
             System.exit(1);
         }
     }
@@ -154,10 +156,10 @@ public class Sns extends Config {
                     .build();
 
             DeleteTopicResponse result = snsClient.deleteTopic(request);
-            System.out.println("\n\nStatus was " + result.sdkHttpResponse().statusCode());
+            log.info("\n\nStatus was " + result.sdkHttpResponse().statusCode());
 
         } catch (SnsException e) {
-            System.err.println(e.awsErrorDetails().errorMessage());
+            log.error(e.awsErrorDetails().errorMessage());
             System.exit(1);
         }
     }

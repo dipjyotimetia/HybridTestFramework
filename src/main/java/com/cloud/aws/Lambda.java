@@ -23,12 +23,14 @@ SOFTWARE.
  */
 package com.cloud.aws;
 
+import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.services.lambda.LambdaClient;
 import software.amazon.awssdk.services.lambda.model.InvokeRequest;
 import software.amazon.awssdk.services.lambda.model.InvokeResponse;
 import software.amazon.awssdk.services.lambda.model.LambdaException;
 
+@Slf4j
 public class Lambda {
 
     /**
@@ -53,10 +55,10 @@ public class Lambda {
             //Invoke the Lambda function
             res = awsLambda.invoke(request);
             String value = res.payload().asUtf8String();
-            System.out.println(value);
+            log.info(value);
 
         } catch (LambdaException e) {
-            System.err.println(e.getMessage());
+            log.error(e.getMessage());
             System.exit(1);
         }
     }

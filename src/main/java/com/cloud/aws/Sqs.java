@@ -23,11 +23,13 @@ SOFTWARE.
  */
 package com.cloud.aws;
 
+import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.services.sqs.SqsClient;
 import software.amazon.awssdk.services.sqs.model.*;
 
 import java.util.List;
 
+@Slf4j
 public class Sqs {
 
     /**
@@ -57,11 +59,11 @@ public class Sqs {
             ListQueuesResponse listQueuesResponse = sqsClient.listQueues(listQueuesRequest);
 
             for (String url : listQueuesResponse.queueUrls()) {
-                System.out.println(url);
+                log.info(url);
             }
 
         } catch (SqsException e) {
-            System.err.println(e.awsErrorDetails().errorMessage());
+            log.error(e.awsErrorDetails().errorMessage());
             System.exit(1);
         }
     }
@@ -79,7 +81,7 @@ public class Sqs {
                     sqsClient.getQueueUrl(GetQueueUrlRequest.builder().queueName(queueName).build());
             return getQueueUrlResponse.queueUrl();
         } catch (SqsException e) {
-            System.err.println(e.awsErrorDetails().errorMessage());
+            log.error(e.awsErrorDetails().errorMessage());
             System.exit(1);
         }
         return "";
@@ -106,7 +108,7 @@ public class Sqs {
             sqsClient.deleteQueue(deleteQueueRequest);
 
         } catch (SqsException e) {
-            System.err.println(e.awsErrorDetails().errorMessage());
+            log.error(e.awsErrorDetails().errorMessage());
             System.exit(1);
         }
     }
@@ -140,7 +142,7 @@ public class Sqs {
                     .build();
             return sqsClient.receiveMessage(receiveMessageRequest).messages();
         } catch (SqsException e) {
-            System.err.println(e.awsErrorDetails().errorMessage());
+            log.error(e.awsErrorDetails().errorMessage());
             System.exit(1);
         }
         return null;
@@ -163,7 +165,7 @@ public class Sqs {
                 sqsClient.deleteMessage(deleteMessageRequest);
             }
         } catch (SqsException e) {
-            System.err.println(e.awsErrorDetails().errorMessage());
+            log.error(e.awsErrorDetails().errorMessage());
             System.exit(1);
         }
     }

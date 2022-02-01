@@ -23,6 +23,7 @@ SOFTWARE.
  */
 package com.cloud.aws;
 
+import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.core.waiters.WaiterResponse;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.*;
@@ -30,6 +31,7 @@ import software.amazon.awssdk.services.dynamodb.waiters.DynamoDbWaiter;
 
 import java.util.List;
 
+@Slf4j
 public class DynamoDB extends Config {
 
     /**
@@ -71,7 +73,7 @@ public class DynamoDB extends Config {
             return newTable;
 
         } catch (DynamoDbException e) {
-            System.err.println(e.getMessage());
+            log.error(e.getMessage());
             System.exit(1);
         }
         return "";
@@ -106,7 +108,7 @@ public class DynamoDB extends Config {
 
                 ProvisionedThroughputDescription throughputInfo =
                         tableInfo.provisionedThroughput();
-                System.out.println("Throughput");
+                log.info("Throughput");
                 System.out.format("  Read Capacity : %d\n",
                         throughputInfo.readCapacityUnits());
                 System.out.format("  Write Capacity: %d\n",
@@ -114,7 +116,7 @@ public class DynamoDB extends Config {
 
                 List<AttributeDefinition> attributes =
                         tableInfo.attributeDefinitions();
-                System.out.println("Attributes");
+                log.info("Attributes");
 
                 for (AttributeDefinition a : attributes) {
                     System.out.format("  %s (%s)\n",
@@ -122,7 +124,7 @@ public class DynamoDB extends Config {
                 }
             }
         } catch (DynamoDbException e) {
-            System.err.println(e.getMessage());
+            log.error(e.getMessage());
             System.exit(1);
         }
     }
