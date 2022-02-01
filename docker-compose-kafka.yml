@@ -2,7 +2,7 @@ version: '3'
 
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper:7.0.0
+    image: confluentinc/cp-zookeeper:7.0.1
     hostname: zookeeper
     container_name: zookeeper
     ports:
@@ -12,7 +12,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
 
   broker:
-    image: confluentinc/cp-server:7.0.0
+    image: confluentinc/cp-server:7.0.1
     hostname: broker
     container_name: broker
     depends_on:
@@ -42,7 +42,7 @@ services:
     network_mode: "host"
 
   schema-registry:
-    image: confluentinc/cp-schema-registry:7.0.0
+    image: confluentinc/cp-schema-registry:7.0.1
     hostname: schema-registry
     container_name: schema-registry
     depends_on:
@@ -55,7 +55,7 @@ services:
       SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: "zookeeper:2181"
 
   control-center:
-    image: confluentinc/cp-enterprise-control-center:7.0.0
+    image: confluentinc/cp-enterprise-control-center:7.0.1
     hostname: control-center
     container_name: control-center
     depends_on:
