@@ -68,12 +68,12 @@ dockerCompose {
 }
 
 dependencies {
-    implementation 'software.amazon.awssdk:dynamodb:2.17.121'
-    implementation 'software.amazon.awssdk:s3:2.17.121'
-    implementation 'software.amazon.awssdk:sqs:2.17.121'
-    implementation 'software.amazon.awssdk:lambda:2.17.121'
-    implementation 'software.amazon.awssdk:sns:2.17.121'
-    implementation 'software.amazon.awssdk:devicefarm:2.17.121'
+    implementation 'software.amazon.awssdk:dynamodb:2.17.124'
+    implementation 'software.amazon.awssdk:s3:2.17.124'
+    implementation 'software.amazon.awssdk:sqs:2.17.124'
+    implementation 'software.amazon.awssdk:lambda:2.17.124'
+    implementation 'software.amazon.awssdk:sns:2.17.124'
+    implementation 'software.amazon.awssdk:devicefarm:2.17.124'
     implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.1.2'
     implementation group: 'org.seleniumhq.selenium', name: 'selenium-server', version: '4.0.0-alpha-2'
     implementation group: 'io.github.bonigarcia', name: 'webdrivermanager', version: '5.0.3'
@@ -101,7 +101,7 @@ dependencies {
     implementation group: 'com.github.javafaker', name: 'javafaker', version: '1.0.2'
     implementation group: 'io.rest-assured', name: 'rest-assured', version: '4.5.0'
     implementation group: 'io.rest-assured', name: 'json-schema-validator', version: '4.5.0'
-    implementation group: 'com.atlassian.oai', name: 'swagger-request-validator-restassured', version: '2.24.0'
+    implementation group: 'com.atlassian.oai', name: 'swagger-request-validator-restassured', version: '2.25.0'
     implementation group: 'org.json', name: 'json', version: '20211205'
     implementation group: 'com.konghq', name: 'unirest-java', version: '3.13.6'
     implementation group: 'net.lightbody.bmp', name: 'browsermob-core', version: '2.1.5'
