@@ -79,7 +79,7 @@ dependencies {
     implementation 'io.github.bonigarcia:webdrivermanager:5.0.3'
     implementation 'com.browserstack:browserstack-local-java:1.0.6'
     implementation 'com.deque:axe-selenium:3.0'
-    implementation 'org.awaitility.awaitility:4.1.1'
+    implementation 'org.awaitility:awaitility:4.1.1'
     implementation 'com.github.tomakehurst:wiremock:2.27.2'
     implementation 'org.apache.sshd:sshd-core:2.8.0'
     implementation 'org.assertj:assertj-core:3.22.0'
