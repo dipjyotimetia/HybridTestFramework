@@ -97,7 +97,7 @@ dependencies {
     implementation 'org.apache.poi:poi:5.2.0'
     implementation 'org.apache.xmlbeans:xmlbeans:5.0.3'
     implementation 'com.microsoft.sqlserver:mssql-jdbc:10.2.0.jre11'
-    implementation 'org.slf4j:slf4j-simple:1.7.35'
+    implementation 'org.slf4j:slf4j-simple:1.7.36'
     implementation 'com.github.javafaker:javafaker:1.0.2'
     implementation 'io.rest-assured:rest-assured:4.5.0'
     implementation 'io.rest-assured:json-schema-validator:4.5.0'
