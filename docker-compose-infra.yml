@@ -30,7 +30,7 @@ services:
       - "9000:9000"
       - "9092:9092"
     networks:
-      - sonarnet
+      - sonnet
     environment:
       - sonar.jdbc.username=sonar
       - sonar.jdbc.password=sonar
@@ -48,7 +48,7 @@ services:
     container_name: sonarqube-pg
     hostname: sonarqube-pg
     networks:
-      - sonarnet
+      - sonnet
     environment:
       - POSTGRES_USER=sonar
       - POSTGRES_PASSWORD=sonar
@@ -65,4 +65,4 @@ volumes:
   postgresql_data:
 
 networks:
-  sonarnet:
+  sonnet:

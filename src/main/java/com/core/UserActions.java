@@ -65,15 +65,15 @@ import static org.hamcrest.Matchers.not;
 @Slf4j
 public class UserActions<T> extends DriverManager<T> {
     private static final Faker faker = new Faker();
-    private static String datetimeabc = null;
-    private static int Counter = 0;
-    private static String abc1 = null;
-    private static String _dbusername = "";
-    private static String _dbpassword = "";
-    private static String _dburl = "";
+    private static String datetime = null;
+    private static int counter = 0;
     private static WebDriverWait wait;
     private static JavascriptExecutor jsExec;
-    private Dictionary dicttoread = new Hashtable();
+    private Map<String, String> dicttoread = new HashMap<>();
+
+    private String getEnv(String env) {
+        return System.getenv(env);
+    }
 
     public static Map<String, String> get(Map<String, String> formParams) {
         return formParams
@@ -101,7 +101,7 @@ public class UserActions<T> extends DriverManager<T> {
         SystemDateFormat();
         driverThread.navigate().to(url);
         driverThread.manage().window().maximize();
-        driverThread.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+        driverThread.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
     }
 
     /**
@@ -112,7 +112,7 @@ public class UserActions<T> extends DriverManager<T> {
      */
     private void fluentWait(WebElement element, int timeout) {
         try {
-            Wait wait = new FluentWait<>(driverThread)
+            Wait<WebDriver> wait = new FluentWait<>(driverThread)
                     .withTimeout(Duration.ofSeconds(timeout))
                     .pollingEvery(Duration.ofMillis(5))
                     .ignoring(NoSuchElementException.class);
@@ -685,7 +685,7 @@ public class UserActions<T> extends DriverManager<T> {
         } catch (IOException ef) {
             log.error(ef.getMessage());
         }
-        return (String) dicttoread.get(t_fieldName);
+        return dicttoread.get(t_fieldName);
     }
 
     /**
@@ -787,9 +787,9 @@ public class UserActions<T> extends DriverManager<T> {
     protected void captureImage(String p_testcaseName) {
         try {
             if (!SystemUtils.IS_OS_LINUX || !SystemUtils.IS_OS_MAC_OSX) {
-                Counter = Counter + 1;
+                counter = counter + 1;
                 File src = ((TakesScreenshot) driverThread).getScreenshotAs(OutputType.FILE);
-                FileUtils.copyFile(src, new File(("ScreensDoc\\" + p_testcaseName + "\\" + datetimeabc + "\\" + Counter + ".png")));
+                FileUtils.copyFile(src, new File(("ScreensDoc\\" + p_testcaseName + "\\" + datetime + "\\" + counter + ".png")));
             }
         } catch (Exception e) {
             log.error("Capture screenShot failed", e);
@@ -806,14 +806,14 @@ public class UserActions<T> extends DriverManager<T> {
             try (XWPFDocument doc = new XWPFDocument()) {
                 XWPFParagraph p = doc.createParagraph();
                 XWPFRun r = p.createRun();
-                for (int i = 1; i <= Counter; i++) {
-                    String path = "ScreensDoc\\" + p_testcaseName1 + "\\" + datetimeabc + "\\" + i + ".png";
+                for (int i = 1; i <= counter; i++) {
+                    String path = "ScreensDoc\\" + p_testcaseName1 + "\\" + datetime + "\\" + i + ".png";
                     try (FileInputStream pic = new FileInputStream(path)) {
                         r.addBreak();
                         r.addCarriageReturn();
                         r.addPicture(pic, XWPFDocument.PICTURE_TYPE_PNG, "ScreensDoc\\" + p_testcaseName1 + "\\" +
-                                datetimeabc + "\\" + i + ".png", Units.toEMU(300), Units.toEMU(400));
-                        FileOutputStream out = new FileOutputStream("ScreensDoc\\" + p_testcaseName1 + "\\" + datetimeabc + "\\" + p_testcaseName1 + ".docx");
+                                datetime + "\\" + i + ".png", Units.toEMU(300), Units.toEMU(400));
+                        FileOutputStream out = new FileOutputStream("ScreensDoc\\" + p_testcaseName1 + "\\" + datetime + "\\" + p_testcaseName1 + ".docx");
                         doc.write(out);
                         pic.close();
                         out.close();
@@ -821,11 +821,11 @@ public class UserActions<T> extends DriverManager<T> {
                         log.error(io.getMessage());
                     }
                 }
-                for (int i = 1; i <= Counter; i++) {
-                    File src1 = new File("ScreensDoc\\" + p_testcaseName1 + "\\" + datetimeabc + "\\" + i + ".png");
+                for (int i = 1; i <= counter; i++) {
+                    File src1 = new File("ScreensDoc\\" + p_testcaseName1 + "\\" + datetime + "\\" + i + ".png");
                     deleteDir(src1);
                 }
-                Counter = 0;
+                counter = 0;
             } catch (Exception e) {
                 log.error(e.getMessage());
             }
@@ -854,8 +854,8 @@ public class UserActions<T> extends DriverManager<T> {
         try {
             DateFormat date = new SimpleDateFormat("yyyy.MM.dd_hh.mm");
             Date date1 = new Date();
-            abc1 = date.format(date1);
-            datetimeabc = "Run_" + abc1;
+            String abc1 = date.format(date1);
+            datetime = "Run_" + abc1;
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -892,6 +892,9 @@ public class UserActions<T> extends DriverManager<T> {
         } catch (ClassNotFoundException e) {
             log.error("Class not found", e);
         }
+        String _dbusername = getEnv("dbname");
+        String _dburl = getEnv("dburl");
+        String _dbpassword = getEnv("dbpass");
         try (Connection connection = java.sql.DriverManager.getConnection(_dburl, _dbusername, _dbpassword)) {
             try (Statement stmt = connection.createStatement()) {
                 try (ResultSet rs = stmt.executeQuery(query)) {
@@ -1219,7 +1222,7 @@ public class UserActions<T> extends DriverManager<T> {
     }
 
     protected void catchBlock(Exception e) {
-        Counter = 0;
+        counter = 0;
         log.error("Error Description", e);
         Assert.fail("TestCase Failed", e);
     }

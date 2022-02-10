@@ -2,7 +2,7 @@
 version: '3.0'
 
 services:
-  stripemock:
+  stripe-mock:
     image: stripemock/stripe-mock:latest
     container_name: stripemock
     ports:

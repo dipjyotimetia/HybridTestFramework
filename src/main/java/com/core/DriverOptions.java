@@ -90,7 +90,7 @@ abstract class DriverOptions<T> {
         profile.setAssumeUntrustedCertificateIssuer(false);
         profile.setPreference("network.proxy.type", 0);
         options.setHeadless(SystemUtils.IS_OS_LINUX);
-        options.setCapability(FirefoxDriver.PROFILE, profile);
+        options.setCapability(FirefoxDriver.Capability.PROFILE, profile);
         //setFirefoxOWASP(options);
         log.info("Firefox options added");
         return options;

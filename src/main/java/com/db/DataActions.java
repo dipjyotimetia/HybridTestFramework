@@ -147,8 +147,7 @@ public class DataActions<T> extends ApiActions<T> {
             connObj = DriverManager.getConnection(JDBC_URL);
             if (connObj != null) {
                 Statement statement = connObj.createStatement();
-                ResultSet rs = statement.executeQuery(query);
-                return rs;
+                return statement.executeQuery(query);
             }
         } catch (Exception sqlException) {
             log.error(sqlException.getMessage());
