@@ -2,12 +2,9 @@ name: DockerImage
 
 on:
   push:
-    branches: [master, ]
+    branches: [ master ]
   pull_request:
-    # The branches below must be a subset of the branches above
-    branches: [master]
-  schedule:
-    - cron: '0 13 * * 2'
+    branches: [ master ]
 
 env:
   IMAGE_NAME: hybridtestframework
