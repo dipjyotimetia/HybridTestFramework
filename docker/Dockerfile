@@ -4,7 +4,7 @@ FROM ubuntu:bionic-20200311
 LABEL maintainer="HybridTestFramework dipjyotimetia@gmail.com"
 
 ENV GRADLE_VERSION 6.9
-ENV ALLURE_VERSION 2.14.0
+ENV ALLURE_VERSION 2.17.3
 
 # install packages
 RUN apt-get -o Acquire::Check-Valid-Until=false update
@@ -46,11 +46,11 @@ RUN FIREFOX_DOWNLOAD_URL=$(if [ $FIREFOX_VERSION = "latest" ] || [ $FIREFOX_VERS
   && ln -fs /opt/firefox-$FIREFOX_VERSION/firefox /usr/bin/firefox
 
 USER root
-#
-#COPY . .
-#
-#RUN gradle clean
-#RUN gradle task e2e
+
+COPY . .
+
+RUN gradle clean
+RUN gradle task e2e
 
 #docker build -t hybridtestframework:1.0 .
 #docker tag hybridtestframework:1.0 docker.pkg.github.com/dipjyotimetia/hybridtestframewrok/hybridtestframework:1.0

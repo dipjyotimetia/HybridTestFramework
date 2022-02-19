@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  pubsub:
+    build:
+      context: ./docker
+      dockerfile: DockerfilePubsub
+    hostname: pubsub
+    container_name: pubsub
+    ports:
+      - "8085:8085"
+    environment:
+      - CLOUDSDK_CORE_DISABLE_PROMPTS=1
