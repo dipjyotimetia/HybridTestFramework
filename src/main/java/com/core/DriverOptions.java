@@ -26,6 +26,7 @@ package com.core;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.SystemUtils;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
@@ -35,6 +36,7 @@ import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.firefox.ProfilesIni;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
+import org.openqa.selenium.remote.AbstractDriverOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.io.File;
@@ -43,7 +45,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 @Slf4j
-abstract class DriverOptions<T> {
+abstract class DriverOptions {
 
     /**
      * get chrome options
@@ -120,17 +122,16 @@ abstract class DriverOptions<T> {
      * @param perf    perf
      * @return browserOption
      */
-    protected T getBrowserOptions(String browser, String perf) {
+    protected MutableCapabilities getBrowserOptions(String browser, String perf) {
         switch (browser) {
             case "firefox":
-                return (T) getFirefoxOptions();
+                return getFirefoxOptions();
             case "chrome":
-                return (T) getChromeOptions(perf);
+                return getChromeOptions(perf);
             case "edge":
-                return (T) getEdgeOptions();
-            default:
-                return (T) "";
+                return getEdgeOptions();
         }
+        return null;
     }
 
     /**

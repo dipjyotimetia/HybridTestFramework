@@ -1,10 +1,10 @@
 # base image
-FROM ubuntu:bionic-20200311
+FROM ubuntu:bionic-20220128
 
 LABEL maintainer="HybridTestFramework dipjyotimetia@gmail.com"
 
 ENV GRADLE_VERSION 6.9
-ENV ALLURE_VERSION 2.14.0
+ENV ALLURE_VERSION 2.17.3
 
 # install packages
 RUN apt-get -o Acquire::Check-Valid-Until=false update
@@ -20,11 +20,11 @@ ENV PATH $PATH:$GRADLE_HOME/bin
 
 RUN echo "export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64" >> ~/.bashrc
 
-ENV JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64/jre"
+ENV JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
 ENV PATH $JAVA_HOME/bin:$PATH
 
 # Install allure
-RUN curl -o allure-commandline-${ALLURE_VERSION}.tgz -Ls https://dl.bintray.com/qameta/maven/io/qameta/allure/allure-commandline/${ALLURE_VERSION}/allure-commandline-${ALLURE_VERSION}.tgz && \
+RUN curl -o allure-commandline-${ALLURE_VERSION}.tgz -Ls https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/${ALLURE_VERSION}/allure-commandline-${ALLURE_VERSION}.tgz && \
     tar -zxvf allure-commandline-${ALLURE_VERSION}.tgz -C /opt/ && ln -s /opt/allure-${ALLURE_VERSION}/bin/allure /usr/bin/allure && allure --version
 
 # Install Chrome
@@ -44,13 +44,6 @@ RUN FIREFOX_DOWNLOAD_URL=$(if [ $FIREFOX_VERSION = "latest" ] || [ $FIREFOX_VERS
   && rm /tmp/firefox.tar.bz2 \
   && mv /opt/firefox /opt/firefox-$FIREFOX_VERSION \
   && ln -fs /opt/firefox-$FIREFOX_VERSION/firefox /usr/bin/firefox
-
-USER root
-#
-#COPY . .
-#
-#RUN gradle clean
-#RUN gradle task e2e
 
 #docker build -t hybridtestframework:1.0 .
 #docker tag hybridtestframework:1.0 docker.pkg.github.com/dipjyotimetia/hybridtestframewrok/hybridtestframework:1.0

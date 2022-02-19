@@ -23,6 +23,7 @@ SOFTWARE.
  */
 package com.core;
 
+import lombok.extern.slf4j.Slf4j;
 import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.client.ClientUtil;
 import net.lightbody.bmp.core.har.Har;
@@ -52,10 +53,8 @@ import java.net.URI;
 import java.net.URL;
 
 
-public class WebDriverController<T> extends DriverOptions<T> {
-
-    private static final Logger logger = LogManager.getLogger(WebDriverController.class);
-
+@Slf4j
+public class WebDriverController extends DriverOptions {
     private static WebDriver _driverThread = null;
     private static BrowserMobProxyServer proxy;
     private final String username = System.getenv("BROWSERSTACK_USERNAME");
@@ -89,43 +88,43 @@ public class WebDriverController<T> extends DriverOptions<T> {
         try {
             switch (grid) {
                 case "CLOUD":
-                    logger.info("Make sure that the environment variables AWS_ACCESS_KEY and AWS_SECRET_KEY are configured in your testing environment.");
+                    log.info("Make sure that the environment variables AWS_ACCESS_KEY and AWS_SECRET_KEY are configured in your testing environment.");
                     CreateTestGridUrlResponse response = client.createTestGridUrl(request);
                     _driverThread = new RemoteWebDriver(new URL(response.url()), addCloudCapabilities(browser));
-                    logger.info("Grid client setup for AWS Device farm successful");
+                    log.info("Grid client setup for AWS Device farm successful");
                     break;
                 case "DOCKER":
-                    logger.info("Make sure that docker containers are up and running");
+                    log.info("Make sure that docker containers are up and running");
                     _driverThread = new RemoteWebDriver(URI.create("http://localhost:4444/").toURL(), (Capabilities) getBrowserOptions(browser, perf));
-                    logger.info("Grid client setup for Docker containers successful");
+                    log.info("Grid client setup for Docker containers successful");
                     break;
                 case "BROWSERSTACK":
-                    logger.info("Make sure that browserstack configs provided");
+                    log.info("Make sure that browserstack configs provided");
                     _driverThread = new RemoteWebDriver(new URL("https://" + username + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub"), addBrowserStackCapabilities(browser, testName));
-                    logger.info("Grid client setup for browserstack successful");
+                    log.info("Grid client setup for browserstack successful");
                     break;
                 case "LOCAL":
                     switch (browser) {
                         case "firefox":
                             _driverThread = new FirefoxDriver(getFirefoxOptions());
-                            logger.info("Initiating firefox driver");
+                            log.info("Initiating firefox driver");
                             break;
                         case "chrome":
                             _driverThread = new ChromeDriver(getChromeOptions(perf));
-                            logger.info("Initiating chrome driver");
+                            log.info("Initiating chrome driver");
                             break;
                         case "edge":
                             _driverThread = new EdgeDriver(getEdgeOptions());
-                            logger.info("Initiating edge driver");
+                            log.info("Initiating edge driver");
                             break;
                         default:
-                            logger.info("Browser listed not supported");
+                            log.info("Browser listed not supported");
                     }
                 default:
-                    logger.info("Running in local docker container");
+                    log.info("Running in local docker container");
             }
         } catch (Exception e) {
-            logger.error(e);
+            log.error(e.getMessage());
         }
     }
 
@@ -135,7 +134,7 @@ public class WebDriverController<T> extends DriverOptions<T> {
      * @return capabilities
      */
     protected static DesiredCapabilities performance() {
-        logger.info("Make sure that Docker containers are up and running");
+        log.info("Make sure that Docker containers are up and running");
         proxy = new BrowserMobProxyServer();
         proxy.start();
         Proxy seleniumProxy = ClientUtil.createSeleniumProxy(proxy);
@@ -144,7 +143,7 @@ public class WebDriverController<T> extends DriverOptions<T> {
             seleniumProxy.setHttpProxy(hostIp + ":" + proxy.getPort());
             seleniumProxy.setSslProxy(hostIp + ":" + proxy.getPort());
         } catch (Exception e) {
-            logger.error(e);
+            log.error(e.getMessage());
         }
         proxy.enableHarCaptureTypes(CaptureType.REQUEST_CONTENT, CaptureType.RESPONSE_CONTENT);
         proxy.newHar("TestPerformance");
@@ -160,9 +159,9 @@ public class WebDriverController<T> extends DriverOptions<T> {
             FileOutputStream fos = new FileOutputStream("Reports\\performance\\" + testName + ".har");
             har.writeTo(fos);
             proxy.stop();
-            logger.info("Performance reports will be available at Report folder");
+            log.info("Performance reports will be available at Report folder");
         } catch (Exception e) {
-            logger.info("Performance tests not included");
+            log.info("Performance tests not included");
         } finally {
             _driverThread.quit();
         }

@@ -1,9 +1,10 @@
 name: DockerImage
 
 on:
-  release:
-    # Only use the types keyword to narrow down the activity types that will trigger your workflow.
-    types: [published, created, edited]
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 env:
   IMAGE_NAME: hybridtestframework

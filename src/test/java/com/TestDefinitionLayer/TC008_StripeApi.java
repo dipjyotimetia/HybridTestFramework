@@ -16,7 +16,7 @@ import org.testng.annotations.Test;
 @Feature("Api1")
 @Feature("Api2")
 @Slf4j
-public class TC008_StripeApi<T> extends ApiActions<T> {
+public class TC008_StripeApi extends ApiActions {
     private static final Logger logger = LogManager.getLogger(TC008_StripeApi.class);
 
     @Severity(SeverityLevel.CRITICAL)
@@ -30,8 +30,8 @@ public class TC008_StripeApi<T> extends ApiActions<T> {
         Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
         logger.info("Response Body is =>  " + getBody(response));
         //  System.out.println(response);
-        T amount = jsonPathEvaluator(response, "data[0].amount");
-        T description = jsonPathEvaluator(response, "data[0].items[0].description");
+        int amount = (int) jsonPathEvaluator(response, "data[0].amount");
+        String description = (String) jsonPathEvaluator(response, "data[0].items[0].description");
         log("Amount: " + amount);
         log("Description: " + description);
     }

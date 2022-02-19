@@ -43,7 +43,7 @@ import java.util.Date;
 import java.util.Map;
 
 @Slf4j
-public class ApiActions<T> {
+public class ApiActions {
 
     /**
      * http request with parameter
@@ -219,7 +219,7 @@ public class ApiActions<T> {
      * @param response response
      * @return jsonPath
      */
-    protected T jsonPathEvaluator(Response response, String exp) {
+    protected Object jsonPathEvaluator(Response response, String exp) {
         return response.jsonPath().get(exp);
     }
 
