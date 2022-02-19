@@ -30,7 +30,7 @@ public class TC008_StripeApi extends ApiActions {
         Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
         logger.info("Response Body is =>  " + getBody(response));
         //  System.out.println(response);
-        String amount = (String) jsonPathEvaluator(response, "data[0].amount");
+        int amount = (int) jsonPathEvaluator(response, "data[0].amount");
         String description = (String) jsonPathEvaluator(response, "data[0].items[0].description");
         log("Amount: " + amount);
         log("Description: " + description);
