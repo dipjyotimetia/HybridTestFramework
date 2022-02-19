@@ -109,7 +109,7 @@ dependencies {
     implementation 'org.zaproxy:zap:2.11.1'
     implementation 'net.lingala.zip4j:zip4j:2.9.1'
     implementation 'io.qameta.allure:allure-gradle:2.8.1'
-    implementation 'io.qameta.allure:allure-testng:2.17.2'
+    implementation 'io.qameta.allure:allure-testng:2.17.3'
     implementation 'io.qameta.allure:allure-rest-assured:2.17.2'
     implementation 'io.qameta.allure:allure-attachments:2.17.2'
     implementation 'org.apache.kafka:kafka_2.13:3.1.0'
