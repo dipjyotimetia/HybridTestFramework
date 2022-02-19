@@ -1,5 +1,5 @@
 # base image
-FROM ubuntu:bionic-20200311
+FROM ubuntu:bionic-20220128
 
 LABEL maintainer="HybridTestFramework dipjyotimetia@gmail.com"
 
@@ -24,7 +24,7 @@ ENV JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64/jre"
 ENV PATH $JAVA_HOME/bin:$PATH
 
 # Install allure
-RUN curl -o allure-commandline-${ALLURE_VERSION}.tgz -Ls https://dl.bintray.com/qameta/maven/io/qameta/allure/allure-commandline/${ALLURE_VERSION}/allure-commandline-${ALLURE_VERSION}.tgz && \
+RUN curl -o allure-commandline-${ALLURE_VERSION}.tgz -Ls https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/${ALLURE_VERSION}/allure-commandline-${ALLURE_VERSION}.tgz && \
     tar -zxvf allure-commandline-${ALLURE_VERSION}.tgz -C /opt/ && ln -s /opt/allure-${ALLURE_VERSION}/bin/allure /usr/bin/allure && allure --version
 
 # Install Chrome
