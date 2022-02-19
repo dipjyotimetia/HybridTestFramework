@@ -33,7 +33,7 @@ import java.sql.*;
  * @author Dipjyoti Metia
  */
 @Slf4j
-public class DataActions<T> extends ApiActions<T> {
+public class DataActions extends ApiActions {
 
     private static final String JDBC_URL = "jdbc:sqlserver://databaseserver;databaseName=Database;integratedSecurity=true";
 

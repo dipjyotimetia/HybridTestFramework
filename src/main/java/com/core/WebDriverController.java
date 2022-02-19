@@ -52,7 +52,7 @@ import java.net.URI;
 import java.net.URL;
 
 
-public class WebDriverController<T> extends DriverOptions<T> {
+public class WebDriverController extends DriverOptions {
 
     private static final Logger logger = LogManager.getLogger(WebDriverController.class);
 

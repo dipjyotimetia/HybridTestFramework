@@ -63,7 +63,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
 @Slf4j
-public class UserActions<T> extends DriverManager<T> {
+public class UserActions extends DriverManager {
     private static final Faker faker = new Faker();
     private static String datetime = null;
     private static int counter = 0;
@@ -331,7 +331,7 @@ public class UserActions<T> extends DriverManager<T> {
      * @param selectBy selectBy
      * @param t        t
      */
-    protected void selectElement(WebElement element, SelectBy selectBy, T t) {
+    protected void selectElement(WebElement element, SelectBy selectBy, Object t) {
         Select select = new Select(element);
         switch (selectBy) {
             case INDEX:
@@ -399,7 +399,7 @@ public class UserActions<T> extends DriverManager<T> {
      * @param selectBy selectBy
      * @param t        t
      */
-    protected void deselectElement(WebElement element, SelectBy selectBy, T t) {
+    protected void deselectElement(WebElement element, SelectBy selectBy, Object t) {
         Select select = new Select(element);
         switch (selectBy) {
             case INDEX:

@@ -36,7 +36,7 @@ import org.testng.annotations.Test;
 @Link("https://jira.cloud.com")
 @Feature("Api1")
 @Feature("Api2")
-public class TC003_ApiTest<T> extends ApiActions<T> {
+public class TC003_ApiTest extends ApiActions {
     private static final Logger logger = LogManager.getLogger(TC003_ApiTest.class);
 
     @Severity(SeverityLevel.CRITICAL)
@@ -49,8 +49,8 @@ public class TC003_ApiTest<T> extends ApiActions<T> {
         Response response = httpGet("/v2/beers");
         Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
         //logger.info("Response Body is =>  " + getBody(response));
-        T tagLine = jsonPathEvaluator(response, "$[0].tagline");
-        T description = jsonPathEvaluator(response, "$[0].description");
+        String tagLine = (String) jsonPathEvaluator(response, "$[0].tagline");
+        String description = (String) jsonPathEvaluator(response, "$[0].description");
         log("Tag Line: " + tagLine);
         log("Description: " + description);
     }
@@ -65,8 +65,8 @@ public class TC003_ApiTest<T> extends ApiActions<T> {
         Response response = httpGet("/v2/beers/random");
         Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
         //logger.info("Response Body is =>  " + getBody(response));
-        T tagLine = jsonPathEvaluator(response, "$[0].tagline");
-        T description = jsonPathEvaluator(response, "$[0].description");
+        String tagLine = (String) jsonPathEvaluator(response, "$[0].tagline");
+        String description = (String) jsonPathEvaluator(response, "$[0].description");
         log("Tag Line: " + tagLine);
         log("Description: " + description);
     }
@@ -81,8 +81,8 @@ public class TC003_ApiTest<T> extends ApiActions<T> {
         Response response = httpGet("/v2/beers/1");
         Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
         //logger.info("Response Body is =>  " + getBody(response));
-        T tagLine = jsonPathEvaluator(response, "$[0].tagline");
-        T description = jsonPathEvaluator(response, "$[0].description");
+        String tagLine = (String) jsonPathEvaluator(response, "$[0].tagline");
+        String description = (String) jsonPathEvaluator(response, "$[0].description");
         log("Tag Line: " + tagLine);
         log("Description: " + description);
     }
@@ -97,8 +97,8 @@ public class TC003_ApiTest<T> extends ApiActions<T> {
         Response response = httpGet("/breweries");
         Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
         //logger.info("Response Body is =>  " + getBody(response));
-        T name = jsonPathEvaluator(response, "$[0].name");
-        T webSite = jsonPathEvaluator(response, "$[0].website_url");
+        String name = (String) jsonPathEvaluator(response, "$[0].name");
+        String webSite = (String) jsonPathEvaluator(response, "$[0].website_url");
         log("Name: " + name);
         log("WebSite: " + webSite);
     }

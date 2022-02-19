@@ -82,7 +82,7 @@ public class TestListener extends DriverManager implements ITestListener {
                 saveScreenshotPNG();
                 log.error("I am in onTestFailure method " + getTestMethodName(iTestResult) + " failed");
                 Object testClass = iTestResult.getInstance();
-                this.driverThread = ((DriverManager<?>) testClass).getDriver();
+                this.driverThread = ((DriverManager) testClass).getDriver();
                 String base64Screenshot = "data:image/png;base64," + ((TakesScreenshot) driverThread).
                         getScreenshotAs(OutputType.BASE64);
                 ExtentTestManager.getTest().log(Status.FAIL, "Test Failed", MediaEntityBuilder.createScreenCaptureFromBase64String(base64Screenshot).build());

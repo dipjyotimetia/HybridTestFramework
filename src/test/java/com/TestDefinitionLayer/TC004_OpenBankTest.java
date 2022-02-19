@@ -35,7 +35,7 @@ import org.testng.annotations.Test;
 @Link("https://jira.cloud.com")
 @Feature("Api1")
 @Feature("Api2")
-public class TC004_OpenBankTest<T> extends ApiActions<T> {
+public class TC004_OpenBankTest extends ApiActions {
     private static final Logger logger = LogManager.getLogger(TC004_OpenBankTest.class);
 
     @Severity(SeverityLevel.CRITICAL)
@@ -48,8 +48,8 @@ public class TC004_OpenBankTest<T> extends ApiActions<T> {
         Response response = httpGet("/api/users?page=1");
         Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
         //logger.info("Response Body is =>  " + getBody(response));
-        T email = jsonPathEvaluator(response, "$.data[0].email");
-        T avatar = jsonPathEvaluator(response, "$.data[0].avatar");
+        String email = (String) jsonPathEvaluator(response, "$.data[0].email");
+        String avatar = (String) jsonPathEvaluator(response, "$.data[0].avatar");
         log("Email: " + email);
         log("Avatar: " + avatar);
     }
@@ -64,9 +64,9 @@ public class TC004_OpenBankTest<T> extends ApiActions<T> {
         Response response = httpGet("/obp/v1.2.1/banks");
         Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
         //logger.info("Response Body is =>  " + getBody(response));
-        T website = jsonPathEvaluator(response, "$.banks[0].website");
-        T id = jsonPathEvaluator(response, "$.banks[0].id");
-        T fullName = jsonPathEvaluator(response, "$.banks[0].full_name");
+        String website = (String) jsonPathEvaluator(response, "$.banks[0].website");
+        String id = (String) jsonPathEvaluator(response, "$.banks[0].id");
+        String fullName = (String) jsonPathEvaluator(response, "$.banks[0].full_name");
         log("Website: " + website);
         log("Id: " + id);
         log("fullName: " + fullName);

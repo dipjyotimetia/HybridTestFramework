@@ -13,7 +13,7 @@ import org.testng.annotations.Test;
 @Link("https://jira.cloud.com")
 @Feature("MockApi1")
 @Feature("MockApi2")
-public class TC005_WireMockTest<T> extends ApiActions<T> {
+public class TC005_WireMockTest extends ApiActions {
     WireMockServer wireMockServer;
 
     @BeforeTest
@@ -60,7 +60,7 @@ public class TC005_WireMockTest<T> extends ApiActions<T> {
     public void TestBranches() {
         Response response = httpGet("/api/branches");
         Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
-        T title = jsonPathEvaluator(response, "Data.Branches[0].BranchIdentification");
+        String title = (String) jsonPathEvaluator(response, "Data.Branches[0].BranchIdentification");
         Assert.assertEquals("Belfast City Branch", title);
     }
 
@@ -71,7 +71,7 @@ public class TC005_WireMockTest<T> extends ApiActions<T> {
     public void TestBank() {
         Response response = httpGet("/api/bank");
         Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
-        T title = jsonPathEvaluator(response, "short_name");
+        String title = (String) jsonPathEvaluator(response, "short_name");
         Assert.assertEquals("The Royal Bank of Scotland", title);
     }
 
@@ -83,7 +83,7 @@ public class TC005_WireMockTest<T> extends ApiActions<T> {
         Response response = httpGet("/api/atms");
         Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
         Assert.assertEquals(getContentType(response) /*actual value*/, "application/json" /*expected value*/, "Correct status code returned");
-        T title = jsonPathEvaluator(response, "Data.Atm[0].AtmServices[0]");
+        String title = (String) jsonPathEvaluator(response, "Data.Atm[0].AtmServices[0]");
         Assert.assertEquals("CashWithdrawal", title);
     }
 }
