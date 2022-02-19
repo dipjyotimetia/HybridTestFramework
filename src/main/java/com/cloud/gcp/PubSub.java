@@ -33,7 +33,7 @@ public class PubSub {
         }
     }
 
-    public static void publisherExample(String projectId, String topicId, Config config)
+    public static void messagePublisher(String projectId, String topicId, Config config)
             throws IOException, ExecutionException, InterruptedException {
 
         TopicName topicName = TopicName.of(projectId, topicId);
@@ -63,7 +63,7 @@ public class PubSub {
         }
     }
 
-    public static void publishAvroRecordsExample(String projectId, String topicId, Config config)
+    public static void publishAvroRecords(String projectId, String topicId, Config config)
             throws IOException, ExecutionException, InterruptedException {
 
         Encoding encoding = null;
