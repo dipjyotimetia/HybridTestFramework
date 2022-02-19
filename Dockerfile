@@ -20,7 +20,7 @@ ENV PATH $PATH:$GRADLE_HOME/bin
 
 RUN echo "export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64" >> ~/.bashrc
 
-ENV JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64/jre"
+ENV JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
 ENV PATH $JAVA_HOME/bin:$PATH
 
 # Install allure
@@ -44,13 +44,6 @@ RUN FIREFOX_DOWNLOAD_URL=$(if [ $FIREFOX_VERSION = "latest" ] || [ $FIREFOX_VERS
   && rm /tmp/firefox.tar.bz2 \
   && mv /opt/firefox /opt/firefox-$FIREFOX_VERSION \
   && ln -fs /opt/firefox-$FIREFOX_VERSION/firefox /usr/bin/firefox
-
-USER root
-
-COPY . .
-
-RUN gradle clean
-RUN gradle task e2e
 
 #docker build -t hybridtestframework:1.0 .
 #docker tag hybridtestframework:1.0 docker.pkg.github.com/dipjyotimetia/hybridtestframewrok/hybridtestframework:1.0
