@@ -45,12 +45,6 @@ repositories {
     gradlePluginPortal()
 }
 
-ext {
-    sdkVersion = "2.17.133"
-    allureVersion = "2.17.3"
-    containerVersion = "1.16.3"
-}
-
 allure {
     version = "2.17.3"
 }
