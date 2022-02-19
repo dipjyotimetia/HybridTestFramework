@@ -50,11 +50,11 @@ buildscript {
 }
 
 allure {
-    version = '2.17.2'
+    version = '2.17.3'
     useTestNG {
-        version = '2.17.2'
+        version = '2.17.3'
     }
-    downloadLink = 'https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.17.2/allure-commandline-2.17.2.zip'
+    downloadLink = 'https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.17.3/allure-commandline-2.17.3.zip'
 }
 
 // dockerCompose.isRequiredBy(test)
@@ -68,12 +68,12 @@ dockerCompose {
 }
 
 dependencies {
-    implementation 'software.amazon.awssdk:dynamodb:2.17.131'
-    implementation 'software.amazon.awssdk:s3:2.17.131'
-    implementation 'software.amazon.awssdk:sqs:2.17.131'
-    implementation 'software.amazon.awssdk:lambda:2.17.131'
-    implementation 'software.amazon.awssdk:sns:2.17.131'
-    implementation 'software.amazon.awssdk:devicefarm:2.17.131'
+    implementation 'software.amazon.awssdk:dynamodb:2.17.133'
+    implementation 'software.amazon.awssdk:s3:2.17.133'
+    implementation 'software.amazon.awssdk:sqs:2.17.133'
+    implementation 'software.amazon.awssdk:lambda:2.17.133'
+    implementation 'software.amazon.awssdk:sns:2.17.133'
+    implementation 'software.amazon.awssdk:devicefarm:2.17.133'
     implementation 'com.google.cloud:google-cloud-storage:2.4.2'
     implementation 'com.google.cloud:google-cloud-firestore:3.0.12'
     implementation 'com.google.cloud:google-cloud-pubsub:1.115.5'
@@ -115,9 +115,9 @@ dependencies {
     implementation 'org.zaproxy:zap:2.11.1'
     implementation 'net.lingala.zip4j:zip4j:2.9.1'
     implementation 'io.qameta.allure:allure-gradle:2.8.1'
-    implementation 'io.qameta.allure:allure-testng:2.17.2'
-    implementation 'io.qameta.allure:allure-rest-assured:2.17.2'
-    implementation 'io.qameta.allure:allure-attachments:2.17.2'
+    implementation 'io.qameta.allure:allure-testng:2.17.3'
+    implementation 'io.qameta.allure:allure-rest-assured:2.17.3'
+    implementation 'io.qameta.allure:allure-attachments:2.17.3'
     implementation 'org.apache.kafka:kafka_2.13:3.1.0'
     implementation 'org.apache.kafka:kafka-clients:3.0.0'
     implementation 'org.apache.kafka:kafka-streams:3.0.0'
