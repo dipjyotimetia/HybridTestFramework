@@ -26,7 +26,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.DOCKER_PACKAGE }}
+          password: ${{ secrets.GITHUB_TOKEN  }}
           logout: true
 
       - name: Push image
