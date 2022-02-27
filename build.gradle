@@ -91,7 +91,7 @@ dependencies {
     implementation 'software.amazon.awssdk:sqs:2.17.133'
     implementation 'software.amazon.awssdk:lambda:2.17.133'
     implementation 'software.amazon.awssdk:sns:2.17.133'
-    implementation 'software.amazon.awssdk:devicefarm:2.17.133'
+    implementation 'software.amazon.awssdk:devicefarm:2.17.138'
     implementation 'com.google.cloud:google-cloud-storage:2.4.2'
     implementation 'com.google.cloud:google-cloud-firestore:3.0.12'
     implementation 'com.google.cloud:google-cloud-pubsub:1.115.5'
