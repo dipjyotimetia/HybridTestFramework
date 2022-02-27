@@ -1,0 +1,4931 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "",
+    "version": "2.0",
+    "title": "Xray REST API"
+  },
+  "tags": [
+    {
+      "name": "Test Step"
+    },
+    {
+      "name": "Test Run"
+    },
+    {
+      "name": "Project"
+    },
+    {
+      "name": "External Apps"
+    },
+    {
+      "name": "Import"
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://sandbox.xpand-it.com/rest/raven/2.0/api"
+    }
+  ],
+  "security": [
+    {
+      "BasicAuth": []
+    }
+  ],
+  "paths": {
+    "/test/{testKey}/steps": {
+      "get": {
+        "tags": [
+          "Test Step"
+        ],
+        "description": "Returns all the steps of a test issue given the key. The response contains for each step the corresponding id, index, fields and the attachments. <br /> <br /> The Test Step fields are identified by their name and can be of type _Data_ (Toggle, Number, Date and Date Time fields), _Option_ (Single Select, Multiple Select and Radio Button fields), _Wiki_ (Native fields, Single and Multiple Line fields). <br /> <br /> The value of step fields of type _Wiki_ have a raw and rendered value. _Option_ fields value will be an array containing the information of the selected options (the option id and its value).",
+        "parameters": [
+          {
+            "name": "testKey",
+            "in": "path",
+            "description": "The key of the test issue, e.g., CALC-562",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestStepsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. Occurs when there is some error in the request, for instance, the test with provided key does not exist or some field has an invalid value (e.g. Option \"A\" does not exist for an option field).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Test with key CALC-123 not found or is not a Manual Test."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Internal server exception cause."
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Test Step"
+        ],
+        "description": "Create a new test step. All step fields values are listed under _fields_ and identified by the name and a list of attachments to add to the step. The field values should follow a certain format according to the custom field type. <br /><br /> - **Toggle Fields** values should be _\"true\"_, _\"false\"_, _\"0\"_ or _\"1\"_ <br /><br /> - **Number Fields** values should be a string containing a number, e.g. _\"320\"_. Decimal Number are also accepted,for instance, \"320.5\". The decimal places are always separated by a _\".\"_ <br /> <br /> - **Single Select and Radio Button Fields** values should be a single string containing the option value, e.g. _\"Option A\"_. The value should be a valid option for that custom field. The values are not case sensitive. <br /><br /> - **Multiple Select Fields** values should be an array of the string of option values, e.g. _[\"Option A\", \"Option B\"]_. All the selected values should be valid for that custom field. The option values are not case sensitive. <br /><br /> - **Date Fields** should follow the ISO format _yyyy-MM-dd_, where _yyyy_ represents the year, _MM_ the month in year and _dd_ the day in the month. For instance, a valid value would be _\"2020-05-02\"_. <br /><br /> - **Date Time fields** should be in UTC following the ISO format _yyyy-MM-dd'T'HH:mm'Z'_. The date part follows the same date format, while _HH_ represents the hours (0-24), _mm_ the minutes in hour and _Z_ indicates the hour in UTC. For instance, a valid date time value would be _\"2020-05-02T10:30Z\"_. <br /><br />\nThe remaining field types values do not required a specific validation. For instance, for a Single Line Custom field a valid value would be _\"Perform Action B\"_. <br /><br /> If some value is not valid for a certain custom field type, an error will be return stating the field with the incorrect value. Furthermore, **all required step fields must be provided**.",
+        "parameters": [
+          {
+            "name": "testKey",
+            "in": "path",
+            "description": "The key of the test issue, e.g., CALC-562",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateStepRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation. The response returns the id of the created steps as well as a list containing the attachments ids. Furthermore, the response contains a list of warning with some errors that may occur during the step creation, e.g., some attachment is not successfull created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateStepResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Error creating test step: Custom Field Date is invalid, [2020-Feb-02] should be in the valid date format ( dd/MMM/yy )."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Internal server exception cause."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test/{testKey}/steps/{stepId}": {
+      "get": {
+        "tags": [
+          "Test Step"
+        ],
+        "description": "Returns the values of a single test step, given the test key and the step id. The response follows the same format as the previous endpoints, containing the step id, index, fields and the attachments. <br /> <br /> The Test Step fields are identified by their name and can be of type _Data_ (Toggle, Number, Date and Date Time fields), _Option_ (Single Select, Multiple Select and Radio Button fields), _Wiki_ (Native fields, Single and Multiple Line fields). <br /> <br /> The value of step fields of type _Wiki_ have a raw and rendered value. _Option_ fields value will be an array containing the information of the selected options (the option id and its value).",
+        "parameters": [
+          {
+            "name": "testKey",
+            "in": "path",
+            "description": "The key of the test issue, e.g., CALC-562",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "stepId",
+            "in": "path",
+            "description": "The id of the test step",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StepResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Test step with id 123 not found or does not belong to Test with key CALC-123."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Internal server exception cause."
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Test Step"
+        ],
+        "description": "Updates the values of an existing test step, given the test key and step id. The user can update the field values and the attachments of a step. The values should follow a specific format similar to the step creation. <br/><br/> - **Toggle Fields** values should be _\"true\"_, _\"false\"_, _\"0\"_ or _\"1\"_ <br /><br /> - **Number Fields** values should be a string containing a number, e.g. _\"320\"_. Decimal Number are also accepted,for instance, \"320.5\". The decimal places are always separated by a _\".\"_ <br /> <br /> - **Single Select and Radio Button Fields** values should be a single string containing the option value, e.g. _\"Option A\"_. The value should be a valid option for that custom field. The values are not case sensitive. <br /><br /> - **Multiple Select Fields** values should be an array of the string of option values, e.g. _[\"Option A\", \"Option B\"]_. All the selected values should be valid for that custom field. The option values are not case sensitive. <br /><br /> - **Date Fields** should follow the ISO format _yyyy-MM-dd_, where _yyyy_ represents the year, _MM_ the month in year and _dd_ the day in the month. For instance, a valid value would be _\"2020-05-02\"_. <br /><br /> - **Date Time fields** should be in UTC following the ISO format _yyyy-MM-dd'T'HH:mm'Z'_. The date part follows the same date format, while _HH_ represents the hours (0-24), _mm_ the minutes in hour and _Z_ indicates the hour in UTC. For instance, a valid date time value would be _\"2020-05-02T10:30Z\"_. <br /><br />\nThe remaining field types values do not required a specific validation. For instance, for a Single Line Custom field a valid value would be _\"Perform Action B\"_. <br /><br /> If some value is not valid for a certain custom field type, an error will be return stating the field with the incorrect value. A field value can be deleted sending an empty value, such as _\"\"_ or _[]_, or by sending _null_. **It is not possible to delete the value of a required field.**",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStepRequestBody"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "testKey",
+            "in": "path",
+            "description": "Test Key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "stepId",
+            "in": "path",
+            "description": "The id of the test step",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateStepResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. Occurs when there is some error in the request, for instance, the test with provided key does not exist or some field has an invalid value (e.g. Option \"A\" does not exist for an option field).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Error updating test step: Required fields cannot have empty values."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Internal server exception cause."
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Test Step"
+        ],
+        "description": "Deletes a test step given the test key and the step id.",
+        "parameters": [
+          {
+            "name": "testKey",
+            "in": "path",
+            "description": "The key of the test issue, e.g., CALC-562",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "stepId",
+            "in": "path",
+            "description": "The id of the test step",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful operation. No content is returned."
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Test with key CALC-123 does not exist or is not a manual test."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Internal server exception cause."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test/{testKey}/steps/{stepId}/attachments": {
+      "get": {
+        "tags": [
+          "Test Step"
+        ],
+        "description": "Returns all the attachments of a test step, given the test key and step id.",
+        "parameters": [
+          {
+            "name": "testKey",
+            "in": "path",
+            "description": "Test with key CALC-123 does not exist or is not a manual test.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "stepId",
+            "in": "path",
+            "description": "The id of the test step",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns a body with the attachments information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StepAttachementResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "The step with id 8578 does not belong to test with key CALC-67187."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Internal server exception cause."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test/{testKey}/steps/{stepId}/attachment/{attachmentId}": {
+      "delete": {
+        "tags": [
+          "Test Step"
+        ],
+        "description": "Deletes a test step attachment, given the test key and step and attachment ids.",
+        "parameters": [
+          {
+            "name": "testKey",
+            "in": "path",
+            "description": "Test with key CALC-123 does not exist or is not a manual test.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "stepId",
+            "in": "path",
+            "description": "The id of the test step",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "attachmentId",
+            "in": "path",
+            "description": "The id of the attachment",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful operation. No content is returned."
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Test with key CALC-123 does not exist or is not a manual test."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Internal server exception cause."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/testrun": {
+      "get": {
+        "tags": [
+          "Test Run"
+        ],
+        "description": "Retrieves a Test Run given the Test Execution and Test keys. <br/> The response will contain all information related to a Test Run, e.g., status, created and finish dates, step results, test environments, defects, Test Run Custom fields, and so on. <br/>\n\nIn case the Test Run has iterations, steps will not appear. However, if it has parameters but executed one time, it will show the steps and the parameters info. <br/>",
+        "parameters": [
+          {
+            "name": "testExecIssueKey",
+            "description": "The key of the Test Execution",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "testIssueKey",
+            "description": "The key of the Test",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns a body containg the Test Run information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestRunResponse"
+                },
+                "examples": {
+                  "TestRunExample": {
+                    "$ref": "#/components/examples/TestRunExample"
+                  },
+                  "SingleTestRunExample": {
+                    "$ref": "#/components/examples/SingleTestRunExample"
+                  },
+                  "DataDrivenTestRunExample": {
+                    "$ref": "#/components/examples/DataDrivenTestRunExample"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Test Run not found for Test Execution with key CALC-67 and Test issue with key CALC-67207."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Internal server exception cause."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/testrun/{id}": {
+      "get": {
+        "tags": [
+          "Test Run"
+        ],
+        "description": "Retrieves a Test Run given the Test Execution and Test keys. <br/> The response will contain all information related to a Test Run, e.g., status, created and finish dates, step results, test environments, defects, Test Run Custom fields, and so on. <br/>\n\nIn case the Test Run has iterations, steps will not appear. However, if it has parameters but executed one time, it will show the steps and the parameters info. <br/>",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the Test Run",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestRunResponse"
+                },
+                "examples": {
+                  "TestRunExample": {
+                    "$ref": "#/components/examples/TestRunExample"
+                  },
+                  "SingleTestRunExample": {
+                    "$ref": "#/components/examples/SingleTestRunExample"
+                  },
+                  "DataDrivenTestRunExample": {
+                    "$ref": "#/components/examples/DataDrivenTestRunExample"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Test Run with Id 1 was not found in the server."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Test Run"
+        ],
+        "description": "Update all the values of a Test Run.<br/> The user can update the values of the overall status, step results, assignee, test environments, add defects and evidences and so on. <br/> <br/> To update the value of a Test Run custom field, the id of the field must be provided as well as a valid value for that custom field type. <br/><br/> - **Toggle Fields** values should be _\"true\"_, _\"false\"_, _\"0\"_ or _\"1\"_ <br /><br /> - **Number Fields** values should be a string containing a number, e.g. _\"320\"_. Decimal Number are also accepted,for instance, \"320.5\". The decimal places are always separated by a _\".\"_  <br /> <br /> - **Single Select and Radio Button Fields** values should be a single string containing the option value, e.g. _\"Option A\"_. The value should be a valid option for that custom field. The values are not case sensitive. <br /><br /> - **Multiple Select Fields** values should be an array of the string of option values, e.g. _[\"Option A\", \"Option B\"]_. All the selected values should be valid for that custom field. The option values are not case sensitive. <br /><br /> - **Date Fields** should follow the ISO format _yyyy-MM-dd_, where _yyyy_ represents the year, _MM_ the month in year and _dd_ the day in the month. For instance, a valid value would be _\"2020-05-02\"_. <br /><br /> - **Date Time fields** should be in UTC following the ISO format _yyyy-MM-dd'T'HH:mm'Z'_. The date part follows the same date format, while _HH_ represents the hours (0-24), _mm_ the minutes in hour and _Z_ indicates the hour in UTC. For instance, a valid date time value would be _\"2020-05-02T10:30Z\"_. <br /><br />\nAn error will be returned when there are invalid custom field values.\nIt is also possible to delete a Test Run custom field value by providing a _null_ or empty value (e.g., _\"\"_ or _[]_). **It is not possible to delete a value of a required Test Run Custom Field value.** <br/> Also, **it is not possible to change the Test Run to a final status when there are required Test Run custom fields with empty values.**\n<br/> <br/>\nIn the case of a Test Run of a manual Test type, it is possible to update the steps only if there are zero or one iterations. If there are multiple iterations, it is not possible to update the steps through this endpoint, only the iterations.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTestRun"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the Test Run",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateTestRunResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. Occurs when there is some error in the request, for instance, some custom field has an invalid value, or the user does not have permissions to execute the Test Run.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Test Run with Id 1 was not found in the server."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Internal server exception cause."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/testrun/{id}/customfield/{customFieldId}": {
+      "get": {
+        "tags": [
+          "Test Run"
+        ],
+        "description": "Retrieves a Test Run Custom Field, given the Test Run and the Test Run Custom Field ids.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the Test Run",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "customFieldId",
+            "in": "path",
+            "required": true,
+            "description": "The id of the Test Run Custom Field",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns the value of the custom field for the given Test Run.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestRunCustomFieldResponse"
+                },
+                "example": {
+                  "id": 219254,
+                  "name": "Test Run Toggle",
+                  "value": "true"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Test Run Custom Field with id 2529 not found."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Test Run"
+        ],
+        "description": "Updates the value of a test run custom field, given the Test Run and the Test Run Custom Field ids. The custom field value should be a valid value according to the field type. <br/><br/> - **Toggle Fields** values should be _\"true\"_, _\"false\"_, _\"0\"_ or _\"1\"_ <br /><br /> - **Number Fields** values should be a string containing a number, e.g. _\"320\"_. Decimal Number are also accepted,for instance, \"320.5\". The decimal places are always separated by a _\".\"_  <br /> <br /> - **Single Select and Radio Button Fields** values should be a single string containing the option value, e.g. _\"Option A\"_. The value should be a valid option for that custom field. The values are not case sensitive. <br /><br /> - **Multiple Select Fields** values should be an array of the string of option values, e.g. _[\"Option A\", \"Option B\"]_. All the selected values should be valid for that custom field. The option values are not case sensitive. <br /><br /> - **Date Fields** should follow the ISO format _yyyy-MM-dd_, where _yyyy_ represents the year, _MM_ the month in year and _dd_ the day in the month. For instance, a valid value would be _\"2020-05-02\"_. <br /><br /> - **Date Time fields** should be in UTC following the ISO format _yyyy-MM-dd'T'HH:mm'Z'_. The date part follows the same date format, while _HH_ represents the hours (0-24), _mm_ the minutes in hour and _Z_ indicates the hour in UTC. For instance, a valid date time value would be _\"2020-05-02T10:30Z\"_. <br /><br />\nAn error will be returned when there are invalid custom field values.\nIt is also possible to delete a Test Run custom field value by providing a _null_ or empty value (e.g., _\"\"_ or _[]_). **It is not possible to delete a value of a required Test Run Custom Field value.** <br/>",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the Test Run",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "customFieldId",
+            "in": "path",
+            "required": true,
+            "description": "The id of the Test Run Custom Field",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/UpdateTRCustomFieldValueSingle"
+                  },
+                  {
+                    "$ref": "#/components/schemas/UpdateTRCustomFieldValueMulti"
+                  }
+                ],
+                "example": {
+                  "value": "Option A"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Test Run Custom Field with id 2529 not found."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/testrun/{id}/iteration/{iterationId}": {
+      "get": {
+        "tags": [
+          "Test Run"
+        ],
+        "description": "Retrieves an iteration given the Test Run id and the id of the iteration. <br/> The response will contain all the information regarding the iteration (status, parameters, and the steps). The steps will appear with the parameters converted to their value if the resolved dataset does not have a parameter referenced on a  step it will be displayed like ${parameter_name}. <br/>",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the Test Run",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "iterationId",
+            "in": "path",
+            "required": true,
+            "description": "The id of the iteration",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestRunIterationInformation"
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "id": 3822,
+                      "testRunId": 4313,
+                      "status": "FAILING_BUT_OK",
+                      "color": "#40FF59",
+                      "parameters": [
+                        {
+                          "name": "User - T_npp",
+                          "value": "User B"
+                        },
+                        {
+                          "name": "Password - T_npp",
+                          "value": "Pass1"
+                        }
+                      ],
+                      "steps": [
+                        {
+                          "index": 1,
+                          "fields": {
+                            "Action": {
+                              "type": "Wiki",
+                              "value": {
+                                "raw": "When prompted to login I fill the User B and Pass1${B - T_npp}",
+                                "rendered": "<p>When prompted to login I fill the User B and Pass1${B - T_npp}</p>"
+                              }
+                            },
+                            "Data": {
+                              "type": "Wiki",
+                              "value": {
+                                "raw": "",
+                                "rendered": ""
+                              }
+                            },
+                            "Expected Result": {
+                              "type": "Wiki",
+                              "value": {
+                                "raw": "I'm authenticated",
+                                "rendered": "<p>I'm authenticated</p>"
+                              }
+                            },
+                            "Radio TSCF": {
+                              "type": "Option",
+                              "value": [
+                                {
+                                  "id": 1,
+                                  "value": "My selected option value"
+                                }
+                              ]
+                            },
+                            "Select List Multiple TSCF": {
+                              "type": "Option",
+                              "value": [
+                                {
+                                  "id": 8,
+                                  "value": "My multi list option value"
+                                }
+                              ]
+                            }
+                          }
+                        },
+                        {
+                          "index": 2,
+                          "fields": {
+                            "Action": {
+                              "type": "Wiki",
+                              "value": {
+                                "raw": "When prompted to login I fill the User B and Pass1${B - T_npp}",
+                                "rendered": "<p>When prompted to login I fill the User B and Pass1${B - T_npp}</p>"
+                              }
+                            },
+                            "Data": {
+                              "type": "Wiki",
+                              "value": {
+                                "raw": "",
+                                "rendered": ""
+                              }
+                            },
+                            "Expected Result": {
+                              "type": "Wiki",
+                              "value": {
+                                "raw": "I'm authenticated",
+                                "rendered": "<p>I'm authenticated</p>"
+                              }
+                            },
+                            "Radio TSCF": {
+                              "type": "Option",
+                              "value": [
+                                {
+                                  "id": 1,
+                                  "value": "My selected option value"
+                                }
+                              ]
+                            },
+                            "Select List Multiple TSCF": {
+                              "type": "Option",
+                              "value": [
+                                {
+                                  "id": 8,
+                                  "value": "My multi list option value"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "The Test Run with id 23 does not have the iteration with id 15."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Test Run"
+        ],
+        "description": "Update all values from an iteration in a Test Run.<br/> The user can update the iteration status and the Test Step results of that iteration.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateIteration"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the Test Run",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "iterationId",
+            "in": "path",
+            "required": true,
+            "description": "The id of the iteration",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateIterationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "The Test Run with id 23 does not have the iteration with id 15."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/testrun/{id}/iteration/{iterationId}/step": {
+      "get": {
+        "tags": [
+          "Test Run"
+        ],
+        "description": "Retrieves all Test Step results for the given iteration.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the Test Run",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "iterationId",
+            "in": "path",
+            "required": true,
+            "description": "The id of the iteration",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StepResult"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Iteration with id 99 does not exist or does not belong to the Test Run."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/testrun/{id}/iteration/{iterationId}/step/{stepResultId}": {
+      "get": {
+        "tags": [
+          "Test Run"
+        ],
+        "description": "Retrieves all the information for the given Test Step result within an iteration.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the Test Run",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "iterationId",
+            "in": "path",
+            "required": true,
+            "description": "The id of the iteration",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "stepResultId",
+            "in": "path",
+            "required": true,
+            "description": "The id of the Test Step result",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StepResult"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Iteration with id 99 does not exist or does not belong to the Test Run."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Test Run"
+        ],
+        "description": "Updates the Test Step result within an iteration.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStepResult"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the Test Run",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "iterationId",
+            "in": "path",
+            "required": true,
+            "description": "The id of the iteration",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "stepResultId",
+            "in": "path",
+            "required": true,
+            "description": "The id of the Test Step result",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StepResultsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Iteration with id 99 does not exist or does not belong to the Test Run."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/testrun/{id}/iteration/{iterationId}/step/{stepResultId}/status": {
+      "get": {
+        "tags": [
+          "Test Run"
+        ],
+        "description": "Retrieves the Test Step status of a Test Step Result within an iteration.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the Test Run",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "iterationId",
+            "in": "path",
+            "required": true,
+            "description": "The id of the iteration",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "stepResultId",
+            "in": "path",
+            "required": true,
+            "description": "The id of the Test Step result",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "PASS"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Iteration with id 99 does not exist or does not belong to the Test Run."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Test Run"
+        ],
+        "description": "Updates the Test Step status within an iteration.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the Test Run",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "iterationId",
+            "in": "path",
+            "required": true,
+            "description": "The id of the iteration",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "stepResultId",
+            "in": "path",
+            "required": true,
+            "description": "The id of the Test Step result",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": true,
+            "description": "The status we want the test step to have",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful operation. No content is returned."
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Iteration with id 99 does not exist or does not belong to the Test Run."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/testrun/{id}/iteration/{iterationId}/step/{stepResultId}/attachment": {
+      "get": {
+        "tags": [
+          "Test Run"
+        ],
+        "description": "Return a json that contains an array with all the execution evidences the Test Step has within an iteration.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the Test Run",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "iterationId",
+            "in": "path",
+            "required": true,
+            "description": "The id of the iteration",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "stepResultId",
+            "in": "path",
+            "required": true,
+            "description": "The id of the Test Step result",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FileResponse"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Iteration with id 99 does not exist or does not belong to the Test Run."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Test Run"
+        ],
+        "description": "Add a new evidence to the Test Step result within an iteration.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TestStepResultEvidenceInput"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the Test Run",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "iterationId",
+            "in": "path",
+            "required": true,
+            "description": "The id of the iteration",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "stepResultId",
+            "in": "path",
+            "required": true,
+            "description": "The id of the Test Step result",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful operation. No content is returned."
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Iteration with id 99 does not exist or does not belong to the Test Run."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Test Run"
+        ],
+        "description": "Remove all evidences with the same filename from the Test step result within an iteration.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the Test Run",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "iterationId",
+            "in": "path",
+            "required": true,
+            "description": "The id of the iteration",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "stepResultId",
+            "in": "path",
+            "required": true,
+            "description": "The id of the Test Step result",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filename",
+            "in": "query",
+            "required": true,
+            "description": "The name of the attachment to be deleted",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful operation. No content is returned."
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Iteration with id 99 does not exist or does not belong to the Test Run."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/testrun/{id}/iteration/{iterationId}/step/{stepResultId}/attachment/{attachmentId}": {
+      "delete": {
+        "tags": [
+          "Test Run"
+        ],
+        "description": "Remove an evidence from a Test Step result within an iteration.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the Test Run",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "iterationId",
+            "in": "path",
+            "required": true,
+            "description": "The id of the iteration",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "stepResultId",
+            "in": "path",
+            "required": true,
+            "description": "The id of the Test Step result",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "attachmentId",
+            "in": "path",
+            "required": true,
+            "description": "The id of the attachment to be deleted",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful operation. No content is returned."
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Iteration with id 99 does not exist or does not belong to the Test Run."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/project/{id}/settings/customfields/testruns": {
+      "get": {
+        "tags": [
+          "Project"
+        ],
+        "description": "Retrives the configuration of the Test Run custom fields for a project, given the project id. <br/><br/> The response contains all information related to the custom fields, such as id, name, description, if the field is require and enable, and the test types the custom field is associated with. In the case of optional custom fields (Multiple and Single Select Fields and Radio Buttons), the list of the custom field options is also retrieved.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the Project",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectTestRunCFMetaInformation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": "Project with id 1749900 not found."
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/project/{id}/settings/customfields/teststeps": {
+      "get": {
+        "tags": [
+          "Project"
+        ],
+        "description": "Retrives the configuration of the Test Step custom fields for a project, given the project id. <br/><br/> The response contains all information related to the custom fields, such as id, name, description, if the field is require and enable. In the case of optional custom fields (Multiple and Single Select Fields and Radio Buttons), the list of the custom field options is also retrieved.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the Project",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectTestStepCFMetaInformation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": "Project with id 1749900 not found."
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/xraylicense": {
+      "get": {
+        "tags": [
+          "External Apps"
+        ],
+        "description": "Returns information about the Xray license, including its status and type.",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/XrayLicenseStatus"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/import/execution": {
+      "post": {
+        "summary": "",
+        "operationId": "post-import-execution",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestApiSuccessResponse"
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "testExecIssue": {
+                        "id": "38101",
+                        "key": "TMP-82",
+                        "self": "http://localhost:30000/rest/api/2/issue/38101"
+                      },
+                      "testIssues": {
+                        "success": [
+                          {
+                            "self": "http://localhost:30000/rest/api/2/issue/36600",
+                            "id": "36600",
+                            "key": "TMP-1"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "error": "Custom Field MyToggle is invalid, 123 should have a valid boolean type."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/XrayJsonImportExecution"
+              },
+              "examples": {
+                "example-1": {
+                  "value": {
+                    "info": {
+                      "summary": "Execution of automated tests for release v1.3",
+                      "description": "This execution is automatically created when importing execution results from an external source",
+                      "version": "v1.3",
+                      "user": "admin",
+                      "revision": "1.0.42134",
+                      "startDate": "2014-08-30T11:47:35+01:00",
+                      "finishDate": "2014-08-30T11:53:00+01:00",
+                      "testPlanKey": "DEMO-100",
+                      "testEnvironments": [
+                        "iOS",
+                        "Android"
+                      ]
+                    },
+                    "tests": [
+                      {
+                        "testKey": "DEMO-6",
+                        "start": "2014-08-30T11:47:35+01:00",
+                        "finish": "2014-08-30T11:50:56+01:00",
+                        "comment": "Successful execution",
+                        "status": "PASS"
+                      },
+                      {
+                        "testKey": "DEMO-7",
+                        "start": "2014-08-30T11:51:00+01:00",
+                        "finish": "2014-08-30T11:52:30+01:00",
+                        "comment": "Execution failed. Example #5 FAIL.",
+                        "status": "FAIL",
+                        "customFields": [
+                          {
+                            "id": 321,
+                            "value": [
+                              "option A",
+                              "option B"
+                            ]
+                          }
+                        ],
+                        "evidences": [
+                          {
+                            "data": "iVBORw0KGgoAAAANSUhEUgAABkIAAAO9CAYAAADezXv6AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEn(...base64 file enconding)",
+                            "filename": "image21.jpg",
+                            "contentType": "image/jpeg"
+                          }
+                        ],
+                        "examples": [
+                          "PASS",
+                          "PASS",
+                          "PASS",
+                          "PASS",
+                          "FAIL"
+                        ],
+                        "steps": [
+                          {
+                            "status": "PASS",
+                            "comment": "Coment on Test Step Result 1",
+                            "evidences": [
+                              {
+                                "data": "iVBORw0KGgoAAAANSUhEUgAABkIAAAO9CAYAAADezXv6AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEn(...base64 file enconding)",
+                                "filename": "image22.jpg",
+                                "contentType": "image/jpeg"
+                              }
+                            ],
+                            "actualResult": "Actual result on Test Step 1"
+                          }
+                        ],
+                        "defects": [
+                          "DEMO-10",
+                          "DEMO-11"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Endpoint used to import Test results in the Xray JSON format. <br></br> Updating an existing Test Run using Xray format REST API will reset all dataset related fields. This means that all current iteration data and dataset present in the Test Run will be replaced with the new information given in the REST API request.",
+        "tags": [
+          "Import"
+        ]
+      }
+    },
+    "/import/execution/multipart": {
+      "post": {
+        "summary": "",
+        "operationId": "post-import-execution-multipart",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestApiSuccessResponse"
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "testExecIssue": {
+                        "id": "38101",
+                        "key": "TMP-82",
+                        "self": "http://localhost:30000/rest/api/2/issue/38101"
+                      },
+                      "testIssues": {
+                        "success": [
+                          {
+                            "self": "http://localhost:30000/rest/api/2/issue/36600",
+                            "id": "36600",
+                            "key": "TMP-1"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "error": "Custom Field MyToggle is invalid, 123 should have a valid boolean type."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Endpoint used to import Test results in the Xray JSON format with Test Execution issue data.  <br></br> Updating an existing Test Run using Xray format REST API will reset all dataset related fields. This means that all current iteration data and dataset present in the Test Run will be replaced with the new information given in the REST API request.",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/XrayJsonImportMultipartRequest"
+              },
+              "encoding": {
+                "result": {
+                  "contentType": "application/json",
+                  "style": "form"
+                },
+                "info": {
+                  "contentType": "application/json",
+                  "style": "form"
+                }
+              },
+              "examples": {
+                "example-1": {
+                  "value": "{\n  \"file\": {\n    {\n  \"info\": {\n    \"summary\": \"Execution of automated tests for release v1.3\",\n    \"description\": \"This execution is automatically created when importing execution results from an external source\",\n    \"version\": \"v1.3\",\n    \"user\": \"admin\",\n    \"revision\": \"1.0.42134\",\n    \"startDate\": \"2014-08-30T11:47:35+01:00\",\n    \"finishDate\": \"2014-08-30T11:53:00+01:00\",\n    \"testPlanKey\": \"DEMO-100\",\n    \"testEnvironments\": [\n      \"iOS\",\n      \"Android\"\n    ]\n  },\n  \"tests\": [\n    {\n      \"testKey\": \"DEMO-6\",\n      \"start\": \"2014-08-30T11:47:35+01:00\",\n      \"finish\": \"2014-08-30T11:50:56+01:00\",\n      \"comment\": \"Successful execution\",\n      \"status\": \"PASS\"\n    },\n    {\n      \"testKey\": \"DEMO-7\",\n      \"start\": \"2014-08-30T11:51:00+01:00\",\n      \"finish\": \"2014-08-30T11:52:30+01:00\",\n      \"comment\": \"Execution failed. Example #5 FAIL.\",\n      \"status\": \"FAIL\",\n      \"customFields\": [\n        {\n          \"id\": 321,\n          \"value\": [\n            \"option A\",\n            \"option B\"\n          ]\n        }\n      ],\n      \"evidences\": [\n        {\n          \"data\": \"iVBORw0KGgoAAAANSUhEUgAABkIAAAO9CAYAAADezXv6AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEn(...base64 file enconding)\",\n          \"filename\": \"image21.jpg\",\n          \"contentType\": \"image/jpeg\"\n        }\n      ],\n      \"examples\": [\n        \"PASS\",\n        \"PASS\",\n        \"PASS\",\n        \"PASS\",\n        \"FAIL\"\n      ],\n      \"steps\": [\n        {\n          \"status\": \"PASS\",\n          \"comment\": \"Coment on Test Step Result 1\",\n          \"evidences\": [\n            {\n              \"data\": \"iVBORw0KGgoAAAANSUhEUgAABkIAAAO9CAYAAADezXv6AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEn(...base64 file enconding)\",\n              \"filename\": \"image22.jpg\",\n              \"contentType\": \"image/jpeg\"\n            }\n          ],\n          \"actualResult\": \"Actual result on Test Step 1\"\n        }\n      ],\n      \"defects\": [\n        \"DEMO-10\",\n        \"DEMO-11\"\n      ]\n    }\n  ]\n}\n  },\n  \"info\": {\n    \"fields\": {\n        \"project\": {\n            \"id\": \"10000\"\n        },\n        \"summary\": \"something\",\n        \"issuetype\": {\n            \"id\": \"10000\"\n        },\n        \"assignee\": {\n            \"name\": \"homer\"\n        },\n        \"reporter\": {\n            \"name\": \"smithers\"\n        },\n        \"priority\": {\n            \"id\": \"20000\"\n        },\n        \"labels\": [\n            \"bugfix\",\n            \"blitz_test\"\n        ]\n    }\n}"
+                }
+              }
+            }
+          },
+          "description": ""
+        },
+        "tags": [
+          "Import"
+        ],
+        "parameters": []
+      },
+      "parameters": []
+    },
+    "/testruns": {
+      "get": {
+        "summary": "",
+        "tags": [
+          "Test Run"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "description": "",
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "testExecKey": {
+                        "type": "string"
+                      },
+                      "testKey": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "start": {
+                        "type": "string"
+                      },
+                      "defects": {
+                        "type": "array",
+                        "uniqueItems": true,
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "evidences": {
+                        "type": "array",
+                        "uniqueItems": true,
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "filename": {
+                              "type": "string"
+                            },
+                            "contentType": {
+                              "type": "string"
+                            },
+                            "data": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "steps": {
+                        "type": "array",
+                        "uniqueItems": true,
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "status": {
+                              "type": "string"
+                            },
+                            "comment": {
+                              "type": "string"
+                            },
+                            "defects": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "evidences": {
+                              "type": "array",
+                              "uniqueItems": true,
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "filename": {
+                                    "type": "string"
+                                  },
+                                  "contentType": {
+                                    "type": "string"
+                                  },
+                                  "data": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            },
+                            "actualResult": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "parameters": {
+                        "type": "array",
+                        "uniqueItems": true,
+                        "items": {
+                          "$ref": "#/components/schemas/DatasetParameter"
+                        }
+                      },
+                      "assignee": {
+                        "type": "string"
+                      },
+                      "testEnvironments": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "comment": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "example-1": {
+                    "value": [
+                      {
+                        "id": 12999,
+                        "testExecKey": "SUP-81",
+                        "testKey": "SUP-83",
+                        "status": "FAIL",
+                        "type": "Manual",
+                        "start": "2021-04-19T14:58:19+01:00",
+                        "finish": "2021-04-19T15:08:25+01:00",
+                        "executedBy": "admin",
+                        "defects": [],
+                        "evidences": [
+                          {
+                            "filename": "dataset.csv",
+                            "contentType": "text/csv",
+                            "data": "http://localhost:8090/plugins/servlet/raven/attachment/947/dataset.csv"
+                          }
+                        ],
+                        "steps": [
+                          {
+                            "status": "FAIL",
+                            "defects": [],
+                            "evidences": [
+                              {
+                                "filename": "good.csv",
+                                "contentType": "text/csv",
+                                "data": "http://localhost:8090/plugins/servlet/raven/attachment/946/good.csv"
+                              }
+                            ]
+                          },
+                          {
+                            "status": "FAIL",
+                            "defects": [],
+                            "evidences": []
+                          },
+                          {
+                            "status": "PASS",
+                            "defects": [],
+                            "evidences": []
+                          }
+                        ],
+                        "assignee": "admin",
+                        "testEnvironments": [
+                          "myEnv"
+                        ]
+                      },
+                      {
+                        "id": 13001,
+                        "testExecKey": "SUP-81",
+                        "testKey": "SUP-84",
+                        "status": "PASS",
+                        "type": "Manual",
+                        "start": "2021-04-19T15:13:33+01:00",
+                        "finish": "2021-04-19T15:13:33+01:00",
+                        "executedBy": "admin",
+                        "defects": [],
+                        "evidences": [
+                          {
+                            "filename": "dataset.csv",
+                            "contentType": "text/csv",
+                            "data": "http://localhost:8090/plugins/servlet/raven/attachment/948/dataset.csv"
+                          }
+                        ],
+                        "assignee": "admin",
+                        "testEnvironments": [
+                          "myEnv"
+                        ],
+                        "iterations": [
+                          {
+                            "id": 13889,
+                            "status": "PASS",
+                            "color": "#95C160",
+                            "parameters": [
+                              {
+                                "name": "A",
+                                "value": "1"
+                              },
+                              {
+                                "name": "B",
+                                "value": "7"
+                              }
+                            ]
+                          },
+                          {
+                            "id": 13890,
+                            "status": "PASS",
+                            "color": "#95C160",
+                            "parameters": [
+                              {
+                                "name": "A",
+                                "value": "3"
+                              },
+                              {
+                                "name": "B",
+                                "value": "8"
+                              }
+                            ]
+                          },
+                          {
+                            "id": 13891,
+                            "status": "PASS",
+                            "color": "#95C160",
+                            "parameters": [
+                              {
+                                "name": "A",
+                                "value": "4"
+                              },
+                              {
+                                "name": "B",
+                                "value": "9"
+                              }
+                            ]
+                          },
+                          {
+                            "id": 13892,
+                            "status": "PASS",
+                            "color": "#95C160",
+                            "parameters": [
+                              {
+                                "name": "A",
+                                "value": "5"
+                              },
+                              {
+                                "name": "B",
+                                "value": "10"
+                              }
+                            ]
+                          },
+                          {
+                            "id": 13893,
+                            "status": "PASS",
+                            "color": "#95C160",
+                            "parameters": [
+                              {
+                                "name": "A",
+                                "value": "6"
+                              },
+                              {
+                                "name": "B",
+                                "value": "11"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "id": 13003,
+                        "testExecKey": "SUP-81",
+                        "testKey": "SUP-85",
+                        "status": "TODO",
+                        "type": "Manual",
+                        "start": "2021-04-20T11:13:45+01:00",
+                        "defects": [
+                          "http://localhost:8090/browse/CALC-384"
+                        ],
+                        "evidences": [
+                          {
+                            "filename": "dataset.csv",
+                            "contentType": "text/csv",
+                            "data": "http://localhost:8090/plugins/servlet/raven/attachment/951/dataset.csv"
+                          }
+                        ],
+                        "steps": [
+                          {
+                            "status": "TODO",
+                            "comment": "my iter comment",
+                            "defects": [
+                              "http://localhost:8090/browse/CALC-1353"
+                            ],
+                            "evidences": [
+                              {
+                                "filename": "good.csv",
+                                "contentType": "text/csv",
+                                "data": "http://localhost:8090/plugins/servlet/raven/attachment/950/good.csv"
+                              }
+                            ]
+                          },
+                          {
+                            "status": "TODO",
+                            "defects": [],
+                            "evidences": []
+                          }
+                        ],
+                        "parameters": [
+                          {
+                            "name": "C",
+                            "value": "1"
+                          },
+                          {
+                            "name": "D",
+                            "value": "2"
+                          },
+                          {
+                            "name": "E",
+                            "value": "3"
+                          }
+                        ],
+                        "assignee": "admin",
+                        "testEnvironments": [
+                          "myEnv"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-testruns",
+        "description": "Retrieves all the Test Runs from a given context.\nWith this endpoint you can obtain all the Test Runs (paginated) in one of the following contexts:\n- In a Test Execution issue. A Test issue key can be used in order to return a single TestRun from the Test Execution issue\n- In a Test Plan issue\n- In a JQL filter that returns several Test Execution issue\n\nIn case the Test Run has iterations, steps will not appear. However, if the Test has parameters but executed one time, it will show the steps and the parameters info. <br/>",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "testExecKey",
+            "description": "The Test Execution issue key"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "testKey",
+            "description": "The Test issue key (may only be used when using the \"testExecKey\"  param)"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "testPlanKey",
+            "description": "The Test Plan issue key"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "includeTestFields",
+            "description": "List of custom fields of the Test issue to be return in the responde (several custom fields can be requested by separating them with ',')"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "savedFilterId",
+            "description": "The Jira JQL filter ID or name containing Test Executions issues"
+          },
+          {
+            "schema": {
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "limit",
+            "description": "The number of maximum Test Runs to be returned"
+          },
+          {
+            "schema": {
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "page",
+            "description": "The number of the results page"
+          }
+        ]
+      }
+    },
+    "/dataset/export": {
+      "get": {
+        "tags": [
+          "Dataset"
+        ],
+        "description": "Retrieves a CSV file with the dataset information. <br/> The response will contain all information related to the dataset, e.g., parameters and values. <br/>",
+        "parameters": [
+          {
+            "name": "testIssueId",
+            "description": "The id of the test issue",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "testIssueKey",
+            "description": "The key of the test issue",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "contextIssueId",
+            "description": "The id of the context issue (Test Plan or Test Execution)",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "contextIssueKey",
+            "description": "The key of the context issue (Test Plan or Test Execution)",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "resolved",
+            "description": "A flag indicating of the dataset must be resolved or not for a given level (true by default)",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns a CSV file with the dataset information.",
+            "content": {
+              "text/csv": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "Browser, Languague\nFirefox, Portuguese\nChrome, English"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Both Test issue key and id was not provided."
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "User is not logged in or is not allowed to view or edit the dataset."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Dataset not found."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Error exporting dataset to CSV file."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/testrepository/{projectKey}/folders/{folderId}": {
+      "get": {
+        "tags": [
+          "Test Repository"
+        ],
+        "description": "Retrieves information about a given Test Repository folder. <br/> The response will contain all information related to that folder, e.g., id, name, tests count and direct children folder ids. <br/>",
+        "parameters": [
+          {
+            "name": "projectKey",
+            "description": "The project key",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "folderId",
+            "description": "The folder id.\"-1\" corresponds to the root folder of the Test Repository",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation. Returns a CSV file with the dataset information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/FolderRestBean"
+                    },
+                    {
+                      "$ref": "#/components/schemas/FolderRestBeans"
+                    }
+                  ]
+                },
+                "examples": {
+                  "example-1": {
+                    "value": [
+                      {
+                        "id": 10001,
+                        "rank": 1,
+                        "name": "v4.3.2",
+                        "testCount": 2,
+                        "totalTestCount": 12,
+                        "testRepositoryPath": "",
+                        "folderIds": [
+                          10002,
+                          10003
+                        ]
+                      },
+                      {
+                        "id": 10004,
+                        "rank": 2,
+                        "name": "v4.4.0",
+                        "testCount": 0,
+                        "totalTestCount": 0,
+                        "testRepositoryPath": "",
+                        "folderIds": [
+                          10005,
+                          10006
+                        ]
+                      }
+                    ]
+                  },
+                  "example-2": {
+                    "value": {
+                      "id": 10002,
+                      "rank": 1,
+                      "name": "Automated Tests",
+                      "testCount": 4,
+                      "totalTestCount": 10,
+                      "testRepositoryPath": "/v4.3.2",
+                      "folderIds": [
+                        10007
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "The Test Repository has been disabled by the configuration"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "examples": {
+      "TestRunExample": {
+        "summary": "Test Run",
+        "value": {
+          "id": 1004725,
+          "status": "FAIL",
+          "color": "#D45D52",
+          "testKey": "CALC-67187",
+          "testExecKey": "CALC-67193",
+          "assignee": "admin",
+          "executedBy": "admin",
+          "startedOn": "2020-02-12T09:58:04Z",
+          "finishedOn": "2020-02-12T10:58:04Z",
+          "startedOnIso": "2020-02-12T09:58:04Z",
+          "finishedOnIso": "2020-02-12T10:58:04Z",
+          "duration": 1923493000,
+          "defects": [
+            "CALC-1",
+            "CALC-2"
+          ],
+          "evidences": [
+            {
+              "id": 25684,
+              "fileName": "attachment.txt",
+              "fileIcon": "text.gif",
+              "mimeType": "plain/text",
+              "fileIconAlt": "Text File",
+              "fileSize": "100.0 kB",
+              "numericalFileSize": "12",
+              "created": "2020-02-06T10:39:37Z",
+              "createdDate": 1580985577000,
+              "author": "admin",
+              "authorFullName": "Bruce Wayne",
+              "fileURL": "http://example.com/attachment/25684/example2.txt",
+              "filePath": "/Users/example/path/attachment"
+            }
+          ],
+          "comment": "Test Run comment",
+          "testEnvironments": [
+            "iOS",
+            "Android"
+          ],
+          "fixVersions": [
+            {
+              "id": "97845",
+              "name": "1.0",
+              "description": "Version 1.0",
+              "isArchived": true,
+              "isReleased": false
+            }
+          ],
+          "customFields": [
+            {
+              "id": 28,
+              "name": "Toogle Custom Field",
+              "value": "true"
+            }
+          ],
+          "steps": [
+            {
+              "id": 85778,
+              "index": 1,
+              "fields": {
+                "Action": {
+                  "type": "Wiki",
+                  "value": {
+                    "raw": "This is a step action",
+                    "rendered": "<p>This is a step action</p>"
+                  }
+                },
+                "Toggle": {
+                  "type": "Data",
+                  "value": "false"
+                }
+              },
+              "attachments": [
+                {
+                  "id": 25684,
+                  "fileName": "attachment.txt",
+                  "fileIcon": "text.gif",
+                  "mimeType": "plain/text",
+                  "fileIconAlt": "Text File",
+                  "fileSize": "100.0 kB",
+                  "numericalFileSize": "12",
+                  "created": "2020-02-06T10:39:37Z",
+                  "createdDate": 1580985577000,
+                  "author": "admin",
+                  "authorFullName": "Bruce Wayne",
+                  "fileURL": "http://example.com/attachment/25684/example2.txt",
+                  "filePath": "/Users/example/path/attachment"
+                }
+              ],
+              "status": "PASS",
+              "comment": {
+                "rendered": "Comment on step"
+              },
+              "defects": [
+                "CALC-123",
+                "CALC-765"
+              ],
+              "evidences": [
+                {
+                  "id": 25684,
+                  "fileName": "attachment.txt",
+                  "fileIcon": "text.gif",
+                  "mimeType": "plain/text",
+                  "fileIconAlt": "Text File",
+                  "fileSize": "100.0 kB",
+                  "numericalFileSize": "12",
+                  "created": "2020-02-06T10:39:37Z",
+                  "createdDate": 1580985577000,
+                  "author": "admin",
+                  "authorFullName": "Bruce Wayne",
+                  "fileURL": "http://example.com/attachment/25684/example2.txt",
+                  "filePath": "/Users/example/path/attachment"
+                }
+              ],
+              "actualResult": {
+                "rendered": "Actual result on step"
+              }
+            }
+          ]
+        }
+      },
+      "SingleTestRunExample": {
+        "summary": "Test Run with single iteration",
+        "value": {
+          "id": 1004725,
+          "status": "FAIL",
+          "color": "#D45D52",
+          "testKey": "CALC-67187",
+          "testExecKey": "CALC-67193",
+          "assignee": "admin",
+          "executedBy": "admin",
+          "startedOn": "2020-02-12T09:58:04Z",
+          "finishedOn": "2020-02-12T10:58:04Z",
+          "startedOnIso": "2020-02-12T09:58:04Z",
+          "finishedOnIso": "2020-02-12T10:58:04Z",
+          "duration": 1923493000,
+          "defects": [
+            "CALC-1",
+            "CALC-2"
+          ],
+          "evidences": [
+            {
+              "id": 25684,
+              "fileName": "attachment.txt",
+              "fileIcon": "text.gif",
+              "mimeType": "plain/text",
+              "fileIconAlt": "Text File",
+              "fileSize": "100.0 kB",
+              "numericalFileSize": "12",
+              "created": "2020-02-06T10:39:37Z",
+              "createdDate": 1580985577000,
+              "author": "admin",
+              "authorFullName": "Bruce Wayne",
+              "fileURL": "http://example.com/attachment/25684/example2.txt",
+              "filePath": "/Users/example/path/attachment"
+            }
+          ],
+          "comment": "Test Run comment",
+          "testEnvironments": [
+            "iOS",
+            "Android"
+          ],
+          "fixVersions": [
+            {
+              "id": "97845",
+              "name": "1.0",
+              "description": "Version 1.0",
+              "isArchived": true,
+              "isReleased": false
+            }
+          ],
+          "customFields": [
+            {
+              "id": 28,
+              "name": "Toogle Custom Field",
+              "value": "true"
+            }
+          ],
+          "parameters": [
+            {
+              "name": "number",
+              "value": "12"
+            }
+          ],
+          "steps": [
+            {
+              "id": 85778,
+              "index": 1,
+              "fields": {
+                "Action": {
+                  "type": "Wiki",
+                  "value": {
+                    "raw": "Insert value 12 on calculator",
+                    "rendered": "<p>Insert value 12 on calculator</p>"
+                  }
+                },
+                "Toggle": {
+                  "type": "Data",
+                  "value": "false"
+                }
+              },
+              "attachments": [
+                {
+                  "id": 25684,
+                  "fileName": "attachment.txt",
+                  "fileIcon": "text.gif",
+                  "mimeType": "plain/text",
+                  "fileIconAlt": "Text File",
+                  "fileSize": "100.0 kB",
+                  "numericalFileSize": "12",
+                  "created": "2020-02-06T10:39:37Z",
+                  "createdDate": 1580985577000,
+                  "author": "admin",
+                  "authorFullName": "Bruce Wayne",
+                  "fileURL": "http://example.com/attachment/25684/example2.txt",
+                  "filePath": "/Users/example/path/attachment"
+                }
+              ],
+              "status": "PASS",
+              "comment": {
+                "rendered": "Comment on step"
+              },
+              "defects": [
+                "CALC-123",
+                "CALC-765"
+              ],
+              "evidences": [
+                {
+                  "id": 25684,
+                  "fileName": "attachment.txt",
+                  "fileIcon": "text.gif",
+                  "mimeType": "plain/text",
+                  "fileIconAlt": "Text File",
+                  "fileSize": "100.0 kB",
+                  "numericalFileSize": "12",
+                  "created": "2020-02-06T10:39:37Z",
+                  "createdDate": 1580985577000,
+                  "author": "admin",
+                  "authorFullName": "Bruce Wayne",
+                  "fileURL": "http://example.com/attachment/25684/example2.txt",
+                  "filePath": "/Users/example/path/attachment"
+                }
+              ],
+              "actualResult": {
+                "rendered": "Actual result on step"
+              }
+            }
+          ]
+        }
+      },
+      "DataDrivenTestRunExample": {
+        "summary": "Test Run with multiple iteration",
+        "value": {
+          "id": 1004725,
+          "status": "FAIL",
+          "color": "#D45D52",
+          "testKey": "CALC-67187",
+          "testExecKey": "CALC-67193",
+          "assignee": "admin",
+          "executedBy": "admin",
+          "startedOn": "2020-02-12T09:58:04Z",
+          "finishedOn": "2020-02-12T10:58:04Z",
+          "startedOnIso": "2020-02-12T09:58:04Z",
+          "finishedOnIso": "2020-02-12T10:58:04Z",
+          "duration": 1923493000,
+          "defects": [
+            "CALC-1",
+            "CALC-2"
+          ],
+          "evidences": [
+            {
+              "id": 25684,
+              "fileName": "attachment.txt",
+              "fileIcon": "text.gif",
+              "mimeType": "plain/text",
+              "fileIconAlt": "Text File",
+              "fileSize": "100.0 kB",
+              "numericalFileSize": "12",
+              "created": "2020-02-06T10:39:37Z",
+              "createdDate": 1580985577000,
+              "author": "admin",
+              "authorFullName": "Bruce Wayne",
+              "fileURL": "http://example.com/attachment/25684/example2.txt",
+              "filePath": "/Users/example/path/attachment"
+            }
+          ],
+          "comment": "Test Run comment",
+          "testEnvironments": [
+            "iOS",
+            "Android"
+          ],
+          "fixVersions": [
+            {
+              "id": "97845",
+              "name": "1.0",
+              "description": "Version 1.0",
+              "isArchived": true,
+              "isReleased": false
+            }
+          ],
+          "customFields": [
+            {
+              "id": 28,
+              "name": "Toogle Custom Field",
+              "value": "true"
+            }
+          ],
+          "iterations": [
+            {
+              "id": 1,
+              "status": "FAIL",
+              "color": "#D45D52",
+              "parameters": [
+                {
+                  "name": "Username",
+                  "value": "admin"
+                }
+              ]
+            },
+            {
+              "id": 2,
+              "status": "FAIL",
+              "color": "#D45D52",
+              "parameters": [
+                {
+                  "name": "Username",
+                  "value": "Bruce"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          }
+        }
+      },
+      "FileResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "filename": {
+            "type": "string"
+          },
+          "fileIcon": {
+            "type": "string"
+          },
+          "mimeType": {
+            "type": "string"
+          },
+          "fileIconAlt": {
+            "type": "string"
+          },
+          "fileSize": {
+            "type": "string"
+          },
+          "numericalFileSize": {
+            "type": "integer"
+          },
+          "created": {
+            "type": "string"
+          },
+          "createdDate": {
+            "type": "integer"
+          },
+          "author": {
+            "type": "string"
+          },
+          "authorFullName": {
+            "type": "string"
+          },
+          "fileURL": {
+            "type": "string"
+          },
+          "filePath": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "id": 25684,
+          "fileName": "attachment.txt",
+          "fileIcon": "text.gif",
+          "mimeType": "plain/text",
+          "fileIconAlt": "Text File",
+          "fileSize": "100.0 kB",
+          "numericalFileSize": "12",
+          "created": "2020-02-06T10:39:37Z",
+          "createdDate": 1580985577000,
+          "author": "admin",
+          "authorFullName": "Bruce Wayne",
+          "fileURL": "http://example.com/attachment/25684/example2.txt",
+          "filePath": "/Users/example/path/attachment"
+        }
+      },
+      "DataField": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "OptionField": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "value": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OptionValue"
+            }
+          }
+        }
+      },
+      "OptionValue": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "value": {
+            "type": "string",
+            "example": "Option A"
+          }
+        }
+      },
+      "WikiValue": {
+        "type": "object",
+        "properties": {
+          "raw": {
+            "type": "string"
+          },
+          "rendered": {
+            "type": "string"
+          }
+        }
+      },
+      "WikiField": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "value": {
+            "$ref": "#/components/schemas/WikiValue"
+          }
+        }
+      },
+      "Step": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 85778
+          },
+          "index": {
+            "type": "integer",
+            "example": 1
+          },
+          "fields": {
+            "type": "object",
+            "additionalProperties": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/DataField"
+                },
+                {
+                  "$ref": "#/components/schemas/OptionField"
+                },
+                {
+                  "$ref": "#/components/schemas/WikiField"
+                }
+              ]
+            },
+            "example": {
+              "Action": {
+                "type": "Wiki",
+                "value": {
+                  "raw": "This is a step action",
+                  "rendered": "<p>This is a step action</p>"
+                }
+              },
+              "Toggle": {
+                "type": "Data",
+                "value": "false"
+              }
+            }
+          },
+          "attachments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileResponse"
+            }
+          },
+          "testCallStep": {
+            "type": "boolean",
+            "example": false
+          }
+        }
+      },
+      "CallTestIssueKey": {
+        "type": "string",
+        "example": "XRAY-5000"
+      },
+      "CalledStep": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 85769
+          },
+          "index": {
+            "type": "integer",
+            "example": 2
+          },
+          "callTestIssueKey": {
+            "$ref": "#/components/schemas/CallTestIssueKey"
+          },
+          "testCallStep": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "StepResult": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 85778
+          },
+          "index": {
+            "type": "integer",
+            "example": 1
+          },
+          "fields": {
+            "type": "object",
+            "additionalProperties": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/DataField"
+                },
+                {
+                  "$ref": "#/components/schemas/OptionField"
+                },
+                {
+                  "$ref": "#/components/schemas/WikiField"
+                }
+              ]
+            },
+            "example": {
+              "Action": {
+                "type": "Wiki",
+                "value": {
+                  "raw": "This is a step action",
+                  "rendered": "<p>This is a step action</p>"
+                }
+              },
+              "Toggle": {
+                "type": "Data",
+                "value": "false"
+              }
+            }
+          },
+          "attachments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileResponse"
+            }
+          },
+          "status": {
+            "type": "string",
+            "example": "PASS"
+          },
+          "comment": {
+            "type": "object",
+            "properties": {
+              "rendered": {
+                "type": "string",
+                "example": "Comment on step"
+              }
+            }
+          },
+          "defects": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "CALC-123",
+              "CALC-765"
+            ]
+          },
+          "evidences": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileResponse"
+            }
+          },
+          "actualResult": {
+            "type": "object",
+            "properties": {
+              "rendered": {
+                "type": "string",
+                "example": "Actual result on step"
+              }
+            }
+          }
+        }
+      },
+      "UpdateStepResult": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 85778
+          },
+          "status": {
+            "type": "string",
+            "example": "FAIL"
+          },
+          "comment": {
+            "type": "string",
+            "example": "Comment on step"
+          },
+          "defects": {
+            "type": "object",
+            "properties": {
+              "add": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "CALC-123",
+                  "CALC-765"
+                ]
+              },
+              "remove": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "CALC-563",
+                  "CALC-744"
+                ]
+              }
+            }
+          },
+          "evidences": {
+            "type": "object",
+            "properties": {
+              "add": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/File"
+                }
+              },
+              "remove": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "CALC-124",
+                  "CALC- 657"
+                ]
+              }
+            }
+          },
+          "actualResult": {
+            "type": "string",
+            "example": "Actual result on step"
+          }
+        }
+      },
+      "TestStepResultEvidenceInput": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "string",
+            "example": "iVBORw0KGgoAAAANSUhEUgAABkIAAAO9CAYAAADezXv6AAAAAXNSR0IArs4c6QAA(...base64 file enconding)"
+          },
+          "filename": {
+            "type": "string",
+            "example": "image21.jpg"
+          },
+          "contentType": {
+            "type": "string",
+            "example": "image/jpeg"
+          }
+        }
+      },
+      "TestStepsResponse": {
+        "type": "object",
+        "properties": {
+          "steps": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/Step"
+                },
+                {
+                  "$ref": "#/components/schemas/CalledStep"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "StepResponse": {
+        "type": "object",
+        "properties": {
+          "step": {
+            "$ref": "#/components/schemas/Step"
+          }
+        }
+      },
+      "StepAttachementResponse": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/FileResponse"
+        }
+      },
+      "Field": {
+        "type": "object",
+        "additionalProperties": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "example": {
+          "Action": "Step Action",
+          "Date": "02/Feb/2020",
+          "Toggle": "true",
+          "SingleSelectList": "Selected Value",
+          "MultiSelectList": [
+            "Option A",
+            "Option B"
+          ]
+        }
+      },
+      "File": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "string",
+            "example": "gsddfgdsfg...(base64)"
+          },
+          "filename": {
+            "type": "string",
+            "example": "example.txt"
+          },
+          "contentType": {
+            "type": "string",
+            "example": "plain/text"
+          }
+        }
+      },
+      "CreateStepRequestBody": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/CreateStep"
+          },
+          {
+            "$ref": "#/components/schemas/CallTestIssueKey"
+          }
+        ],
+        "example": {
+          "fields": {
+            "Action": "Step Action",
+            "Date": "01/Feb/2022",
+            "Toggle": "true",
+            "SingleSelectList": "Selected Value",
+            "MultiSelectList": [
+              "Option A",
+              "Option B"
+            ]
+          },
+          "attachments": [
+            {
+              "data": "gsddfgdsfg...(base64)",
+              "filename": "example.txt",
+              "contentType": "plain/text"
+            }
+          ]
+        }
+      },
+      "CreateStep": {
+        "type": "object",
+        "properties": {
+          "fields": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "attachments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/File"
+            }
+          }
+        }
+      },
+      "CreateStepResponse": {
+        "type": "object",
+        "properties": {
+          "step": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 85860
+              },
+              "attachmentIds": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                },
+                "example": [
+                  25737,
+                  25738
+                ]
+              }
+            }
+          },
+          "warnings": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": []
+          }
+        }
+      },
+      "UpdateStepRequestBody": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/UpdateStep"
+          },
+          {
+            "$ref": "#/components/schemas/CallTestIssueKey"
+          }
+        ],
+        "example": {
+          "fields": {
+            "Action": "Step Action",
+            "Date": "02/Feb/2021",
+            "Toggle": "true",
+            "SingleSelectList": "Selected Value",
+            "MultiSelectList": [
+              "Option A",
+              "Option B"
+            ]
+          },
+          "attachments": [
+            {
+              "data": "gsddfgdsfg...(base64)",
+              "filename": "example.txt",
+              "contentType": "plain/text"
+            }
+          ]
+        }
+      },
+      "UpdateStep": {
+        "type": "object",
+        "properties": {
+          "fields": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "attachments": {
+            "type": "object",
+            "properties": {
+              "add": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/File"
+                }
+              },
+              "remove": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                },
+                "example": [
+                  1234,
+                  4546
+                ]
+              }
+            }
+          }
+        }
+      },
+      "TestRunResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1004725
+          },
+          "status": {
+            "type": "string",
+            "example": "FAIL"
+          },
+          "color": {
+            "type": "string",
+            "example": "#D45D52"
+          },
+          "testKey": {
+            "type": "string",
+            "example": "CALC-67187"
+          },
+          "testExecKey": {
+            "type": "string",
+            "example": "CALC-67193"
+          },
+          "assignee": {
+            "type": "string",
+            "example": "admin"
+          },
+          "executedBy": {
+            "type": "string",
+            "example": "admin"
+          },
+          "startedOn": {
+            "type": "string",
+            "example": "2020-02-12T09:58:04Z"
+          },
+          "finishedOn": {
+            "type": "string",
+            "example": "2020-02-12T10:58:04Z"
+          },
+          "startedOnIso": {
+            "type": "string",
+            "example": "2020-02-12T09:58:04Z"
+          },
+          "finishedOnIso": {
+            "type": "string",
+            "example": "2020-02-12T10:58:04Z"
+          },
+          "duration": {
+            "type": "integer",
+            "example": 1923493000
+          },
+          "defects": {
+            "type": "array",
+            "example": [
+              "CALC-1",
+              "CALC-2"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "evidences": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileResponse"
+            }
+          },
+          "comment": {
+            "type": "string",
+            "example": "Test Run comment"
+          },
+          "testEnvironments": {
+            "type": "array",
+            "example": [
+              "iOS",
+              "Android"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "fixVersions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Version"
+            }
+          },
+          "customFields": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/TestRunCustomFieldSingle"
+                },
+                {
+                  "$ref": "#/components/schemas/TestRunCustomFieldMulti"
+                }
+              ]
+            }
+          },
+          "steps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StepResult"
+            }
+          },
+          "iterations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TestRunIterationStatusInformation"
+            }
+          },
+          "parameters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DatasetParameter"
+            }
+          }
+        }
+      },
+      "TestRunCustomFieldResponse": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/TestRunCustomFieldSingle"
+          },
+          {
+            "$ref": "#/components/schemas/TestRunCustomFieldMulti"
+          }
+        ]
+      },
+      "TestRunCustomFieldSingle": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 28
+          },
+          "name": {
+            "type": "string",
+            "example": "Toogle Custom Field"
+          },
+          "value": {
+            "type": "string",
+            "example": "true"
+          }
+        }
+      },
+      "TestRunCustomFieldMulti": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 29
+          },
+          "name": {
+            "type": "string",
+            "example": "Multi select List Custom Field"
+          },
+          "value": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "option A",
+              "option B"
+            ]
+          }
+        }
+      },
+      "UpdateTestRunCustomFieldSingle": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 28
+          },
+          "value": {
+            "type": "string",
+            "example": "true"
+          }
+        }
+      },
+      "UpdateTestRunCustomFieldMulti": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 29
+          },
+          "value": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "option A",
+              "option B"
+            ]
+          }
+        }
+      },
+      "Version": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "97845"
+          },
+          "name": {
+            "type": "string",
+            "example": "1.0"
+          },
+          "description": {
+            "type": "string",
+            "example": "Version 1.0"
+          },
+          "isArchived": {
+            "type": "boolean",
+            "example": true
+          },
+          "isReleased": {
+            "type": "boolean",
+            "example": false
+          }
+        }
+      },
+      "UpdateIteration": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "PASS"
+          },
+          "steps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UpdateStepResult"
+            }
+          }
+        }
+      },
+      "UpdateTestRun": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "PASS"
+          },
+          "comment": {
+            "type": "string",
+            "example": "Comment on Test Run"
+          },
+          "assignee": {
+            "type": "string",
+            "example": "admin"
+          },
+          "defects": {
+            "$ref": "#/components/schemas/Defects"
+          },
+          "evidences": {
+            "type": "object",
+            "properties": {
+              "add": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/File"
+                }
+              },
+              "remove": {
+                "type": "array",
+                "example": [
+                  1235,
+                  5674
+                ],
+                "items": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "customFields": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/UpdateTestRunCustomFieldSingle"
+                },
+                {
+                  "$ref": "#/components/schemas/UpdateTestRunCustomFieldMulti"
+                }
+              ]
+            }
+          },
+          "iterations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UpdateIterationStatus"
+            }
+          },
+          "steps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UpdateStepResult"
+            }
+          },
+          "examples": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "1379"
+              },
+              "rank": {
+                "type": "integer",
+                "example": 1
+              },
+              "values": {
+                "type": "array",
+                "example": [
+                  "value1",
+                  "value2"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              },
+              "status": {
+                "type": "string",
+                "example": "TODO"
+              },
+              "statusDescription": {
+                "type": "string",
+                "example": "Description of the status"
+              },
+              "duration": {
+                "type": "string",
+                "example": "12960"
+              },
+              "backgrounds": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/TestExampleStepBean"
+                }
+              },
+              "hooks": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/TestExampleStepBean"
+                }
+              },
+              "steps": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/TestExampleStepBean"
+                }
+              }
+            }
+          }
+        }
+      },
+      "TestExampleStepBean": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "rank": {
+            "type": "integer",
+            "example": 1
+          },
+          "type": {
+            "type": "string",
+            "example": "type"
+          },
+          "keyword": {
+            "type": "string",
+            "example": "Example Keyword"
+          },
+          "name": {
+            "type": "string",
+            "example": "Example Name"
+          },
+          "duration": {
+            "type": "string",
+            "example": "14226"
+          },
+          "logError": {
+            "type": "string",
+            "example": ""
+          },
+          "status": {
+            "type": "string",
+            "example": "PASS"
+          }
+        }
+      },
+      "Defects": {
+        "type": "object",
+        "properties": {
+          "add": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "CALC-1",
+              "CALC-2"
+            ]
+          },
+          "remove": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "CALC-3",
+              "CALC-4"
+            ]
+          }
+        }
+      },
+      "UpdateTestRunResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1004725
+          },
+          "evidenceIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "example": [
+                25827,
+                25828
+              ]
+            }
+          },
+          "warnings": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": [
+                "Test example with id 1379 does not belong to test run with id 1004725."
+              ]
+            }
+          },
+          "stepResults": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StepResultsResponse"
+            }
+          }
+        }
+      },
+      "UpdateIterationResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1004725
+          },
+          "stepResults": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StepResultsResponse"
+            }
+          }
+        }
+      },
+      "StepResultsResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 813743
+          },
+          "evidenceIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "example": [
+                25827,
+                25828
+              ]
+            }
+          },
+          "warnings": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": [
+                "No attachment with id 123 was found."
+              ]
+            }
+          }
+        }
+      },
+      "TestRunIterationInformation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 135
+          },
+          "testRunId": {
+            "type": "integer",
+            "example": 83
+          },
+          "status": {
+            "type": "string",
+            "example": "FAIL"
+          },
+          "color": {
+            "type": "string",
+            "example": "#D45D52"
+          },
+          "parameters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DatasetParameter"
+            }
+          },
+          "steps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IterationStepInformation"
+            }
+          }
+        }
+      },
+      "IterationStepInformation": {
+        "type": "object",
+        "title": "IterationStepInformation",
+        "x-examples": {
+          "example-1": {
+            "index": 1,
+            "fields": {
+              "Action": {
+                "type": "Wiki",
+                "value": {
+                  "raw": "When prompted to login I fill the username field with John and the password with 12345",
+                  "rendered": "<p>When prompted to login I fill the username field with John and the password with 12345</p>"
+                }
+              },
+              "Expected Result": {
+                "type": "Wiki",
+                "value": {
+                  "raw": "I'm authenticated!",
+                  "rendered": "<p>I'm authenticated!</p>"
+                }
+              }
+            }
+          }
+        },
+        "properties": {
+          "index": {
+            "type": "integer",
+            "example": 1
+          },
+          "fields": {
+            "type": "object",
+            "additionalProperties": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/DataField"
+                },
+                {
+                  "$ref": "#/components/schemas/OptionField"
+                },
+                {
+                  "$ref": "#/components/schemas/WikiField"
+                }
+              ]
+            },
+            "example": {
+              "Action": {
+                "type": "Wiki",
+                "value": {
+                  "raw": "When prompted to login I fill the username field with John and the password with 12345",
+                  "rendered": "<p>When prompted to login I fill the username field with John and the password with 12345</p>"
+                }
+              },
+              "Expected Result": {
+                "type": "Wiki",
+                "value": {
+                  "raw": "I'm authenticated!",
+                  "rendered": "<p>I'm authenticated!</p>"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ProjectTestRunCFMetaInformation": {
+        "type": "array",
+        "items": {
+          "oneOf": [
+            {
+              "$ref": "#/components/schemas/CustomFieldMetaInformation"
+            },
+            {
+              "$ref": "#/components/schemas/OptionCustomFieldMetaInformation"
+            }
+          ]
+        }
+      },
+      "CustomFieldMetaInformation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "252922"
+          },
+          "name": {
+            "type": "string",
+            "example": "Toggle for Test Run"
+          },
+          "description": {
+            "type": "string",
+            "example": "A toggle custom field for the test runs"
+          },
+          "type": {
+            "type": "string",
+            "example": "TOGGLE"
+          },
+          "required": {
+            "type": "boolean",
+            "example": false
+          },
+          "enabled": {
+            "type": "boolean",
+            "example": true
+          },
+          "testTypes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "Manual",
+              "Cucumber"
+            ]
+          }
+        }
+      },
+      "OptionCustomFieldMetaInformation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "252922"
+          },
+          "name": {
+            "type": "string",
+            "example": "Toggle for Test Run"
+          },
+          "description": {
+            "type": "string",
+            "example": "A toggle custom field for the test runs"
+          },
+          "type": {
+            "type": "string",
+            "example": "TOGGLE"
+          },
+          "required": {
+            "type": "boolean",
+            "example": false
+          },
+          "enabled": {
+            "type": "boolean",
+            "example": true
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "Option A",
+              "Option B",
+              "Option C"
+            ]
+          },
+          "testTypes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "Generic"
+            ]
+          }
+        }
+      },
+      "ProjectTestStepCFMetaInformation": {
+        "type": "array",
+        "items": {
+          "oneOf": [
+            {
+              "$ref": "#/components/schemas/StepCustomFieldMetaInformation"
+            },
+            {
+              "$ref": "#/components/schemas/StepOptionCustomFieldMetaInformation"
+            }
+          ]
+        }
+      },
+      "StepCustomFieldMetaInformation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "252922"
+          },
+          "name": {
+            "type": "string",
+            "example": "Toggle for Test Run"
+          },
+          "description": {
+            "type": "string",
+            "example": "A toggle custom field for the test runs"
+          },
+          "type": {
+            "type": "string",
+            "example": "TOGGLE"
+          },
+          "required": {
+            "type": "boolean",
+            "example": false
+          },
+          "enabled": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "StepOptionCustomFieldMetaInformation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "252922"
+          },
+          "name": {
+            "type": "string",
+            "example": "Toggle for Test Run"
+          },
+          "description": {
+            "type": "string",
+            "example": "A toggle custom field for the test runs"
+          },
+          "type": {
+            "type": "string",
+            "example": "TOGGLE"
+          },
+          "required": {
+            "type": "boolean",
+            "example": false
+          },
+          "enabled": {
+            "type": "boolean",
+            "example": true
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "Option A",
+              "Option B",
+              "Option C"
+            ]
+          }
+        }
+      },
+      "UpdateTRCustomFieldValueSingle": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "example": "true"
+          }
+        }
+      },
+      "UpdateTRCustomFieldValueMulti": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "example": [
+          "Option A",
+          "Option B"
+        ]
+      },
+      "TestRunExample": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 156
+          },
+          "rank": {
+            "type": "integer",
+            "example": 1
+          }
+        }
+      },
+      "XrayLicenseStatus": {
+        "type": "object",
+        "properties": {
+          "active": {
+            "type": "boolean",
+            "example": true
+          },
+          "licenseType": {
+            "type": "string",
+            "example": "Commercial (Atlassian Marketplace)"
+          }
+        }
+      },
+      "XrayJsonImportExecution": {
+        "title": "XrayJsonImportExecution",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "info": {
+              "summary": "Execution of automated tests for release v1.3",
+              "description": "This execution is automatically created when importing execution results from an external source",
+              "version": "v1.3",
+              "user": "admin",
+              "revision": "1.0.42134",
+              "startDate": "2014-08-30T11:47:35+01:00",
+              "finishDate": "2014-08-30T11:53:00+01:00",
+              "testPlanKey": "DEMO-100",
+              "testEnvironments": [
+                "iOS",
+                "Android"
+              ]
+            },
+            "tests": [
+              {
+                "testKey": "DEMO-6",
+                "start": "2014-08-30T11:47:35+01:00",
+                "finish": "2014-08-30T11:50:56+01:00",
+                "comment": "Successful execution",
+                "status": "PASS"
+              },
+              {
+                "testKey": "DEMO-7",
+                "start": "2014-08-30T11:51:00+01:00",
+                "finish": "2014-08-30T11:52:30+01:00",
+                "comment": "Execution failed. Example #5 FAIL.",
+                "status": "FAIL",
+                "customFields": [
+                  {
+                    "id": 321,
+                    "value": [
+                      "option A",
+                      "option B"
+                    ]
+                  }
+                ],
+                "evidences": [
+                  {
+                    "data": "iVBORw0KGgoAAAANSUhEUgAABkIAAAO9CAYAAADezXv6AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEn(...base64 file enconding)",
+                    "filename": "image21.jpg",
+                    "contentType": "image/jpeg"
+                  }
+                ],
+                "examples": [
+                  "PASS",
+                  "PASS",
+                  "PASS",
+                  "PASS",
+                  "FAIL"
+                ],
+                "steps": [
+                  {
+                    "status": "PASS",
+                    "comment": "Coment on Test Step Result 1",
+                    "evidences": [
+                      {
+                        "data": "iVBORw0KGgoAAAANSUhEUgAABkIAAAO9CAYAAADezXv6AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEn(...base64 file enconding)",
+                        "filename": "image22.jpg",
+                        "contentType": "image/jpeg"
+                      }
+                    ],
+                    "actualResult": "Actual result on Test Step 1"
+                  }
+                ],
+                "defects": [
+                  "DEMO-10",
+                  "DEMO-11"
+                ]
+              }
+            ]
+          }
+        },
+        "properties": {
+          "testExecutionKey": {
+            "type": "string"
+          },
+          "info": {
+            "type": "object",
+            "properties": {
+              "project": {
+                "type": "string"
+              },
+              "summary": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "user": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              },
+              "revision": {
+                "type": "string"
+              },
+              "startDate": {
+                "type": "string"
+              },
+              "finishDate": {
+                "type": "string"
+              }
+            }
+          },
+          "tests": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "comment": {
+                  "type": "string"
+                },
+                "finish": {
+                  "type": "string"
+                },
+                "start": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "customFields": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/UpdateTestRunCustomFieldSingle"
+                      },
+                      {
+                        "$ref": "#/components/schemas/UpdateTestRunCustomFieldMulti"
+                      }
+                    ]
+                  }
+                },
+                "testInfo": {
+                  "type": "object",
+                  "properties": {
+                    "testType": {
+                      "type": "string"
+                    },
+                    "projectKey": {
+                      "type": "string"
+                    },
+                    "summary": {
+                      "type": "string"
+                    },
+                    "scenarioType": {
+                      "type": "string"
+                    },
+                    "scenario": {
+                      "type": "string"
+                    },
+                    "definition": {
+                      "type": "string"
+                    },
+                    "requirementKeys": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "testKey": {
+                  "type": "string"
+                },
+                "executedBy": {
+                  "type": "string"
+                },
+                "evidences": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "string"
+                      },
+                      "filename": {
+                        "type": "string"
+                      },
+                      "contentType": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "duration": {
+                        "type": "integer"
+                      },
+                      "log": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "examples": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "steps": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string"
+                      },
+                      "comment": {
+                        "type": "string"
+                      },
+                      "evidences": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "data": {
+                              "type": "string"
+                            },
+                            "filename": {
+                              "type": "string"
+                            },
+                            "contentType": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "actualResult": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "RestApiSuccessResponse": {
+        "title": "RestApiSuccessResponse",
+        "type": "object",
+        "properties": {
+          "testExecIssue": {
+            "type": "object",
+            "required": [
+              "id",
+              "key",
+              "self"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "key": {
+                "type": "string"
+              },
+              "self": {
+                "type": "string"
+              }
+            }
+          },
+          "testIssues": {
+            "type": "object",
+            "properties": {
+              "success": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "key": {
+                      "type": "string"
+                    },
+                    "self": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "error": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "testDefinition": {
+                      "type": "string"
+                    },
+                    "messages": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "testWarnings": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "testRunWarnings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "testRunId": {
+                  "type": "integer"
+                },
+                "testKey": {
+                  "type": "string"
+                },
+                "testExecutionKey": {
+                  "type": "string"
+                },
+                "warningCollection": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "testExecIssue"
+        ],
+        "x-examples": {
+          "example-1": {
+            "testExecIssue": {
+              "id": "38101",
+              "key": "TMP-82",
+              "self": "http://localhost:30000/rest/api/2/issue/38101"
+            },
+            "testIssues": {
+              "success": [
+                {
+                  "self": "http://localhost:30000/rest/api/2/issue/36600",
+                  "id": "36600",
+                  "key": "TMP-1"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "XrayJsonImportMultipartRequest": {
+        "title": "XrayJsonMultipartRequest",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "result": "my_test_result_file.json",
+            "info": "my_test_execution_issue_properties.json"
+          }
+        },
+        "properties": {
+          "result": {
+            "type": "string",
+            "format": "binary",
+            "pattern": ".+\\.json",
+            "example": "my_test_result_file.json",
+            "description": "The Xray JSON file, same as described in the `POST /import/execution` ([link](https://docs.getxray.app/display/XRAY420/v2.0#/Import/post-import-execution)). This file **must** be of type `application/json`.\n\n<details>\n<summary>Example 1 (Create new Test Execution issue)</summary>\n\n```\n{\n  \"info\": {\n    \"summary\": \"Execution of automated tests for release v1.3\",\n    \"description\": \"This execution is automatically created when importing execution results from an external source\",\n    \"version\": \"v1.3\",\n    \"user\": \"admin\",\n    \"revision\": \"1.0.42134\",\n    \"startDate\": \"2014-08-30T11:47:35+01:00\",\n    \"finishDate\": \"2014-08-30T11:53:00+01:00\",\n    \"testPlanKey\": \"DEMO-100\",\n    \"testEnvironments\": [\n      \"iOS\",\n      \"Android\"\n    ]\n  },\n  \"tests\": [\n    {\n      \"testKey\": \"DEMO-6\",\n      \"start\": \"2014-08-30T11:47:35+01:00\",\n      \"finish\": \"2014-08-30T11:50:56+01:00\",\n      \"comment\": \"Successful execution\",\n      \"status\": \"PASS\"\n    },\n    {\n      \"testKey\": \"DEMO-7\",\n      \"start\": \"2014-08-30T11:51:00+01:00\",\n      \"finish\": \"2014-08-30T11:52:30+01:00\",\n      \"comment\": \"Execution failed. Example #5 FAIL.\",\n      \"status\": \"FAIL\",\n      \"customFields\": [\n        {\n          \"id\": 321,\n          \"value\": [\n            \"option A\",\n            \"option B\"\n          ]\n        }\n      ],\n      \"evidences\": [\n        {\n          \"data\": \"iVBORw0KGgoAAAANSUhEUgAABkIAAAO9CAYAAADezXv6AAAAEn(...base64 file enconding)\",\n          \"filename\": \"image21.jpg\",\n          \"contentType\": \"image/jpeg\"\n        }\n      ],\n      \"examples\": [\n        \"PASS\",\n        \"PASS\",\n        \"PASS\",\n        \"PASS\",\n        \"FAIL\"\n      ],\n      \"steps\": [\n        {\n          \"status\": \"PASS\",\n          \"comment\": \"Coment on Test Step Result 1\",\n          \"evidences\": [\n            {\n              \"data\": \"iVBORw0KGgoAAAANSUhEUgAABkIAAAO9CAYAAADezXv6AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEn(...base64 file enconding)\",\n              \"filename\": \"image22.jpg\",\n              \"contentType\": \"image/jpeg\"\n            }\n          ],\n          \"actualResult\": \"Actual result on Test Step 1\"\n        }\n      ],\n      \"defects\": [\n        \"DEMO-10\",\n        \"DEMO-11\"\n      ]\n    }\n  ]\n}\n```\n</details>\n\n<details>\n<summary>Example 2 (Update Existing Test Execution)</summary>\n\n```\n{\n    \"testExecutionKey\": \"DEMO-1206\",\n    \"tests\" : [\n        {\n            \"testKey\" : \"DEMO-6\",\n            \"start\" : \"2014-08-30T11:47:35+01:00\",\n            \"finish\" : \"2014-08-30T11:50:56+01:00\",\n            \"comment\" : \"Successful execution\",\n            \"status\" : \"PASS\"\n        }\n     ]\n}\n```\n</details>\n\n"
+          },
+          "info": {
+            "type": "string",
+            "description": "Should follow the same format as the \"fields\" part, described in the [official Jira REST API](https://docs.atlassian.com/software/jira/docs/api/REST/latest/#api/2/issue-createIssue).\nThis file **must** be of type `application/json`.\n\n<details>\n<summary>Example 1 (Fields for a new Test Execution)</summary>\n\n```\n{\n    \"fields\": {\n        \"project\": {\n            \"id\": \"10402\"\n        },\n        \"summary\": \"Brand new Test execution\",\n        \"issuetype\": {\n            \"id\": \"10007\"\n        },\n        \"components\" : [\n            {\n            \"name\":\"Interface\"\n            },\n            {\n            \"name\":\"Core\"\n            }\n        ],\n        \"customfield_10032\" : [\n            \"TES-38\"\n        ]\n    }\n}\n```\n</details>\n\n<details>\n<summary>Example 2 (Fields for updating a Test Execution)</summary>\n\n```\n{\n    \"fields\": {\n        \"customfield_10032\" : [\n            \"a_label\"\n        ],\n        \"description\": \"update the issue description\"\n    }\n}\n``` \n</details>\n\n",
+            "format": "binary",
+            "pattern": ".+\\.json",
+            "example": "my_test_execution_issue_properties.json"
+          }
+        },
+        "required": [
+          "result",
+          "info"
+        ]
+      },
+      "DatasetParameter": {
+        "title": "DatasetParameter",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "TestRunIterationStatusInformation": {
+        "description": "",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string"
+          },
+          "parameters": {
+            "type": "array",
+            "uniqueItems": false,
+            "items": {
+              "$ref": "#/components/schemas/DatasetParameter"
+            }
+          }
+        },
+        "x-examples": {
+          "example-1": {
+            "id": 13889,
+            "status": "PASS",
+            "color": "#95C160",
+            "parameters": [
+              {
+                "name": "A",
+                "value": "1"
+              },
+              {
+                "name": "B",
+                "value": "7"
+              }
+            ]
+          }
+        }
+      },
+      "UpdateIterationStatus": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 35
+          },
+          "status": {
+            "type": "string",
+            "example": "PASS"
+          }
+        }
+      },
+      "FolderRestBean": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1001
+          },
+          "rank": {
+            "type": "integer",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "Unit Tests"
+          },
+          "testCount": {
+            "type": "integer",
+            "example": 2
+          },
+          "totalTestCount": {
+            "type": "integer",
+            "example": 12
+          },
+          "testRepositoryPath": {
+            "type": "string",
+            "example": "/v4.3.2/AutomatedTests"
+          },
+          "folderIds": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              1002,
+              1003
+            ]
+          }
+        }
+      },
+      "FolderRestBeans": {
+        "type": "array",
+        "uniqueItems": true,
+        "items": {
+          "$ref": "#/components/schemas/FolderRestBean"
+        }
+      }
+    },
+    "securitySchemes": {
+      "BasicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  }
+}

@@ -1,0 +1,4913 @@
+openapi: 3.0.3
+info:
+  contact:
+    name: SmartBear - Zephyr Scale Support
+    url: https://smartbear.atlassian.net/servicedesk/customer/portal/42
+  description: |2
+
+    # Introduction
+
+    This is the **Zephyr Scale Cloud** API. If you are looking for the Server API, please refer to the [documentation](https://support.smartbear.com/zephyr-scale-server/docs/) for more information.
+
+    This API uses the OpenAPI specification. If you want to generate clients for different languages, please use the link above to download the API specification and use it with your preferred tools.
+
+    For feature requests or general support, please head to our [support site](https://smartbear.atlassian.net/servicedesk/customer/portal/42).
+
+    # Authentication
+    The API authentication is based on JSON Web Token (JWT), which is a key for accessing the API. Authenticating using JWT requires the following steps:
+    * Generate a key
+    * Make authenticated requests
+
+    ## Generate a Key
+    For accessing the API, you must generate an access key in Jira. To generate an access token, click on your profile picture at the page bottom left, and
+    choose the option “Zephyr Scale API keys". For more information, please check out the [documentation](https://support.smartbear.com/zephyr-scale-cloud/docs/api-and-test-automation/generating-access-keys.html).
+
+    ## Accessing the API
+    The API is available at the following base URL:
+    ```
+    https://api.zephyrscale.smartbear.com/v2
+    ```
+    For example, the final URL for retrieving test cases would be:
+    ```
+    https://api.zephyrscale.smartbear.com/v2/testcases
+    ```
+
+    ## Making Authenticated Requests
+    To authenticate subsequent API requests, you must provide a valid token in an HTTP header, which is the key generated on the previous step:
+    ```
+    Authorization: Bearer {bearer_token}
+    ```
+    # Representing Users
+
+    Previous API definitions used Atlassian User Keys to identify users. This parameter is deprecated because of privacy
+    changes. Use Atlassian Account ID instead.
+
+
+    Atlassian Account IDs are globally unique opaque identifiers for identifying a user. Every Atlassian Account has a
+    ID which is assigned when the account is created and is immutable. Account IDs contain no personally identifiable
+    information and are only used to retrieve user information ondemand. This API does not return any user information
+    other than the Account ID (with the exception of the deprecated user keys during the deprecation period).
+  title: Zephyr Scale Cloud API
+  version: "2"
+  x-logo:
+    url: https://smartbear-tm4j-prod-us-west-2-api-docs.s3-us-west-2.amazonaws.com/images/zs-logo.svg
+    altText: Zephyr Scale Cloud
+servers:
+- url: https://api.zephyrscale.smartbear.com/v2
+security:
+- AccessToken: []
+tags:
+- description: Operations related to test cases.
+  name: Test Cases
+- description: Operations related to test cycles.
+  name: Test Cycles
+- description: Operations related to test executions.
+  name: Test Executions
+- description: Operations related to folders.
+  name: Folders
+- description: Operations related to statuses.
+  name: Statuses
+- description: Operations related to priorities.
+  name: Priorities
+- description: Operations related to environments.
+  name: Environments
+- description: Operations related to projects.
+  name: Projects
+- description: Operations related to links.
+  name: Links
+- description: Operations related to test case automations.
+  name: Automations
+paths:
+  /testcases:
+    get:
+      description: Retrieves all test cases. Query parameters can be used to filter
+        the results.
+      operationId: listTestCases
+      parameters:
+      - description: Jira project key filter
+        explode: true
+        in: query
+        name: projectKey
+        required: false
+        schema:
+          pattern: "([A-Z][A-Z_0-9]+)"
+          type: string
+        style: form
+      - description: Folder ID filter
+        explode: true
+        in: query
+        name: folderId
+        required: false
+        schema:
+          format: int64
+          minimum: 1
+          type: integer
+        style: form
+      - description: "A hint as to the maximum number of results to return in each\
+          \ call. Note that the server reserves the right to impose a maxResults limit\
+          \ that is lower than the value that a client provides, due to lack or resources\
+          \ or any other condition. When this happens, your results will be truncated.\
+          \ Callers should always check the returned maxResults to determine the value\
+          \ that is effectively being used."
+        explode: true
+        in: query
+        name: maxResults
+        required: false
+        schema:
+          default: 10
+          format: int64
+          minimum: 1
+          type: integer
+        style: form
+      - description: Zero-indexed starting position. Should be a multiple of maxResults.
+        explode: true
+        in: query
+        name: startAt
+        required: false
+        schema:
+          default: 0
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestCaseList'
+          description: OK
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Get test cases
+      tags:
+      - Test Cases
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-accepts: application/json
+    post:
+      description: |
+        Creates a test case. Fields `priorityName` and `statusName` will be set to default values if not informed. Default values are usually “Normal” for `priorityName` and “Draft” for `statusName`. All required test case custom fields should be present in the request.
+      operationId: createTestCase
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TestCaseInput'
+        description: Test Case Input
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeyedCreatedResource'
+          description: Created
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Create test case
+      tags:
+      - Test Cases
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-contentType: application/json
+      x-accepts: application/json
+  /testcases/{testCaseKey}:
+    get:
+      description: Returns a test case for the given key.
+      operationId: getTestCase
+      parameters:
+      - description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
+        explode: false
+        in: path
+        name: testCaseKey
+        required: true
+        schema:
+          pattern: "(.+-T[0-9]+)"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestCase'
+          description: OK
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Get test case
+      tags:
+      - Test Cases
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-accepts: application/json
+    put:
+      description: |
+        Updates an existing test case. If the project has test case custom fields, all custom fields should be present in the request. To leave any of them blank, please set them null if they are not required custom fields.
+      operationId: updateTestCase
+      parameters:
+      - description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
+        explode: false
+        in: path
+        name: testCaseKey
+        required: true
+        schema:
+          pattern: "(.+-T[0-9]+)"
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TestCase'
+        description: Test Case Update
+        required: true
+      responses:
+        "200":
+          description: OK
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Update test case
+      tags:
+      - Test Cases
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-contentType: application/json
+      x-accepts: application/json
+  /testcases/{testCaseKey}/links:
+    get:
+      description: Returns links for a test case with specified key.
+      operationId: getTestCaseLinks
+      parameters:
+      - description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
+        explode: false
+        in: path
+        name: testCaseKey
+        required: true
+        schema:
+          pattern: "(.+-T[0-9]+)"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestCaseLinkList'
+          description: OK
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Get links
+      tags:
+      - Test Cases
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-accepts: application/json
+  /testcases/{testCaseKey}/links/issues:
+    post:
+      description: Creates a link between a test case and a Jira issue.
+      operationId: createTestCaseIssueLinks
+      parameters:
+      - description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
+        explode: false
+        in: path
+        name: testCaseKey
+        required: true
+        schema:
+          pattern: "(.+-T[0-9]+)"
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IssueLinkInput'
+        description: Issue Link Input
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedResource'
+          description: Created
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Create issue links
+      tags:
+      - Test Cases
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-contentType: application/json
+      x-accepts: application/json
+  /testcases/{testCaseKey}/links/weblinks:
+    post:
+      description: Creates a link between a test case and a generic URL.
+      operationId: createTestCaseWebLinks
+      parameters:
+      - description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
+        explode: false
+        in: path
+        name: testCaseKey
+        required: true
+        schema:
+          pattern: "(.+-T[0-9]+)"
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebLinkInput'
+        description: Web Link Input
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedResource'
+          description: Created
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Create web links
+      tags:
+      - Test Cases
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-contentType: application/json
+      x-accepts: application/json
+  /testcases/{testCaseKey}/versions:
+    get:
+      description: Returns all test case versions for a test case with specified key.
+        Response is ordered by most recent first.
+      operationId: listTestCaseVersions
+      parameters:
+      - description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
+        explode: false
+        in: path
+        name: testCaseKey
+        required: true
+        schema:
+          pattern: "(.+-T[0-9]+)"
+          type: string
+        style: simple
+      - description: "A hint as to the maximum number of results to return in each\
+          \ call. Note that the server reserves the right to impose a maxResults limit\
+          \ that is lower than the value that a client provides, due to lack or resources\
+          \ or any other condition. When this happens, your results will be truncated.\
+          \ Callers should always check the returned maxResults to determine the value\
+          \ that is effectively being used."
+        explode: true
+        in: query
+        name: maxResults
+        required: false
+        schema:
+          default: 10
+          format: int64
+          minimum: 1
+          type: integer
+        style: form
+      - description: Zero-indexed starting position. Should be a multiple of maxResults.
+        explode: true
+        in: query
+        name: startAt
+        required: false
+        schema:
+          default: 0
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestCaseVersionLinkList'
+          description: OK
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Get versions
+      tags:
+      - Test Cases
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-accepts: application/json
+  /testcases/{testCaseKey}/versions/{version}:
+    get:
+      description: Retrieves a specific version of a test case.
+      operationId: getTestCaseVersion
+      parameters:
+      - description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
+        explode: false
+        in: path
+        name: testCaseKey
+        required: true
+        schema:
+          pattern: "(.+-T[0-9]+)"
+          type: string
+        style: simple
+      - description: Version of the test case to retrieve.
+        explode: false
+        in: path
+        name: version
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestCase'
+          description: OK
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Get version
+      tags:
+      - Test Cases
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-accepts: application/json
+  /testcases/{testCaseKey}/testscript:
+    get:
+      description: Returns the test script for the given test case
+      operationId: getTestCaseTestScript
+      parameters:
+      - description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
+        explode: false
+        in: path
+        name: testCaseKey
+        required: true
+        schema:
+          pattern: "(.+-T[0-9]+)"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestScript'
+          description: OK
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Get test script
+      tags:
+      - Test Cases
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-accepts: application/json
+    post:
+      description: "Creates or updates the test script for a test case. If the test\
+        \ case currently has a sequence of test steps assigned to it, these will be\
+        \ implicitly removed."
+      operationId: createTestCaseTestScript
+      parameters:
+      - description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
+        explode: false
+        in: path
+        name: testCaseKey
+        required: true
+        schema:
+          pattern: "(.+-T[0-9]+)"
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TestScriptInput'
+        description: Test Script Input
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedResource'
+          description: Created
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Create test script
+      tags:
+      - Test Cases
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-contentType: application/json
+      x-accepts: application/json
+  /testcases/{testCaseKey}/teststeps:
+    get:
+      description: "Returns the test steps for the given test case. Provides a paged\
+        \ response, with 100 items per page."
+      operationId: getTestCaseTestSteps
+      parameters:
+      - description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
+        explode: false
+        in: path
+        name: testCaseKey
+        required: true
+        schema:
+          pattern: "(.+-T[0-9]+)"
+          type: string
+        style: simple
+      - description: "A hint as to the maximum number of results to return in each\
+          \ call. Note that the server reserves the right to impose a maxResults limit\
+          \ that is lower than the value that a client provides, due to lack or resources\
+          \ or any other condition. When this happens, your results will be truncated.\
+          \ Callers should always check the returned maxResults to determine the value\
+          \ that is effectively being used."
+        explode: true
+        in: query
+        name: maxResults
+        required: false
+        schema:
+          default: 10
+          format: int64
+          minimum: 1
+          type: integer
+        style: form
+      - description: Zero-indexed starting position. Should be a multiple of maxResults.
+        explode: true
+        in: query
+        name: startAt
+        required: false
+        schema:
+          default: 0
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestStepsList'
+          description: OK
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Get test steps
+      tags:
+      - Test Cases
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-accepts: application/json
+    post:
+      description: |
+        Assigns a series of test steps to a test case, appending them to any existing sequence of test steps. A maximum of 100 steps can be posted per request. Consumers should not attempt to parallelize this operation, as the order of the steps is defined by the input order. If this endpoint is called on a test case that already has a plain text or BDD test script, that test script will implicitly be removed. All required step custom fields should be present in the request.
+      operationId: createTestCaseTestSteps
+      parameters:
+      - description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
+        explode: false
+        in: path
+        name: testCaseKey
+        required: true
+        schema:
+          pattern: "(.+-T[0-9]+)"
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TestStepsInput'
+        description: Test Step Input
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedResource'
+          description: Created
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Post test steps
+      tags:
+      - Test Cases
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-contentType: application/json
+      x-accepts: application/json
+  /testcycles:
+    get:
+      description: Returns all test cycles. Query parameters can be used to filter
+        by project and folder.
+      operationId: listTestCycles
+      parameters:
+      - description: Jira project key filter
+        explode: true
+        in: query
+        name: projectKey
+        required: false
+        schema:
+          pattern: "([A-Z][A-Z_0-9]+)"
+          type: string
+        style: form
+      - description: Folder ID filter
+        explode: true
+        in: query
+        name: folderId
+        required: false
+        schema:
+          format: int64
+          minimum: 1
+          type: integer
+        style: form
+      - description: "A hint as to the maximum number of results to return in each\
+          \ call. Note that the server reserves the right to impose a maxResults limit\
+          \ that is lower than the value that a client provides, due to lack or resources\
+          \ or any other condition. When this happens, your results will be truncated.\
+          \ Callers should always check the returned maxResults to determine the value\
+          \ that is effectively being used."
+        explode: true
+        in: query
+        name: maxResults
+        required: false
+        schema:
+          default: 10
+          format: int64
+          minimum: 1
+          type: integer
+        style: form
+      - description: Zero-indexed starting position. Should be a multiple of maxResults.
+        explode: true
+        in: query
+        name: startAt
+        required: false
+        schema:
+          default: 0
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestCycleList'
+          description: OK
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Get all Test Cycles
+      tags:
+      - Test Cycles
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-accepts: application/json
+    post:
+      description: Creates a Test Cycle. All required test cycle custom fields should
+        be present in the request.
+      operationId: createTestCycle
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TestCycleInput'
+        description: Test Cycle Input
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeyedCreatedResource'
+          description: Created
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Create a Test Cycle
+      tags:
+      - Test Cycles
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-contentType: application/json
+      x-accepts: application/json
+  /testcycles/{testCycleIdOrKey}:
+    get:
+      description: Returns a test cycle for the given key.
+      operationId: getTestCycle
+      parameters:
+      - description: "The ID or key of the test cycle. Test cycle keys are of the\
+          \ format [A-Z]+-R[0-9]+"
+        explode: false
+        in: path
+        name: testCycleIdOrKey
+        required: true
+        schema:
+          pattern: "([0-9]+)|(.+-R[0-9]+)"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestCycle'
+          description: OK
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Get test cycle
+      tags:
+      - Test Cycles
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-accepts: application/json
+    put:
+      description: |
+        Updates an existing test cycle. If the project has test cycle custom fields, all custom fields should be present in the request. To leave any of them blank, please set them null if they are not required custom fields.
+      operationId: updateTestCycle
+      parameters:
+      - description: "The ID or key of the test cycle. Test cycle keys are of the\
+          \ format [A-Z]+-R[0-9]+"
+        explode: false
+        in: path
+        name: testCycleIdOrKey
+        required: true
+        schema:
+          pattern: "([0-9]+)|(.+-R[0-9]+)"
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TestCycle'
+        description: Test Cycle Update
+        required: true
+      responses:
+        "200":
+          description: OK
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            location:
+              description: URL of the updated Test Cycle
+              explode: false
+              schema:
+                format: url
+                type: string
+              style: simple
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Update test cycle
+      tags:
+      - Test Cycles
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-contentType: application/json
+      x-accepts: application/json
+  /testcycles/{testCycleIdOrKey}/links:
+    get:
+      description: Returns links for a test cycle with specified key.
+      operationId: getTestCycleLinks
+      parameters:
+      - description: "The ID or key of the test cycle. Test cycle keys are of the\
+          \ format [A-Z]+-R[0-9]+"
+        explode: false
+        in: path
+        name: testCycleIdOrKey
+        required: true
+        schema:
+          pattern: "([0-9]+)|(.+-R[0-9]+)"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestCycleLinkList'
+          description: OK
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Get links
+      tags:
+      - Test Cycles
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-accepts: application/json
+  /testcycles/{testCycleIdOrKey}/links/issues:
+    post:
+      description: Creates a link between a test cycle and a Jira issue.
+      operationId: createTestCycleIssueLink
+      parameters:
+      - description: "The ID or key of the test cycle. Test cycle keys are of the\
+          \ format [A-Z]+-R[0-9]+"
+        explode: false
+        in: path
+        name: testCycleIdOrKey
+        required: true
+        schema:
+          pattern: "([0-9]+)|(.+-R[0-9]+)"
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IssueLinkInput'
+        description: Issue Link Input
+        required: true
+      responses:
+        "201":
+          description: Created
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            location:
+              description: URL of the created link
+              explode: false
+              schema:
+                format: url
+                type: string
+              style: simple
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Create issue links
+      tags:
+      - Test Cycles
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-contentType: application/json
+      x-accepts: application/json
+  /testcycles/{testCycleIdOrKey}/links/weblinks:
+    post:
+      description: Creates a link between a test cycle and a generic URL.
+      operationId: createTestCycleWebLink
+      parameters:
+      - description: "The ID or key of the test cycle. Test cycle keys are of the\
+          \ format [A-Z]+-R[0-9]+"
+        explode: false
+        in: path
+        name: testCycleIdOrKey
+        required: true
+        schema:
+          pattern: "([0-9]+)|(.+-R[0-9]+)"
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebLinkInput'
+        description: Web Link Input
+        required: true
+      responses:
+        "201":
+          description: Created
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            location:
+              description: URL of the created link
+              explode: false
+              schema:
+                format: url
+                type: string
+              style: simple
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Create web links
+      tags:
+      - Test Cycles
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-contentType: application/json
+      x-accepts: application/json
+  /testplans:
+    get:
+      description: Retrieves all test plans. Query parameters can be used to filter
+        the results.
+      operationId: listTestPlans
+      parameters:
+      - description: Jira project key filter
+        explode: true
+        in: query
+        name: projectKey
+        required: false
+        schema:
+          pattern: "([A-Z][A-Z_0-9]+)"
+          type: string
+        style: form
+      - description: "A hint as to the maximum number of results to return in each\
+          \ call. Note that the server reserves the right to impose a maxResults limit\
+          \ that is lower than the value that a client provides, due to lack or resources\
+          \ or any other condition. When this happens, your results will be truncated.\
+          \ Callers should always check the returned maxResults to determine the value\
+          \ that is effectively being used."
+        explode: true
+        in: query
+        name: maxResults
+        required: false
+        schema:
+          default: 10
+          format: int64
+          minimum: 1
+          type: integer
+        style: form
+      - description: Zero-indexed starting position. Should be a multiple of maxResults.
+        explode: true
+        in: query
+        name: startAt
+        required: false
+        schema:
+          default: 0
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestPlanList'
+          description: OK
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Get test plans
+      tags:
+      - Test Plans
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-accepts: application/json
+  /testexecutions:
+    get:
+      description: Returns all test executions. Query parameters can be used to filter
+        by project and folder.
+      operationId: listTestExecutions
+      parameters:
+      - description: Jira project key filter
+        explode: true
+        in: query
+        name: projectKey
+        required: false
+        schema:
+          pattern: "([A-Z][A-Z_0-9]+)"
+          type: string
+        style: form
+      - description: Test cycle key filter.
+        explode: true
+        in: query
+        name: testCycle
+        required: false
+        schema:
+          pattern: "([0-9]+)|(.+-R[0-9]+)"
+          type: string
+        style: form
+      - description: Test case key filter.
+        explode: true
+        in: query
+        name: testCase
+        required: false
+        schema:
+          pattern: "([0-9]+)|(.+-T[0-9]+)"
+          type: string
+        style: form
+      - description: "Filter for 'Actual End Date' after the given time. Format: yyyy-MM-dd'T'HH:mm:ss'Z'"
+        explode: true
+        in: query
+        name: actualEndDateAfter
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: "Filter for 'Actual End Date' before the given time. Format:\
+          \ yyyy-MM-dd'T'HH:mm:ss'Z'"
+        explode: true
+        in: query
+        name: actualEndDateBefore
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: "If true, execution step issue links will be included in the\
+          \ response"
+        explode: true
+        in: query
+        name: includeStepLinks
+        required: false
+        schema:
+          default: false
+          type: boolean
+        style: form
+      - description: "A hint as to the maximum number of results to return in each\
+          \ call. Note that the server reserves the right to impose a maxResults limit\
+          \ that is lower than the value that a client provides, due to lack or resources\
+          \ or any other condition. When this happens, your results will be truncated.\
+          \ Callers should always check the returned maxResults to determine the value\
+          \ that is effectively being used."
+        explode: true
+        in: query
+        name: maxResults
+        required: false
+        schema:
+          default: 10
+          format: int64
+          minimum: 1
+          type: integer
+        style: form
+      - description: Zero-indexed starting position. Should be a multiple of maxResults.
+        explode: true
+        in: query
+        name: startAt
+        required: false
+        schema:
+          default: 0
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestExecutionList'
+          description: OK
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Get test executions
+      tags:
+      - Test Executions
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-accepts: application/json
+    post:
+      description: Creates a test execution. All required test execution custom fields
+        should be present in the request.
+      operationId: createTestExecution
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TestExecutionInput'
+        description: Web Link Input
+        required: true
+      responses:
+        "201":
+          description: Created
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            location:
+              description: URL of the created Test Execution
+              explode: false
+              schema:
+                format: url
+                type: string
+              style: simple
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Create test execution
+      tags:
+      - Test Executions
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-contentType: application/json
+      x-accepts: application/json
+  /testexecutions/{testExecutionIdOrKey}:
+    get:
+      description: Returns a test execution for the given ID.
+      operationId: getTestExecution
+      parameters:
+      - description: "The ID or key of the test execution. Test execution keys are\
+          \ of the format [A-Z]+-E[0-9]+"
+        explode: false
+        in: path
+        name: testExecutionIdOrKey
+        required: true
+        schema:
+          pattern: "([0-9]+)|(.+-E[0-9]+)"
+          type: string
+        style: simple
+      - description: "If true, execution step issue links will be included in the\
+          \ response"
+        explode: true
+        in: query
+        name: includeStepLinks
+        required: false
+        schema:
+          default: false
+          type: boolean
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestExecution'
+          description: OK
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Get test execution
+      tags:
+      - Test Executions
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-accepts: application/json
+  /testexecutions/{testExecutionIdOrKey}/links:
+    get:
+      description: Returns links for a test execution with specified ID.
+      operationId: listTestExecutionLinks
+      parameters:
+      - description: "The ID or key of the test execution. Test execution keys are\
+          \ of the format [A-Z]+-E[0-9]+"
+        explode: false
+        in: path
+        name: testExecutionIdOrKey
+        required: true
+        schema:
+          pattern: "([0-9]+)|(.+-E[0-9]+)"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestExecutionLinkList'
+          description: OK
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Get links
+      tags:
+      - Test Executions
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-accepts: application/json
+  /testexecutions/{testExecutionIdOrKey}/links/issues:
+    post:
+      description: Creates a link between a test execution and a Jira issue.
+      operationId: createTestExecutionIssueLink
+      parameters:
+      - description: "The ID or key of the test execution. Test execution keys are\
+          \ of the format [A-Z]+-E[0-9]+"
+        explode: false
+        in: path
+        name: testExecutionIdOrKey
+        required: true
+        schema:
+          pattern: "([0-9]+)|(.+-E[0-9]+)"
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IssueLinkInput'
+        description: Issue Link Input
+        required: true
+      responses:
+        "201":
+          description: Created
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+            location:
+              description: URL of the created link
+              explode: false
+              schema:
+                format: url
+                type: string
+              style: simple
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Create issue links
+      tags:
+      - Test Executions
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-contentType: application/json
+      x-accepts: application/json
+  /projects:
+    get:
+      description: Returns all projects.
+      operationId: listProjects
+      parameters:
+      - description: "A hint as to the maximum number of results to return in each\
+          \ call. Note that the server reserves the right to impose a maxResults limit\
+          \ that is lower than the value that a client provides, due to lack or resources\
+          \ or any other condition. When this happens, your results will be truncated.\
+          \ Callers should always check the returned maxResults to determine the value\
+          \ that is effectively being used."
+        explode: true
+        in: query
+        name: maxResults
+        required: false
+        schema:
+          default: 10
+          format: int64
+          minimum: 1
+          type: integer
+        style: form
+      - description: Zero-indexed starting position. Should be a multiple of maxResults.
+        explode: true
+        in: query
+        name: startAt
+        required: false
+        schema:
+          default: 0
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectList'
+          description: OK
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Get projects
+      tags:
+      - Projects
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-accepts: application/json
+  /projects/{projectIdOrKey}:
+    get:
+      description: Returns a project for the given ID or key.
+      operationId: getProject
+      parameters:
+      - description: The ID or key of the Jira project
+        explode: false
+        in: path
+        name: projectIdOrKey
+        required: true
+        schema:
+          pattern: "([0-9]+)|([A-Z][A-Z_0-9]+)"
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: OK
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Get project
+      tags:
+      - Projects
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-accepts: application/json
+  /folders:
+    get:
+      description: Returns all folder.
+      operationId: listFolders
+      parameters:
+      - description: "A hint as to the maximum number of results to return in each\
+          \ call. Note that the server reserves the right to impose a maxResults limit\
+          \ that is lower than the value that a client provides, due to lack or resources\
+          \ or any other condition. When this happens, your results will be truncated.\
+          \ Callers should always check the returned maxResults to determine the value\
+          \ that is effectively being used."
+        explode: true
+        in: query
+        name: maxResults
+        required: false
+        schema:
+          default: 10
+          format: int64
+          minimum: 1
+          type: integer
+        style: form
+      - description: Zero-indexed starting position. Should be a multiple of maxResults.
+        explode: true
+        in: query
+        name: startAt
+        required: false
+        schema:
+          default: 0
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      - description: Jira project key filter
+        explode: true
+        in: query
+        name: projectKey
+        required: false
+        schema:
+          pattern: "([A-Z][A-Z_0-9]+)"
+          type: string
+        style: form
+      - description: "Folder type filter. Either `\"TEST_CASE\"`, `\"TEST_PLAN\"`\
+          \ or `\"TEST_CYCLE\"`"
+        explode: true
+        in: query
+        name: folderType
+        required: false
+        schema:
+          $ref: '#/components/schemas/FolderType'
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FolderList'
+          description: OK
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Get folders
+      tags:
+      - Folders
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-accepts: application/json
+    post:
+      description: Creates a folder.
+      operationId: createFolder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FolderInput'
+        description: FolderInput
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedResource'
+          description: Created
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Create folder
+      tags:
+      - Folders
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-contentType: application/json
+      x-accepts: application/json
+  /folders/{folderId}:
+    get:
+      description: Returns a folder for the given ID.
+      operationId: getFolder
+      parameters:
+      - description: Folder ID
+        explode: false
+        in: path
+        name: folderId
+        required: true
+        schema:
+          format: int64
+          minimum: 1
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Folder'
+          description: OK
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Get folder
+      tags:
+      - Folders
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-accepts: application/json
+  /priorities:
+    get:
+      description: Returns all priorities.
+      operationId: listPriorities
+      parameters:
+      - description: "A hint as to the maximum number of results to return in each\
+          \ call. Note that the server reserves the right to impose a maxResults limit\
+          \ that is lower than the value that a client provides, due to lack or resources\
+          \ or any other condition. When this happens, your results will be truncated.\
+          \ Callers should always check the returned maxResults to determine the value\
+          \ that is effectively being used."
+        explode: true
+        in: query
+        name: maxResults
+        required: false
+        schema:
+          default: 10
+          format: int64
+          minimum: 1
+          type: integer
+        style: form
+      - description: Zero-indexed starting position. Should be a multiple of maxResults.
+        explode: true
+        in: query
+        name: startAt
+        required: false
+        schema:
+          default: 0
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      - description: Jira project key filter
+        explode: true
+        in: query
+        name: projectKey
+        required: false
+        schema:
+          pattern: "([A-Z][A-Z_0-9]+)"
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriorityList'
+          description: OK
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Get priorities
+      tags:
+      - Priorities
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-accepts: application/json
+  /priorities/{priorityId}:
+    get:
+      description: Returns a priority for the given ID.
+      operationId: getPriority
+      parameters:
+      - explode: false
+        in: path
+        name: priorityId
+        required: true
+        schema:
+          format: int64
+          minimum: 1
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Priority'
+          description: OK
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Get priority
+      tags:
+      - Priorities
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-accepts: application/json
+  /statuses:
+    get:
+      description: Returns all statuses.
+      operationId: listStatuses
+      parameters:
+      - description: "A hint as to the maximum number of results to return in each\
+          \ call. Note that the server reserves the right to impose a maxResults limit\
+          \ that is lower than the value that a client provides, due to lack or resources\
+          \ or any other condition. When this happens, your results will be truncated.\
+          \ Callers should always check the returned maxResults to determine the value\
+          \ that is effectively being used."
+        explode: true
+        in: query
+        name: maxResults
+        required: false
+        schema:
+          default: 10
+          format: int64
+          minimum: 1
+          type: integer
+        style: form
+      - description: Zero-indexed starting position. Should be a multiple of maxResults.
+        explode: true
+        in: query
+        name: startAt
+        required: false
+        schema:
+          default: 0
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      - description: Jira project key filter
+        explode: true
+        in: query
+        name: projectKey
+        required: false
+        schema:
+          pattern: "([A-Z][A-Z_0-9]+)"
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: statusType
+        required: false
+        schema:
+          $ref: '#/components/schemas/StatusType'
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusList'
+          description: OK
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Get statuses
+      tags:
+      - Statuses
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-accepts: application/json
+  /statuses/{statusId}:
+    get:
+      description: Returns a status for the given ID.
+      operationId: getStatus
+      parameters:
+      - explode: false
+        in: path
+        name: statusId
+        required: true
+        schema:
+          format: int64
+          minimum: 1
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+          description: OK
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Get status
+      tags:
+      - Statuses
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-accepts: application/json
+  /environments:
+    get:
+      description: Returns all environments.
+      operationId: listEnvironments
+      parameters:
+      - description: Jira project key filter
+        explode: true
+        in: query
+        name: projectKey
+        required: false
+        schema:
+          pattern: "([A-Z][A-Z_0-9]+)"
+          type: string
+        style: form
+      - description: "A hint as to the maximum number of results to return in each\
+          \ call. Note that the server reserves the right to impose a maxResults limit\
+          \ that is lower than the value that a client provides, due to lack or resources\
+          \ or any other condition. When this happens, your results will be truncated.\
+          \ Callers should always check the returned maxResults to determine the value\
+          \ that is effectively being used."
+        explode: true
+        in: query
+        name: maxResults
+        required: false
+        schema:
+          default: 10
+          format: int64
+          minimum: 1
+          type: integer
+        style: form
+      - description: Zero-indexed starting position. Should be a multiple of maxResults.
+        explode: true
+        in: query
+        name: startAt
+        required: false
+        schema:
+          default: 0
+          format: int64
+          minimum: 0
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnvironmentList'
+          description: OK
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Get environments
+      tags:
+      - Environments
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-accepts: application/json
+  /environments/{environmentId}:
+    get:
+      description: Returns an environment for the given ID.
+      operationId: getEnvironment
+      parameters:
+      - explode: false
+        in: path
+        name: environmentId
+        required: true
+        schema:
+          format: int64
+          minimum: 1
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Environment'
+          description: OK
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Get environment
+      tags:
+      - Environments
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-accepts: application/json
+  /links/{linkId}:
+    delete:
+      description: Deletes a link for the given ID.
+      operationId: deleteLink
+      parameters:
+      - explode: false
+        in: path
+        name: linkId
+        required: true
+        schema:
+          format: int64
+          minimum: 1
+          type: integer
+        style: simple
+      responses:
+        "200":
+          description: OK
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Delete link
+      tags:
+      - Links
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-accepts: application/json
+  /automations/executions/custom:
+    post:
+      description: Create results using Zephyr Scale's custom results format.
+      operationId: createCustomExecutions
+      parameters:
+      - description: Jira project key filter
+        explode: true
+        in: query
+        name: projectKey
+        required: true
+        schema:
+          pattern: "([A-Z][A-Z_0-9]+)"
+          type: string
+        style: form
+      - description: Indicate if test cases should be created if non existent.
+        explode: true
+        in: query
+        name: autoCreateTestCases
+        required: false
+        schema:
+          default: false
+          type: boolean
+        style: form
+      - description: "The content-length header indicates the size of the message\
+          \ body, in bytes. https://datatracker.ietf.org/doc/html/rfc7230#section-3.3.2"
+        explode: false
+        in: header
+        name: content-length
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/inline_object'
+        content:
+          multipart/form-data:
+            encoding:
+              testCycle:
+                contentType: application/json
+                style: form
+            schema:
+              properties:
+                file:
+                  format: binary
+                  type: string
+                testCycle:
+                  $ref: '#/components/schemas/AutomationTestCycleInput'
+              required:
+              - file
+              type: object
+        description: "The zip file containing custom execution results. The max file\
+          \ size is 10MB. Optionally, you can send a `testCycle` part in your form\
+          \ data to customize the created test cycle."
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutomationResult'
+          description: OK
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Custom format
+      tags:
+      - Automations
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-contentType: multipart/form-data
+      x-accepts: application/json
+  /automations/executions/cucumber:
+    post:
+      description: Create results using the Cucumber results format.
+      operationId: createCucumberExecutions
+      parameters:
+      - description: Jira project key filter
+        explode: true
+        in: query
+        name: projectKey
+        required: true
+        schema:
+          pattern: "([A-Z][A-Z_0-9]+)"
+          type: string
+        style: form
+      - description: Indicate if test cases should be created if non existent.
+        explode: true
+        in: query
+        name: autoCreateTestCases
+        required: false
+        schema:
+          default: false
+          type: boolean
+        style: form
+      - description: "The content-length header indicates the size of the message\
+          \ body, in bytes. https://datatracker.ietf.org/doc/html/rfc7230#section-3.3.2"
+        explode: false
+        in: header
+        name: content-length
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/inline_object_1'
+        content:
+          multipart/form-data:
+            encoding:
+              testCycle:
+                contentType: application/json
+                style: form
+            schema:
+              properties:
+                file:
+                  format: binary
+                  type: string
+                testCycle:
+                  $ref: '#/components/schemas/AutomationTestCycleInput'
+              required:
+              - file
+              type: object
+        description: "The zip file containing [Cucumber execution results](https://github.com/cucumber/cucumber-json-schema/blob/main/schema.json)\
+          \ as one or more files. The max file size is 2MB. Optionally, you can send\
+          \ a `testCycle` part in your form data to customize the created test cycle."
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutomationResult'
+          description: OK
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Cucumber format
+      tags:
+      - Automations
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-contentType: multipart/form-data
+      x-accepts: application/json
+  /automations/executions/junit:
+    post:
+      description: "Create results using the JUnit XML results format. Optionally,\
+        \ you can send a `testCycle` part in your form data to customize the created\
+        \ test cycle."
+      operationId: createJUnitExecutions
+      parameters:
+      - description: Jira project key filter
+        explode: true
+        in: query
+        name: projectKey
+        required: true
+        schema:
+          pattern: "([A-Z][A-Z_0-9]+)"
+          type: string
+        style: form
+      - description: Indicate if test cases should be created if non existent.
+        explode: true
+        in: query
+        name: autoCreateTestCases
+        required: false
+        schema:
+          default: false
+          type: boolean
+        style: form
+      - description: "The content-length header indicates the size of the message\
+          \ body, in bytes. https://datatracker.ietf.org/doc/html/rfc7230#section-3.3.2"
+        explode: false
+        in: header
+        name: content-length
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/inline_object_2'
+        content:
+          multipart/form-data:
+            encoding:
+              testCycle:
+                contentType: application/json
+                style: form
+            schema:
+              properties:
+                file:
+                  format: binary
+                  type: string
+                testCycle:
+                  $ref: '#/components/schemas/AutomationTestCycleInput'
+              required:
+              - file
+              type: object
+        description: The zip or single file containing JUnit execution results. The
+          max file size is 10MB
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutomationResult'
+          description: OK
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: JUnit XML format
+      tags:
+      - Automations
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-contentType: multipart/form-data
+      x-accepts: application/json
+  /automations/testcases:
+    get:
+      operationId: retrieveBDDTestCases
+      parameters:
+      - description: Jira project key filter
+        explode: true
+        in: query
+        name: projectKey
+        required: true
+        schema:
+          pattern: "([A-Z][A-Z_0-9]+)"
+          type: string
+        style: form
+      - explode: false
+        in: header
+        name: Accept
+        required: true
+        schema:
+          enum:
+          - application/zip
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/zip:
+              schema:
+                format: binary
+                type: string
+          description: A Zip file containing BDD feature files
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Retrieve a zip file containing Cucumber Feature Files that matches
+        the query passed as parameter.
+      tags:
+      - Automations
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-accepts: application/json
+  /healthcheck:
+    get:
+      operationId: healthcheck
+      responses:
+        "200":
+          description: OK
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error has occurred. Please check the code and the error
+            message.
+          headers:
+            Access-Control-Allow-Headers:
+              $ref: '#/components/headers/Access-Control-Allow-Headers'
+            Access-Control-Allow-Methods:
+              $ref: '#/components/headers/Access-Control-Allow-Methods'
+            Access-Control-Allow-Origin:
+              $ref: '#/components/headers/Access-Control-Allow-Origin'
+      summary: Check the health of this API
+      tags:
+      - Healthcheck
+      x-amazon-integration:
+        x-amazon-apigateway-request-validator: basic
+        x-amazon-apigateway-integration:
+          httpMethod: post
+          type: aws_proxy
+          uri:
+            Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+        security:
+        - AccessToken: []
+      x-accepts: application/json
+components:
+  headers:
+    Access-Control-Allow-Headers:
+      explode: false
+      schema:
+        type: string
+      style: simple
+    Access-Control-Allow-Methods:
+      explode: false
+      schema:
+        type: string
+      style: simple
+    Access-Control-Allow-Origin:
+      explode: false
+      schema:
+        type: string
+      style: simple
+  requestBodies:
+    inline_object_1:
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/inline_object_1'
+      required: true
+    inline_object:
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      required: true
+    inline_object_2:
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/inline_object_2'
+      required: true
+  responses:
+    DefaultError:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: An error has occurred. Please check the code and the error message.
+      headers:
+        Access-Control-Allow-Headers:
+          $ref: '#/components/headers/Access-Control-Allow-Headers'
+        Access-Control-Allow-Methods:
+          $ref: '#/components/headers/Access-Control-Allow-Methods'
+        Access-Control-Allow-Origin:
+          $ref: '#/components/headers/Access-Control-Allow-Origin'
+    KeyCreatedResource:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KeyedCreatedResource'
+      description: Created
+      headers:
+        Access-Control-Allow-Headers:
+          $ref: '#/components/headers/Access-Control-Allow-Headers'
+        Access-Control-Allow-Methods:
+          $ref: '#/components/headers/Access-Control-Allow-Methods'
+        Access-Control-Allow-Origin:
+          $ref: '#/components/headers/Access-Control-Allow-Origin'
+    OkNoContent:
+      description: OK
+      headers:
+        Access-Control-Allow-Headers:
+          $ref: '#/components/headers/Access-Control-Allow-Headers'
+        Access-Control-Allow-Methods:
+          $ref: '#/components/headers/Access-Control-Allow-Methods'
+        Access-Control-Allow-Origin:
+          $ref: '#/components/headers/Access-Control-Allow-Origin'
+    CreatedResource:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatedResource'
+      description: Created
+      headers:
+        Access-Control-Allow-Headers:
+          $ref: '#/components/headers/Access-Control-Allow-Headers'
+        Access-Control-Allow-Methods:
+          $ref: '#/components/headers/Access-Control-Allow-Methods'
+        Access-Control-Allow-Origin:
+          $ref: '#/components/headers/Access-Control-Allow-Origin'
+    CreatedWithLocationHeaders:
+      description: Created
+      headers:
+        Access-Control-Allow-Headers:
+          $ref: '#/components/headers/Access-Control-Allow-Headers'
+        Access-Control-Allow-Methods:
+          $ref: '#/components/headers/Access-Control-Allow-Methods'
+        Access-Control-Allow-Origin:
+          $ref: '#/components/headers/Access-Control-Allow-Origin'
+        location:
+          description: URL of the created link
+          explode: false
+          schema:
+            format: url
+            type: string
+          style: simple
+    AutomationResult:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AutomationResult'
+      description: OK
+      headers:
+        Access-Control-Allow-Headers:
+          $ref: '#/components/headers/Access-Control-Allow-Headers'
+        Access-Control-Allow-Methods:
+          $ref: '#/components/headers/Access-Control-Allow-Methods'
+        Access-Control-Allow-Origin:
+          $ref: '#/components/headers/Access-Control-Allow-Origin'
+  schemas:
+    TestCaseList:
+      allOf:
+      - $ref: '#/components/schemas/PagedList'
+      - $ref: '#/components/schemas/TestCaseList_allOf'
+    PagedList:
+      properties:
+        next:
+          format: url
+          type: string
+        startAt:
+          format: int64
+          minimum: 0
+          type: integer
+        maxResults:
+          example: 1
+          format: int64
+          minimum: 0
+          type: integer
+        total:
+          example: 1
+          format: int64
+          minimum: 0
+          type: integer
+        isLast:
+          example: true
+          type: boolean
+      required:
+      - maxResults
+      - startAt
+      type: object
+    TestCase:
+      example:
+        estimatedTime: 138000
+        owner:
+          self: https://www.example.com/jira/rest/api/2/user?accountId=5b10a2844c20165700ede21g
+          accountId: 5b10a2844c20165700ede21g
+        customFields:
+          Build Number: 20
+          Release Date: 2020-01-01
+          Pre-Condition(s): User should have logged in. <br> User should have navigated
+            to the administration panel.
+          Implemented: false
+          Category:
+          - Performance
+          - Regression
+          Tester: fa2e582e-5e15-521e-92e3-47e6ca2e7256
+        project:
+          id: 10005
+          self: https://example.com/rest/api/v2/projects/10005
+        precondition: Latest version of the axial pump available
+        priority:
+          id: 10002
+          self: https://example.com/rest/api/v2/priority/10002
+        createdOn: 2018-05-15T13:15:13Z
+        objective: To ensure the axial pump can be enabled
+        labels:
+        - Regression
+        - Performance
+        - Automated
+        component:
+          id: 10001
+          self: https://your-domain.atlassian.net/rest/api/2/component/10001
+        folder:
+          id: 100006
+          self: https://example.com/rest/api/v2/folder/10006
+        testScript:
+          self: https://example.com/rest/api/v2/testCases/PROJ-T1/testscript
+        name: Check axial pump
+        links: null
+        id: 1
+        key: SA-T10
+        status:
+          id: 10000
+          self: https://example.com/rest/api/v2/status/10000
+      properties:
+        id:
+          example: 1
+          format: int64
+          minimum: 1
+          type: integer
+        key:
+          description: The teste case key
+          example: SA-T10
+          pattern: ".+-T[0-9]+"
+          type: string
+        name:
+          example: Check axial pump
+          type: string
+        project:
+          $ref: '#/components/schemas/ProjectLink'
+        createdOn:
+          description: "Data and time test case was created. Format: yyyy-MM-dd'T'HH:mm:ss'Z'"
+          example: 2018-05-15T13:15:13Z
+          format: date-time
+          type: string
+        objective:
+          description: A description of the objective.
+          example: To ensure the axial pump can be enabled
+          type: string
+        precondition:
+          description: Any conditions that need to be met.
+          example: Latest version of the axial pump available
+          type: string
+        estimatedTime:
+          description: Estimated duration in milliseconds.
+          example: 138000
+          format: int64
+          minimum: 0
+          type: integer
+        labels:
+          description: Array of labels associated to this entity.
+          example:
+          - Regression
+          - Performance
+          - Automated
+          items:
+            type: string
+          type: array
+        component:
+          $ref: '#/components/schemas/JiraComponent'
+        priority:
+          $ref: '#/components/schemas/PriorityLink'
+        status:
+          $ref: '#/components/schemas/StatusLink'
+        folder:
+          $ref: '#/components/schemas/FolderLink'
+        owner:
+          $ref: '#/components/schemas/JiraUserLink'
+        testScript:
+          $ref: '#/components/schemas/TestCaseTestScriptLink'
+        customFields:
+          additionalProperties:
+            type: object
+          description: |
+            Multi-line text fields should denote a new line with the \<br\> syntax.
+            Dates should be in the format 'yyyy-MM-dd'.
+            Users should provided by the user ID.
+          example:
+            Build Number: 20
+            Release Date: 2020-01-01
+            Pre-Condition(s): User should have logged in. <br> User should have navigated
+              to the administration panel.
+            Implemented: false
+            Category:
+            - Performance
+            - Regression
+            Tester: fa2e582e-5e15-521e-92e3-47e6ca2e7256
+          type: object
+        links:
+          $ref: '#/components/schemas/TestCaseLinkList'
+      required:
+      - id
+      - key
+      - name
+      - priority
+      - project
+      - status
+      type: object
+    EntityId:
+      example: 1
+      format: int64
+      minimum: 1
+      type: integer
+    EntityName:
+      example: Check axial pump
+      type: string
+    ProjectLink:
+      allOf:
+      - $ref: '#/components/schemas/ResourceId'
+      - $ref: '#/components/schemas/Link'
+      example:
+        id: 10005
+        self: https://example.com/rest/api/v2/projects/10005
+    ResourceId:
+      properties:
+        id:
+          example: 1
+          format: int64
+          minimum: 1
+          type: integer
+      required:
+      - id
+      type: object
+    Link:
+      properties:
+        self:
+          format: url
+          type: string
+      type: object
+    CreatedOn:
+      description: "Data and time test case was created. Format: yyyy-MM-dd'T'HH:mm:ss'Z'"
+      example: 2018-05-15T13:15:13Z
+      format: date-time
+      type: string
+    Objective:
+      description: A description of the objective.
+      example: To ensure the axial pump can be enabled
+      type: string
+    Precondition:
+      description: Any conditions that need to be met.
+      example: Latest version of the axial pump available
+      type: string
+    Labels:
+      description: Array of labels associated to this entity.
+      example:
+      - Regression
+      - Performance
+      - Automated
+      items:
+        type: string
+      type: array
+    JiraComponent:
+      allOf:
+      - $ref: '#/components/schemas/ResourceId'
+      - $ref: '#/components/schemas/Link'
+      example:
+        id: 10001
+        self: https://your-domain.atlassian.net/rest/api/2/component/10001
+    PriorityLink:
+      allOf:
+      - $ref: '#/components/schemas/ResourceId'
+      - $ref: '#/components/schemas/Link'
+      example:
+        id: 10002
+        self: https://example.com/rest/api/v2/priority/10002
+    StatusLink:
+      allOf:
+      - $ref: '#/components/schemas/ResourceId'
+      - $ref: '#/components/schemas/Link'
+      example:
+        id: 10000
+        self: https://example.com/rest/api/v2/status/10000
+    FolderLink:
+      allOf:
+      - $ref: '#/components/schemas/ResourceId'
+      - $ref: '#/components/schemas/Link'
+      example:
+        id: 100006
+        self: https://example.com/rest/api/v2/folder/10006
+    JiraUserLink:
+      allOf:
+      - $ref: '#/components/schemas/Link'
+      example:
+        self: https://www.example.com/jira/rest/api/2/user?accountId=5b10a2844c20165700ede21g
+        accountId: 5b10a2844c20165700ede21g
+      properties:
+        accountId:
+          description: Atlassian Account ID of the Jira user.
+          example: 5b10a2844c20165700ede21g
+          type: string
+      required:
+      - accountId
+    JiraUserAccountId:
+      description: Atlassian Account ID of the Jira user.
+      example: 5b10a2844c20165700ede21g
+      type: string
+    TestCaseTestScriptLink:
+      allOf:
+      - $ref: '#/components/schemas/Link'
+      example:
+        self: https://example.com/rest/api/v2/testCases/PROJ-T1/testscript
+    CustomFields:
+      additionalProperties:
+        type: object
+      description: |
+        Multi-line text fields should denote a new line with the \<br\> syntax.
+        Dates should be in the format 'yyyy-MM-dd'.
+        Users should provided by the user ID.
+      example:
+        Build Number: 20
+        Release Date: 2020-01-01
+        Pre-Condition(s): User should have logged in. <br> User should have navigated
+          to the administration panel.
+        Implemented: false
+        Category:
+        - Performance
+        - Regression
+        Tester: fa2e582e-5e15-521e-92e3-47e6ca2e7256
+      type: object
+    TestCaseLinkList:
+      allOf:
+      - $ref: '#/components/schemas/Link'
+      - $ref: '#/components/schemas/TestCaseLinkList_allOf'
+      description: This property is ignored on updates.
+    IssueLinkList:
+      description: A list of Jira issues linked to this entity
+      items:
+        $ref: '#/components/schemas/IssueLink'
+      type: array
+    IssueLink:
+      allOf:
+      - $ref: '#/components/schemas/Link'
+      - $ref: '#/components/schemas/IssueLinkInput'
+      - $ref: '#/components/schemas/IssueLink_allOf'
+    IssueLinkInput:
+      example:
+        issueId: 10100
+      properties:
+        issueId:
+          description: The issue ID
+          example: 10100
+          format: int64
+          minimum: 1
+          type: integer
+      required:
+      - issueId
+      type: object
+    WebLinkList:
+      description: A list of web links for this entity
+      items:
+        $ref: '#/components/schemas/WebLink'
+      type: array
+    WebLink:
+      allOf:
+      - $ref: '#/components/schemas/Link'
+      - $ref: '#/components/schemas/WebLinkInput'
+      - $ref: '#/components/schemas/WebLink_allOf'
+    WebLinkInput:
+      example:
+        description: A link to atlassian.com
+        url: https://atlassian.com
+      properties:
+        description:
+          description: The link description
+          example: A link to atlassian.com
+          type: string
+        url:
+          description: The web link URL
+          example: https://atlassian.com
+          format: url
+          type: string
+      required:
+      - url
+      type: object
+    Error:
+      properties:
+        errorCode:
+          example: 400
+          type: integer
+        message:
+          example: projectKey must not be null
+          type: string
+      required:
+      - errorCode
+      - message
+      type: object
+    TestCaseInput:
+      example:
+        estimatedTime: 138000
+        priorityName: Low
+        projectKey: TIS
+        componentId: 10001
+        customFields:
+          Build Number: 20
+          Release Date: 2020-01-01
+          Pre-Condition(s): User should have logged in. <br> User should have navigated
+            to the administration panel.
+          Implemented: false
+          Category:
+          - Performance
+          - Regression
+          Tester: fa2e582e-5e15-521e-92e3-47e6ca2e7256
+        name: Check axial pump
+        statusName: Low
+        precondition: Latest version of the axial pump available
+        ownerId: 5b10a2844c20165700ede21g
+        folderId: 1
+        objective: To ensure the axial pump can be enabled
+        labels:
+        - Regression
+        - Performance
+        - Automated
+      properties:
+        projectKey:
+          description: Jira project key.
+          example: TIS
+          pattern: "([A-Z][A-Z_0-9]+)"
+          type: string
+        name:
+          example: Check axial pump
+          type: string
+        objective:
+          description: A description of the objective.
+          example: To ensure the axial pump can be enabled
+          type: string
+        precondition:
+          description: Any conditions that need to be met.
+          example: Latest version of the axial pump available
+          type: string
+        estimatedTime:
+          description: Estimated duration in milliseconds.
+          example: 138000
+          format: int64
+          minimum: 0
+          type: integer
+        componentId:
+          description: ID of a component from Jira.
+          example: 10001
+          format: int64
+          minimum: 0
+          type: integer
+        priorityName:
+          description: The priority name.
+          example: Low
+          type: string
+        statusName:
+          description: The status name.
+          example: Low
+          type: string
+        folderId:
+          description: ID of a folder to place the entity within.
+          format: int64
+          minimum: 1
+          type: integer
+        ownerId:
+          description: Atlassian Account ID of the Jira user.
+          example: 5b10a2844c20165700ede21g
+          type: string
+        labels:
+          description: Array of labels associated to this entity.
+          example:
+          - Regression
+          - Performance
+          - Automated
+          items:
+            type: string
+          type: array
+        customFields:
+          additionalProperties:
+            type: object
+          description: |
+            Multi-line text fields should denote a new line with the \<br\> syntax.
+            Dates should be in the format 'yyyy-MM-dd'.
+            Users should provided by the user ID.
+          example:
+            Build Number: 20
+            Release Date: 2020-01-01
+            Pre-Condition(s): User should have logged in. <br> User should have navigated
+              to the administration panel.
+            Implemented: false
+            Category:
+            - Performance
+            - Regression
+            Tester: fa2e582e-5e15-521e-92e3-47e6ca2e7256
+          type: object
+      required:
+      - name
+      - projectKey
+      type: object
+    ProjectKey:
+      description: Jira project key.
+      example: TIS
+      pattern: "([A-Z][A-Z_0-9]+)"
+      type: string
+    PriorityName:
+      description: The priority name.
+      example: Low
+      type: string
+    StatusName:
+      description: The status name.
+      example: Low
+      type: string
+    KeyedCreatedResource:
+      allOf:
+      - $ref: '#/components/schemas/CreatedResource'
+      - $ref: '#/components/schemas/KeyedCreatedResource_allOf'
+    CreatedResource:
+      example:
+        self: self
+        id: 1
+      properties:
+        id:
+          example: 1
+          format: int64
+          minimum: 1
+          type: integer
+        self:
+          type: string
+      type: object
+    TestCaseVersionLinkList:
+      allOf:
+      - $ref: '#/components/schemas/PagedList'
+      - $ref: '#/components/schemas/TestCaseVersionLinkList_allOf'
+    TestCaseVersionLink:
+      allOf:
+      - $ref: '#/components/schemas/Link'
+      - $ref: '#/components/schemas/TestCaseVersionLink_allOf'
+      example:
+        id: 10002
+        self: https://example.com/rest/api/v2/testCases/PROJ-T1/versions/1
+    TestScript:
+      allOf:
+      - $ref: '#/components/schemas/TestScriptInput'
+      - $ref: '#/components/schemas/TestCaseVersionLink_allOf'
+      description: Response body when retrieving test scripts
+    TestScriptInput:
+      description: Request body for creating test scripts
+      example:
+        text: e.g. Attempt to login to the application
+        type: plain
+      properties:
+        type:
+          description: "Test scripts can be in plain text (plain), step-by-step (steps)\
+            \ or bdd format. BDD type can support remote execution on a build system\
+            \ via API plugin."
+          enum:
+          - plain
+          - bdd
+          - steps
+          example: plain
+          type: string
+        text:
+          example: e.g. Attempt to login to the application
+          minLength: 1
+          type: string
+      required:
+      - text
+      - type
+      type: object
+    TestStepsList:
+      allOf:
+      - $ref: '#/components/schemas/PagedList'
+      - $ref: '#/components/schemas/TestStepsList_allOf'
+      description: Response body when retrieving test steps
+    TestStep:
+      description: "An instruction to be followed as part of a step-by-step test script.\
+        \ The test step can have either an inline definition, or delegate execution\
+        \ to another test case. One of these options must be specified."
+      example:
+        inline:
+          testData: Username = SmartBear Password = weLoveAtlassian
+          expectedResult: "Login succeeds, web-app redirects to the dashboard view"
+          customFields:
+            Build Number: 20
+            Release Date: 2020-01-01
+            Pre-Condition(s): User should have logged in. <br> User should have navigated
+              to the administration panel.
+            Implemented: false
+            Category:
+            - Performance
+            - Regression
+            Tester: fa2e582e-5e15-521e-92e3-47e6ca2e7256
+          description: Attempt to login to the application
+        testCase:
+          testCaseKey: PROJ-T2
+          self: https://example.com/rest/api/v2/testCases/PROJ-T2/testscript
+      properties:
+        inline:
+          $ref: '#/components/schemas/TestStep_inline'
+        testCase:
+          $ref: '#/components/schemas/TestStepTestCase'
+      type: object
+    TestStepTestCase:
+      allOf:
+      - $ref: '#/components/schemas/Link'
+      - $ref: '#/components/schemas/TestStepTestCase_allOf'
+      example:
+        testCaseKey: PROJ-T2
+        self: https://example.com/rest/api/v2/testCases/PROJ-T2/testscript
+      required:
+      - testCaseKey
+    TestStepsInput:
+      description: "Request body for creating test steps. A maximum of 100 test steps\
+        \ can be added in one request. To add more than 100 steps, you can submit\
+        \ multiple requests. The mode property allows you to specify whether you want\
+        \ to delete the current test steps and create a new list, or append more items\
+        \ to the end of the current list."
+      example:
+        mode: mode
+        items:
+        - inline:
+            testData: Username = SmartBear Password = weLoveAtlassian
+            expectedResult: "Login succeeds, web-app redirects to the dashboard view"
+            customFields:
+              Build Number: 20
+              Release Date: 2020-01-01
+              Pre-Condition(s): User should have logged in. <br> User should have
+                navigated to the administration panel.
+              Implemented: false
+              Category:
+              - Performance
+              - Regression
+              Tester: fa2e582e-5e15-521e-92e3-47e6ca2e7256
+            description: Attempt to login to the application
+          testCase:
+            testCaseKey: PROJ-T2
+            self: https://example.com/rest/api/v2/testCases/PROJ-T2/testscript
+        - inline:
+            testData: Username = SmartBear Password = weLoveAtlassian
+            expectedResult: "Login succeeds, web-app redirects to the dashboard view"
+            customFields:
+              Build Number: 20
+              Release Date: 2020-01-01
+              Pre-Condition(s): User should have logged in. <br> User should have
+                navigated to the administration panel.
+              Implemented: false
+              Category:
+              - Performance
+              - Regression
+              Tester: fa2e582e-5e15-521e-92e3-47e6ca2e7256
+            description: Attempt to login to the application
+          testCase:
+            testCaseKey: PROJ-T2
+            self: https://example.com/rest/api/v2/testCases/PROJ-T2/testscript
+      properties:
+        mode:
+          description: "Valid values: `\"APPEND\"`, `\"OVERWRITE\"`"
+          type: string
+        items:
+          description: The list of test steps
+          items:
+            $ref: '#/components/schemas/TestStep'
+          type: array
+      required:
+      - items
+      - mode
+      type: object
+    TestCycleList:
+      allOf:
+      - $ref: '#/components/schemas/PagedList'
+      - $ref: '#/components/schemas/TestCycleList_allOf'
+    TestCycle:
+      example:
+        owner:
+          self: https://www.example.com/jira/rest/api/2/user?accountId=5b10a2844c20165700ede21g
+          accountId: 5b10a2844c20165700ede21g
+        customFields:
+          Build Number: 20
+          Release Date: 2020-01-01
+          Pre-Condition(s): User should have logged in. <br> User should have navigated
+            to the administration panel.
+          Implemented: false
+          Category:
+          - Performance
+          - Regression
+          Tester: fa2e582e-5e15-521e-92e3-47e6ca2e7256
+        project:
+          id: 10005
+          self: https://example.com/rest/api/v2/projects/10005
+        description: Regression test cycle 1 to ensure no breaking changes
+        plannedEndDate: 2018-05-20T13:15:13Z
+        folder:
+          id: 100006
+          self: https://example.com/rest/api/v2/folder/10006
+        plannedStartDate: 2018-05-19T13:15:13Z
+        name: Sprint 1 Regression Test Cycle
+        links: null
+        id: 1
+        key: SA-R40
+        jiraProjectVersion:
+          id: 10000
+          self: https://your-domain.atlassian.net/rest/api/2/version/10000
+        status:
+          id: 10000
+          self: https://example.com/rest/api/v2/status/10000
+      properties:
+        id:
+          example: 1
+          format: int64
+          minimum: 1
+          type: integer
+        key:
+          description: Unique key of the test cycle
+          example: SA-R40
+          pattern: ".+-[R|C][0-9]+"
+          type: string
+        name:
+          description: Name of the Test Cycle
+          example: Sprint 1 Regression Test Cycle
+          type: string
+        project:
+          $ref: '#/components/schemas/ProjectLink'
+        jiraProjectVersion:
+          $ref: '#/components/schemas/JiraProjectVersion'
+        status:
+          $ref: '#/components/schemas/StatusLink'
+        folder:
+          $ref: '#/components/schemas/FolderLink'
+        description:
+          description: Description outlining the scope.
+          example: Regression test cycle 1 to ensure no breaking changes
+          type: string
+        plannedStartDate:
+          description: "Planned start date of the test cycle. Format: yyyy-MM-dd'T'HH:mm:ss'Z'"
+          example: 2018-05-19T13:15:13Z
+          format: date-time
+          type: string
+        plannedEndDate:
+          description: "The planned end date of the test cycle. Format: yyyy-MM-dd'T'HH:mm:ss'Z'"
+          example: 2018-05-20T13:15:13Z
+          format: date-time
+          type: string
+        owner:
+          $ref: '#/components/schemas/JiraUserLink'
+        customFields:
+          additionalProperties:
+            type: object
+          description: |
+            Multi-line text fields should denote a new line with the \<br\> syntax.
+            Dates should be in the format 'yyyy-MM-dd'.
+            Users should provided by the user ID.
+          example:
+            Build Number: 20
+            Release Date: 2020-01-01
+            Pre-Condition(s): User should have logged in. <br> User should have navigated
+              to the administration panel.
+            Implemented: false
+            Category:
+            - Performance
+            - Regression
+            Tester: fa2e582e-5e15-521e-92e3-47e6ca2e7256
+          type: object
+        links:
+          $ref: '#/components/schemas/TestCycleLinkListWithTestPlanLinks'
+      required:
+      - id
+      - key
+      - name
+      - project
+      - status
+      type: object
+    JiraProjectVersion:
+      allOf:
+      - $ref: '#/components/schemas/ResourceId'
+      - $ref: '#/components/schemas/Link'
+      example:
+        id: 10000
+        self: https://your-domain.atlassian.net/rest/api/2/version/10000
+    EntityDescription:
+      description: Description outlining the scope.
+      example: Regression test cycle 1 to ensure no breaking changes
+      type: string
+    PlannedStartDate:
+      description: "Planned start date of the test cycle. Format: yyyy-MM-dd'T'HH:mm:ss'Z'"
+      example: 2018-05-19T13:15:13Z
+      format: date-time
+      type: string
+    PlannedEndDate:
+      description: "The planned end date of the test cycle. Format: yyyy-MM-dd'T'HH:mm:ss'Z'"
+      example: 2018-05-20T13:15:13Z
+      format: date-time
+      type: string
+    TestCycleLinkListWithTestPlanLinks:
+      allOf:
+      - $ref: '#/components/schemas/TestCycleLinkList'
+      - $ref: '#/components/schemas/TestCycleLinkListWithTestPlanLinks_allOf'
+      description: This property is ignored on updates.
+    TestCycleLinkList:
+      allOf:
+      - $ref: '#/components/schemas/Link'
+      - $ref: '#/components/schemas/TestCaseLinkList_allOf'
+    TestCycleTestPlanLinkList:
+      description: A list of test plan links for a test cycle
+      items:
+        $ref: '#/components/schemas/TestCycleTestPlanLink'
+      type: array
+    TestCycleTestPlanLink:
+      allOf:
+      - $ref: '#/components/schemas/ResourceId'
+      - $ref: '#/components/schemas/Link'
+      - $ref: '#/components/schemas/TestCycleTestPlanLink_allOf'
+      example:
+        id: 1
+        self: https://api.zephyrscale.smartbear.com/v2/links/1
+        type: RELATED
+        testPlanId: 2
+    TestCycleInput:
+      example:
+        projectKey: TIS
+        plannedStartDate: 2018-05-19T13:15:13Z
+        customFields:
+          Build Number: 20
+          Release Date: 2020-01-01
+          Pre-Condition(s): User should have logged in. <br> User should have navigated
+            to the administration panel.
+          Implemented: false
+          Category:
+          - Performance
+          - Regression
+          Tester: fa2e582e-5e15-521e-92e3-47e6ca2e7256
+        name: Check axial pump
+        statusName: Low
+        description: Regression test cycle 1 to ensure no breaking changes
+        ownerId: 5b10a2844c20165700ede21g
+        plannedEndDate: 2018-05-20T13:15:13Z
+        folderId: 1
+        jiraProjectVersion: 10000
+      properties:
+        projectKey:
+          description: Jira project key.
+          example: TIS
+          pattern: "([A-Z][A-Z_0-9]+)"
+          type: string
+        name:
+          example: Check axial pump
+          type: string
+        description:
+          description: Description outlining the scope.
+          example: Regression test cycle 1 to ensure no breaking changes
+          type: string
+        plannedStartDate:
+          description: "Planned start date of the test cycle. Format: yyyy-MM-dd'T'HH:mm:ss'Z'"
+          example: 2018-05-19T13:15:13Z
+          format: date-time
+          type: string
+        plannedEndDate:
+          description: "The planned end date of the test cycle. Format: yyyy-MM-dd'T'HH:mm:ss'Z'"
+          example: 2018-05-20T13:15:13Z
+          format: date-time
+          type: string
+        jiraProjectVersion:
+          description: ID of the version from Jira.
+          example: 10000
+          format: int64
+          minimum: 1
+          type: integer
+        statusName:
+          description: The status name.
+          example: Low
+          type: string
+        folderId:
+          description: ID of a folder to place the entity within.
+          format: int64
+          minimum: 1
+          type: integer
+        ownerId:
+          description: Atlassian Account ID of the Jira user.
+          example: 5b10a2844c20165700ede21g
+          type: string
+        customFields:
+          additionalProperties:
+            type: object
+          description: |
+            Multi-line text fields should denote a new line with the \<br\> syntax.
+            Dates should be in the format 'yyyy-MM-dd'.
+            Users should provided by the user ID.
+          example:
+            Build Number: 20
+            Release Date: 2020-01-01
+            Pre-Condition(s): User should have logged in. <br> User should have navigated
+              to the administration panel.
+            Implemented: false
+            Category:
+            - Performance
+            - Regression
+            Tester: fa2e582e-5e15-521e-92e3-47e6ca2e7256
+          type: object
+      required:
+      - name
+      - projectKey
+      type: object
+    JiraProjectVersionId:
+      description: ID of the version from Jira.
+      example: 10000
+      format: int64
+      minimum: 1
+      type: integer
+    TestPlanList:
+      allOf:
+      - $ref: '#/components/schemas/PagedList'
+      - $ref: '#/components/schemas/TestPlanList_allOf'
+    TestPlan:
+      properties:
+        id:
+          example: 1
+          format: int64
+          minimum: 1
+          type: integer
+        key:
+          description: Key of the test plan
+          example: SA-P10
+          pattern: ".+-P[0-9]+"
+          type: string
+        name:
+          example: Check axial pump
+          type: string
+        objective:
+          description: A description of the objective.
+          example: To ensure the axial pump can be enabled
+          type: string
+        project:
+          $ref: '#/components/schemas/ProjectLink'
+        status:
+          $ref: '#/components/schemas/StatusLink'
+        folder:
+          $ref: '#/components/schemas/FolderLink'
+        owner:
+          $ref: '#/components/schemas/JiraUserLink'
+        customFields:
+          additionalProperties:
+            type: object
+          description: |
+            Multi-line text fields should denote a new line with the \<br\> syntax.
+            Dates should be in the format 'yyyy-MM-dd'.
+            Users should provided by the user ID.
+          example:
+            Build Number: 20
+            Release Date: 2020-01-01
+            Pre-Condition(s): User should have logged in. <br> User should have navigated
+              to the administration panel.
+            Implemented: false
+            Category:
+            - Performance
+            - Regression
+            Tester: fa2e582e-5e15-521e-92e3-47e6ca2e7256
+          type: object
+        labels:
+          description: Array of labels associated to this entity.
+          example:
+          - Regression
+          - Performance
+          - Automated
+          items:
+            type: string
+          type: array
+        links:
+          properties:
+            webLinks:
+              $ref: '#/components/schemas/WebLinkList'
+            issues:
+              $ref: '#/components/schemas/IssueLinkList'
+            testCycles:
+              $ref: '#/components/schemas/TestPlanCycleLinkList'
+      required:
+      - id
+      - key
+      - name
+      - project
+      - status
+      type: object
+    TestPlanCycleLinkList:
+      description: A list of test cycle links for a test plan
+      items:
+        $ref: '#/components/schemas/TestPlanTestCycleLink'
+      type: array
+    TestPlanTestCycleLink:
+      allOf:
+      - $ref: '#/components/schemas/ResourceId'
+      - $ref: '#/components/schemas/Link'
+      - $ref: '#/components/schemas/TestPlanTestCycleLink_allOf'
+    TestExecutionList:
+      allOf:
+      - $ref: '#/components/schemas/PagedList'
+      - $ref: '#/components/schemas/TestExecutionList_allOf'
+    TestExecution:
+      example:
+        actualEndDate: 2018-05-20T13:15:13Z
+        estimatedTime: 138000
+        assignedToId: 5b10a2844c20165700ede21g
+        customFields:
+          Build Number: 20
+          Release Date: 2020-01-01
+          Pre-Condition(s): User should have logged in. <br> User should have navigated
+            to the administration panel.
+          Implemented: false
+          Category:
+          - Performance
+          - Regression
+          Tester: fa2e582e-5e15-521e-92e3-47e6ca2e7256
+        project:
+          id: 10005
+          self: https://example.com/rest/api/v2/projects/10005
+        executionTime: 120000
+        executedById: 5b10a2844c20165700ede21g
+        testExecutionStatus:
+          id: 10000
+          self: https://example.com/rest/api/v2/status/10000
+        environment:
+          id: 10005
+          self: https://example.com/rest/api/v2/environment/10005
+        automated: true
+        testCycle:
+          id: 10010
+          self: https://example.com/rest/api/v2/test/10010
+        comment: Test failed user could not login
+        links: null
+        id: 1
+        key: SA-E10
+        testCase:
+          id: 10002
+          self: https://example.com/rest/api/v2/testCases/PROJ-T1/versions/1
+      properties:
+        id:
+          example: 1
+          format: int64
+          minimum: 1
+          type: integer
+        key:
+          description: Test execution key
+          example: SA-E10
+          pattern: ".+-E[0-9]+"
+          type: string
+        project:
+          $ref: '#/components/schemas/ProjectLink'
+        testCase:
+          $ref: '#/components/schemas/TestCaseVersionLink'
+        environment:
+          $ref: '#/components/schemas/EnvironmentLink'
+        testExecutionStatus:
+          $ref: '#/components/schemas/StatusLink'
+        actualEndDate:
+          description: "The actual end date of the test cycle. Format: yyyy-MM-dd'T'HH:mm:ss'Z'"
+          example: 2018-05-20T13:15:13Z
+          format: date-time
+          type: string
+        estimatedTime:
+          description: Estimated duration in milliseconds.
+          example: 138000
+          format: int64
+          minimum: 0
+          type: integer
+        executionTime:
+          description: Actual test execution time in milliseconds.
+          example: 120000
+          format: int64
+          minimum: 0
+          type: integer
+        executedById:
+          description: Atlassian Account ID of the Jira user.
+          example: 5b10a2844c20165700ede21g
+          type: string
+        assignedToId:
+          description: Atlassian Account ID of the Jira user.
+          example: 5b10a2844c20165700ede21g
+          type: string
+        comment:
+          description: Comment added against overall test case execution.
+          example: Test failed user could not login
+          type: string
+        automated:
+          description: Indicates if the test execution was done manually or not.
+          type: boolean
+        testCycle:
+          $ref: '#/components/schemas/TestCycleLink'
+        customFields:
+          additionalProperties:
+            type: object
+          description: |
+            Multi-line text fields should denote a new line with the \<br\> syntax.
+            Dates should be in the format 'yyyy-MM-dd'.
+            Users should provided by the user ID.
+          example:
+            Build Number: 20
+            Release Date: 2020-01-01
+            Pre-Condition(s): User should have logged in. <br> User should have navigated
+              to the administration panel.
+            Implemented: false
+            Category:
+            - Performance
+            - Regression
+            Tester: fa2e582e-5e15-521e-92e3-47e6ca2e7256
+          type: object
+        links:
+          $ref: '#/components/schemas/TestExecutionLinkList'
+      required:
+      - id
+      - project
+      - testCase
+      - testExecutionStatus
+      type: object
+    EnvironmentLink:
+      allOf:
+      - $ref: '#/components/schemas/ResourceId'
+      - $ref: '#/components/schemas/Link'
+      example:
+        id: 10005
+        self: https://example.com/rest/api/v2/environment/10005
+    ActualEndDate:
+      description: "The actual end date of the test cycle. Format: yyyy-MM-dd'T'HH:mm:ss'Z'"
+      example: 2018-05-20T13:15:13Z
+      format: date-time
+      type: string
+    Comment:
+      description: Comment added against overall test case execution.
+      example: Test failed user could not login
+      type: string
+    TestCycleLink:
+      allOf:
+      - $ref: '#/components/schemas/Link'
+      - $ref: '#/components/schemas/TestCaseVersionLink_allOf'
+      example:
+        id: 10010
+        self: https://example.com/rest/api/v2/test/10010
+    TestExecutionLinkList:
+      allOf:
+      - $ref: '#/components/schemas/Link'
+      - $ref: '#/components/schemas/TestExecutionLinkList_allOf'
+    TestExecutionInput:
+      example:
+        testCycleKey: SA-R10
+        actualEndDate: 2018-05-20T13:15:13Z
+        executionTime: 120000
+        executedById: 5b10a2844c20165700ede21g
+        assignedToId: 5b10a2844c20165700ede21g
+        testCaseKey: SA-T10
+        projectKey: TIS
+        environmentName: Chrome Latest Version
+        customFields:
+          Build Number: 20
+          Release Date: 2020-01-01
+          Pre-Condition(s): User should have logged in. <br> User should have navigated
+            to the administration panel.
+          Implemented: false
+          Category:
+          - Performance
+          - Regression
+          Tester: fa2e582e-5e15-521e-92e3-47e6ca2e7256
+        statusName: Low
+        comment: Test failed user could not login
+        testScriptResults:
+        - actualEndDate: 2018-05-20T13:15:13Z
+          statusName: Low
+          actualResult: User logged in successfully
+        - actualEndDate: 2018-05-20T13:15:13Z
+          statusName: Low
+          actualResult: User logged in successfully
+      properties:
+        projectKey:
+          description: Jira project key.
+          example: TIS
+          pattern: "([A-Z][A-Z_0-9]+)"
+          type: string
+        testCaseKey:
+          description: "Key of test case the execution applies to. NOTE: Test cases\
+            \ with call to test, parameters and test data are not supported."
+          example: SA-T10
+          pattern: "(.+-T[0-9]+)"
+          type: string
+        testCycleKey:
+          description: Key of test cycle the execution applies to.
+          example: SA-R10
+          pattern: "([0-9]+)|(.+-R[0-9]+)"
+          type: string
+        statusName:
+          description: The status name.
+          example: Low
+          type: string
+        testScriptResults:
+          items:
+            $ref: '#/components/schemas/TestScriptResultInput'
+          type: array
+        environmentName:
+          description: Environment assigned to the test case.
+          example: Chrome Latest Version
+          type: string
+        actualEndDate:
+          description: "The actual end date of the test cycle. Format: yyyy-MM-dd'T'HH:mm:ss'Z'"
+          example: 2018-05-20T13:15:13Z
+          format: date-time
+          type: string
+        executionTime:
+          description: Actual test execution time in milliseconds.
+          example: 120000
+          format: int64
+          minimum: 0
+          type: integer
+        executedById:
+          description: Atlassian Account ID of the Jira user.
+          example: 5b10a2844c20165700ede21g
+          type: string
+        assignedToId:
+          description: Atlassian Account ID of the Jira user.
+          example: 5b10a2844c20165700ede21g
+          type: string
+        comment:
+          description: Comment added against overall test case execution.
+          example: Test failed user could not login
+          type: string
+        customFields:
+          additionalProperties:
+            type: object
+          description: |
+            Multi-line text fields should denote a new line with the \<br\> syntax.
+            Dates should be in the format 'yyyy-MM-dd'.
+            Users should provided by the user ID.
+          example:
+            Build Number: 20
+            Release Date: 2020-01-01
+            Pre-Condition(s): User should have logged in. <br> User should have navigated
+              to the administration panel.
+            Implemented: false
+            Category:
+            - Performance
+            - Regression
+            Tester: fa2e582e-5e15-521e-92e3-47e6ca2e7256
+          type: object
+      required:
+      - projectKey
+      - statusName
+      - testCaseKey
+      - testCycleKey
+      type: object
+    TestScriptResultInput:
+      example:
+        actualEndDate: 2018-05-20T13:15:13Z
+        statusName: Low
+        actualResult: User logged in successfully
+      properties:
+        statusName:
+          description: The status name.
+          example: Low
+          type: string
+        actualEndDate:
+          description: "The actual end date of the test cycle. Format: yyyy-MM-dd'T'HH:mm:ss'Z'"
+          example: 2018-05-20T13:15:13Z
+          format: date-time
+          type: string
+        actualResult:
+          description: free text field to provide more info on result of step execution.
+          example: User logged in successfully
+          type: string
+      required:
+      - statusName
+      type: object
+    ProjectList:
+      allOf:
+      - $ref: '#/components/schemas/PagedList'
+      - $ref: '#/components/schemas/ProjectList_allOf'
+    Project:
+      example:
+        jiraProjectId: 6
+        id: 0
+        key: key
+        enabled: true
+      properties:
+        id:
+          format: int64
+          type: integer
+        jiraProjectId:
+          format: int64
+          type: integer
+        key:
+          type: string
+        enabled:
+          type: boolean
+      required:
+      - enabled
+      - id
+      - jiraProjectId
+      - key
+      type: object
+    FolderType:
+      description: "Valid values: `\"TEST_CASE\"`, `\"TEST_PLAN\"`, `\"TEST_CYCLE\"\
+        `"
+      type: string
+    FolderList:
+      allOf:
+      - $ref: '#/components/schemas/PagedList'
+      - $ref: '#/components/schemas/FolderList_allOf'
+    Folder:
+      example:
+        name: Check axial pump
+        index: 1
+        project:
+          id: 10005
+          self: https://example.com/rest/api/v2/projects/10005
+        id: 1
+        folderType: folderType
+        parentId: 1
+      properties:
+        id:
+          example: 1
+          format: int64
+          minimum: 1
+          type: integer
+        parentId:
+          example: 1
+          format: int64
+          minimum: 1
+          type: integer
+        name:
+          example: Check axial pump
+          type: string
+        index:
+          example: 1
+          format: int64
+          minimum: 0
+          type: integer
+        folderType:
+          description: "Valid values: `\"TEST_CASE\"`, `\"TEST_PLAN\"`, `\"TEST_CYCLE\"\
+            `"
+          type: string
+        project:
+          $ref: '#/components/schemas/ProjectLink'
+      required:
+      - folderType
+      - id
+      - index
+      - name
+      - parentId
+      type: object
+    Index:
+      example: 1
+      format: int64
+      minimum: 0
+      type: integer
+    FolderInput:
+      example:
+        projectKey: TIS
+        name: name
+        folderType: folderType
+        parentId: 1
+      properties:
+        parentId:
+          description: Folder ID of the parent folder. Must be `null` for root folders.
+          format: int64
+          minimum: 1
+          type: integer
+        name:
+          description: Folder name.
+          maxLength: 255
+          minLength: 1
+          type: string
+        projectKey:
+          description: Jira project key.
+          example: TIS
+          pattern: "([A-Z][A-Z_0-9]+)"
+          type: string
+        folderType:
+          description: "Valid values: `\"TEST_CASE\"`, `\"TEST_PLAN\"`, `\"TEST_CYCLE\"\
+            `"
+          type: string
+      required:
+      - folderType
+      - name
+      - projectKey
+      type: object
+    PriorityList:
+      allOf:
+      - $ref: '#/components/schemas/PagedList'
+      - $ref: '#/components/schemas/PriorityList_allOf'
+    Priority:
+      allOf:
+      - $ref: '#/components/schemas/OptionValue'
+      - $ref: '#/components/schemas/Priority_allOf'
+    OptionValue:
+      properties:
+        id:
+          example: 1
+          format: int64
+          minimum: 1
+          type: integer
+        project:
+          $ref: '#/components/schemas/ProjectLink'
+        name:
+          example: Check axial pump
+          type: string
+        description:
+          description: Description outlining the scope.
+          example: Regression test cycle 1 to ensure no breaking changes
+          type: string
+        index:
+          example: 1
+          format: int64
+          minimum: 0
+          type: integer
+      required:
+      - id
+      - index
+      - name
+      - project
+      type: object
+    StatusType:
+      description: "Valid values: `\"TEST_CASE\"`, `\"TEST_PLAN\"`, `\"TEST_CYCLE\"\
+        `, `\"TEST_EXECUTION\"`"
+      type: string
+    StatusList:
+      allOf:
+      - $ref: '#/components/schemas/PagedList'
+      - $ref: '#/components/schemas/StatusList_allOf'
+    Status:
+      allOf:
+      - $ref: '#/components/schemas/OptionValue'
+      - $ref: '#/components/schemas/Status_allOf'
+    EnvironmentList:
+      allOf:
+      - $ref: '#/components/schemas/PagedList'
+      - $ref: '#/components/schemas/EnvironmentList_allOf'
+    Environment:
+      allOf:
+      - $ref: '#/components/schemas/OptionValue'
+      - $ref: '#/components/schemas/Environment_allOf'
+    AutomationTestCycleInput:
+      description: Pass this object as a JSON in your form-data alongside the file.
+        Make sure you set the type of this object as `application/json` otherwise
+        the object will be ignored.
+      properties:
+        name:
+          $ref: '#/components/schemas/EntityName'
+        description:
+          $ref: '#/components/schemas/EntityDescription'
+        jiraProjectVersion:
+          $ref: '#/components/schemas/JiraProjectVersionId'
+        folderId:
+          description: ID of a folder to place the entity within.
+          format: int64
+          minimum: 1
+          type: integer
+        customFields:
+          $ref: '#/components/schemas/CustomFields'
+      type: object
+    AutomationResult:
+      example:
+        testCycle:
+          id: 1
+          url: url
+          key: key
+      properties:
+        testCycle:
+          $ref: '#/components/schemas/AutomationTestCycle'
+      type: object
+    AutomationTestCycle:
+      example:
+        id: 1
+        url: url
+        key: key
+      properties:
+        id:
+          description: The id of the newly created test cycle.
+          format: int64
+          minimum: 1
+          type: integer
+        url:
+          description: The URL pointing to the newly created test cycle.
+          type: string
+        key:
+          description: The key of the newly created test cycle.
+          pattern: "([0-9]+)|(.+-R[0-9]+)"
+          type: string
+      type: object
+    inline_object:
+      properties:
+        file:
+          format: binary
+          type: string
+        testCycle:
+          $ref: '#/components/schemas/AutomationTestCycleInput'
+      required:
+      - file
+      type: object
+    inline_object_1:
+      properties:
+        file:
+          format: binary
+          type: string
+        testCycle:
+          $ref: '#/components/schemas/AutomationTestCycleInput'
+      required:
+      - file
+      type: object
+    inline_object_2:
+      properties:
+        file:
+          format: binary
+          type: string
+        testCycle:
+          $ref: '#/components/schemas/AutomationTestCycleInput'
+      required:
+      - file
+      type: object
+    TestCaseList_allOf:
+      properties:
+        values:
+          items:
+            $ref: '#/components/schemas/TestCase'
+          type: array
+    TestCaseLinkList_allOf:
+      properties:
+        issues:
+          description: A list of Jira issues linked to this entity
+          items:
+            $ref: '#/components/schemas/IssueLink'
+          type: array
+        webLinks:
+          description: A list of web links for this entity
+          items:
+            $ref: '#/components/schemas/WebLink'
+          type: array
+    IssueLink_allOf:
+      properties:
+        id:
+          example: 1
+          format: int64
+          minimum: 1
+          type: integer
+        target:
+          description: The Jira Cloud REST API endpoint to get the full representation
+            of the issue
+          example: https://myjira.com/rest/api/2/issue/10000
+          format: url
+          type: string
+        type:
+          description: The link type
+          enum:
+          - COVERAGE
+          - BLOCKS
+          - RELATED
+          type: string
+    WebLink_allOf:
+      properties:
+        id:
+          example: 1
+          format: int64
+          minimum: 1
+          type: integer
+        type:
+          description: The link type
+          enum:
+          - COVERAGE
+          - BLOCKS
+          - RELATED
+          type: string
+    KeyedCreatedResource_allOf:
+      properties:
+        key:
+          type: string
+    TestCaseVersionLinkList_allOf:
+      properties:
+        values:
+          description: A list of versions for a test case
+          items:
+            $ref: '#/components/schemas/TestCaseVersionLink'
+          type: array
+    TestCaseVersionLink_allOf:
+      properties:
+        id:
+          example: 1
+          format: int64
+          minimum: 1
+          type: integer
+    TestStepsList_allOf:
+      properties:
+        values:
+          description: The list of test steps
+          items:
+            $ref: '#/components/schemas/TestStep'
+          type: array
+    TestStep_inline:
+      example:
+        testData: Username = SmartBear Password = weLoveAtlassian
+        expectedResult: "Login succeeds, web-app redirects to the dashboard view"
+        customFields:
+          Build Number: 20
+          Release Date: 2020-01-01
+          Pre-Condition(s): User should have logged in. <br> User should have navigated
+            to the administration panel.
+          Implemented: false
+          Category:
+          - Performance
+          - Regression
+          Tester: fa2e582e-5e15-521e-92e3-47e6ca2e7256
+        description: Attempt to login to the application
+      properties:
+        description:
+          description: The instruction to be followed
+          example: Attempt to login to the application
+          type: string
+        testData:
+          description: Any test data required to perform the instruction (optional).
+            The fields values provided can be interpolated into the description.
+          example: Username = SmartBear Password = weLoveAtlassian
+          type: string
+        expectedResult:
+          description: The expected outcome of executing the instruction
+          example: "Login succeeds, web-app redirects to the dashboard view"
+          type: string
+        customFields:
+          additionalProperties:
+            type: object
+          description: |
+            Multi-line text fields should denote a new line with the \<br\> syntax.
+            Dates should be in the format 'yyyy-MM-dd'.
+            Users should provided by the user ID.
+          example:
+            Build Number: 20
+            Release Date: 2020-01-01
+            Pre-Condition(s): User should have logged in. <br> User should have navigated
+              to the administration panel.
+            Implemented: false
+            Category:
+            - Performance
+            - Regression
+            Tester: fa2e582e-5e15-521e-92e3-47e6ca2e7256
+          type: object
+      type: object
+    TestStepTestCase_allOf:
+      properties:
+        testCaseKey:
+          description: The key of the other test case that the test step should delegate
+            execution to. This cannot be the parent test case.
+          pattern: "(.+-T[0-9]+)"
+          type: string
+    TestCycleList_allOf:
+      properties:
+        values:
+          items:
+            $ref: '#/components/schemas/TestCycle'
+          type: array
+    TestCycleLinkListWithTestPlanLinks_allOf:
+      properties:
+        testPlans:
+          description: A list of test plan links for a test cycle
+          items:
+            $ref: '#/components/schemas/TestCycleTestPlanLink'
+          type: array
+    TestCycleTestPlanLink_allOf:
+      properties:
+        testPlanId:
+          format: int64
+          type: integer
+        type:
+          description: The link type
+          enum:
+          - COVERAGE
+          - BLOCKS
+          - RELATED
+          type: string
+    TestPlanList_allOf:
+      properties:
+        values:
+          items:
+            $ref: '#/components/schemas/TestPlan'
+          type: array
+    TestPlanTestCycleLink_allOf:
+      example:
+        id: 1
+        self: https://api.zephyrscale.smartbear.com/v2/links/1
+        type: RELATED
+        testCycleId: 2
+        target: https://api.zephyrscale.smartbear.com/v2/testCycles/2
+      properties:
+        testCycleId:
+          example: 1
+          format: int64
+          minimum: 1
+          type: integer
+        type:
+          description: The link type
+          enum:
+          - COVERAGE
+          - BLOCKS
+          - RELATED
+          type: string
+        target:
+          description: The test cycle resource
+          type: string
+    TestExecutionList_allOf:
+      properties:
+        values:
+          items:
+            $ref: '#/components/schemas/TestExecution'
+          type: array
+    TestExecutionLinkList_allOf:
+      properties:
+        issues:
+          description: A list of Jira issues linked to this entity
+          items:
+            $ref: '#/components/schemas/IssueLink'
+          type: array
+    ProjectList_allOf:
+      properties:
+        values:
+          items:
+            $ref: '#/components/schemas/Project'
+          type: array
+    FolderList_allOf:
+      properties:
+        values:
+          items:
+            $ref: '#/components/schemas/Folder'
+          type: array
+    PriorityList_allOf:
+      properties:
+        values:
+          items:
+            $ref: '#/components/schemas/Priority'
+          type: array
+    Priority_allOf:
+      properties:
+        default:
+          default: false
+          type: boolean
+    StatusList_allOf:
+      properties:
+        values:
+          items:
+            $ref: '#/components/schemas/Status'
+          type: array
+    Status_allOf:
+      properties:
+        color:
+          type: string
+        archived:
+          default: false
+          type: boolean
+        default:
+          default: false
+          type: boolean
+    EnvironmentList_allOf:
+      properties:
+        values:
+          items:
+            $ref: '#/components/schemas/Environment'
+          type: array
+    Environment_allOf:
+      properties:
+        archived:
+          default: false
+          type: boolean
+  securitySchemes:
+    AccessToken:
+      in: header
+      name: Authorization
+      type: apiKey
+      x-amazon-apigateway-authtype: custom
+      x-amazon-apigateway-authorizer:
+        type: token
+        authorizerUri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CustomAuthorizerFunction.Arn}/invocations"
+        authorizerCredentials:
+          Fn::Sub: "${ApiGatewayAuthorizerRole.Arn}"
+        authorizerResultTtlInSeconds: 60
+x-tagGroups:
+- name: API Endpoints
+  tags:
+  - Test Cases
+  - Test Cycles
+  - Test Plans
+  - Test Executions
+  - Folders
+  - Statuses
+  - Priorities
+  - Environments
+  - Projects
+  - Links
+  - Automations
+  - Healthcheck
+x-amazon-apigateway-api-key-source: AUTHORIZER
+x-amazon-apigateway-request-validators:
+  basic:
+    validateRequestBody: true
+    validateRequestParameters: true
+  params-only:
+    validateRequestBody: false
+    validateRequestParameters: true
+x-amazon-integration:
+  x-amazon-apigateway-request-validator: basic
+  x-amazon-apigateway-integration:
+    httpMethod: post
+    type: aws_proxy
+    uri:
+      Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
+  security:
+  - AccessToken: []
+x-amazon-apigateway-binary-media-types:
+- multipart/form-data
+- application/zip
+

@@ -1,0 +1,5022 @@
+openapi: 3.0.0
+info:
+  title: Xray REST API
+  version: "2.0"
+servers:
+- url: https://sandbox.xpand-it.com/rest/raven/2.0/api
+security:
+- BasicAuth: []
+tags:
+- name: Test Step
+- name: Test Run
+- name: Project
+- name: External Apps
+- name: Import
+paths:
+  /test/{testKey}/steps:
+    get:
+      description: "Returns all the steps of a test issue given the key. The response\
+        \ contains for each step the corresponding id, index, fields and the attachments.\
+        \ <br /> <br /> The Test Step fields are identified by their name and can\
+        \ be of type _Data_ (Toggle, Number, Date and Date Time fields), _Option_\
+        \ (Single Select, Multiple Select and Radio Button fields), _Wiki_ (Native\
+        \ fields, Single and Multiple Line fields). <br /> <br /> The value of step\
+        \ fields of type _Wiki_ have a raw and rendered value. _Option_ fields value\
+        \ will be an array containing the information of the selected options (the\
+        \ option id and its value)."
+      parameters:
+      - description: "The key of the test issue, e.g., CALC-562"
+        explode: false
+        in: path
+        name: testKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestStepsResponse'
+          description: Successful operation
+        "400":
+          content:
+            application/json:
+              example:
+                error: Test with key CALC-123 not found or is not a Manual Test.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: "Bad Request. Occurs when there is some error in the request,\
+            \ for instance, the test with provided key does not exist or some field\
+            \ has an invalid value (e.g. Option \"A\" does not exist for an option\
+            \ field)."
+        "500":
+          content:
+            application/json:
+              example:
+                error: Internal server exception cause.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Internal Server error
+      tags:
+      - Test Step
+      x-accepts: application/json
+    post:
+      description: |-
+        Create a new test step. All step fields values are listed under _fields_ and identified by the name and a list of attachments to add to the step. The field values should follow a certain format according to the custom field type. <br /><br /> - **Toggle Fields** values should be _"true"_, _"false"_, _"0"_ or _"1"_ <br /><br /> - **Number Fields** values should be a string containing a number, e.g. _"320"_. Decimal Number are also accepted,for instance, "320.5". The decimal places are always separated by a _"."_ <br /> <br /> - **Single Select and Radio Button Fields** values should be a single string containing the option value, e.g. _"Option A"_. The value should be a valid option for that custom field. The values are not case sensitive. <br /><br /> - **Multiple Select Fields** values should be an array of the string of option values, e.g. _["Option A", "Option B"]_. All the selected values should be valid for that custom field. The option values are not case sensitive. <br /><br /> - **Date Fields** should follow the ISO format _yyyy-MM-dd_, where _yyyy_ represents the year, _MM_ the month in year and _dd_ the day in the month. For instance, a valid value would be _"2020-05-02"_. <br /><br /> - **Date Time fields** should be in UTC following the ISO format _yyyy-MM-dd'T'HH:mm'Z'_. The date part follows the same date format, while _HH_ represents the hours (0-24), _mm_ the minutes in hour and _Z_ indicates the hour in UTC. For instance, a valid date time value would be _"2020-05-02T10:30Z"_. <br /><br />
+        The remaining field types values do not required a specific validation. For instance, for a Single Line Custom field a valid value would be _"Perform Action B"_. <br /><br /> If some value is not valid for a certain custom field type, an error will be return stating the field with the incorrect value. Furthermore, **all required step fields must be provided**.
+      parameters:
+      - description: "The key of the test issue, e.g., CALC-562"
+        explode: false
+        in: path
+        name: testKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateStepRequestBody'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateStepResponse'
+          description: "Successful operation. The response returns the id of the created\
+            \ steps as well as a list containing the attachments ids. Furthermore,\
+            \ the response contains a list of warning with some errors that may occur\
+            \ during the step creation, e.g., some attachment is not successfull created"
+        "400":
+          content:
+            application/json:
+              example:
+                error: "Error creating test step: Custom Field Date is invalid, [2020-Feb-02]\
+                  \ should be in the valid date format ( dd/MMM/yy )."
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        "500":
+          content:
+            application/json:
+              example:
+                error: Internal server exception cause.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Internal Server error
+      tags:
+      - Test Step
+      x-contentType: application/json
+      x-accepts: application/json
+  /test/{testKey}/steps/{stepId}:
+    delete:
+      description: Deletes a test step given the test key and the step id.
+      parameters:
+      - description: "The key of the test issue, e.g., CALC-562"
+        explode: false
+        in: path
+        name: testKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The id of the test step
+        explode: false
+        in: path
+        name: stepId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: Successful operation. No content is returned.
+        "400":
+          content:
+            application/json:
+              example:
+                error: Test with key CALC-123 does not exist or is not a manual test.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        "500":
+          content:
+            application/json:
+              example:
+                error: Internal server exception cause.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Internal Server error
+      tags:
+      - Test Step
+      x-accepts: application/json
+    get:
+      description: "Returns the values of a single test step, given the test key and\
+        \ the step id. The response follows the same format as the previous endpoints,\
+        \ containing the step id, index, fields and the attachments. <br /> <br />\
+        \ The Test Step fields are identified by their name and can be of type _Data_\
+        \ (Toggle, Number, Date and Date Time fields), _Option_ (Single Select, Multiple\
+        \ Select and Radio Button fields), _Wiki_ (Native fields, Single and Multiple\
+        \ Line fields). <br /> <br /> The value of step fields of type _Wiki_ have\
+        \ a raw and rendered value. _Option_ fields value will be an array containing\
+        \ the information of the selected options (the option id and its value)."
+      parameters:
+      - description: "The key of the test issue, e.g., CALC-562"
+        explode: false
+        in: path
+        name: testKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The id of the test step
+        explode: false
+        in: path
+        name: stepId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StepResponse'
+          description: Successful operation
+        "400":
+          content:
+            application/json:
+              example:
+                error: Test step with id 123 not found or does not belong to Test
+                  with key CALC-123.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        "500":
+          content:
+            application/json:
+              example:
+                error: Internal server exception cause.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Internal Server error
+      tags:
+      - Test Step
+      x-accepts: application/json
+    put:
+      description: |-
+        Updates the values of an existing test step, given the test key and step id. The user can update the field values and the attachments of a step. The values should follow a specific format similar to the step creation. <br/><br/> - **Toggle Fields** values should be _"true"_, _"false"_, _"0"_ or _"1"_ <br /><br /> - **Number Fields** values should be a string containing a number, e.g. _"320"_. Decimal Number are also accepted,for instance, "320.5". The decimal places are always separated by a _"."_ <br /> <br /> - **Single Select and Radio Button Fields** values should be a single string containing the option value, e.g. _"Option A"_. The value should be a valid option for that custom field. The values are not case sensitive. <br /><br /> - **Multiple Select Fields** values should be an array of the string of option values, e.g. _["Option A", "Option B"]_. All the selected values should be valid for that custom field. The option values are not case sensitive. <br /><br /> - **Date Fields** should follow the ISO format _yyyy-MM-dd_, where _yyyy_ represents the year, _MM_ the month in year and _dd_ the day in the month. For instance, a valid value would be _"2020-05-02"_. <br /><br /> - **Date Time fields** should be in UTC following the ISO format _yyyy-MM-dd'T'HH:mm'Z'_. The date part follows the same date format, while _HH_ represents the hours (0-24), _mm_ the minutes in hour and _Z_ indicates the hour in UTC. For instance, a valid date time value would be _"2020-05-02T10:30Z"_. <br /><br />
+        The remaining field types values do not required a specific validation. For instance, for a Single Line Custom field a valid value would be _"Perform Action B"_. <br /><br /> If some value is not valid for a certain custom field type, an error will be return stating the field with the incorrect value. A field value can be deleted sending an empty value, such as _""_ or _[]_, or by sending _null_. **It is not possible to delete the value of a required field.**
+      parameters:
+      - description: Test Key
+        explode: false
+        in: path
+        name: testKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The id of the test step
+        explode: false
+        in: path
+        name: stepId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateStepRequestBody'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateStepResponse'
+          description: Successful operation
+        "400":
+          content:
+            application/json:
+              example:
+                error: "Error updating test step: Required fields cannot have empty\
+                  \ values."
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: "Bad Request. Occurs when there is some error in the request,\
+            \ for instance, the test with provided key does not exist or some field\
+            \ has an invalid value (e.g. Option \"A\" does not exist for an option\
+            \ field)."
+        "500":
+          content:
+            application/json:
+              example:
+                error: Internal server exception cause.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Internal Server error
+      tags:
+      - Test Step
+      x-contentType: application/json
+      x-accepts: application/json
+  /test/{testKey}/steps/{stepId}/attachments:
+    get:
+      description: "Returns all the attachments of a test step, given the test key\
+        \ and step id."
+      parameters:
+      - description: Test with key CALC-123 does not exist or is not a manual test.
+        explode: false
+        in: path
+        name: testKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The id of the test step
+        explode: false
+        in: path
+        name: stepId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StepAttachementResponse'
+          description: Successful operation. Returns a body with the attachments information.
+        "400":
+          content:
+            application/json:
+              example:
+                error: The step with id 8578 does not belong to test with key CALC-67187.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        "500":
+          content:
+            application/json:
+              example:
+                error: Internal server exception cause.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Internal Server error
+      tags:
+      - Test Step
+      x-accepts: application/json
+  /test/{testKey}/steps/{stepId}/attachment/{attachmentId}:
+    delete:
+      description: "Deletes a test step attachment, given the test key and step and\
+        \ attachment ids."
+      parameters:
+      - description: Test with key CALC-123 does not exist or is not a manual test.
+        explode: false
+        in: path
+        name: testKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The id of the test step
+        explode: false
+        in: path
+        name: stepId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      - description: The id of the attachment
+        explode: false
+        in: path
+        name: attachmentId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: Successful operation. No content is returned.
+        "400":
+          content:
+            application/json:
+              example:
+                error: Test with key CALC-123 does not exist or is not a manual test.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        "500":
+          content:
+            application/json:
+              example:
+                error: Internal server exception cause.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Internal Server error
+      tags:
+      - Test Step
+      x-accepts: application/json
+  /testrun:
+    get:
+      description: |-
+        Retrieves a Test Run given the Test Execution and Test keys. <br/> The response will contain all information related to a Test Run, e.g., status, created and finish dates, step results, test environments, defects, Test Run Custom fields, and so on. <br/>
+
+        In case the Test Run has iterations, steps will not appear. However, if it has parameters but executed one time, it will show the steps and the parameters info. <br/>
+      parameters:
+      - description: The key of the Test Execution
+        explode: true
+        in: query
+        name: testExecIssueKey
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: The key of the Test
+        explode: true
+        in: query
+        name: testIssueKey
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                TestRunExample:
+                  $ref: '#/components/examples/TestRunExample'
+                SingleTestRunExample:
+                  $ref: '#/components/examples/SingleTestRunExample'
+                DataDrivenTestRunExample:
+                  $ref: '#/components/examples/DataDrivenTestRunExample'
+              schema:
+                $ref: '#/components/schemas/TestRunResponse'
+          description: Successful operation. Returns a body containg the Test Run
+            information.
+        "400":
+          content:
+            application/json:
+              example:
+                error: Test Run not found for Test Execution with key CALC-67 and
+                  Test issue with key CALC-67207.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        "500":
+          content:
+            application/json:
+              example:
+                error: Internal server exception cause.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Internal Server error
+      tags:
+      - Test Run
+      x-accepts: application/json
+  /testrun/{id}:
+    get:
+      description: |-
+        Retrieves a Test Run given the Test Execution and Test keys. <br/> The response will contain all information related to a Test Run, e.g., status, created and finish dates, step results, test environments, defects, Test Run Custom fields, and so on. <br/>
+
+        In case the Test Run has iterations, steps will not appear. However, if it has parameters but executed one time, it will show the steps and the parameters info. <br/>
+      parameters:
+      - description: The id of the Test Run
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                TestRunExample:
+                  $ref: '#/components/examples/TestRunExample'
+                SingleTestRunExample:
+                  $ref: '#/components/examples/SingleTestRunExample'
+                DataDrivenTestRunExample:
+                  $ref: '#/components/examples/DataDrivenTestRunExample'
+              schema:
+                $ref: '#/components/schemas/TestRunResponse'
+          description: Successful operation
+        "400":
+          content:
+            application/json:
+              example:
+                error: Test Run with Id 1 was not found in the server.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Internal Server Error
+      tags:
+      - Test Run
+      x-accepts: application/json
+    put:
+      description: |-
+        Update all the values of a Test Run.<br/> The user can update the values of the overall status, step results, assignee, test environments, add defects and evidences and so on. <br/> <br/> To update the value of a Test Run custom field, the id of the field must be provided as well as a valid value for that custom field type. <br/><br/> - **Toggle Fields** values should be _"true"_, _"false"_, _"0"_ or _"1"_ <br /><br /> - **Number Fields** values should be a string containing a number, e.g. _"320"_. Decimal Number are also accepted,for instance, "320.5". The decimal places are always separated by a _"."_  <br /> <br /> - **Single Select and Radio Button Fields** values should be a single string containing the option value, e.g. _"Option A"_. The value should be a valid option for that custom field. The values are not case sensitive. <br /><br /> - **Multiple Select Fields** values should be an array of the string of option values, e.g. _["Option A", "Option B"]_. All the selected values should be valid for that custom field. The option values are not case sensitive. <br /><br /> - **Date Fields** should follow the ISO format _yyyy-MM-dd_, where _yyyy_ represents the year, _MM_ the month in year and _dd_ the day in the month. For instance, a valid value would be _"2020-05-02"_. <br /><br /> - **Date Time fields** should be in UTC following the ISO format _yyyy-MM-dd'T'HH:mm'Z'_. The date part follows the same date format, while _HH_ represents the hours (0-24), _mm_ the minutes in hour and _Z_ indicates the hour in UTC. For instance, a valid date time value would be _"2020-05-02T10:30Z"_. <br /><br />
+        An error will be returned when there are invalid custom field values.
+        It is also possible to delete a Test Run custom field value by providing a _null_ or empty value (e.g., _""_ or _[]_). **It is not possible to delete a value of a required Test Run Custom Field value.** <br/> Also, **it is not possible to change the Test Run to a final status when there are required Test Run custom fields with empty values.**
+        <br/> <br/>
+        In the case of a Test Run of a manual Test type, it is possible to update the steps only if there are zero or one iterations. If there are multiple iterations, it is not possible to update the steps through this endpoint, only the iterations.
+      parameters:
+      - description: The id of the Test Run
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTestRun'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateTestRunResponse'
+          description: Successful operation
+        "400":
+          content:
+            application/json:
+              example:
+                error: Test Run with Id 1 was not found in the server.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: "Bad Request. Occurs when there is some error in the request,\
+            \ for instance, some custom field has an invalid value, or the user does\
+            \ not have permissions to execute the Test Run."
+        "500":
+          content:
+            application/json:
+              example:
+                error: Internal server exception cause.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Internal Server error
+      tags:
+      - Test Run
+      x-contentType: application/json
+      x-accepts: application/json
+  /testrun/{id}/customfield/{customFieldId}:
+    get:
+      description: "Retrieves a Test Run Custom Field, given the Test Run and the\
+        \ Test Run Custom Field ids."
+      parameters:
+      - description: The id of the Test Run
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The id of the Test Run Custom Field
+        explode: false
+        in: path
+        name: customFieldId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                id: 219254
+                name: Test Run Toggle
+                value: "true"
+              schema:
+                $ref: '#/components/schemas/TestRunCustomFieldResponse'
+          description: Successful operation. Returns the value of the custom field
+            for the given Test Run.
+        "400":
+          content:
+            application/json:
+              example:
+                error: Test Run Custom Field with id 2529 not found.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Internal Server Error
+      tags:
+      - Test Run
+      x-accepts: application/json
+    put:
+      description: |-
+        Updates the value of a test run custom field, given the Test Run and the Test Run Custom Field ids. The custom field value should be a valid value according to the field type. <br/><br/> - **Toggle Fields** values should be _"true"_, _"false"_, _"0"_ or _"1"_ <br /><br /> - **Number Fields** values should be a string containing a number, e.g. _"320"_. Decimal Number are also accepted,for instance, "320.5". The decimal places are always separated by a _"."_  <br /> <br /> - **Single Select and Radio Button Fields** values should be a single string containing the option value, e.g. _"Option A"_. The value should be a valid option for that custom field. The values are not case sensitive. <br /><br /> - **Multiple Select Fields** values should be an array of the string of option values, e.g. _["Option A", "Option B"]_. All the selected values should be valid for that custom field. The option values are not case sensitive. <br /><br /> - **Date Fields** should follow the ISO format _yyyy-MM-dd_, where _yyyy_ represents the year, _MM_ the month in year and _dd_ the day in the month. For instance, a valid value would be _"2020-05-02"_. <br /><br /> - **Date Time fields** should be in UTC following the ISO format _yyyy-MM-dd'T'HH:mm'Z'_. The date part follows the same date format, while _HH_ represents the hours (0-24), _mm_ the minutes in hour and _Z_ indicates the hour in UTC. For instance, a valid date time value would be _"2020-05-02T10:30Z"_. <br /><br />
+        An error will be returned when there are invalid custom field values.
+        It is also possible to delete a Test Run custom field value by providing a _null_ or empty value (e.g., _""_ or _[]_). **It is not possible to delete a value of a required Test Run Custom Field value.** <br/>
+      parameters:
+      - description: The id of the Test Run
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The id of the Test Run Custom Field
+        explode: false
+        in: path
+        name: customFieldId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              example:
+                value: Option A
+              oneOf:
+              - $ref: '#/components/schemas/UpdateTRCustomFieldValueSingle'
+              - $ref: '#/components/schemas/UpdateTRCustomFieldValueMulti'
+        required: true
+      responses:
+        "204":
+          description: Successful operation
+        "400":
+          content:
+            application/json:
+              example:
+                error: Test Run Custom Field with id 2529 not found.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - Test Run
+      x-contentType: application/json
+      x-accepts: application/json
+  /testrun/{id}/iteration/{iterationId}:
+    get:
+      description: "Retrieves an iteration given the Test Run id and the id of the\
+        \ iteration. <br/> The response will contain all the information regarding\
+        \ the iteration (status, parameters, and the steps). The steps will appear\
+        \ with the parameters converted to their value if the resolved dataset does\
+        \ not have a parameter referenced on a  step it will be displayed like ${parameter_name}.\
+        \ <br/>"
+      parameters:
+      - description: The id of the Test Run
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The id of the iteration
+        explode: false
+        in: path
+        name: iterationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                example-1:
+                  value:
+                    id: 3822
+                    testRunId: 4313
+                    status: FAILING_BUT_OK
+                    color: '#40FF59'
+                    parameters:
+                    - name: User - T_npp
+                      value: User B
+                    - name: Password - T_npp
+                      value: Pass1
+                    steps:
+                    - index: 1
+                      fields:
+                        Action:
+                          type: Wiki
+                          value:
+                            raw: "When prompted to login I fill the User B and Pass1${B\
+                              \ - T_npp}"
+                            rendered: "<p>When prompted to login I fill the User B\
+                              \ and Pass1${B - T_npp}</p>"
+                        Data:
+                          type: Wiki
+                          value:
+                            raw: ""
+                            rendered: ""
+                        Expected Result:
+                          type: Wiki
+                          value:
+                            raw: I'm authenticated
+                            rendered: <p>I'm authenticated</p>
+                        Radio TSCF:
+                          type: Option
+                          value:
+                          - id: 1
+                            value: My selected option value
+                        Select List Multiple TSCF:
+                          type: Option
+                          value:
+                          - id: 8
+                            value: My multi list option value
+                    - index: 2
+                      fields:
+                        Action:
+                          type: Wiki
+                          value:
+                            raw: "When prompted to login I fill the User B and Pass1${B\
+                              \ - T_npp}"
+                            rendered: "<p>When prompted to login I fill the User B\
+                              \ and Pass1${B - T_npp}</p>"
+                        Data:
+                          type: Wiki
+                          value:
+                            raw: ""
+                            rendered: ""
+                        Expected Result:
+                          type: Wiki
+                          value:
+                            raw: I'm authenticated
+                            rendered: <p>I'm authenticated</p>
+                        Radio TSCF:
+                          type: Option
+                          value:
+                          - id: 1
+                            value: My selected option value
+                        Select List Multiple TSCF:
+                          type: Option
+                          value:
+                          - id: 8
+                            value: My multi list option value
+              schema:
+                $ref: '#/components/schemas/TestRunIterationInformation'
+          description: Successful operation
+        "400":
+          content:
+            application/json:
+              example:
+                error: The Test Run with id 23 does not have the iteration with id
+                  15.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Internal Server Error
+      tags:
+      - Test Run
+      x-accepts: application/json
+    put:
+      description: Update all values from an iteration in a Test Run.<br/> The user
+        can update the iteration status and the Test Step results of that iteration.
+      parameters:
+      - description: The id of the Test Run
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The id of the iteration
+        explode: false
+        in: path
+        name: iterationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateIteration'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateIterationResponse'
+          description: Successful operation
+        "400":
+          content:
+            application/json:
+              example:
+                error: The Test Run with id 23 does not have the iteration with id
+                  15.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Internal Server Error
+      tags:
+      - Test Run
+      x-contentType: application/json
+      x-accepts: application/json
+  /testrun/{id}/iteration/{iterationId}/step:
+    get:
+      description: Retrieves all Test Step results for the given iteration.
+      parameters:
+      - description: The id of the Test Run
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The id of the iteration
+        explode: false
+        in: path
+        name: iterationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/StepResult'
+                type: array
+          description: Successful operation
+        "404":
+          content:
+            application/json:
+              example:
+                error: Iteration with id 99 does not exist or does not belong to the
+                  Test Run.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Test Run
+      x-accepts: application/json
+  /testrun/{id}/iteration/{iterationId}/step/{stepResultId}:
+    get:
+      description: Retrieves all the information for the given Test Step result within
+        an iteration.
+      parameters:
+      - description: The id of the Test Run
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The id of the iteration
+        explode: false
+        in: path
+        name: iterationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The id of the Test Step result
+        explode: false
+        in: path
+        name: stepResultId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StepResult'
+          description: Successful operation
+        "404":
+          content:
+            application/json:
+              example:
+                error: Iteration with id 99 does not exist or does not belong to the
+                  Test Run.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Test Run
+      x-accepts: application/json
+    put:
+      description: Updates the Test Step result within an iteration.
+      parameters:
+      - description: The id of the Test Run
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The id of the iteration
+        explode: false
+        in: path
+        name: iterationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The id of the Test Step result
+        explode: false
+        in: path
+        name: stepResultId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateStepResult'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StepResultsResponse'
+          description: Successful operation
+        "404":
+          content:
+            application/json:
+              example:
+                error: Iteration with id 99 does not exist or does not belong to the
+                  Test Run.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Test Run
+      x-contentType: application/json
+      x-accepts: application/json
+  /testrun/{id}/iteration/{iterationId}/step/{stepResultId}/status:
+    get:
+      description: Retrieves the Test Step status of a Test Step Result within an
+        iteration.
+      parameters:
+      - description: The id of the Test Run
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The id of the iteration
+        explode: false
+        in: path
+        name: iterationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The id of the Test Step result
+        explode: false
+        in: path
+        name: stepResultId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+          description: Successful operation
+        "404":
+          content:
+            application/json:
+              example:
+                error: Iteration with id 99 does not exist or does not belong to the
+                  Test Run.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Test Run
+      x-accepts: application/json
+    put:
+      description: Updates the Test Step status within an iteration.
+      parameters:
+      - description: The id of the Test Run
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The id of the iteration
+        explode: false
+        in: path
+        name: iterationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The id of the Test Step result
+        explode: false
+        in: path
+        name: stepResultId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The status we want the test step to have
+        explode: true
+        in: query
+        name: status
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "204":
+          description: Successful operation. No content is returned.
+        "404":
+          content:
+            application/json:
+              example:
+                error: Iteration with id 99 does not exist or does not belong to the
+                  Test Run.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Test Run
+      x-accepts: application/json
+  /testrun/{id}/iteration/{iterationId}/step/{stepResultId}/attachment:
+    delete:
+      description: Remove all evidences with the same filename from the Test step
+        result within an iteration.
+      parameters:
+      - description: The id of the Test Run
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The id of the iteration
+        explode: false
+        in: path
+        name: iterationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The id of the Test Step result
+        explode: false
+        in: path
+        name: stepResultId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The name of the attachment to be deleted
+        explode: true
+        in: query
+        name: filename
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "204":
+          description: Successful operation. No content is returned.
+        "404":
+          content:
+            application/json:
+              example:
+                error: Iteration with id 99 does not exist or does not belong to the
+                  Test Run.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Test Run
+      x-accepts: application/json
+    get:
+      description: Return a json that contains an array with all the execution evidences
+        the Test Step has within an iteration.
+      parameters:
+      - description: The id of the Test Run
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The id of the iteration
+        explode: false
+        in: path
+        name: iterationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The id of the Test Step result
+        explode: false
+        in: path
+        name: stepResultId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/FileResponse'
+                type: array
+          description: Successful operation
+        "404":
+          content:
+            application/json:
+              example:
+                error: Iteration with id 99 does not exist or does not belong to the
+                  Test Run.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Test Run
+      x-accepts: application/json
+    post:
+      description: Add a new evidence to the Test Step result within an iteration.
+      parameters:
+      - description: The id of the Test Run
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The id of the iteration
+        explode: false
+        in: path
+        name: iterationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The id of the Test Step result
+        explode: false
+        in: path
+        name: stepResultId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TestStepResultEvidenceInput'
+      responses:
+        "204":
+          description: Successful operation. No content is returned.
+        "404":
+          content:
+            application/json:
+              example:
+                error: Iteration with id 99 does not exist or does not belong to the
+                  Test Run.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Test Run
+      x-contentType: application/json
+      x-accepts: application/json
+  /testrun/{id}/iteration/{iterationId}/step/{stepResultId}/attachment/{attachmentId}:
+    delete:
+      description: Remove an evidence from a Test Step result within an iteration.
+      parameters:
+      - description: The id of the Test Run
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The id of the iteration
+        explode: false
+        in: path
+        name: iterationId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The id of the Test Step result
+        explode: false
+        in: path
+        name: stepResultId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The id of the attachment to be deleted
+        explode: false
+        in: path
+        name: attachmentId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: Successful operation. No content is returned.
+        "404":
+          content:
+            application/json:
+              example:
+                error: Iteration with id 99 does not exist or does not belong to the
+                  Test Run.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      tags:
+      - Test Run
+      x-accepts: application/json
+  /project/{id}/settings/customfields/testruns:
+    get:
+      description: "Retrives the configuration of the Test Run custom fields for a\
+        \ project, given the project id. <br/><br/> The response contains all information\
+        \ related to the custom fields, such as id, name, description, if the field\
+        \ is require and enable, and the test types the custom field is associated\
+        \ with. In the case of optional custom fields (Multiple and Single Select\
+        \ Fields and Radio Buttons), the list of the custom field options is also\
+        \ retrieved."
+      parameters:
+      - description: The id of the Project
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectTestRunCFMetaInformation'
+          description: Successful operation
+        "400":
+          content:
+            application/json:
+              example: Project with id 1749900 not found.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - Project
+      x-accepts: application/json
+  /project/{id}/settings/customfields/teststeps:
+    get:
+      description: "Retrives the configuration of the Test Step custom fields for\
+        \ a project, given the project id. <br/><br/> The response contains all information\
+        \ related to the custom fields, such as id, name, description, if the field\
+        \ is require and enable. In the case of optional custom fields (Multiple and\
+        \ Single Select Fields and Radio Buttons), the list of the custom field options\
+        \ is also retrieved."
+      parameters:
+      - description: The id of the Project
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectTestStepCFMetaInformation'
+          description: Successful operation
+        "400":
+          content:
+            application/json:
+              example: Project with id 1749900 not found.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      tags:
+      - Project
+      x-accepts: application/json
+  /xraylicense:
+    get:
+      description: "Returns information about the Xray license, including its status\
+        \ and type."
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/XrayLicenseStatus'
+          description: Successful operation
+        "500":
+          description: Internal Server Error
+      tags:
+      - External Apps
+      x-accepts: application/json
+  /import/execution:
+    post:
+      description: Endpoint used to import Test results in the Xray JSON format. <br></br>
+        Updating an existing Test Run using Xray format REST API will reset all dataset
+        related fields. This means that all current iteration data and dataset present
+        in the Test Run will be replaced with the new information given in the REST
+        API request.
+      operationId: post-import-execution
+      requestBody:
+        content:
+          application/json:
+            examples:
+              example-1:
+                value:
+                  info:
+                    summary: Execution of automated tests for release v1.3
+                    description: This execution is automatically created when importing
+                      execution results from an external source
+                    version: v1.3
+                    user: admin
+                    revision: 1.0.42134
+                    startDate: 2014-08-30T11:47:35+01:00
+                    finishDate: 2014-08-30T11:53:00+01:00
+                    testPlanKey: DEMO-100
+                    testEnvironments:
+                    - iOS
+                    - Android
+                  tests:
+                  - testKey: DEMO-6
+                    start: 2014-08-30T11:47:35+01:00
+                    finish: 2014-08-30T11:50:56+01:00
+                    comment: Successful execution
+                    status: PASS
+                  - testKey: DEMO-7
+                    start: 2014-08-30T11:51:00+01:00
+                    finish: 2014-08-30T11:52:30+01:00
+                    comment: "Execution failed. Example #5 FAIL."
+                    status: FAIL
+                    customFields:
+                    - id: 321
+                      value:
+                      - option A
+                      - option B
+                    evidences:
+                    - data: iVBORw0KGgoAAAANSUhEUgAABkIAAAO9CAYAAADezXv6AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEn(...base64
+                        file enconding)
+                      filename: image21.jpg
+                      contentType: image/jpeg
+                    examples:
+                    - PASS
+                    - PASS
+                    - PASS
+                    - PASS
+                    - FAIL
+                    steps:
+                    - status: PASS
+                      comment: Coment on Test Step Result 1
+                      evidences:
+                      - data: iVBORw0KGgoAAAANSUhEUgAABkIAAAO9CAYAAADezXv6AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEn(...base64
+                          file enconding)
+                        filename: image22.jpg
+                        contentType: image/jpeg
+                      actualResult: Actual result on Test Step 1
+                    defects:
+                    - DEMO-10
+                    - DEMO-11
+            schema:
+              $ref: '#/components/schemas/XrayJsonImportExecution'
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                example-1:
+                  value:
+                    testExecIssue:
+                      id: "38101"
+                      key: TMP-82
+                      self: http://localhost:30000/rest/api/2/issue/38101
+                    testIssues:
+                      success:
+                      - self: http://localhost:30000/rest/api/2/issue/36600
+                        id: "36600"
+                        key: TMP-1
+              schema:
+                $ref: '#/components/schemas/RestApiSuccessResponse'
+          description: Successful operation
+        "400":
+          content:
+            application/json:
+              examples:
+                example-1:
+                  value:
+                    error: "Custom Field MyToggle is invalid, 123 should have a valid\
+                      \ boolean type."
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+      tags:
+      - Import
+      x-contentType: application/json
+      x-accepts: application/json
+  /import/execution/multipart:
+    post:
+      description: Endpoint used to import Test results in the Xray JSON format with
+        Test Execution issue data.  <br></br> Updating an existing Test Run using
+        Xray format REST API will reset all dataset related fields. This means that
+        all current iteration data and dataset present in the Test Run will be replaced
+        with the new information given in the REST API request.
+      operationId: post-import-execution-multipart
+      parameters: []
+      requestBody:
+        content:
+          multipart/form-data:
+            encoding:
+              result:
+                contentType: application/json
+                style: form
+              info:
+                contentType: application/json
+                style: form
+            examples:
+              example-1:
+                value: |-
+                  {
+                    "file": {
+                      {
+                    "info": {
+                      "summary": "Execution of automated tests for release v1.3",
+                      "description": "This execution is automatically created when importing execution results from an external source",
+                      "version": "v1.3",
+                      "user": "admin",
+                      "revision": "1.0.42134",
+                      "startDate": "2014-08-30T11:47:35+01:00",
+                      "finishDate": "2014-08-30T11:53:00+01:00",
+                      "testPlanKey": "DEMO-100",
+                      "testEnvironments": [
+                        "iOS",
+                        "Android"
+                      ]
+                    },
+                    "tests": [
+                      {
+                        "testKey": "DEMO-6",
+                        "start": "2014-08-30T11:47:35+01:00",
+                        "finish": "2014-08-30T11:50:56+01:00",
+                        "comment": "Successful execution",
+                        "status": "PASS"
+                      },
+                      {
+                        "testKey": "DEMO-7",
+                        "start": "2014-08-30T11:51:00+01:00",
+                        "finish": "2014-08-30T11:52:30+01:00",
+                        "comment": "Execution failed. Example #5 FAIL.",
+                        "status": "FAIL",
+                        "customFields": [
+                          {
+                            "id": 321,
+                            "value": [
+                              "option A",
+                              "option B"
+                            ]
+                          }
+                        ],
+                        "evidences": [
+                          {
+                            "data": "iVBORw0KGgoAAAANSUhEUgAABkIAAAO9CAYAAADezXv6AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEn(...base64 file enconding)",
+                            "filename": "image21.jpg",
+                            "contentType": "image/jpeg"
+                          }
+                        ],
+                        "examples": [
+                          "PASS",
+                          "PASS",
+                          "PASS",
+                          "PASS",
+                          "FAIL"
+                        ],
+                        "steps": [
+                          {
+                            "status": "PASS",
+                            "comment": "Coment on Test Step Result 1",
+                            "evidences": [
+                              {
+                                "data": "iVBORw0KGgoAAAANSUhEUgAABkIAAAO9CAYAAADezXv6AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEn(...base64 file enconding)",
+                                "filename": "image22.jpg",
+                                "contentType": "image/jpeg"
+                              }
+                            ],
+                            "actualResult": "Actual result on Test Step 1"
+                          }
+                        ],
+                        "defects": [
+                          "DEMO-10",
+                          "DEMO-11"
+                        ]
+                      }
+                    ]
+                  }
+                    },
+                    "info": {
+                      "fields": {
+                          "project": {
+                              "id": "10000"
+                          },
+                          "summary": "something",
+                          "issuetype": {
+                              "id": "10000"
+                          },
+                          "assignee": {
+                              "name": "homer"
+                          },
+                          "reporter": {
+                              "name": "smithers"
+                          },
+                          "priority": {
+                              "id": "20000"
+                          },
+                          "labels": [
+                              "bugfix",
+                              "blitz_test"
+                          ]
+                      }
+                  }
+            schema:
+              $ref: '#/components/schemas/XrayJsonImportMultipartRequest'
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                example-1:
+                  value:
+                    testExecIssue:
+                      id: "38101"
+                      key: TMP-82
+                      self: http://localhost:30000/rest/api/2/issue/38101
+                    testIssues:
+                      success:
+                      - self: http://localhost:30000/rest/api/2/issue/36600
+                        id: "36600"
+                        key: TMP-1
+              schema:
+                $ref: '#/components/schemas/RestApiSuccessResponse'
+          description: Successful operation
+        "400":
+          content:
+            application/json:
+              examples:
+                example-1:
+                  value:
+                    error: "Custom Field MyToggle is invalid, 123 should have a valid\
+                      \ boolean type."
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+      tags:
+      - Import
+      x-contentType: multipart/form-data
+      x-accepts: application/json
+  /testruns:
+    get:
+      description: |-
+        Retrieves all the Test Runs from a given context.
+        With this endpoint you can obtain all the Test Runs (paginated) in one of the following contexts:
+        - In a Test Execution issue. A Test issue key can be used in order to return a single TestRun from the Test Execution issue
+        - In a Test Plan issue
+        - In a JQL filter that returns several Test Execution issue
+
+        In case the Test Run has iterations, steps will not appear. However, if the Test has parameters but executed one time, it will show the steps and the parameters info. <br/>
+      operationId: get-testruns
+      parameters:
+      - description: The Test Execution issue key
+        explode: true
+        in: query
+        name: testExecKey
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The Test issue key (may only be used when using the "testExecKey"  param)
+        explode: true
+        in: query
+        name: testKey
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The Test Plan issue key
+        explode: true
+        in: query
+        name: testPlanKey
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: "List of custom fields of the Test issue to be return in the\
+          \ responde (several custom fields can be requested by separating them with\
+          \ ',')"
+        explode: true
+        in: query
+        name: includeTestFields
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The Jira JQL filter ID or name containing Test Executions issues
+        explode: true
+        in: query
+        name: savedFilterId
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The number of maximum Test Runs to be returned
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: integer
+        style: form
+      - description: The number of the results page
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                example-1:
+                  value:
+                  - id: 12999
+                    testExecKey: SUP-81
+                    testKey: SUP-83
+                    status: FAIL
+                    type: Manual
+                    start: 2021-04-19T14:58:19+01:00
+                    finish: 2021-04-19T15:08:25+01:00
+                    executedBy: admin
+                    defects: []
+                    evidences:
+                    - filename: dataset.csv
+                      contentType: text/csv
+                      data: http://localhost:8090/plugins/servlet/raven/attachment/947/dataset.csv
+                    steps:
+                    - status: FAIL
+                      defects: []
+                      evidences:
+                      - filename: good.csv
+                        contentType: text/csv
+                        data: http://localhost:8090/plugins/servlet/raven/attachment/946/good.csv
+                    - status: FAIL
+                      defects: []
+                      evidences: []
+                    - status: PASS
+                      defects: []
+                      evidences: []
+                    assignee: admin
+                    testEnvironments:
+                    - myEnv
+                  - id: 13001
+                    testExecKey: SUP-81
+                    testKey: SUP-84
+                    status: PASS
+                    type: Manual
+                    start: 2021-04-19T15:13:33+01:00
+                    finish: 2021-04-19T15:13:33+01:00
+                    executedBy: admin
+                    defects: []
+                    evidences:
+                    - filename: dataset.csv
+                      contentType: text/csv
+                      data: http://localhost:8090/plugins/servlet/raven/attachment/948/dataset.csv
+                    assignee: admin
+                    testEnvironments:
+                    - myEnv
+                    iterations:
+                    - id: 13889
+                      status: PASS
+                      color: '#95C160'
+                      parameters:
+                      - name: A
+                        value: "1"
+                      - name: B
+                        value: "7"
+                    - id: 13890
+                      status: PASS
+                      color: '#95C160'
+                      parameters:
+                      - name: A
+                        value: "3"
+                      - name: B
+                        value: "8"
+                    - id: 13891
+                      status: PASS
+                      color: '#95C160'
+                      parameters:
+                      - name: A
+                        value: "4"
+                      - name: B
+                        value: "9"
+                    - id: 13892
+                      status: PASS
+                      color: '#95C160'
+                      parameters:
+                      - name: A
+                        value: "5"
+                      - name: B
+                        value: "10"
+                    - id: 13893
+                      status: PASS
+                      color: '#95C160'
+                      parameters:
+                      - name: A
+                        value: "6"
+                      - name: B
+                        value: "11"
+                  - id: 13003
+                    testExecKey: SUP-81
+                    testKey: SUP-85
+                    status: TODO
+                    type: Manual
+                    start: 2021-04-20T11:13:45+01:00
+                    defects:
+                    - http://localhost:8090/browse/CALC-384
+                    evidences:
+                    - filename: dataset.csv
+                      contentType: text/csv
+                      data: http://localhost:8090/plugins/servlet/raven/attachment/951/dataset.csv
+                    steps:
+                    - status: TODO
+                      comment: my iter comment
+                      defects:
+                      - http://localhost:8090/browse/CALC-1353
+                      evidences:
+                      - filename: good.csv
+                        contentType: text/csv
+                        data: http://localhost:8090/plugins/servlet/raven/attachment/950/good.csv
+                    - status: TODO
+                      defects: []
+                      evidences: []
+                    parameters:
+                    - name: C
+                      value: "1"
+                    - name: D
+                      value: "2"
+                    - name: E
+                      value: "3"
+                    assignee: admin
+                    testEnvironments:
+                    - myEnv
+              schema:
+                items:
+                  $ref: '#/components/schemas/inline_response_200_1'
+                type: array
+                uniqueItems: true
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Internal Server Error
+      tags:
+      - Test Run
+      x-accepts: application/json
+  /dataset/export:
+    get:
+      description: "Retrieves a CSV file with the dataset information. <br/> The response\
+        \ will contain all information related to the dataset, e.g., parameters and\
+        \ values. <br/>"
+      parameters:
+      - description: The id of the test issue
+        explode: true
+        in: query
+        name: testIssueId
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The key of the test issue
+        explode: true
+        in: query
+        name: testIssueKey
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The id of the context issue (Test Plan or Test Execution)
+        explode: true
+        in: query
+        name: contextIssueId
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The key of the context issue (Test Plan or Test Execution)
+        explode: true
+        in: query
+        name: contextIssueKey
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: A flag indicating of the dataset must be resolved or not for
+          a given level (true by default)
+        explode: true
+        in: query
+        name: resolved
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            text/csv:
+              example: |-
+                Browser, Languague
+                Firefox, Portuguese
+                Chrome, English
+              schema:
+                type: string
+          description: Successful operation. Returns a CSV file with the dataset information.
+        "400":
+          content:
+            application/json:
+              example:
+                error: Both Test issue key and id was not provided.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        "403":
+          content:
+            application/json:
+              example:
+                error: User is not logged in or is not allowed to view or edit the
+                  dataset.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              example:
+                error: Dataset not found.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not found
+        "500":
+          content:
+            application/json:
+              example:
+                error: Error exporting dataset to CSV file.
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Internal Server error
+      tags:
+      - Dataset
+      x-accepts: application/json
+  /testrepository/{projectKey}/folders/{folderId}:
+    get:
+      description: "Retrieves information about a given Test Repository folder. <br/>\
+        \ The response will contain all information related to that folder, e.g.,\
+        \ id, name, tests count and direct children folder ids. <br/>"
+      parameters:
+      - description: The project key
+        explode: false
+        in: path
+        name: projectKey
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The folder id."-1" corresponds to the root folder of the Test
+          Repository
+        explode: false
+        in: path
+        name: folderId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                example-1:
+                  value:
+                  - id: 10001
+                    rank: 1
+                    name: v4.3.2
+                    testCount: 2
+                    totalTestCount: 12
+                    testRepositoryPath: ""
+                    folderIds:
+                    - 10002
+                    - 10003
+                  - id: 10004
+                    rank: 2
+                    name: v4.4.0
+                    testCount: 0
+                    totalTestCount: 0
+                    testRepositoryPath: ""
+                    folderIds:
+                    - 10005
+                    - 10006
+                example-2:
+                  value:
+                    id: 10002
+                    rank: 1
+                    name: Automated Tests
+                    testCount: 4
+                    totalTestCount: 10
+                    testRepositoryPath: /v4.3.2
+                    folderIds:
+                    - 10007
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/FolderRestBean'
+                - $ref: '#/components/schemas/FolderRestBeans'
+          description: Successful operation. Returns a CSV file with the dataset information.
+        "400":
+          content:
+            application/json:
+              example:
+                error: The Test Repository has been disabled by the configuration
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+      tags:
+      - Test Repository
+      x-accepts: application/json
+components:
+  examples:
+    TestRunExample:
+      summary: Test Run
+      value:
+        id: 1004725
+        status: FAIL
+        color: '#D45D52'
+        testKey: CALC-67187
+        testExecKey: CALC-67193
+        assignee: admin
+        executedBy: admin
+        startedOn: 2020-02-12T09:58:04Z
+        finishedOn: 2020-02-12T10:58:04Z
+        startedOnIso: 2020-02-12T09:58:04Z
+        finishedOnIso: 2020-02-12T10:58:04Z
+        duration: 1923493000
+        defects:
+        - CALC-1
+        - CALC-2
+        evidences:
+        - id: 25684
+          fileName: attachment.txt
+          fileIcon: text.gif
+          mimeType: plain/text
+          fileIconAlt: Text File
+          fileSize: 100.0 kB
+          numericalFileSize: "12"
+          created: 2020-02-06T10:39:37Z
+          createdDate: 1580985577000
+          author: admin
+          authorFullName: Bruce Wayne
+          fileURL: http://example.com/attachment/25684/example2.txt
+          filePath: /Users/example/path/attachment
+        comment: Test Run comment
+        testEnvironments:
+        - iOS
+        - Android
+        fixVersions:
+        - id: "97845"
+          name: "1.0"
+          description: Version 1.0
+          isArchived: true
+          isReleased: false
+        customFields:
+        - id: 28
+          name: Toogle Custom Field
+          value: "true"
+        steps:
+        - id: 85778
+          index: 1
+          fields:
+            Action:
+              type: Wiki
+              value:
+                raw: This is a step action
+                rendered: <p>This is a step action</p>
+            Toggle:
+              type: Data
+              value: "false"
+          attachments:
+          - id: 25684
+            fileName: attachment.txt
+            fileIcon: text.gif
+            mimeType: plain/text
+            fileIconAlt: Text File
+            fileSize: 100.0 kB
+            numericalFileSize: "12"
+            created: 2020-02-06T10:39:37Z
+            createdDate: 1580985577000
+            author: admin
+            authorFullName: Bruce Wayne
+            fileURL: http://example.com/attachment/25684/example2.txt
+            filePath: /Users/example/path/attachment
+          status: PASS
+          comment:
+            rendered: Comment on step
+          defects:
+          - CALC-123
+          - CALC-765
+          evidences:
+          - id: 25684
+            fileName: attachment.txt
+            fileIcon: text.gif
+            mimeType: plain/text
+            fileIconAlt: Text File
+            fileSize: 100.0 kB
+            numericalFileSize: "12"
+            created: 2020-02-06T10:39:37Z
+            createdDate: 1580985577000
+            author: admin
+            authorFullName: Bruce Wayne
+            fileURL: http://example.com/attachment/25684/example2.txt
+            filePath: /Users/example/path/attachment
+          actualResult:
+            rendered: Actual result on step
+    SingleTestRunExample:
+      summary: Test Run with single iteration
+      value:
+        id: 1004725
+        status: FAIL
+        color: '#D45D52'
+        testKey: CALC-67187
+        testExecKey: CALC-67193
+        assignee: admin
+        executedBy: admin
+        startedOn: 2020-02-12T09:58:04Z
+        finishedOn: 2020-02-12T10:58:04Z
+        startedOnIso: 2020-02-12T09:58:04Z
+        finishedOnIso: 2020-02-12T10:58:04Z
+        duration: 1923493000
+        defects:
+        - CALC-1
+        - CALC-2
+        evidences:
+        - id: 25684
+          fileName: attachment.txt
+          fileIcon: text.gif
+          mimeType: plain/text
+          fileIconAlt: Text File
+          fileSize: 100.0 kB
+          numericalFileSize: "12"
+          created: 2020-02-06T10:39:37Z
+          createdDate: 1580985577000
+          author: admin
+          authorFullName: Bruce Wayne
+          fileURL: http://example.com/attachment/25684/example2.txt
+          filePath: /Users/example/path/attachment
+        comment: Test Run comment
+        testEnvironments:
+        - iOS
+        - Android
+        fixVersions:
+        - id: "97845"
+          name: "1.0"
+          description: Version 1.0
+          isArchived: true
+          isReleased: false
+        customFields:
+        - id: 28
+          name: Toogle Custom Field
+          value: "true"
+        parameters:
+        - name: number
+          value: "12"
+        steps:
+        - id: 85778
+          index: 1
+          fields:
+            Action:
+              type: Wiki
+              value:
+                raw: Insert value 12 on calculator
+                rendered: <p>Insert value 12 on calculator</p>
+            Toggle:
+              type: Data
+              value: "false"
+          attachments:
+          - id: 25684
+            fileName: attachment.txt
+            fileIcon: text.gif
+            mimeType: plain/text
+            fileIconAlt: Text File
+            fileSize: 100.0 kB
+            numericalFileSize: "12"
+            created: 2020-02-06T10:39:37Z
+            createdDate: 1580985577000
+            author: admin
+            authorFullName: Bruce Wayne
+            fileURL: http://example.com/attachment/25684/example2.txt
+            filePath: /Users/example/path/attachment
+          status: PASS
+          comment:
+            rendered: Comment on step
+          defects:
+          - CALC-123
+          - CALC-765
+          evidences:
+          - id: 25684
+            fileName: attachment.txt
+            fileIcon: text.gif
+            mimeType: plain/text
+            fileIconAlt: Text File
+            fileSize: 100.0 kB
+            numericalFileSize: "12"
+            created: 2020-02-06T10:39:37Z
+            createdDate: 1580985577000
+            author: admin
+            authorFullName: Bruce Wayne
+            fileURL: http://example.com/attachment/25684/example2.txt
+            filePath: /Users/example/path/attachment
+          actualResult:
+            rendered: Actual result on step
+    DataDrivenTestRunExample:
+      summary: Test Run with multiple iteration
+      value:
+        id: 1004725
+        status: FAIL
+        color: '#D45D52'
+        testKey: CALC-67187
+        testExecKey: CALC-67193
+        assignee: admin
+        executedBy: admin
+        startedOn: 2020-02-12T09:58:04Z
+        finishedOn: 2020-02-12T10:58:04Z
+        startedOnIso: 2020-02-12T09:58:04Z
+        finishedOnIso: 2020-02-12T10:58:04Z
+        duration: 1923493000
+        defects:
+        - CALC-1
+        - CALC-2
+        evidences:
+        - id: 25684
+          fileName: attachment.txt
+          fileIcon: text.gif
+          mimeType: plain/text
+          fileIconAlt: Text File
+          fileSize: 100.0 kB
+          numericalFileSize: "12"
+          created: 2020-02-06T10:39:37Z
+          createdDate: 1580985577000
+          author: admin
+          authorFullName: Bruce Wayne
+          fileURL: http://example.com/attachment/25684/example2.txt
+          filePath: /Users/example/path/attachment
+        comment: Test Run comment
+        testEnvironments:
+        - iOS
+        - Android
+        fixVersions:
+        - id: "97845"
+          name: "1.0"
+          description: Version 1.0
+          isArchived: true
+          isReleased: false
+        customFields:
+        - id: 28
+          name: Toogle Custom Field
+          value: "true"
+        iterations:
+        - id: 1
+          status: FAIL
+          color: '#D45D52'
+          parameters:
+          - name: Username
+            value: admin
+        - id: 2
+          status: FAIL
+          color: '#D45D52'
+          parameters:
+          - name: Username
+            value: Bruce
+  schemas:
+    Error:
+      properties:
+        error:
+          type: string
+      type: object
+    FileResponse:
+      example:
+        id: 25684
+        fileName: attachment.txt
+        fileIcon: text.gif
+        mimeType: plain/text
+        fileIconAlt: Text File
+        fileSize: 100.0 kB
+        numericalFileSize: "12"
+        created: 2020-02-06T10:39:37Z
+        createdDate: 1580985577000
+        author: admin
+        authorFullName: Bruce Wayne
+        fileURL: http://example.com/attachment/25684/example2.txt
+        filePath: /Users/example/path/attachment
+      properties:
+        id:
+          type: integer
+        filename:
+          type: string
+        fileIcon:
+          type: string
+        mimeType:
+          type: string
+        fileIconAlt:
+          type: string
+        fileSize:
+          type: string
+        numericalFileSize:
+          type: integer
+        created:
+          type: string
+        createdDate:
+          type: integer
+        author:
+          type: string
+        authorFullName:
+          type: string
+        fileURL:
+          type: string
+        filePath:
+          type: string
+      type: object
+    DataField:
+      properties:
+        type:
+          type: string
+        value:
+          type: string
+      type: object
+    OptionField:
+      properties:
+        type:
+          type: string
+        value:
+          items:
+            $ref: '#/components/schemas/OptionValue'
+          type: array
+      type: object
+    OptionValue:
+      properties:
+        id:
+          type: integer
+        value:
+          example: Option A
+          type: string
+      type: object
+    WikiValue:
+      properties:
+        raw:
+          type: string
+        rendered:
+          type: string
+      type: object
+    WikiField:
+      properties:
+        type:
+          type: string
+        value:
+          $ref: '#/components/schemas/WikiValue'
+      type: object
+    Step:
+      example:
+        attachments:
+        - id: 25684
+          fileName: attachment.txt
+          fileIcon: text.gif
+          mimeType: plain/text
+          fileIconAlt: Text File
+          fileSize: 100.0 kB
+          numericalFileSize: "12"
+          created: 2020-02-06T10:39:37Z
+          createdDate: 1580985577000
+          author: admin
+          authorFullName: Bruce Wayne
+          fileURL: http://example.com/attachment/25684/example2.txt
+          filePath: /Users/example/path/attachment
+        - id: 25684
+          fileName: attachment.txt
+          fileIcon: text.gif
+          mimeType: plain/text
+          fileIconAlt: Text File
+          fileSize: 100.0 kB
+          numericalFileSize: "12"
+          created: 2020-02-06T10:39:37Z
+          createdDate: 1580985577000
+          author: admin
+          authorFullName: Bruce Wayne
+          fileURL: http://example.com/attachment/25684/example2.txt
+          filePath: /Users/example/path/attachment
+        testCallStep: false
+        index: 1
+        id: 85778
+        fields:
+          Action:
+            type: Wiki
+            value:
+              raw: This is a step action
+              rendered: <p>This is a step action</p>
+          Toggle:
+            type: Data
+            value: "false"
+      properties:
+        id:
+          example: 85778
+          type: integer
+        index:
+          example: 1
+          type: integer
+        fields:
+          additionalProperties:
+            oneOf:
+            - $ref: '#/components/schemas/DataField'
+            - $ref: '#/components/schemas/OptionField'
+            - $ref: '#/components/schemas/WikiField'
+          example:
+            Action:
+              type: Wiki
+              value:
+                raw: This is a step action
+                rendered: <p>This is a step action</p>
+            Toggle:
+              type: Data
+              value: "false"
+          type: object
+        attachments:
+          items:
+            $ref: '#/components/schemas/FileResponse'
+          type: array
+        testCallStep:
+          example: false
+          type: boolean
+      type: object
+    CallTestIssueKey:
+      example: XRAY-5000
+      type: string
+    CalledStep:
+      properties:
+        id:
+          example: 85769
+          type: integer
+        index:
+          example: 2
+          type: integer
+        callTestIssueKey:
+          example: XRAY-5000
+          type: string
+        testCallStep:
+          example: true
+          type: boolean
+      type: object
+    StepResult:
+      example:
+        attachments:
+        - id: 25684
+          fileName: attachment.txt
+          fileIcon: text.gif
+          mimeType: plain/text
+          fileIconAlt: Text File
+          fileSize: 100.0 kB
+          numericalFileSize: "12"
+          created: 2020-02-06T10:39:37Z
+          createdDate: 1580985577000
+          author: admin
+          authorFullName: Bruce Wayne
+          fileURL: http://example.com/attachment/25684/example2.txt
+          filePath: /Users/example/path/attachment
+        - id: 25684
+          fileName: attachment.txt
+          fileIcon: text.gif
+          mimeType: plain/text
+          fileIconAlt: Text File
+          fileSize: 100.0 kB
+          numericalFileSize: "12"
+          created: 2020-02-06T10:39:37Z
+          createdDate: 1580985577000
+          author: admin
+          authorFullName: Bruce Wayne
+          fileURL: http://example.com/attachment/25684/example2.txt
+          filePath: /Users/example/path/attachment
+        defects:
+        - CALC-123
+        - CALC-765
+        index: 1
+        comment:
+          rendered: Comment on step
+        id: 85778
+        fields:
+          Action:
+            type: Wiki
+            value:
+              raw: This is a step action
+              rendered: <p>This is a step action</p>
+          Toggle:
+            type: Data
+            value: "false"
+        evidences:
+        - id: 25684
+          fileName: attachment.txt
+          fileIcon: text.gif
+          mimeType: plain/text
+          fileIconAlt: Text File
+          fileSize: 100.0 kB
+          numericalFileSize: "12"
+          created: 2020-02-06T10:39:37Z
+          createdDate: 1580985577000
+          author: admin
+          authorFullName: Bruce Wayne
+          fileURL: http://example.com/attachment/25684/example2.txt
+          filePath: /Users/example/path/attachment
+        - id: 25684
+          fileName: attachment.txt
+          fileIcon: text.gif
+          mimeType: plain/text
+          fileIconAlt: Text File
+          fileSize: 100.0 kB
+          numericalFileSize: "12"
+          created: 2020-02-06T10:39:37Z
+          createdDate: 1580985577000
+          author: admin
+          authorFullName: Bruce Wayne
+          fileURL: http://example.com/attachment/25684/example2.txt
+          filePath: /Users/example/path/attachment
+        status: PASS
+        actualResult:
+          rendered: Actual result on step
+      properties:
+        id:
+          example: 85778
+          type: integer
+        index:
+          example: 1
+          type: integer
+        fields:
+          additionalProperties:
+            oneOf:
+            - $ref: '#/components/schemas/DataField'
+            - $ref: '#/components/schemas/OptionField'
+            - $ref: '#/components/schemas/WikiField'
+          example:
+            Action:
+              type: Wiki
+              value:
+                raw: This is a step action
+                rendered: <p>This is a step action</p>
+            Toggle:
+              type: Data
+              value: "false"
+          type: object
+        attachments:
+          items:
+            $ref: '#/components/schemas/FileResponse'
+          type: array
+        status:
+          example: PASS
+          type: string
+        comment:
+          $ref: '#/components/schemas/StepResult_comment'
+        defects:
+          example:
+          - CALC-123
+          - CALC-765
+          items:
+            type: string
+          type: array
+        evidences:
+          items:
+            $ref: '#/components/schemas/FileResponse'
+          type: array
+        actualResult:
+          $ref: '#/components/schemas/StepResult_actualResult'
+      type: object
+    UpdateStepResult:
+      example:
+        defects:
+          add:
+          - CALC-123
+          - CALC-765
+          remove:
+          - CALC-563
+          - CALC-744
+        comment: Comment on step
+        id: 85778
+        evidences:
+          add:
+          - filename: example.txt
+            data: gsddfgdsfg...(base64)
+            contentType: plain/text
+          - filename: example.txt
+            data: gsddfgdsfg...(base64)
+            contentType: plain/text
+          remove:
+          - CALC-124
+          - CALC- 657
+        status: FAIL
+        actualResult: Actual result on step
+      properties:
+        id:
+          example: 85778
+          type: integer
+        status:
+          example: FAIL
+          type: string
+        comment:
+          example: Comment on step
+          type: string
+        defects:
+          $ref: '#/components/schemas/UpdateStepResult_defects'
+        evidences:
+          $ref: '#/components/schemas/UpdateStepResult_evidences'
+        actualResult:
+          example: Actual result on step
+          type: string
+      type: object
+    TestStepResultEvidenceInput:
+      example:
+        filename: image21.jpg
+        data: iVBORw0KGgoAAAANSUhEUgAABkIAAAO9CAYAAADezXv6AAAAAXNSR0IArs4c6QAA(...base64
+          file enconding)
+        contentType: image/jpeg
+      properties:
+        data:
+          example: iVBORw0KGgoAAAANSUhEUgAABkIAAAO9CAYAAADezXv6AAAAAXNSR0IArs4c6QAA(...base64
+            file enconding)
+          type: string
+        filename:
+          example: image21.jpg
+          type: string
+        contentType:
+          example: image/jpeg
+          type: string
+      type: object
+    TestStepsResponse:
+      example:
+        steps:
+        - ""
+        - ""
+      properties:
+        steps:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/Step'
+            - $ref: '#/components/schemas/CalledStep'
+          type: array
+      type: object
+    StepResponse:
+      example:
+        step:
+          attachments:
+          - id: 25684
+            fileName: attachment.txt
+            fileIcon: text.gif
+            mimeType: plain/text
+            fileIconAlt: Text File
+            fileSize: 100.0 kB
+            numericalFileSize: "12"
+            created: 2020-02-06T10:39:37Z
+            createdDate: 1580985577000
+            author: admin
+            authorFullName: Bruce Wayne
+            fileURL: http://example.com/attachment/25684/example2.txt
+            filePath: /Users/example/path/attachment
+          - id: 25684
+            fileName: attachment.txt
+            fileIcon: text.gif
+            mimeType: plain/text
+            fileIconAlt: Text File
+            fileSize: 100.0 kB
+            numericalFileSize: "12"
+            created: 2020-02-06T10:39:37Z
+            createdDate: 1580985577000
+            author: admin
+            authorFullName: Bruce Wayne
+            fileURL: http://example.com/attachment/25684/example2.txt
+            filePath: /Users/example/path/attachment
+          testCallStep: false
+          index: 1
+          id: 85778
+          fields:
+            Action:
+              type: Wiki
+              value:
+                raw: This is a step action
+                rendered: <p>This is a step action</p>
+            Toggle:
+              type: Data
+              value: "false"
+      properties:
+        step:
+          $ref: '#/components/schemas/Step'
+      type: object
+    StepAttachementResponse:
+      items:
+        $ref: '#/components/schemas/FileResponse'
+      type: array
+    Field:
+      additionalProperties:
+        oneOf:
+        - type: string
+        - items:
+            type: string
+          type: array
+      example:
+        Action: Step Action
+        Date: 02/Feb/2020
+        Toggle: "true"
+        SingleSelectList: Selected Value
+        MultiSelectList:
+        - Option A
+        - Option B
+      type: object
+    File:
+      example:
+        filename: example.txt
+        data: gsddfgdsfg...(base64)
+        contentType: plain/text
+      properties:
+        data:
+          example: gsddfgdsfg...(base64)
+          type: string
+        filename:
+          example: example.txt
+          type: string
+        contentType:
+          example: plain/text
+          type: string
+      type: object
+    CreateStepRequestBody:
+      example:
+        fields:
+          Action: Step Action
+          Date: 01/Feb/2022
+          Toggle: "true"
+          SingleSelectList: Selected Value
+          MultiSelectList:
+          - Option A
+          - Option B
+        attachments:
+        - data: gsddfgdsfg...(base64)
+          filename: example.txt
+          contentType: plain/text
+      oneOf:
+      - $ref: '#/components/schemas/CreateStep'
+      - $ref: '#/components/schemas/CallTestIssueKey'
+      type: object
+    CreateStep:
+      properties:
+        fields:
+          additionalProperties:
+            oneOf:
+            - type: string
+            - items:
+                type: string
+              type: array
+          example:
+            Action: Step Action
+            Date: 02/Feb/2020
+            Toggle: "true"
+            SingleSelectList: Selected Value
+            MultiSelectList:
+            - Option A
+            - Option B
+          type: object
+        attachments:
+          items:
+            $ref: '#/components/schemas/File'
+          type: array
+      type: object
+    CreateStepResponse:
+      example:
+        warnings: []
+        step:
+          attachmentIds:
+          - 25737
+          - 25738
+          id: 85860
+      properties:
+        step:
+          $ref: '#/components/schemas/CreateStepResponse_step'
+        warnings:
+          example: []
+          items:
+            type: string
+          type: array
+      type: object
+    UpdateStepRequestBody:
+      example:
+        fields:
+          Action: Step Action
+          Date: 02/Feb/2021
+          Toggle: "true"
+          SingleSelectList: Selected Value
+          MultiSelectList:
+          - Option A
+          - Option B
+        attachments:
+        - data: gsddfgdsfg...(base64)
+          filename: example.txt
+          contentType: plain/text
+      oneOf:
+      - $ref: '#/components/schemas/UpdateStep'
+      - $ref: '#/components/schemas/CallTestIssueKey'
+      type: object
+    UpdateStep:
+      properties:
+        fields:
+          additionalProperties:
+            oneOf:
+            - type: string
+            - items:
+                type: string
+              type: array
+          example:
+            Action: Step Action
+            Date: 02/Feb/2020
+            Toggle: "true"
+            SingleSelectList: Selected Value
+            MultiSelectList:
+            - Option A
+            - Option B
+          type: object
+        attachments:
+          $ref: '#/components/schemas/UpdateStep_attachments'
+      type: object
+    TestRunResponse:
+      example:
+        executedBy: admin
+        finishedOnIso: 2020-02-12T10:58:04Z
+        color: '#D45D52'
+        customFields:
+        - ""
+        - ""
+        testEnvironments:
+        - iOS
+        - Android
+        fixVersions:
+        - isArchived: true
+          name: "1.0"
+          description: Version 1.0
+          id: "97845"
+          isReleased: false
+        - isArchived: true
+          name: "1.0"
+          description: Version 1.0
+          id: "97845"
+          isReleased: false
+        testExecKey: CALC-67193
+        steps:
+        - attachments:
+          - id: 25684
+            fileName: attachment.txt
+            fileIcon: text.gif
+            mimeType: plain/text
+            fileIconAlt: Text File
+            fileSize: 100.0 kB
+            numericalFileSize: "12"
+            created: 2020-02-06T10:39:37Z
+            createdDate: 1580985577000
+            author: admin
+            authorFullName: Bruce Wayne
+            fileURL: http://example.com/attachment/25684/example2.txt
+            filePath: /Users/example/path/attachment
+          - id: 25684
+            fileName: attachment.txt
+            fileIcon: text.gif
+            mimeType: plain/text
+            fileIconAlt: Text File
+            fileSize: 100.0 kB
+            numericalFileSize: "12"
+            created: 2020-02-06T10:39:37Z
+            createdDate: 1580985577000
+            author: admin
+            authorFullName: Bruce Wayne
+            fileURL: http://example.com/attachment/25684/example2.txt
+            filePath: /Users/example/path/attachment
+          defects:
+          - CALC-123
+          - CALC-765
+          index: 1
+          comment:
+            rendered: Comment on step
+          id: 85778
+          fields:
+            Action:
+              type: Wiki
+              value:
+                raw: This is a step action
+                rendered: <p>This is a step action</p>
+            Toggle:
+              type: Data
+              value: "false"
+          evidences:
+          - id: 25684
+            fileName: attachment.txt
+            fileIcon: text.gif
+            mimeType: plain/text
+            fileIconAlt: Text File
+            fileSize: 100.0 kB
+            numericalFileSize: "12"
+            created: 2020-02-06T10:39:37Z
+            createdDate: 1580985577000
+            author: admin
+            authorFullName: Bruce Wayne
+            fileURL: http://example.com/attachment/25684/example2.txt
+            filePath: /Users/example/path/attachment
+          - id: 25684
+            fileName: attachment.txt
+            fileIcon: text.gif
+            mimeType: plain/text
+            fileIconAlt: Text File
+            fileSize: 100.0 kB
+            numericalFileSize: "12"
+            created: 2020-02-06T10:39:37Z
+            createdDate: 1580985577000
+            author: admin
+            authorFullName: Bruce Wayne
+            fileURL: http://example.com/attachment/25684/example2.txt
+            filePath: /Users/example/path/attachment
+          status: PASS
+          actualResult:
+            rendered: Actual result on step
+        - attachments:
+          - id: 25684
+            fileName: attachment.txt
+            fileIcon: text.gif
+            mimeType: plain/text
+            fileIconAlt: Text File
+            fileSize: 100.0 kB
+            numericalFileSize: "12"
+            created: 2020-02-06T10:39:37Z
+            createdDate: 1580985577000
+            author: admin
+            authorFullName: Bruce Wayne
+            fileURL: http://example.com/attachment/25684/example2.txt
+            filePath: /Users/example/path/attachment
+          - id: 25684
+            fileName: attachment.txt
+            fileIcon: text.gif
+            mimeType: plain/text
+            fileIconAlt: Text File
+            fileSize: 100.0 kB
+            numericalFileSize: "12"
+            created: 2020-02-06T10:39:37Z
+            createdDate: 1580985577000
+            author: admin
+            authorFullName: Bruce Wayne
+            fileURL: http://example.com/attachment/25684/example2.txt
+            filePath: /Users/example/path/attachment
+          defects:
+          - CALC-123
+          - CALC-765
+          index: 1
+          comment:
+            rendered: Comment on step
+          id: 85778
+          fields:
+            Action:
+              type: Wiki
+              value:
+                raw: This is a step action
+                rendered: <p>This is a step action</p>
+            Toggle:
+              type: Data
+              value: "false"
+          evidences:
+          - id: 25684
+            fileName: attachment.txt
+            fileIcon: text.gif
+            mimeType: plain/text
+            fileIconAlt: Text File
+            fileSize: 100.0 kB
+            numericalFileSize: "12"
+            created: 2020-02-06T10:39:37Z
+            createdDate: 1580985577000
+            author: admin
+            authorFullName: Bruce Wayne
+            fileURL: http://example.com/attachment/25684/example2.txt
+            filePath: /Users/example/path/attachment
+          - id: 25684
+            fileName: attachment.txt
+            fileIcon: text.gif
+            mimeType: plain/text
+            fileIconAlt: Text File
+            fileSize: 100.0 kB
+            numericalFileSize: "12"
+            created: 2020-02-06T10:39:37Z
+            createdDate: 1580985577000
+            author: admin
+            authorFullName: Bruce Wayne
+            fileURL: http://example.com/attachment/25684/example2.txt
+            filePath: /Users/example/path/attachment
+          status: PASS
+          actualResult:
+            rendered: Actual result on step
+        iterations:
+        - color: color
+          id: 0
+          parameters:
+          - name: name
+            value: value
+          - name: name
+            value: value
+          status: status
+        - color: color
+          id: 0
+          parameters:
+          - name: name
+            value: value
+          - name: name
+            value: value
+          status: status
+        startedOnIso: 2020-02-12T09:58:04Z
+        duration: 1923493000
+        defects:
+        - CALC-1
+        - CALC-2
+        comment: Test Run comment
+        id: 1004725
+        testKey: CALC-67187
+        assignee: admin
+        finishedOn: 2020-02-12T10:58:04Z
+        evidences:
+        - id: 25684
+          fileName: attachment.txt
+          fileIcon: text.gif
+          mimeType: plain/text
+          fileIconAlt: Text File
+          fileSize: 100.0 kB
+          numericalFileSize: "12"
+          created: 2020-02-06T10:39:37Z
+          createdDate: 1580985577000
+          author: admin
+          authorFullName: Bruce Wayne
+          fileURL: http://example.com/attachment/25684/example2.txt
+          filePath: /Users/example/path/attachment
+        - id: 25684
+          fileName: attachment.txt
+          fileIcon: text.gif
+          mimeType: plain/text
+          fileIconAlt: Text File
+          fileSize: 100.0 kB
+          numericalFileSize: "12"
+          created: 2020-02-06T10:39:37Z
+          createdDate: 1580985577000
+          author: admin
+          authorFullName: Bruce Wayne
+          fileURL: http://example.com/attachment/25684/example2.txt
+          filePath: /Users/example/path/attachment
+        startedOn: 2020-02-12T09:58:04Z
+        parameters:
+        - name: name
+          value: value
+        - name: name
+          value: value
+        status: FAIL
+      properties:
+        id:
+          example: 1004725
+          type: integer
+        status:
+          example: FAIL
+          type: string
+        color:
+          example: '#D45D52'
+          type: string
+        testKey:
+          example: CALC-67187
+          type: string
+        testExecKey:
+          example: CALC-67193
+          type: string
+        assignee:
+          example: admin
+          type: string
+        executedBy:
+          example: admin
+          type: string
+        startedOn:
+          example: 2020-02-12T09:58:04Z
+          type: string
+        finishedOn:
+          example: 2020-02-12T10:58:04Z
+          type: string
+        startedOnIso:
+          example: 2020-02-12T09:58:04Z
+          type: string
+        finishedOnIso:
+          example: 2020-02-12T10:58:04Z
+          type: string
+        duration:
+          example: 1923493000
+          type: integer
+        defects:
+          example:
+          - CALC-1
+          - CALC-2
+          items:
+            type: string
+          type: array
+        evidences:
+          items:
+            $ref: '#/components/schemas/FileResponse'
+          type: array
+        comment:
+          example: Test Run comment
+          type: string
+        testEnvironments:
+          example:
+          - iOS
+          - Android
+          items:
+            type: string
+          type: array
+        fixVersions:
+          items:
+            $ref: '#/components/schemas/Version'
+          type: array
+        customFields:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/TestRunCustomFieldSingle'
+            - $ref: '#/components/schemas/TestRunCustomFieldMulti'
+          type: array
+        steps:
+          items:
+            $ref: '#/components/schemas/StepResult'
+          type: array
+        iterations:
+          items:
+            $ref: '#/components/schemas/TestRunIterationStatusInformation'
+          type: array
+        parameters:
+          items:
+            $ref: '#/components/schemas/DatasetParameter'
+          type: array
+      type: object
+    TestRunCustomFieldResponse:
+      oneOf:
+      - $ref: '#/components/schemas/TestRunCustomFieldSingle'
+      - $ref: '#/components/schemas/TestRunCustomFieldMulti'
+      type: object
+    TestRunCustomFieldSingle:
+      properties:
+        id:
+          example: 28
+          type: integer
+        name:
+          example: Toogle Custom Field
+          type: string
+        value:
+          example: "true"
+          type: string
+      type: object
+    TestRunCustomFieldMulti:
+      properties:
+        id:
+          example: 29
+          type: integer
+        name:
+          example: Multi select List Custom Field
+          type: string
+        value:
+          example:
+          - option A
+          - option B
+          items:
+            type: string
+          type: array
+      type: object
+    UpdateTestRunCustomFieldSingle:
+      properties:
+        id:
+          example: 28
+          type: integer
+        value:
+          example: "true"
+          type: string
+      type: object
+    UpdateTestRunCustomFieldMulti:
+      properties:
+        id:
+          example: 29
+          type: integer
+        value:
+          example:
+          - option A
+          - option B
+          items:
+            type: string
+          type: array
+      type: object
+    Version:
+      example:
+        isArchived: true
+        name: "1.0"
+        description: Version 1.0
+        id: "97845"
+        isReleased: false
+      properties:
+        id:
+          example: "97845"
+          type: string
+        name:
+          example: "1.0"
+          type: string
+        description:
+          example: Version 1.0
+          type: string
+        isArchived:
+          example: true
+          type: boolean
+        isReleased:
+          example: false
+          type: boolean
+      type: object
+    UpdateIteration:
+      example:
+        steps:
+        - defects:
+            add:
+            - CALC-123
+            - CALC-765
+            remove:
+            - CALC-563
+            - CALC-744
+          comment: Comment on step
+          id: 85778
+          evidences:
+            add:
+            - filename: example.txt
+              data: gsddfgdsfg...(base64)
+              contentType: plain/text
+            - filename: example.txt
+              data: gsddfgdsfg...(base64)
+              contentType: plain/text
+            remove:
+            - CALC-124
+            - CALC- 657
+          status: FAIL
+          actualResult: Actual result on step
+        - defects:
+            add:
+            - CALC-123
+            - CALC-765
+            remove:
+            - CALC-563
+            - CALC-744
+          comment: Comment on step
+          id: 85778
+          evidences:
+            add:
+            - filename: example.txt
+              data: gsddfgdsfg...(base64)
+              contentType: plain/text
+            - filename: example.txt
+              data: gsddfgdsfg...(base64)
+              contentType: plain/text
+            remove:
+            - CALC-124
+            - CALC- 657
+          status: FAIL
+          actualResult: Actual result on step
+        status: PASS
+      properties:
+        status:
+          example: PASS
+          type: string
+        steps:
+          items:
+            $ref: '#/components/schemas/UpdateStepResult'
+          type: array
+      type: object
+    UpdateTestRun:
+      example:
+        examples:
+          duration: "12960"
+          statusDescription: Description of the status
+          values:
+          - value1
+          - value2
+          backgrounds:
+          - duration: "14226"
+            logError: ""
+            name: Example Name
+            rank: 1
+            id: 1
+            type: type
+            keyword: Example Keyword
+            status: PASS
+          - duration: "14226"
+            logError: ""
+            name: Example Name
+            rank: 1
+            id: 1
+            type: type
+            keyword: Example Keyword
+            status: PASS
+          rank: 1
+          id: "1379"
+          hooks:
+          - duration: "14226"
+            logError: ""
+            name: Example Name
+            rank: 1
+            id: 1
+            type: type
+            keyword: Example Keyword
+            status: PASS
+          - duration: "14226"
+            logError: ""
+            name: Example Name
+            rank: 1
+            id: 1
+            type: type
+            keyword: Example Keyword
+            status: PASS
+          steps:
+          - duration: "14226"
+            logError: ""
+            name: Example Name
+            rank: 1
+            id: 1
+            type: type
+            keyword: Example Keyword
+            status: PASS
+          - duration: "14226"
+            logError: ""
+            name: Example Name
+            rank: 1
+            id: 1
+            type: type
+            keyword: Example Keyword
+            status: PASS
+          status: TODO
+        customFields:
+        - ""
+        - ""
+        defects:
+          add:
+          - CALC-1
+          - CALC-2
+          remove:
+          - CALC-3
+          - CALC-4
+        comment: Comment on Test Run
+        assignee: admin
+        evidences:
+          add:
+          - filename: example.txt
+            data: gsddfgdsfg...(base64)
+            contentType: plain/text
+          - filename: example.txt
+            data: gsddfgdsfg...(base64)
+            contentType: plain/text
+          remove:
+          - 1235
+          - 5674
+        steps:
+        - defects:
+            add:
+            - CALC-123
+            - CALC-765
+            remove:
+            - CALC-563
+            - CALC-744
+          comment: Comment on step
+          id: 85778
+          evidences:
+            add:
+            - filename: example.txt
+              data: gsddfgdsfg...(base64)
+              contentType: plain/text
+            - filename: example.txt
+              data: gsddfgdsfg...(base64)
+              contentType: plain/text
+            remove:
+            - CALC-124
+            - CALC- 657
+          status: FAIL
+          actualResult: Actual result on step
+        - defects:
+            add:
+            - CALC-123
+            - CALC-765
+            remove:
+            - CALC-563
+            - CALC-744
+          comment: Comment on step
+          id: 85778
+          evidences:
+            add:
+            - filename: example.txt
+              data: gsddfgdsfg...(base64)
+              contentType: plain/text
+            - filename: example.txt
+              data: gsddfgdsfg...(base64)
+              contentType: plain/text
+            remove:
+            - CALC-124
+            - CALC- 657
+          status: FAIL
+          actualResult: Actual result on step
+        iterations:
+        - id: 35
+          status: PASS
+        - id: 35
+          status: PASS
+        status: PASS
+      properties:
+        status:
+          example: PASS
+          type: string
+        comment:
+          example: Comment on Test Run
+          type: string
+        assignee:
+          example: admin
+          type: string
+        defects:
+          $ref: '#/components/schemas/Defects'
+        evidences:
+          $ref: '#/components/schemas/UpdateTestRun_evidences'
+        customFields:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/UpdateTestRunCustomFieldSingle'
+            - $ref: '#/components/schemas/UpdateTestRunCustomFieldMulti'
+          type: array
+        iterations:
+          items:
+            $ref: '#/components/schemas/UpdateIterationStatus'
+          type: array
+        steps:
+          items:
+            $ref: '#/components/schemas/UpdateStepResult'
+          type: array
+        examples:
+          $ref: '#/components/schemas/UpdateTestRun_examples'
+      type: object
+    TestExampleStepBean:
+      example:
+        duration: "14226"
+        logError: ""
+        name: Example Name
+        rank: 1
+        id: 1
+        type: type
+        keyword: Example Keyword
+        status: PASS
+      properties:
+        id:
+          example: 1
+          type: integer
+        rank:
+          example: 1
+          type: integer
+        type:
+          example: type
+          type: string
+        keyword:
+          example: Example Keyword
+          type: string
+        name:
+          example: Example Name
+          type: string
+        duration:
+          example: "14226"
+          type: string
+        logError:
+          example: ""
+          type: string
+        status:
+          example: PASS
+          type: string
+      type: object
+    Defects:
+      example:
+        add:
+        - CALC-1
+        - CALC-2
+        remove:
+        - CALC-3
+        - CALC-4
+      properties:
+        add:
+          example:
+          - CALC-1
+          - CALC-2
+          items:
+            type: string
+          type: array
+        remove:
+          example:
+          - CALC-3
+          - CALC-4
+          items:
+            type: string
+          type: array
+      type: object
+    UpdateTestRunResponse:
+      example:
+        stepResults:
+        - warnings:
+          - "[\"No attachment with id 123 was found.\"]"
+          - "[\"No attachment with id 123 was found.\"]"
+          evidenceIds:
+          - 6
+          - 6
+          id: 813743
+        - warnings:
+          - "[\"No attachment with id 123 was found.\"]"
+          - "[\"No attachment with id 123 was found.\"]"
+          evidenceIds:
+          - 6
+          - 6
+          id: 813743
+        warnings:
+        - "[\"Test example with id 1379 does not belong to test run with id 1004725.\"\
+          ]"
+        - "[\"Test example with id 1379 does not belong to test run with id 1004725.\"\
+          ]"
+        evidenceIds:
+        - 0
+        - 0
+        id: 1004725
+      properties:
+        id:
+          example: 1004725
+          type: integer
+        evidenceIds:
+          items:
+            type: integer
+          type: array
+        warnings:
+          items:
+            example: "[\"Test example with id 1379 does not belong to test run with\
+              \ id 1004725.\"]"
+            type: string
+          type: array
+        stepResults:
+          items:
+            $ref: '#/components/schemas/StepResultsResponse'
+          type: array
+      type: object
+    UpdateIterationResponse:
+      example:
+        stepResults:
+        - warnings:
+          - "[\"No attachment with id 123 was found.\"]"
+          - "[\"No attachment with id 123 was found.\"]"
+          evidenceIds:
+          - 6
+          - 6
+          id: 813743
+        - warnings:
+          - "[\"No attachment with id 123 was found.\"]"
+          - "[\"No attachment with id 123 was found.\"]"
+          evidenceIds:
+          - 6
+          - 6
+          id: 813743
+        id: 1004725
+      properties:
+        id:
+          example: 1004725
+          type: integer
+        stepResults:
+          items:
+            $ref: '#/components/schemas/StepResultsResponse'
+          type: array
+      type: object
+    StepResultsResponse:
+      example:
+        warnings:
+        - "[\"No attachment with id 123 was found.\"]"
+        - "[\"No attachment with id 123 was found.\"]"
+        evidenceIds:
+        - 6
+        - 6
+        id: 813743
+      properties:
+        id:
+          example: 813743
+          type: integer
+        evidenceIds:
+          items:
+            type: integer
+          type: array
+        warnings:
+          items:
+            example: "[\"No attachment with id 123 was found.\"]"
+            type: string
+          type: array
+      type: object
+    TestRunIterationInformation:
+      example:
+        color: '#D45D52'
+        testRunId: 83
+        id: 135
+        parameters:
+        - name: name
+          value: value
+        - name: name
+          value: value
+        steps:
+        - index: 1
+          fields:
+            Action:
+              type: Wiki
+              value:
+                raw: When prompted to login I fill the username field with John and
+                  the password with 12345
+                rendered: <p>When prompted to login I fill the username field with
+                  John and the password with 12345</p>
+            Expected Result:
+              type: Wiki
+              value:
+                raw: I'm authenticated!
+                rendered: <p>I'm authenticated!</p>
+        - index: 1
+          fields:
+            Action:
+              type: Wiki
+              value:
+                raw: When prompted to login I fill the username field with John and
+                  the password with 12345
+                rendered: <p>When prompted to login I fill the username field with
+                  John and the password with 12345</p>
+            Expected Result:
+              type: Wiki
+              value:
+                raw: I'm authenticated!
+                rendered: <p>I'm authenticated!</p>
+        status: FAIL
+      properties:
+        id:
+          example: 135
+          type: integer
+        testRunId:
+          example: 83
+          type: integer
+        status:
+          example: FAIL
+          type: string
+        color:
+          example: '#D45D52'
+          type: string
+        parameters:
+          items:
+            $ref: '#/components/schemas/DatasetParameter'
+          type: array
+        steps:
+          items:
+            $ref: '#/components/schemas/IterationStepInformation'
+          type: array
+      type: object
+    IterationStepInformation:
+      example:
+        index: 1
+        fields:
+          Action:
+            type: Wiki
+            value:
+              raw: When prompted to login I fill the username field with John and
+                the password with 12345
+              rendered: <p>When prompted to login I fill the username field with John
+                and the password with 12345</p>
+          Expected Result:
+            type: Wiki
+            value:
+              raw: I'm authenticated!
+              rendered: <p>I'm authenticated!</p>
+      properties:
+        index:
+          example: 1
+          type: integer
+        fields:
+          additionalProperties:
+            oneOf:
+            - $ref: '#/components/schemas/DataField'
+            - $ref: '#/components/schemas/OptionField'
+            - $ref: '#/components/schemas/WikiField'
+          example:
+            Action:
+              type: Wiki
+              value:
+                raw: When prompted to login I fill the username field with John and
+                  the password with 12345
+                rendered: <p>When prompted to login I fill the username field with
+                  John and the password with 12345</p>
+            Expected Result:
+              type: Wiki
+              value:
+                raw: I'm authenticated!
+                rendered: <p>I'm authenticated!</p>
+          type: object
+      title: IterationStepInformation
+      type: object
+      x-examples:
+        example-1:
+          index: 1
+          fields:
+            Action:
+              type: Wiki
+              value:
+                raw: When prompted to login I fill the username field with John and
+                  the password with 12345
+                rendered: <p>When prompted to login I fill the username field with
+                  John and the password with 12345</p>
+            Expected Result:
+              type: Wiki
+              value:
+                raw: I'm authenticated!
+                rendered: <p>I'm authenticated!</p>
+    ProjectTestRunCFMetaInformation:
+      items:
+        oneOf:
+        - $ref: '#/components/schemas/CustomFieldMetaInformation'
+        - $ref: '#/components/schemas/OptionCustomFieldMetaInformation'
+      type: array
+    CustomFieldMetaInformation:
+      properties:
+        id:
+          example: "252922"
+          type: string
+        name:
+          example: Toggle for Test Run
+          type: string
+        description:
+          example: A toggle custom field for the test runs
+          type: string
+        type:
+          example: TOGGLE
+          type: string
+        required:
+          example: false
+          type: boolean
+        enabled:
+          example: true
+          type: boolean
+        testTypes:
+          example:
+          - Manual
+          - Cucumber
+          items:
+            type: string
+          type: array
+      type: object
+    OptionCustomFieldMetaInformation:
+      properties:
+        id:
+          example: "252922"
+          type: string
+        name:
+          example: Toggle for Test Run
+          type: string
+        description:
+          example: A toggle custom field for the test runs
+          type: string
+        type:
+          example: TOGGLE
+          type: string
+        required:
+          example: false
+          type: boolean
+        enabled:
+          example: true
+          type: boolean
+        options:
+          example:
+          - Option A
+          - Option B
+          - Option C
+          items:
+            type: string
+          type: array
+        testTypes:
+          example:
+          - Generic
+          items:
+            type: string
+          type: array
+      type: object
+    ProjectTestStepCFMetaInformation:
+      items:
+        oneOf:
+        - $ref: '#/components/schemas/StepCustomFieldMetaInformation'
+        - $ref: '#/components/schemas/StepOptionCustomFieldMetaInformation'
+      type: array
+    StepCustomFieldMetaInformation:
+      properties:
+        id:
+          example: "252922"
+          type: string
+        name:
+          example: Toggle for Test Run
+          type: string
+        description:
+          example: A toggle custom field for the test runs
+          type: string
+        type:
+          example: TOGGLE
+          type: string
+        required:
+          example: false
+          type: boolean
+        enabled:
+          example: true
+          type: boolean
+      type: object
+    StepOptionCustomFieldMetaInformation:
+      properties:
+        id:
+          example: "252922"
+          type: string
+        name:
+          example: Toggle for Test Run
+          type: string
+        description:
+          example: A toggle custom field for the test runs
+          type: string
+        type:
+          example: TOGGLE
+          type: string
+        required:
+          example: false
+          type: boolean
+        enabled:
+          example: true
+          type: boolean
+        options:
+          example:
+          - Option A
+          - Option B
+          - Option C
+          items:
+            type: string
+          type: array
+      type: object
+    UpdateTRCustomFieldValueSingle:
+      properties:
+        value:
+          example: "true"
+          type: string
+      type: object
+    UpdateTRCustomFieldValueMulti:
+      example:
+      - Option A
+      - Option B
+      properties:
+        value:
+          items:
+            type: string
+          type: array
+      type: object
+    TestRunExample:
+      properties:
+        id:
+          example: 156
+          type: integer
+        rank:
+          example: 1
+          type: integer
+      type: object
+    XrayLicenseStatus:
+      example:
+        licenseType: Commercial (Atlassian Marketplace)
+        active: true
+      properties:
+        active:
+          example: true
+          type: boolean
+        licenseType:
+          example: Commercial (Atlassian Marketplace)
+          type: string
+      type: object
+    XrayJsonImportExecution:
+      example:
+        testExecutionKey: testExecutionKey
+        tests:
+        - testInfo:
+            summary: summary
+            projectKey: projectKey
+            scenarioType: scenarioType
+            scenario: scenario
+            testType: testType
+            requirementKeys: requirementKeys
+            definition: definition
+          executedBy: executedBy
+          examples:
+          - examples
+          - examples
+          customFields:
+          - ""
+          - ""
+          start: start
+          comment: comment
+          finish: finish
+          testKey: testKey
+          evidences:
+          - filename: filename
+            data: data
+            contentType: contentType
+          - filename: filename
+            data: data
+            contentType: contentType
+          results:
+          - duration: 0
+            examples:
+            - examples
+            - examples
+            log: log
+            name: name
+            status: status
+          - duration: 0
+            examples:
+            - examples
+            - examples
+            log: log
+            name: name
+            status: status
+          steps:
+          - comment: comment
+            evidences:
+            - filename: filename
+              data: data
+              contentType: contentType
+            - filename: filename
+              data: data
+              contentType: contentType
+            status: status
+            actualResult: actualResult
+          - comment: comment
+            evidences:
+            - filename: filename
+              data: data
+              contentType: contentType
+            - filename: filename
+              data: data
+              contentType: contentType
+            status: status
+            actualResult: actualResult
+          status: status
+        - testInfo:
+            summary: summary
+            projectKey: projectKey
+            scenarioType: scenarioType
+            scenario: scenario
+            testType: testType
+            requirementKeys: requirementKeys
+            definition: definition
+          executedBy: executedBy
+          examples:
+          - examples
+          - examples
+          customFields:
+          - ""
+          - ""
+          start: start
+          comment: comment
+          finish: finish
+          testKey: testKey
+          evidences:
+          - filename: filename
+            data: data
+            contentType: contentType
+          - filename: filename
+            data: data
+            contentType: contentType
+          results:
+          - duration: 0
+            examples:
+            - examples
+            - examples
+            log: log
+            name: name
+            status: status
+          - duration: 0
+            examples:
+            - examples
+            - examples
+            log: log
+            name: name
+            status: status
+          steps:
+          - comment: comment
+            evidences:
+            - filename: filename
+              data: data
+              contentType: contentType
+            - filename: filename
+              data: data
+              contentType: contentType
+            status: status
+            actualResult: actualResult
+          - comment: comment
+            evidences:
+            - filename: filename
+              data: data
+              contentType: contentType
+            - filename: filename
+              data: data
+              contentType: contentType
+            status: status
+            actualResult: actualResult
+          status: status
+        info:
+          summary: summary
+          project: project
+          description: description
+          finishDate: finishDate
+          user: user
+          version: version
+          startDate: startDate
+          revision: revision
+      properties:
+        testExecutionKey:
+          type: string
+        info:
+          $ref: '#/components/schemas/XrayJsonImportExecution_info'
+        tests:
+          items:
+            $ref: '#/components/schemas/XrayJsonImportExecution_tests'
+          type: array
+      title: XrayJsonImportExecution
+      type: object
+      x-examples:
+        example-1:
+          info:
+            summary: Execution of automated tests for release v1.3
+            description: This execution is automatically created when importing execution
+              results from an external source
+            version: v1.3
+            user: admin
+            revision: 1.0.42134
+            startDate: 2014-08-30T11:47:35+01:00
+            finishDate: 2014-08-30T11:53:00+01:00
+            testPlanKey: DEMO-100
+            testEnvironments:
+            - iOS
+            - Android
+          tests:
+          - testKey: DEMO-6
+            start: 2014-08-30T11:47:35+01:00
+            finish: 2014-08-30T11:50:56+01:00
+            comment: Successful execution
+            status: PASS
+          - testKey: DEMO-7
+            start: 2014-08-30T11:51:00+01:00
+            finish: 2014-08-30T11:52:30+01:00
+            comment: "Execution failed. Example #5 FAIL."
+            status: FAIL
+            customFields:
+            - id: 321
+              value:
+              - option A
+              - option B
+            evidences:
+            - data: iVBORw0KGgoAAAANSUhEUgAABkIAAAO9CAYAAADezXv6AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEn(...base64
+                file enconding)
+              filename: image21.jpg
+              contentType: image/jpeg
+            examples:
+            - PASS
+            - PASS
+            - PASS
+            - PASS
+            - FAIL
+            steps:
+            - status: PASS
+              comment: Coment on Test Step Result 1
+              evidences:
+              - data: iVBORw0KGgoAAAANSUhEUgAABkIAAAO9CAYAAADezXv6AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEn(...base64
+                  file enconding)
+                filename: image22.jpg
+                contentType: image/jpeg
+              actualResult: Actual result on Test Step 1
+            defects:
+            - DEMO-10
+            - DEMO-11
+    RestApiSuccessResponse:
+      example:
+        testExecIssue:
+          self: self
+          id: id
+          key: key
+        testIssues:
+          success:
+          - self: self
+            id: id
+            key: key
+          - self: self
+            id: id
+            key: key
+          error:
+          - messages:
+            - messages
+            - messages
+            testDefinition: testDefinition
+          - messages:
+            - messages
+            - messages
+            testDefinition: testDefinition
+        testRunWarnings:
+        - testExecutionKey: testExecutionKey
+          warningCollection:
+          - warningCollection
+          - warningCollection
+          testRunId: 0
+          testKey: testKey
+        - testExecutionKey: testExecutionKey
+          warningCollection:
+          - warningCollection
+          - warningCollection
+          testRunId: 0
+          testKey: testKey
+        message: message
+        testWarnings:
+        - testWarnings
+        - testWarnings
+      properties:
+        testExecIssue:
+          $ref: '#/components/schemas/RestApiSuccessResponse_testExecIssue'
+        testIssues:
+          $ref: '#/components/schemas/RestApiSuccessResponse_testIssues'
+        testWarnings:
+          items:
+            type: string
+          type: array
+        testRunWarnings:
+          items:
+            $ref: '#/components/schemas/RestApiSuccessResponse_testRunWarnings'
+          type: array
+        message:
+          type: string
+      required:
+      - testExecIssue
+      title: RestApiSuccessResponse
+      type: object
+      x-examples:
+        example-1:
+          testExecIssue:
+            id: "38101"
+            key: TMP-82
+            self: http://localhost:30000/rest/api/2/issue/38101
+          testIssues:
+            success:
+            - self: http://localhost:30000/rest/api/2/issue/36600
+              id: "36600"
+              key: TMP-1
+    XrayJsonImportMultipartRequest:
+      properties:
+        result:
+          description: |+
+            The Xray JSON file, same as described in the `POST /import/execution` ([link](https://docs.getxray.app/display/XRAY420/v2.0#/Import/post-import-execution)). This file **must** be of type `application/json`.
+
+            <details>
+            <summary>Example 1 (Create new Test Execution issue)</summary>
+
+            ```
+            {
+              "info": {
+                "summary": "Execution of automated tests for release v1.3",
+                "description": "This execution is automatically created when importing execution results from an external source",
+                "version": "v1.3",
+                "user": "admin",
+                "revision": "1.0.42134",
+                "startDate": "2014-08-30T11:47:35+01:00",
+                "finishDate": "2014-08-30T11:53:00+01:00",
+                "testPlanKey": "DEMO-100",
+                "testEnvironments": [
+                  "iOS",
+                  "Android"
+                ]
+              },
+              "tests": [
+                {
+                  "testKey": "DEMO-6",
+                  "start": "2014-08-30T11:47:35+01:00",
+                  "finish": "2014-08-30T11:50:56+01:00",
+                  "comment": "Successful execution",
+                  "status": "PASS"
+                },
+                {
+                  "testKey": "DEMO-7",
+                  "start": "2014-08-30T11:51:00+01:00",
+                  "finish": "2014-08-30T11:52:30+01:00",
+                  "comment": "Execution failed. Example #5 FAIL.",
+                  "status": "FAIL",
+                  "customFields": [
+                    {
+                      "id": 321,
+                      "value": [
+                        "option A",
+                        "option B"
+                      ]
+                    }
+                  ],
+                  "evidences": [
+                    {
+                      "data": "iVBORw0KGgoAAAANSUhEUgAABkIAAAO9CAYAAADezXv6AAAAEn(...base64 file enconding)",
+                      "filename": "image21.jpg",
+                      "contentType": "image/jpeg"
+                    }
+                  ],
+                  "examples": [
+                    "PASS",
+                    "PASS",
+                    "PASS",
+                    "PASS",
+                    "FAIL"
+                  ],
+                  "steps": [
+                    {
+                      "status": "PASS",
+                      "comment": "Coment on Test Step Result 1",
+                      "evidences": [
+                        {
+                          "data": "iVBORw0KGgoAAAANSUhEUgAABkIAAAO9CAYAAADezXv6AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEn(...base64 file enconding)",
+                          "filename": "image22.jpg",
+                          "contentType": "image/jpeg"
+                        }
+                      ],
+                      "actualResult": "Actual result on Test Step 1"
+                    }
+                  ],
+                  "defects": [
+                    "DEMO-10",
+                    "DEMO-11"
+                  ]
+                }
+              ]
+            }
+            ```
+            </details>
+
+            <details>
+            <summary>Example 2 (Update Existing Test Execution)</summary>
+
+            ```
+            {
+                "testExecutionKey": "DEMO-1206",
+                "tests" : [
+                    {
+                        "testKey" : "DEMO-6",
+                        "start" : "2014-08-30T11:47:35+01:00",
+                        "finish" : "2014-08-30T11:50:56+01:00",
+                        "comment" : "Successful execution",
+                        "status" : "PASS"
+                    }
+                 ]
+            }
+            ```
+            </details>
+
+          format: binary
+          pattern: .+\.json
+          type: string
+        info:
+          description: "Should follow the same format as the \"fields\" part, described\
+            \ in the [official Jira REST API](https://docs.atlassian.com/software/jira/docs/api/REST/latest/#api/2/issue-createIssue).\n\
+            This file **must** be of type `application/json`.\n\n<details>\n<summary>Example\
+            \ 1 (Fields for a new Test Execution)</summary>\n\n```\n{\n    \"fields\"\
+            : {\n        \"project\": {\n            \"id\": \"10402\"\n        },\n\
+            \        \"summary\": \"Brand new Test execution\",\n        \"issuetype\"\
+            : {\n            \"id\": \"10007\"\n        },\n        \"components\"\
+            \ : [\n            {\n            \"name\":\"Interface\"\n           \
+            \ },\n            {\n            \"name\":\"Core\"\n            }\n  \
+            \      ],\n        \"customfield_10032\" : [\n            \"TES-38\"\n\
+            \        ]\n    }\n}\n```\n</details>\n\n<details>\n<summary>Example 2\
+            \ (Fields for updating a Test Execution)</summary>\n\n```\n{\n    \"fields\"\
+            : {\n        \"customfield_10032\" : [\n            \"a_label\"\n    \
+            \    ],\n        \"description\": \"update the issue description\"\n \
+            \   }\n}\n``` \n</details>\n\n"
+          format: binary
+          pattern: .+\.json
+          type: string
+      required:
+      - info
+      - result
+      title: XrayJsonMultipartRequest
+      type: object
+      x-examples:
+        example-1:
+          result: my_test_result_file.json
+          info: my_test_execution_issue_properties.json
+    DatasetParameter:
+      example:
+        name: name
+        value: value
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+      title: DatasetParameter
+      type: object
+    TestRunIterationStatusInformation:
+      example:
+        color: color
+        id: 0
+        parameters:
+        - name: name
+          value: value
+        - name: name
+          value: value
+        status: status
+      properties:
+        id:
+          type: integer
+        status:
+          type: string
+        color:
+          type: string
+        parameters:
+          items:
+            $ref: '#/components/schemas/DatasetParameter'
+          type: array
+          uniqueItems: false
+      type: object
+      x-examples:
+        example-1:
+          id: 13889
+          status: PASS
+          color: '#95C160'
+          parameters:
+          - name: A
+            value: "1"
+          - name: B
+            value: "7"
+    UpdateIterationStatus:
+      example:
+        id: 35
+        status: PASS
+      properties:
+        id:
+          example: 35
+          type: integer
+        status:
+          example: PASS
+          type: string
+      type: object
+    FolderRestBean:
+      properties:
+        id:
+          example: 1001
+          type: integer
+        rank:
+          example: 1
+          type: integer
+        name:
+          example: Unit Tests
+          type: string
+        testCount:
+          example: 2
+          type: integer
+        totalTestCount:
+          example: 12
+          type: integer
+        testRepositoryPath:
+          example: /v4.3.2/AutomatedTests
+          type: string
+        folderIds:
+          example:
+          - 1002
+          - 1003
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+      type: object
+    FolderRestBeans:
+      items:
+        $ref: '#/components/schemas/FolderRestBean'
+      type: array
+      uniqueItems: true
+    inline_response_200:
+      example:
+        status: PASS
+      properties:
+        status:
+          example: PASS
+          type: string
+      type: object
+    _testruns_evidences:
+      example:
+        filename: filename
+        data: data
+        contentType: contentType
+      properties:
+        filename:
+          type: string
+        contentType:
+          type: string
+        data:
+          type: string
+      type: object
+    _testruns_steps:
+      example:
+        defects:
+        - defects
+        - defects
+        comment: comment
+        evidences:
+        - filename: filename
+          data: data
+          contentType: contentType
+        - filename: filename
+          data: data
+          contentType: contentType
+        status: status
+        actualResult: actualResult
+      properties:
+        status:
+          type: string
+        comment:
+          type: string
+        defects:
+          items:
+            type: string
+          type: array
+        evidences:
+          items:
+            $ref: '#/components/schemas/_testruns_evidences'
+          type: array
+          uniqueItems: true
+        actualResult:
+          type: string
+      type: object
+    inline_response_200_1:
+      example:
+        start: start
+        testEnvironments:
+        - testEnvironments
+        - testEnvironments
+        type: type
+        testExecKey: testExecKey
+        steps:
+        - defects:
+          - defects
+          - defects
+          comment: comment
+          evidences:
+          - filename: filename
+            data: data
+            contentType: contentType
+          - filename: filename
+            data: data
+            contentType: contentType
+          status: status
+          actualResult: actualResult
+        - defects:
+          - defects
+          - defects
+          comment: comment
+          evidences:
+          - filename: filename
+            data: data
+            contentType: contentType
+          - filename: filename
+            data: data
+            contentType: contentType
+          status: status
+          actualResult: actualResult
+        defects:
+        - defects
+        - defects
+        comment: comment
+        id: 0
+        testKey: testKey
+        assignee: assignee
+        evidences:
+        - filename: filename
+          data: data
+          contentType: contentType
+        - filename: filename
+          data: data
+          contentType: contentType
+        parameters:
+        - name: name
+          value: value
+        - name: name
+          value: value
+        status: status
+      properties:
+        id:
+          type: integer
+        testExecKey:
+          type: string
+        testKey:
+          type: string
+        status:
+          type: string
+        type:
+          type: string
+        start:
+          type: string
+        defects:
+          items:
+            type: string
+          type: array
+          uniqueItems: true
+        evidences:
+          items:
+            $ref: '#/components/schemas/_testruns_evidences'
+          type: array
+          uniqueItems: true
+        steps:
+          items:
+            $ref: '#/components/schemas/_testruns_steps'
+          type: array
+          uniqueItems: true
+        parameters:
+          items:
+            $ref: '#/components/schemas/DatasetParameter'
+          type: array
+          uniqueItems: true
+        assignee:
+          type: string
+        testEnvironments:
+          items:
+            type: string
+          type: array
+        comment:
+          type: string
+      type: object
+    StepResult_comment:
+      example:
+        rendered: Comment on step
+      properties:
+        rendered:
+          example: Comment on step
+          type: string
+      type: object
+    StepResult_actualResult:
+      example:
+        rendered: Actual result on step
+      properties:
+        rendered:
+          example: Actual result on step
+          type: string
+      type: object
+    UpdateStepResult_defects:
+      example:
+        add:
+        - CALC-123
+        - CALC-765
+        remove:
+        - CALC-563
+        - CALC-744
+      properties:
+        add:
+          example:
+          - CALC-123
+          - CALC-765
+          items:
+            type: string
+          type: array
+        remove:
+          example:
+          - CALC-563
+          - CALC-744
+          items:
+            type: string
+          type: array
+      type: object
+    UpdateStepResult_evidences:
+      example:
+        add:
+        - filename: example.txt
+          data: gsddfgdsfg...(base64)
+          contentType: plain/text
+        - filename: example.txt
+          data: gsddfgdsfg...(base64)
+          contentType: plain/text
+        remove:
+        - CALC-124
+        - CALC- 657
+      properties:
+        add:
+          items:
+            $ref: '#/components/schemas/File'
+          type: array
+        remove:
+          example:
+          - CALC-124
+          - CALC- 657
+          items:
+            type: string
+          type: array
+      type: object
+    CreateStepResponse_step:
+      example:
+        attachmentIds:
+        - 25737
+        - 25738
+        id: 85860
+      properties:
+        id:
+          example: 85860
+          type: integer
+        attachmentIds:
+          example:
+          - 25737
+          - 25738
+          items:
+            type: integer
+          type: array
+      type: object
+    UpdateStep_attachments:
+      properties:
+        add:
+          items:
+            $ref: '#/components/schemas/File'
+          type: array
+        remove:
+          example:
+          - 1234
+          - 4546
+          items:
+            type: integer
+          type: array
+      type: object
+    UpdateTestRun_evidences:
+      example:
+        add:
+        - filename: example.txt
+          data: gsddfgdsfg...(base64)
+          contentType: plain/text
+        - filename: example.txt
+          data: gsddfgdsfg...(base64)
+          contentType: plain/text
+        remove:
+        - 1235
+        - 5674
+      properties:
+        add:
+          items:
+            $ref: '#/components/schemas/File'
+          type: array
+        remove:
+          example:
+          - 1235
+          - 5674
+          items:
+            type: integer
+          type: array
+      type: object
+    UpdateTestRun_examples:
+      example:
+        duration: "12960"
+        statusDescription: Description of the status
+        values:
+        - value1
+        - value2
+        backgrounds:
+        - duration: "14226"
+          logError: ""
+          name: Example Name
+          rank: 1
+          id: 1
+          type: type
+          keyword: Example Keyword
+          status: PASS
+        - duration: "14226"
+          logError: ""
+          name: Example Name
+          rank: 1
+          id: 1
+          type: type
+          keyword: Example Keyword
+          status: PASS
+        rank: 1
+        id: "1379"
+        hooks:
+        - duration: "14226"
+          logError: ""
+          name: Example Name
+          rank: 1
+          id: 1
+          type: type
+          keyword: Example Keyword
+          status: PASS
+        - duration: "14226"
+          logError: ""
+          name: Example Name
+          rank: 1
+          id: 1
+          type: type
+          keyword: Example Keyword
+          status: PASS
+        steps:
+        - duration: "14226"
+          logError: ""
+          name: Example Name
+          rank: 1
+          id: 1
+          type: type
+          keyword: Example Keyword
+          status: PASS
+        - duration: "14226"
+          logError: ""
+          name: Example Name
+          rank: 1
+          id: 1
+          type: type
+          keyword: Example Keyword
+          status: PASS
+        status: TODO
+      properties:
+        id:
+          example: "1379"
+          type: string
+        rank:
+          example: 1
+          type: integer
+        values:
+          example:
+          - value1
+          - value2
+          items:
+            type: string
+          type: array
+        status:
+          example: TODO
+          type: string
+        statusDescription:
+          example: Description of the status
+          type: string
+        duration:
+          example: "12960"
+          type: string
+        backgrounds:
+          items:
+            $ref: '#/components/schemas/TestExampleStepBean'
+          type: array
+        hooks:
+          items:
+            $ref: '#/components/schemas/TestExampleStepBean'
+          type: array
+        steps:
+          items:
+            $ref: '#/components/schemas/TestExampleStepBean'
+          type: array
+      type: object
+    XrayJsonImportExecution_info:
+      example:
+        summary: summary
+        project: project
+        description: description
+        finishDate: finishDate
+        user: user
+        version: version
+        startDate: startDate
+        revision: revision
+      properties:
+        project:
+          type: string
+        summary:
+          type: string
+        description:
+          type: string
+        user:
+          type: string
+        version:
+          type: string
+        revision:
+          type: string
+        startDate:
+          type: string
+        finishDate:
+          type: string
+      type: object
+    XrayJsonImportExecution_testInfo:
+      example:
+        summary: summary
+        projectKey: projectKey
+        scenarioType: scenarioType
+        scenario: scenario
+        testType: testType
+        requirementKeys: requirementKeys
+        definition: definition
+      properties:
+        testType:
+          type: string
+        projectKey:
+          type: string
+        summary:
+          type: string
+        scenarioType:
+          type: string
+        scenario:
+          type: string
+        definition:
+          type: string
+        requirementKeys:
+          type: string
+      type: object
+    XrayJsonImportExecution_evidences:
+      example:
+        filename: filename
+        data: data
+        contentType: contentType
+      properties:
+        data:
+          type: string
+        filename:
+          type: string
+        contentType:
+          type: string
+      type: object
+    XrayJsonImportExecution_results:
+      example:
+        duration: 0
+        examples:
+        - examples
+        - examples
+        log: log
+        name: name
+        status: status
+      properties:
+        name:
+          type: string
+        duration:
+          type: integer
+        log:
+          type: string
+        status:
+          type: string
+        examples:
+          items:
+            type: string
+          type: array
+      type: object
+    XrayJsonImportExecution_steps:
+      example:
+        comment: comment
+        evidences:
+        - filename: filename
+          data: data
+          contentType: contentType
+        - filename: filename
+          data: data
+          contentType: contentType
+        status: status
+        actualResult: actualResult
+      properties:
+        status:
+          type: string
+        comment:
+          type: string
+        evidences:
+          items:
+            $ref: '#/components/schemas/XrayJsonImportExecution_evidences'
+          type: array
+        actualResult:
+          type: string
+      type: object
+    XrayJsonImportExecution_tests:
+      example:
+        testInfo:
+          summary: summary
+          projectKey: projectKey
+          scenarioType: scenarioType
+          scenario: scenario
+          testType: testType
+          requirementKeys: requirementKeys
+          definition: definition
+        executedBy: executedBy
+        examples:
+        - examples
+        - examples
+        customFields:
+        - ""
+        - ""
+        start: start
+        comment: comment
+        finish: finish
+        testKey: testKey
+        evidences:
+        - filename: filename
+          data: data
+          contentType: contentType
+        - filename: filename
+          data: data
+          contentType: contentType
+        results:
+        - duration: 0
+          examples:
+          - examples
+          - examples
+          log: log
+          name: name
+          status: status
+        - duration: 0
+          examples:
+          - examples
+          - examples
+          log: log
+          name: name
+          status: status
+        steps:
+        - comment: comment
+          evidences:
+          - filename: filename
+            data: data
+            contentType: contentType
+          - filename: filename
+            data: data
+            contentType: contentType
+          status: status
+          actualResult: actualResult
+        - comment: comment
+          evidences:
+          - filename: filename
+            data: data
+            contentType: contentType
+          - filename: filename
+            data: data
+            contentType: contentType
+          status: status
+          actualResult: actualResult
+        status: status
+      properties:
+        comment:
+          type: string
+        finish:
+          type: string
+        start:
+          type: string
+        status:
+          type: string
+        customFields:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/UpdateTestRunCustomFieldSingle'
+            - $ref: '#/components/schemas/UpdateTestRunCustomFieldMulti'
+          type: array
+        testInfo:
+          $ref: '#/components/schemas/XrayJsonImportExecution_testInfo'
+        testKey:
+          type: string
+        executedBy:
+          type: string
+        evidences:
+          items:
+            $ref: '#/components/schemas/XrayJsonImportExecution_evidences'
+          type: array
+        results:
+          items:
+            $ref: '#/components/schemas/XrayJsonImportExecution_results'
+          type: array
+        examples:
+          items:
+            type: string
+          type: array
+        steps:
+          items:
+            $ref: '#/components/schemas/XrayJsonImportExecution_steps'
+          type: array
+      type: object
+    RestApiSuccessResponse_testExecIssue:
+      example:
+        self: self
+        id: id
+        key: key
+      properties:
+        id:
+          type: string
+        key:
+          type: string
+        self:
+          type: string
+      required:
+      - id
+      - key
+      - self
+      type: object
+    RestApiSuccessResponse_testIssues_success:
+      example:
+        self: self
+        id: id
+        key: key
+      properties:
+        id:
+          type: string
+        key:
+          type: string
+        self:
+          type: string
+      type: object
+    RestApiSuccessResponse_testIssues_error:
+      example:
+        messages:
+        - messages
+        - messages
+        testDefinition: testDefinition
+      properties:
+        testDefinition:
+          type: string
+        messages:
+          items:
+            type: string
+          type: array
+      type: object
+    RestApiSuccessResponse_testIssues:
+      example:
+        success:
+        - self: self
+          id: id
+          key: key
+        - self: self
+          id: id
+          key: key
+        error:
+        - messages:
+          - messages
+          - messages
+          testDefinition: testDefinition
+        - messages:
+          - messages
+          - messages
+          testDefinition: testDefinition
+      properties:
+        success:
+          items:
+            $ref: '#/components/schemas/RestApiSuccessResponse_testIssues_success'
+          type: array
+        error:
+          items:
+            $ref: '#/components/schemas/RestApiSuccessResponse_testIssues_error'
+          type: array
+      type: object
+    RestApiSuccessResponse_testRunWarnings:
+      example:
+        testExecutionKey: testExecutionKey
+        warningCollection:
+        - warningCollection
+        - warningCollection
+        testRunId: 0
+        testKey: testKey
+      properties:
+        testRunId:
+          type: integer
+        testKey:
+          type: string
+        testExecutionKey:
+          type: string
+        warningCollection:
+          items:
+            type: string
+          type: array
+      type: object
+  securitySchemes:
+    BasicAuth:
+      scheme: basic
+      type: http
+
