@@ -619,6 +619,15 @@ public class UserActions extends DriverManager {
     }
 
     /**
+     * waitForAppearance
+     *
+     * @param locator locator
+     */
+    private void waitForAppearance(By locator) {
+        wait.until(d -> d.findElements(locator).size() > 0);
+    }
+
+    /**
      * find element
      *
      * @param locator        locator
@@ -631,12 +640,7 @@ public class UserActions extends DriverManager {
                 .pollingEvery(Duration.ofMillis(100))
                 .withMessage("Timeout occured!")
                 .ignoring(NoSuchElementException.class);
-        return wait.until(new Function<WebDriver, WebElement>() {
-            @Override
-            public WebElement apply(WebDriver webDriver) {
-                return driverThread.findElement(locator);
-            }
-        });
+        return wait.until(webDriver -> driverThread.findElement(locator));
     }
 
     /**
