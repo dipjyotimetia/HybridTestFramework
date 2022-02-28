@@ -124,7 +124,7 @@ dependencies {
     implementation 'com.google.cloud:google-cloud-storage:2.4.2'
     implementation 'com.google.cloud:google-cloud-firestore:3.0.13'
     implementation 'com.google.cloud:google-cloud-pubsub:1.115.5'
-    implementation 'com.google.cloud:google-cloud-core-http:2.5.4'
+    implementation 'com.google.cloud:google-cloud-core-http:2.5.5'
     implementation 'com.google.cloud:google-cloud-secretmanager:2.1.1'
     implementation 'com.google.cloud:google-cloud-bigquery:2.9.0'
     implementation 'org.seleniumhq.selenium:selenium-java:4.1.2'
