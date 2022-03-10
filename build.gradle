@@ -115,7 +115,7 @@ task E2E(type: Test) {
 }
 
 dependencies {
-    implementation 'software.amazon.awssdk:dynamodb:2.17.138'
+    implementation 'software.amazon.awssdk:dynamodb:2.17.146'
     implementation 'software.amazon.awssdk:s3:2.17.139'
     implementation 'software.amazon.awssdk:sqs:2.17.139'
     implementation 'software.amazon.awssdk:lambda:2.17.139'
