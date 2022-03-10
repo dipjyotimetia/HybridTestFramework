@@ -126,7 +126,7 @@ dependencies {
     implementation 'com.google.cloud:google-cloud-pubsub:1.115.5'
     implementation 'com.google.cloud:google-cloud-core-http:2.5.5'
     implementation 'com.google.cloud:google-cloud-secretmanager:2.1.1'
-    implementation 'com.google.cloud:google-cloud-bigquery:2.9.0'
+    implementation 'com.google.cloud:google-cloud-bigquery:2.9.4'
     implementation 'org.seleniumhq.selenium:selenium-java:4.1.2'
     implementation 'org.seleniumhq.selenium:selenium-server:4.0.0-alpha-2'
     implementation 'io.github.bonigarcia:webdrivermanager:5.1.0'
