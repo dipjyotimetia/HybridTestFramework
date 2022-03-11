@@ -122,7 +122,7 @@ dependencies {
     implementation 'software.amazon.awssdk:sns:2.17.146'
     implementation 'software.amazon.awssdk:devicefarm:2.17.146'
     implementation 'com.google.cloud:google-cloud-storage:2.4.4'
-    implementation 'com.google.cloud:google-cloud-firestore:3.0.13'
+    implementation 'com.google.cloud:google-cloud-firestore:3.0.17'
     implementation 'com.google.cloud:google-cloud-pubsub:1.116.0'
     implementation 'com.google.cloud:google-cloud-core-http:2.5.9'
     implementation 'com.google.cloud:google-cloud-secretmanager:2.1.1'
