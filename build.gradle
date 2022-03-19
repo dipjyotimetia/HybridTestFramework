@@ -155,7 +155,7 @@ dependencies {
     implementation 'com.atlassian.oai:swagger-request-validator-pact:2.27.0'
     implementation 'org.openapitools:openapi-generator:5.4.0'
     implementation 'org.json:json:20211205'
-    implementation 'com.konghq:unirest-java:3.13.6'
+    implementation 'com.konghq:unirest-java:3.13.7'
     implementation 'net.lightbody.bmp:browsermob-core:2.1.5'
     implementation 'org.zaproxy:zap-clientapi:1.10.0'
     implementation 'org.zaproxy:zap:2.11.1'
