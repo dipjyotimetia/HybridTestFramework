@@ -28,7 +28,7 @@ plugins {
     id "java"
     id "idea"
     id "io.qameta.allure" version "2.9.6"
-    id "com.avast.gradle.docker-compose" version "0.15.1"
+    id "com.avast.gradle.docker-compose" version "0.15.2"
     id "com.github.davidmc24.gradle.plugin.avro" version "1.3.0"
     id "org.openapi.generator" version "5.4.0"
 }
@@ -150,7 +150,7 @@ dependencies {
     implementation 'com.github.javafaker:javafaker:1.0.2'
     implementation 'io.rest-assured:rest-assured:4.5.1'
     implementation 'io.rest-assured:json-schema-validator:4.5.1'
-    implementation 'com.atlassian.oai:swagger-request-validator-restassured:2.26.2'
+    implementation 'com.atlassian.oai:swagger-request-validator-restassured:2.27.0'
     implementation 'com.atlassian.oai:swagger-request-validator-pact:2.27.0'
     implementation 'com.atlassian.oai:swagger-request-validator-pact:2.27.0'
     implementation 'org.openapitools:openapi-generator:5.4.0'
