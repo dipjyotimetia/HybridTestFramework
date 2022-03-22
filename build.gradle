@@ -119,7 +119,7 @@ dependencies {
     implementation 'software.amazon.awssdk:s3:2.17.153'
     implementation 'software.amazon.awssdk:sqs:2.17.152'
     implementation 'software.amazon.awssdk:lambda:2.17.152'
-    implementation 'software.amazon.awssdk:sns:2.17.152'
+    implementation 'software.amazon.awssdk:sns:2.17.153'
     implementation 'software.amazon.awssdk:devicefarm:2.17.152'
     implementation 'com.google.cloud:google-cloud-storage:2.4.4'
     implementation 'com.google.cloud:google-cloud-firestore:3.0.19'
