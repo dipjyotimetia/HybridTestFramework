@@ -118,22 +118,22 @@ public class KafkaCore {
      * Consume kafka messages
      *
      * @param topic
-     * @throws Exception
      */
-    public void Consumer(String topic) throws Exception {
+    public void Consumer(String topic) {
         Properties configProperties = setConsumerConfig("", "");
-        KafkaConsumer<String, Customer> kafkaConsumer = new KafkaConsumer<>(configProperties);
-
-        kafkaConsumer.subscribe(Collections.singleton(topic));
-        System.out.println("Waiting for data");
-
-        while (true) {
-            ConsumerRecords<String, Customer> records = kafkaConsumer.poll(Duration.ofMillis(500));
-            for (ConsumerRecord<String, Customer> record : records) {
-                Customer customer = record.value();
-                System.out.println(customer);
+        try (KafkaConsumer<String, Customer> kafkaConsumer = new KafkaConsumer<>(configProperties)) {
+            kafkaConsumer.subscribe(Collections.singleton(topic));
+            log.info("Waiting for data");
+            while (true) {
+                ConsumerRecords<String, Customer> records = kafkaConsumer.poll(Duration.ofMillis(500));
+                for (ConsumerRecord<String, Customer> record : records) {
+                    Customer customer = record.value();
+                    System.out.println(customer);
+                }
+                kafkaConsumer.commitSync();
             }
-            kafkaConsumer.commitSync();
+        } catch (Exception e) {
+            log.error(e.getMessage());
         }
 //        kafkaConsumer.close();
     }
