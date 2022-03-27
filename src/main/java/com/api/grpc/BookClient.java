@@ -6,7 +6,9 @@ import com.endpoints.examples.bookstore.BookServiceGrpc;
 import com.endpoints.examples.bookstore.GetBookRequest;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class BookClient {
     ManagedChannel channel;
 
@@ -22,7 +24,8 @@ public class BookClient {
             GetBookRequest getBookRequest = GetBookRequest.newBuilder().setIsbn(ISBN).build();
             return bookServiceStub.getBook(getBookRequest);
         } catch (Exception ex) {
-            throw new RuntimeException(ex);
+            log.error(ex.getMessage());
+            return null;
         }
     }
 
@@ -31,7 +34,8 @@ public class BookClient {
             BookAuthorRequest getBookRequest = BookAuthorRequest.newBuilder().setAuthor(authorName).build();
             return bookServiceStub.getBooksViaAuthor(getBookRequest);
         } catch (Exception ex) {
-            throw new RuntimeException(ex);
+            log.error(ex.getMessage());
+            return null;
         }
     }
 }

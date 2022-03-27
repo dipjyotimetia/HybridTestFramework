@@ -32,7 +32,8 @@ public class CoffeeClient {
                     .build();
             return coffeeServiceStub.addCoffee(addCoffeeRequest);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            log.error(e.getMessage());
+            return null;
         }
     }
 
@@ -48,7 +49,8 @@ public class CoffeeClient {
                     .build();
             return coffeeServiceStub.updateCoffee(updateCoffeeRequest);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            log.error(e.getMessage());
+            return null;
         }
     }
 
@@ -59,7 +61,8 @@ public class CoffeeClient {
                     .build();
             return coffeeServiceStub.getCoffee(getCoffeeRequest);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            log.error(e.getMessage());
+            return null;
         }
     }
 
