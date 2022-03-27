@@ -22,8 +22,7 @@ public class BookClient {
             GetBookRequest getBookRequest = GetBookRequest.newBuilder().setIsbn(ISBN).build();
             return bookServiceStub.getBook(getBookRequest);
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            throw new Exception("Book not found");
+            throw new RuntimeException(ex);
         }
     }
 
@@ -32,8 +31,7 @@ public class BookClient {
             BookAuthorRequest getBookRequest = BookAuthorRequest.newBuilder().setAuthor(authorName).build();
             return bookServiceStub.getBooksViaAuthor(getBookRequest);
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            throw new Exception("Author details not found ");
+            throw new RuntimeException(ex);
         }
     }
 }
