@@ -32,7 +32,7 @@ public class CoffeeClient {
                     .build();
             return coffeeServiceStub.addCoffee(addCoffeeRequest);
         } catch (Exception e) {
-            throw new Exception(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -48,7 +48,7 @@ public class CoffeeClient {
                     .build();
             return coffeeServiceStub.updateCoffee(updateCoffeeRequest);
         } catch (Exception e) {
-            throw new Exception(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -59,7 +59,7 @@ public class CoffeeClient {
                     .build();
             return coffeeServiceStub.getCoffee(getCoffeeRequest);
         } catch (Exception e) {
-            throw new Exception(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -68,7 +68,7 @@ public class CoffeeClient {
         Iterator<ListCoffeeResponse> coffeeGrpcIterator;
         try {
             coffeeGrpcIterator = coffeeServiceStub.listCoffee(listCoffeeRequest);
-            for (int i = 1; coffeeGrpcIterator.hasNext(); i++) {
+            if (coffeeGrpcIterator.hasNext()) {
                 ListCoffeeResponse coffeeResponse = coffeeGrpcIterator.next();
                 System.out.println(coffeeResponse.getCoffeeDescription(0));
             }

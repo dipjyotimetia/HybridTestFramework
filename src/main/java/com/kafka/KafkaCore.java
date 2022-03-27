@@ -82,7 +82,7 @@ public class KafkaCore {
      * @param topic
      * @throws Exception
      */
-    public void Producer(String topic) throws Exception {
+    public void producer(String topic) throws Exception {
         Properties configProperty = getKafkaStreamsConfig("", "");
         KafkaProducer<String, Customer> kafkaProducer = new KafkaProducer<>(configProperty);
 
@@ -119,7 +119,7 @@ public class KafkaCore {
      *
      * @param topic
      */
-    public void Consumer(String topic) {
+    public void consumer(String topic) {
         Properties configProperties = setConsumerConfig("", "");
         try (KafkaConsumer<String, Customer> kafkaConsumer = new KafkaConsumer<>(configProperties)) {
             kafkaConsumer.subscribe(Collections.singleton(topic));
