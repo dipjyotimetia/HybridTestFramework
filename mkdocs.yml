@@ -47,6 +47,7 @@ nav:
     - Apis: api.md
     - Kafka: kafka.md
     - AWS: aws.md
+    - gRPC: grpc.md
 
 markdown_extensions:
   - admonition

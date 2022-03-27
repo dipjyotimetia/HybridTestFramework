@@ -1,6 +1,6 @@
 package com.TestDefinitionLayer;
 
-import com.api.ApiActions;
+import com.api.rest.ApiActions;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import io.qameta.allure.*;
 import io.restassured.RestAssured;

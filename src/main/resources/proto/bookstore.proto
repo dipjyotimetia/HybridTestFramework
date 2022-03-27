@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package bookstore;
+
+option java_package = "com.endpoints.examples.bookstore";
+option java_multiple_files = true;
+option java_outer_classname = "BookstoreProto";
+
+service BookService {
+  rpc GetBook (GetBookRequest) returns (BookResponse) {}
+  rpc GetBooksViaAuthor (BookAuthorRequest) returns (BookResponse) {}
+}
+
+message BookResponse {
+  string message = 1 ;
+  string response_code = 2;
+}
+
+message GetBookRequest {
+  int32 isbn = 1;
+}
+
+message BookAuthorRequest {
+  string author = 1;
+}

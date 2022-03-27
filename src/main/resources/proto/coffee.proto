@@ -1,0 +1,133 @@
+// See README.txt for information and build instructions.
+//
+// Note: START and END tags are used in comments to define sections used in
+// tutorials.  They are not part of the syntax for Protocol Buffers.
+//
+// To get an in-depth walkthrough of this file and the related examples, see:
+// https://developers.google.com/protocol-buffers/docs/tutorials
+// https://github.com/protocolbuffers/protobuf/tree/master/examples
+
+syntax = "proto3";
+package coffee;
+
+option go_package = "coffee/coffeepb";
+option csharp_namespace = "Coffee";
+option java_multiple_files = true;
+option java_outer_classname = "CoffeeProto";
+option java_package = "com.coffee";
+
+import "google/protobuf/timestamp.proto";
+
+service Coffee {
+  // Get coffee details
+  rpc GetCoffee (GetCoffeeRequest) returns (GetCoffeeResponse){};
+  // Update coffee details
+  rpc UpdateCoffee (UpdateCoffeeRequest) returns (UpdateCoffeeResponse){};
+  // Add coffee details
+  rpc AddCoffee (AddCoffeeRequest) returns (AddCoffeeResponse){};
+  // List coffee details
+  rpc ListCoffee (ListCoffeeRequest) returns (stream ListCoffeeResponse){};
+}
+
+/**
+ * List of coffee
+*/
+message ListCoffeeRequest {
+
+}
+
+/**
+ * List of coffee response
+*/
+message ListCoffeeResponse {
+  repeated CoffeeDescription coffeeDescription = 1;
+}
+
+/**
+ * Update coffee request
+*/
+message UpdateCoffeeRequest {
+  // updated name
+  string name = 1;
+  // updated flavour
+  string flavour = 2;
+  // updated aroma
+  string aroma = 3;
+  // coffee size
+  CoffeeSize coffeeSize = 4;
+  // coffee description
+  string Description = 5;
+  google.protobuf.Timestamp last_updated = 6;
+}
+
+/**
+ * Update coffee response
+*/
+message UpdateCoffeeResponse {
+  string message = 1;
+}
+
+/**
+ * Get coffee request
+*/
+message GetCoffeeRequest {
+  string name = 1;
+}
+
+/**
+ * Get coffee response
+*/
+message GetCoffeeResponse {
+  repeated CoffeeDescription coffeeDescription = 1;
+}
+
+/**
+ * Add coffee request
+*/
+message AddCoffeeRequest {
+  // coffee req id
+  string id = 1;
+  // coffee name
+  string name = 2;
+  // coffee flavour
+  string flavour = 3;
+  // coffee aroma
+  string aroma = 4;
+  // coffee size
+  CoffeeSize coffeeSize = 5;
+  // coffee description
+  string Description = 6;
+  google.protobuf.Timestamp last_updated = 7;
+}
+
+/**
+ * Add coffee response
+*/
+message AddCoffeeResponse {
+  string message = 1;
+}
+
+/**
+ * Coffee description
+*/
+message CoffeeDescription {
+  // coffee req id
+  string id = 1;
+  // coffee name
+  string name = 2;
+  // coffee flavour
+  string flavour = 3;
+  // coffee aroma
+  string aroma = 4;
+  // coffee size
+  CoffeeSize coffeeSize = 5;
+  // coffee description
+  string Description = 6;
+  google.protobuf.Timestamp last_updated = 7;
+}
+
+enum CoffeeSize {
+  SMALL = 0;
+  MEDIUM = 1;
+  LONG = 2;
+}

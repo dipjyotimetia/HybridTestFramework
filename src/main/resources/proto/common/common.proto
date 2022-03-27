@@ -1,0 +1,17 @@
+syntax = "proto3";
+package common;
+option java_package = "com.movie.common";
+option java_multiple_files = true;
+
+enum Genre {
+  COMEDY = 0;
+  ACTION = 1;
+  THRILLER = 2;
+  DRAMA = 3;
+}
+message Movie {
+  string title = 1;
+  float rating = 2;
+  Genre genre = 3;
+  string description = 4;
+}
