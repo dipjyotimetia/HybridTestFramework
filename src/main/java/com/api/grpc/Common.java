@@ -3,10 +3,12 @@ package com.api.grpc;
 import com.google.auth.oauth2.GoogleCredentials;
 import io.grpc.*;
 import io.grpc.auth.MoreCallCredentials;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.IOException;
 
+@Slf4j
 public class Common {
     enum AuthType {
         TLS,
@@ -45,6 +47,9 @@ public class Common {
                 credentials = CompositeChannelCredentials
                         .create(TlsChannelCredentials.create(), MoreCallCredentials.from(GoogleCredentials.getApplicationDefault()));
                 break;
+            default:
+                log.error("required a valid input parameter");
+                break;
         }
         return credentials;
     }
@@ -66,6 +71,9 @@ public class Common {
                 break;
             case TLS:
                 channel = Grpc.newChannelBuilder(targetURL, credentials(authType)).build();
+                break;
+            default:
+                log.error("required a valid input parameter");
                 break;
         }
         return channel;

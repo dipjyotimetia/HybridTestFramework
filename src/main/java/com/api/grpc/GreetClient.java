@@ -66,14 +66,14 @@ public class GreetClient {
         };
     }
 
-    public LongGreetResponse LongGreet() throws Exception {
+    public LongGreetResponse longGreet() throws Exception {
         Random random = new Random();
         final CountDownLatch finishLatch = new CountDownLatch(1);
 
         StreamObserver<LongGreetResponse> responseStreamObserver = new StreamObserver<>() {
             @Override
             public void onNext(LongGreetResponse value) {
-
+               log.info(value.getResult());
             }
 
             @Override
@@ -111,12 +111,12 @@ public class GreetClient {
         return null;
     }
 
-    public CountDownLatch GreetEveryone() {
+    public CountDownLatch greetEveryone() {
         final CountDownLatch finishLatch = new CountDownLatch(1);
         StreamObserver<GreetEveryoneRequest> requestStreamObserver = asyncStub.greetEveryone(new StreamObserver<>() {
             @Override
             public void onNext(GreetEveryoneResponse value) {
-
+                log.info(value.getResult());
             }
 
             @Override
