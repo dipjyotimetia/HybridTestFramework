@@ -122,12 +122,12 @@ protobuf {
             grpc {}
         }
     }
-    generatedFilesBaseDir = "$projectDir/gen/grpc"
+//    generatedFilesBaseDir = "$projectDir/gen/grpc"
 }
 
-clean {
-    delete protobuf.generatedFilesBaseDir
-}
+//clean {
+//    delete protobuf.generatedFilesBaseDir
+//}
 
 //sourceSets.main.java.srcDirs = [
 //        "${rootDir}/generated/xray/src/main/java",
