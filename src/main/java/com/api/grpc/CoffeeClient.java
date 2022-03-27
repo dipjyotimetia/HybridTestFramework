@@ -5,17 +5,17 @@ import com.google.protobuf.Timestamp;
 import io.grpc.*;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.UUID;
 
 @Slf4j
-public class CoffeeClient {
+public class CoffeeClient extends Common {
 
     CoffeeGrpc.CoffeeBlockingStub coffeeServiceStub;
 
-    public CoffeeClient() {
-        //ManagedChannel channel = ManagedChannelBuilder.forAddress("coffee-service-i6avjiaelq-ts.a.run.app", 8080).usePlaintext().build();
-        ManagedChannel channel = Grpc.newChannelBuilder("coffee-service-i6avjiaelq-ts.a.run.app", TlsChannelCredentials.create()).build();
+    public CoffeeClient() throws IOException {
+        ManagedChannel channel = channel("coffee-service-i6avjiaelq-ts.a.run.app", ChannelType.TLS, AuthType.TLS);
         coffeeServiceStub = CoffeeGrpc.newBlockingStub(channel);
     }
 
