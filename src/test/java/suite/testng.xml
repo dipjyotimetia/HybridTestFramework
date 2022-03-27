@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="End To End User Journey" allow-return-values="true" parallel="false" thread-count="2">
+<suite name="End To End User Journey" allow-return-values="true" thread-count="2">
     <listeners>
         <listener class-name="com.reporting.Listeners.TestListener"/>
         <listener class-name="com.reporting.Listeners.AnnotationTransformer"/>
@@ -42,4 +42,9 @@
         </classes>
     </test>
 
+    <test name="E2E Tests for GRPC Api">
+        <classes>
+            <class name="com.TestDefinitionLayer.TC009_GrpcApi"/>
+        </classes>
+    </test>
 </suite>

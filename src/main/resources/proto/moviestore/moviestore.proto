@@ -1,0 +1,16 @@
+syntax = "proto3";
+package moviestore;
+import "common/common.proto";
+option java_package = "com.movie.moviestore";
+option java_multiple_files = true;
+
+message MovieStoreRequest {
+  common.Genre genre = 1;
+}
+message MovieStoreResponse {
+  common.Movie movie = 1;
+}
+service MovieStoreService {
+  // server streaming rpc call to receive a stream of movies
+  rpc getMovies(MovieStoreRequest) returns (stream MovieStoreResponse) {};
+}

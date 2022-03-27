@@ -24,7 +24,7 @@ SOFTWARE.
 
 package com.TestDefinitionLayer;
 
-import com.api.ApiActions;
+import com.api.rest.ApiActions;
 import io.qameta.allure.*;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;

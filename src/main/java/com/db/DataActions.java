@@ -23,7 +23,7 @@ SOFTWARE.
  */
 package com.db;
 
-import com.api.ApiActions;
+import com.api.rest.ApiActions;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.DriverManager;
