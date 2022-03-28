@@ -1,5 +1,6 @@
-package com.cloud.gcp;
+package com.pubsub;
 
+import com.cloud.gcp.Config;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.pubsub.v1.Publisher;
 import com.google.cloud.pubsub.v1.TopicAdminClient;

@@ -20,7 +20,7 @@ import java.util.Properties;
  * @author Dipjyoti Metia
  */
 @Slf4j
-public class KafkaCore {
+public class Kafka {
 
     private Properties getKafkaStreamsConfig(String bootstrapURL, String schemaRegistry) {
         // Create producer properties

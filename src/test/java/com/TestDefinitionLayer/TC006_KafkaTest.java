@@ -1,6 +1,6 @@
 package com.TestDefinitionLayer;
 
-import com.pubsub.KafkaCore;
+import com.pubsub.Kafka;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.testng.annotations.AfterTest;
@@ -19,7 +19,7 @@ public class TC006_KafkaTest {
     final String value = "hello kafka";
 
     Properties properties = new Properties();
-    KafkaCore core = new KafkaCore();
+    Kafka core = new Kafka();
 
     @BeforeTest
     public void beforeTest() {
