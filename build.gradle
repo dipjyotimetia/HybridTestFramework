@@ -29,6 +29,8 @@ plugins {
 }
 
 ext {
+    allureVersion = "2.17.3"
+    awsVersion = "2.17.155"
     grpcVersion = "1.45.0"
     protoVersion = "3.19.4"
     containerVersion = "1.16.3"
@@ -49,7 +51,7 @@ repositories {
 }
 
 allure {
-    version = "2.17.3"
+    version = "${allureVersion}"
 }
 
 // dockerCompose.isRequiredBy(test)
@@ -75,12 +77,12 @@ task E2E(type: Test) {
 
 dependencies {
     compile project(":contract")
-    implementation 'software.amazon.awssdk:dynamodb:2.17.154'
-    implementation 'software.amazon.awssdk:s3:2.17.153'
-    implementation 'software.amazon.awssdk:sqs:2.17.154'
-    implementation 'software.amazon.awssdk:lambda:2.17.154'
-    implementation 'software.amazon.awssdk:sns:2.17.152'
-    implementation 'software.amazon.awssdk:devicefarm:2.17.153'
+    implementation "software.amazon.awssdk:dynamodb:${awsVersion}"
+    implementation "software.amazon.awssdk:s3:2.17.155${awsVersion}"
+    implementation "software.amazon.awssdk:sqs:2.17.155${awsVersion}"
+    implementation "software.amazon.awssdk:lambda:2.17.155${awsVersion}"
+    implementation "software.amazon.awssdk:sns:2.17.155${awsVersion}"
+    implementation "software.amazon.awssdk:devicefarm:${awsVersion}"
     implementation 'com.google.cloud:google-cloud-storage:2.4.5'
     implementation 'com.google.cloud:google-cloud-firestore:3.0.20'
     implementation 'com.google.cloud:google-cloud-pubsub:1.116.2'
@@ -119,9 +121,9 @@ dependencies {
     implementation 'org.zaproxy:zap:2.11.1'
     implementation 'net.lingala.zip4j:zip4j:2.9.1'
     implementation 'io.qameta.allure:allure-gradle:2.8.1'
-    implementation 'io.qameta.allure:allure-testng:2.17.3'
-    implementation 'io.qameta.allure:allure-rest-assured:2.17.3'
-    implementation 'io.qameta.allure:allure-attachments:2.17.3'
+    implementation "io.qameta.allure:allure-testng:${allureVersion}"
+    implementation "io.qameta.allure:allure-rest-assured:${allureVersion}"
+    implementation "io.qameta.allure:allure-attachments:${allureVersion}"
     implementation 'org.apache.avro:avro:1.11.0'
     // TODO: https://stackoverflow.com/questions/40923471/cannot-compile-with-protocol-buffers-3-1-0
     //implementation "org.apache.avro:avro-tools:1.11.0"
@@ -131,7 +133,7 @@ dependencies {
     implementation "org.apache.kafka:kafka-streams:${kafkaVersion}"
     implementation 'io.confluent:kafka-avro-serializer:7.0.1'
     implementation 'cloud.localstack:localstack-utils:0.2.20'
-    implementation "com.google.guava:guava"
+    implementation 'com.google.guava:guava:31.1-jre'
     runtimeOnly "io.grpc:grpc-netty-shaded:${grpcVersion}"
     implementation "io.grpc:grpc-protobuf:${grpcVersion}"
     implementation "io.grpc:grpc-stub:${grpcVersion}"
