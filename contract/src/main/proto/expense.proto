@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package expense;
+
+option go_package = "expense/expensepb";
+option java_multiple_files = true;
+option java_outer_classname = "ExpenseProto";
+option java_package = "com.expense";
+
+
+/**
+ * Expense information
+*/
+message Expense {
+  // Invoice id
+  int64 expense_id = 1;
+  // Invoice name
+  ExpenseType expense_type = 2;
+  // Amount
+  double amount = 3;
+
+  string address = 4;
+}
+
+enum ExpenseType {
+  Shopping = 0;
+  Grocery = 1;
+  Food = 2;
+}
