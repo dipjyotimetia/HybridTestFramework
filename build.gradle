@@ -26,7 +26,6 @@ plugins {
     id "idea"
     id "io.qameta.allure" version "2.9.6"
     id "com.avast.gradle.docker-compose" version "0.15.2"
-    id("maven-publish")
 }
 
 ext {
@@ -40,24 +39,6 @@ group 'com.HybridTestFramework'
 version = '1.0-SNAPSHOT'
 
 sourceCompatibility = JavaVersion.VERSION_11
-
-publishing {
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/dipjyotimetia/HybridTestFramework")
-            credentials {
-                username = project.findProperty("gpr.user") ?: System.getenv("BROWSERSTACK_USERNAME")
-                password = project.findProperty("gpr.key") ?: System.getenv("DOCKER_PACKAGE")
-            }
-        }
-    }
-    publications {
-        gpr(MavenPublication) {
-            from(components.java)
-        }
-    }
-}
 
 repositories {
     maven { url "https://repo.maven.apache.org/maven2" }
