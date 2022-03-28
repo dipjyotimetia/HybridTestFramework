@@ -19,6 +19,8 @@ import org.testcontainers.containers.FirestoreEmulatorContainer;
 import org.testcontainers.containers.PubSubEmulatorContainer;
 import org.testcontainers.utility.DockerImageName;
 import org.testng.Assert;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -56,6 +58,14 @@ public class TC010_GCPTest {
         SubscriptionAdminClient subscriptionAdminClient = SubscriptionAdminClient.create(subscriptionAdminSettings);
         ProjectSubscriptionName subscriptionName = ProjectSubscriptionName.of(PROJECT_ID, subscriptionId);
         subscriptionAdminClient.createSubscription(subscriptionName, TopicName.of(PROJECT_ID, topicId), PushConfig.getDefaultInstance(), 10);
+    }
+
+    @BeforeTest
+    public void beforeTest() {
+        firestoreEmulatorContainer.start();
+        System.out.println("Starting firestore container");
+        pubSubEmulatorContainer.start();
+        System.out.println("Starting pubSub container");
     }
 
     @Test
@@ -121,6 +131,14 @@ public class TC010_GCPTest {
         QuerySnapshot querySnapshot = query.get();
 
         Assert.assertNotNull(querySnapshot.getDocuments().get(0).getData());
+    }
+
+    @AfterTest
+    public void StopContainer() {
+        firestoreEmulatorContainer.stop();
+        System.out.println("Stopping firestore container");
+        pubSubEmulatorContainer.stop();
+        System.out.println("Stopping  pubSub container");
     }
 
 
