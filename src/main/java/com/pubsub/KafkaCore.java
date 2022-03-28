@@ -1,4 +1,4 @@
-package com.kafka;
+package com.pubsub;
 
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
