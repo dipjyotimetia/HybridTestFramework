@@ -146,6 +146,7 @@ dependencies {
     implementation "org.testcontainers:selenium:${containerVersion}"
     implementation "org.testcontainers:kafka:${containerVersion}"
     implementation "org.testcontainers:localstack:${containerVersion}"
+    implementation "org.testcontainers:gcloud:${containerVersion}"
     implementation 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
 }

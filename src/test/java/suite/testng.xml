@@ -47,4 +47,10 @@
             <class name="com.TestDefinitionLayer.TC009_GrpcApi"/>
         </classes>
     </test>
+
+    <test name="E2E Tests for GCP">
+        <classes>
+            <class name="com.TestDefinitionLayer.TC010_GCPTest"/>
+        </classes>
+    </test>
 </suite>
