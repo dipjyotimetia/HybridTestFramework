@@ -108,8 +108,9 @@ dependencies {
     implementation 'com.microsoft.sqlserver:mssql-jdbc:10.2.0.jre11'
     implementation 'org.slf4j:slf4j-simple:1.7.36'
     implementation 'com.github.javafaker:javafaker:1.0.2'
-    implementation 'io.rest-assured:rest-assured:4.5.1'
-    implementation 'io.rest-assured:json-schema-validator:4.5.1'
+    implementation 'io.rest-assured:rest-assured:5.0.0'
+    implementation 'io.rest-assured:json-schema-validator:5.0.0'
+    implementation 'io.rest-assured:json-path:5.0.0'
     implementation 'com.atlassian.oai:swagger-request-validator-restassured:2.27.0'
     implementation 'com.atlassian.oai:swagger-request-validator-pact:2.27.0'
     implementation 'org.json:json:20220320'
@@ -144,10 +145,6 @@ dependencies {
     implementation "org.testcontainers:testcontainers:${containerVersion}"
     implementation "org.testcontainers:selenium:${containerVersion}"
     implementation "org.testcontainers:kafka:${containerVersion}"
-    implementation "org.testcontainers:localstack:${containerVersion}"
-    implementation "org.testcontainers:cassandra:${containerVersion}"
-    implementation "org.testcontainers:couchbase:${containerVersion}"
-    implementation "org.testcontainers:vault:${containerVersion}"
     implementation "org.testcontainers:localstack:${containerVersion}"
     implementation 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
