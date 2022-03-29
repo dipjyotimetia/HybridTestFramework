@@ -1,13 +1,13 @@
 package com.TestDefinitionLayer;
 
-import com.kafka.KafkaCore;
+import com.pubsub.Kafka;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.testcontainers.containers.KafkaContainer;
+import org.testcontainers.utility.DockerImageName;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-import org.testcontainers.containers.KafkaContainer;
-import org.testcontainers.utility.DockerImageName;
 
 import java.util.Properties;
 
@@ -19,7 +19,7 @@ public class TC006_KafkaTest {
     final String value = "hello kafka";
 
     Properties properties = new Properties();
-    KafkaCore core = new KafkaCore();
+    Kafka core = new Kafka();
 
     @BeforeTest
     public void beforeTest() {

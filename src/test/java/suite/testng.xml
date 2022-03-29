@@ -9,12 +9,12 @@
     <parameter name="grid" value="BROWSERSTACK"/> <!-- LOCAL or DOCKER or CLOUD or BROWSERSTACK-->
     <parameter name="perf" value="NO"/>
 
-<!--    <test name="E2E Tests for Web">-->
-<!--        <parameter name="browser" value="chrome"/>-->
-<!--        <classes>-->
-<!--            <class name="com.TestDefinitionLayer.TC002_GURU_Login"/>-->
-<!--        </classes>-->
-<!--    </test>-->
+    <!--    <test name="E2E Tests for Web">-->
+    <!--        <parameter name="browser" value="chrome"/>-->
+    <!--        <classes>-->
+    <!--            <class name="com.TestDefinitionLayer.TC002_GURU_Login"/>-->
+    <!--        </classes>-->
+    <!--    </test>-->
 
     <test name="E2E Tests for api">
         <classes>
@@ -45,6 +45,12 @@
     <test name="E2E Tests for GRPC Api">
         <classes>
             <class name="com.TestDefinitionLayer.TC009_GrpcApi"/>
+        </classes>
+    </test>
+
+    <test name="E2E Tests for GCP">
+        <classes>
+            <class name="com.TestDefinitionLayer.TC010_GCPTest"/>
         </classes>
     </test>
 </suite>

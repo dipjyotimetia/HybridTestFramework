@@ -1,0 +1,36 @@
+{
+  "type": "record",
+  "namespace": "banking.schemas.demo",
+  "name": "profile",
+  "version": "1",
+  "doc": "Data schema to represent a profile for a banking entity",
+  "fields": [
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "surname",
+      "type": "string"
+    },
+    {
+      "name": "age",
+      "type": "int"
+    },
+    {
+      "name": "account",
+      "type": "banking.schemas.demo.account"
+    },
+    {
+      "name": "gender",
+      "type": {
+        "type": "enum",
+        "name": "genderEnum",
+        "symbols": [
+          "male",
+          "female"
+        ]
+      }
+    }
+  ]
+}

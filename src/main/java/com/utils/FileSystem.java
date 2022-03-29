@@ -27,13 +27,10 @@ import lombok.extern.slf4j.Slf4j;
 import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.testng.Assert;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -46,7 +43,8 @@ public class FileSystem {
 
     /**
      * unzip file
-     * @param source source
+     *
+     * @param source      source
      * @param destination destination
      */
     private void unzip(String source, String destination) {

@@ -1,12 +1,16 @@
 # HybridTestFramework
 
 ### Architecture
+
 ![Selenium](img/selenium.png)
 
 ### Supported Platforms
-This framework supports WebUi automation across a variety of browsers like Chrome, Firefox, IE, no only limited to this but extended to test rest api, security and visual testing.
+
+This framework supports WebUi automation across a variety of browsers like Chrome, Firefox, IE, no only limited to this
+but extended to test rest api, security and visual testing.
 
 ### Capabilities
+
 * Cross browser testing support
 * Added browserstack support for CrossBrowser testing
 * Running tests in docker containers selenium grid
@@ -23,22 +27,29 @@ This framework supports WebUi automation across a variety of browsers like Chrom
 * Kubernetes support
 
 ### JenkinsExecution
+
 ![image](img/jenkinsExecution.png)
 
 ### GridServer 2.0
+
 ![image](img/seleniumGrid.png)
 
 ### Allure Reporting
+
 ![image](img/allureReport.png)
 
 ### Gradle Report
+
 ![image](img/gradleReport.png)
 
 ### Azure devops TestResults
+
 ![image](img/testResults.png)
 
 ### BrowserStack Dashboard
+
 ![image](img/browserStack.png)
 
 ### LogsView
+
 ![image](img/logs.png)

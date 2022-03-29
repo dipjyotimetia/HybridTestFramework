@@ -26,7 +26,6 @@ package com.db;
 import com.api.rest.ApiActions;
 import lombok.extern.slf4j.Slf4j;
 
-import java.sql.DriverManager;
 import java.sql.*;
 
 /**
@@ -91,7 +90,7 @@ public class DataActions extends ApiActions {
                                 continue;
                             }
                             columnName = rsmd.getColumnName(i);
-                            resultValue = rs.getString(i).toString();
+                            resultValue = rs.getString(i);
                             log.info("column name:" + columnName + "|" + "Column value:" + resultValue);
                         }
                     }

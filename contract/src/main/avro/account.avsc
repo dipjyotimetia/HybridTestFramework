@@ -1,0 +1,24 @@
+{
+  "type": "record",
+  "namespace": "banking.schemas.demo",
+  "name": "account",
+  "version": "1",
+  "doc": "Data schema to represent a customer account with the credit cards associated to it",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string"
+    },
+    {
+      "name": "savings",
+      "type": "long"
+    },
+    {
+      "name": "cards",
+      "type": {
+        "type": "array",
+        "items": "int"
+      }
+    }
+  ]
+}

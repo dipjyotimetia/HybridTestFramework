@@ -31,7 +31,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.apache.commons.lang3.RandomStringUtils;
-
 import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -56,7 +55,6 @@ import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.is;
@@ -69,7 +67,7 @@ public class UserActions extends DriverManager {
     private static int counter = 0;
     private static WebDriverWait wait;
     private static JavascriptExecutor jsExec;
-    private Map<String, String> dicttoread = new HashMap<>();
+    private final Map<String, String> dicttoread = new HashMap<>();
 
     private String getEnv(String env) {
         return System.getenv(env);
@@ -564,7 +562,7 @@ public class UserActions extends DriverManager {
         JavascriptExecutor jsExec = (JavascriptExecutor) driverThread;
         ExpectedCondition<Boolean> jsLoad = driver -> ((JavascriptExecutor) driverThread)
                 .executeScript("return document.readyState").toString().equals("complete");
-        boolean jsReady = (Boolean) jsExec.executeScript("return document.readyState").toString().equals("complete");
+        boolean jsReady = jsExec.executeScript("return document.readyState").toString().equals("complete");
         if (!jsReady) {
             System.out.println("JS in NOT Ready!");
             wait.until(jsLoad);
@@ -723,7 +721,7 @@ public class UserActions extends DriverManager {
                             String p_field1 = csvobj.get("Value" + i).trim();
                             dicttoread.put(t_field, t_value);
                             log.info("value for the field: " + t_field + " is updated to: " + t_value + " Successfully");
-                            String stp = csvOutput.replace(FileContentPerRow, t_field + "," + p_field1, t_field + "," + t_value);
+                            String stp = CsvWriter.replace(FileContentPerRow, t_field + "," + p_field1, t_field + "," + t_value);
                             log.info(stp);
                             FileContentPerRow = stp;
                             P_valuenotduplicated = 1;
@@ -732,7 +730,7 @@ public class UserActions extends DriverManager {
                     if (P_valuenotduplicated == 0) {
                         String p_field1 = csvobj.get("Value" + (i - 1)).trim();
                         dicttoread.put(t_field, t_value);
-                        String stp1 = csvOutput.replace(FileContentPerRow, p_field1, p_field1 + "," + t_field + "," + t_value);
+                        String stp1 = CsvWriter.replace(FileContentPerRow, p_field1, p_field1 + "," + t_field + "," + t_value);
                         log.info(stp1);
                         FileContentPerRow = stp1;
                         log.info("New Field: " + t_field + " is added successfully with value: " + t_value);
@@ -914,7 +912,7 @@ public class UserActions extends DriverManager {
                                 continue;
                             }
                             columnName = rsmd.getColumnName(i);
-                            resultValue = rs.getString(i).toString();
+                            resultValue = rs.getString(i);
                             log.info("column name:" + columnName + "|" + "Column value:" + resultValue);
                         }
                     }
