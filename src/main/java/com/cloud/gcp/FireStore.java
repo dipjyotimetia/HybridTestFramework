@@ -7,16 +7,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-public class Firestore {
+public class FireStore {
     FirestoreOptions options;
+    Config config = new Config();
 
-    public Firestore(String host, String projectID) {
-        Config config = new Config();
+    public FireStore(String host, String projectID) {
         options = config.firestoreClient(host, projectID);
     }
 
     public QuerySnapshot addQuery() throws ExecutionException, InterruptedException {
-        com.google.cloud.firestore.Firestore firestore = options.getService();
+        Firestore firestore = options.getService();
         CollectionReference users = firestore.collection("users");
         DocumentReference docRef = users.document("alovelace");
         Map<String, Object> data = new HashMap<>();
