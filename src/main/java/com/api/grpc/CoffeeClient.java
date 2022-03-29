@@ -2,7 +2,8 @@ package com.api.grpc;
 
 import com.coffee.*;
 import com.google.protobuf.Timestamp;
-import io.grpc.*;
+import io.grpc.ManagedChannel;
+import io.grpc.StatusRuntimeException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;

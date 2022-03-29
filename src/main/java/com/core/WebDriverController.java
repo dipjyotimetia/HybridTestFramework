@@ -28,7 +28,6 @@ import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.client.ClientUtil;
 import net.lightbody.bmp.core.har.Har;
 import net.lightbody.bmp.proxy.CaptureType;
-import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -93,7 +92,7 @@ public class WebDriverController extends DriverOptions {
                     break;
                 case "DOCKER":
                     log.info("Make sure that docker containers are up and running");
-                    _driverThread = new RemoteWebDriver(URI.create("http://localhost:4444/").toURL(), (Capabilities) getBrowserOptions(browser, perf));
+                    _driverThread = new RemoteWebDriver(URI.create("http://localhost:4444/").toURL(), getBrowserOptions(browser, perf));
                     log.info("Grid client setup for Docker containers successful");
                     break;
                 case "BROWSERSTACK":

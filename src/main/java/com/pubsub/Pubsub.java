@@ -1,14 +1,12 @@
 package com.pubsub;
 
+import com.avro.Customer;
 import com.cloud.gcp.Config;
 import com.google.api.core.ApiFuture;
-import com.google.api.gax.core.NoCredentialsProvider;
-import com.google.api.gax.rpc.TransportChannelProvider;
 import com.google.cloud.pubsub.v1.*;
 import com.google.cloud.pubsub.v1.stub.SubscriberStubSettings;
 import com.google.protobuf.ByteString;
 import com.google.pubsub.v1.*;
-import com.avro.Customer;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +31,7 @@ public class Pubsub {
         topicAdminSettings = config.topicAdminSettings(config.channelProvider(channel), config.credentialProvider());
     }
 
-    public void closeChannel(){
+    public void closeChannel() {
         channel.shutdown();
     }
 

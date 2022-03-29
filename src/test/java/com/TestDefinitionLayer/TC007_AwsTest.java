@@ -1,6 +1,9 @@
 package com.TestDefinitionLayer;
 
-import com.cloud.aws.*;
+import com.cloud.aws.Config;
+import com.cloud.aws.DynamoDB;
+import com.cloud.aws.S3;
+import com.cloud.aws.Sqs;
 import com.pubsub.Sns;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.annotations.Test;

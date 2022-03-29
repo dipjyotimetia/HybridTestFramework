@@ -35,8 +35,8 @@ public enum Property {
     BUILD("build");
 
     private static Properties properties = null;
-    private String value;
-    private String systemPropertyKey;
+    private final String value;
+    private final String systemPropertyKey;
 
     Property(String key) {
         this.systemPropertyKey = key;

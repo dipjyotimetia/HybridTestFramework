@@ -8,9 +8,9 @@ import java.io.IOException;
 
 public class SecretManager {
 
-    public String accessSecretVersion() throws IOException{
-        try(SecretManagerServiceClient client = SecretManagerServiceClient.create()) {
-            SecretVersionName secretVersionName= SecretVersionName.of("","","");
+    public String accessSecretVersion() throws IOException {
+        try (SecretManagerServiceClient client = SecretManagerServiceClient.create()) {
+            SecretVersionName secretVersionName = SecretVersionName.of("", "", "");
             AccessSecretVersionResponse response = client.accessSecretVersion(secretVersionName);
             return response.getPayload().getData().toStringUtf8();
         }

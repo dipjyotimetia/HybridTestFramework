@@ -24,21 +24,21 @@ SOFTWARE.
 package com.security;
 
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-
 import lombok.extern.slf4j.Slf4j;
 import org.zaproxy.clientapi.core.ClientApi;
 import org.zaproxy.clientapi.core.ClientApiException;
 import org.zaproxy.clientapi.core.ClientApiMain;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+
 @Slf4j
 public class ZapTools {
 
-    private String ZAP_LOCATION = "C:\\Program Files\\OWASP\\Zed Attack Proxy";
-    private String SAVE_SESSION_DIRECTORY = "ZAPSessions\\";
+    private final String ZAP_LOCATION = "C:\\Program Files\\OWASP\\Zed Attack Proxy";
+    private final String SAVE_SESSION_DIRECTORY = "ZAPSessions\\";
 
     public boolean startZAP() {
         try {

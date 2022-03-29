@@ -6,15 +6,10 @@ import com.google.api.gax.rpc.FixedTransportChannelProvider;
 import com.google.api.gax.rpc.TransportChannelProvider;
 import com.google.cloud.NoCredentials;
 import com.google.cloud.firestore.FirestoreOptions;
-import com.google.cloud.pubsub.v1.Publisher;
 import com.google.cloud.pubsub.v1.SubscriptionAdminSettings;
 import com.google.cloud.pubsub.v1.TopicAdminSettings;
-import com.google.pubsub.v1.TopicName;
 import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
 import lombok.extern.slf4j.Slf4j;
-
-import java.io.IOException;
 
 @Slf4j
 public class Config {

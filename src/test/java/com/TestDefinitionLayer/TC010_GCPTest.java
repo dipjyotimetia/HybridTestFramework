@@ -1,15 +1,13 @@
 package com.TestDefinitionLayer;
 
-import com.cloud.gcp.FireStore;
-import com.google.api.core.ApiFuture;
-import com.google.cloud.NoCredentials;
-import com.google.cloud.firestore.*;
 import com.google.cloud.pubsub.v1.stub.GrpcSubscriberStub;
 import com.google.cloud.pubsub.v1.stub.SubscriberStub;
 import com.google.protobuf.ByteString;
-import com.google.pubsub.v1.*;
+import com.google.pubsub.v1.ProjectSubscriptionName;
+import com.google.pubsub.v1.PubsubMessage;
+import com.google.pubsub.v1.PullRequest;
+import com.google.pubsub.v1.PullResponse;
 import com.pubsub.Pubsub;
-import org.testcontainers.containers.FirestoreEmulatorContainer;
 import org.testcontainers.containers.PubSubEmulatorContainer;
 import org.testcontainers.utility.DockerImageName;
 import org.testng.Assert;
@@ -18,9 +16,6 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 public class TC010_GCPTest {
     String PROJECT_ID = "DEMO_PROJECT_ID";

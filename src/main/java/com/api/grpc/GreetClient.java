@@ -73,7 +73,7 @@ public class GreetClient {
         StreamObserver<LongGreetResponse> responseStreamObserver = new StreamObserver<>() {
             @Override
             public void onNext(LongGreetResponse value) {
-               log.info(value.getResult());
+                log.info(value.getResult());
             }
 
             @Override
