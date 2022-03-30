@@ -83,7 +83,7 @@ abstract class DriverOptions {
      */
     protected FirefoxOptions getFirefoxOptions() {
         WebDriverManager.firefoxdriver().setup();
-        System.setProperty(FirefoxDriver.SystemProperty.DRIVER_USE_MARIONETTE, "true");
+        System.setProperty(FirefoxDriver.Capability.MARIONETTE, "true");
         System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE, "/dev/null");
         FirefoxOptions options = new FirefoxOptions();
         FirefoxProfile profile = new FirefoxProfile();
@@ -256,7 +256,7 @@ abstract class DriverOptions {
         myProfile.setAssumeUntrustedCertificateIssuer(true);
         myProfile.setPreference("webdriver.load.strategy", "unstable");
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability(FirefoxDriver.PROFILE, myProfile);
+        capabilities.setCapability(FirefoxDriver.SystemProperty.BROWSER_PROFILE, myProfile);
         return capabilities;
     }
 
