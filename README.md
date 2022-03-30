@@ -8,7 +8,7 @@
 
 ### Full-fledged WEB, API and Security testing framework using selenium,ZAP OWASP proxy and rest-assured
 
-<img src="https://github.com/dipjyotimetia/HybridTestFramework/blob/master/docs/img/selenium.png" width="800">  
+<img src="docs/img/framework.svg" width="800">  
 
 ### Supported Platforms
 
