@@ -8,7 +8,7 @@
 
 ### Full-fledged WEB, API and Security testing framework using selenium,ZAP OWASP proxy and rest-assured
 
-<img src="docs/img/framework.svg" width="800">  
+<img src="docs/img/framework.png" width="900">  
 
 ### Supported Platforms
 
