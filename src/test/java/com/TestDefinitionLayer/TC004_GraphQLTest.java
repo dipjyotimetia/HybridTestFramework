@@ -101,7 +101,7 @@ public class TC004_GraphQLTest extends GraphActions {
 
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "E2E test for graphql")
-    @Description("Get Get SpaceX")
+    @Description("Get SpaceX")
     @Story("Test Graphql")
     public void TestLaunches_checkMissionName() {
 
@@ -117,7 +117,7 @@ public class TC004_GraphQLTest extends GraphActions {
 
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "E2E test for graphql")
-    @Description("Get Get SpaceX")
+    @Description("Get SpaceX")
     @Story("Test Graphql")
     public void TestLaunches_checkMissionName_POJO() {
 
@@ -133,7 +133,7 @@ public class TC004_GraphQLTest extends GraphActions {
 
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "E2E test for graphql")
-    @Description("Get All Brewery")
+    @Description("Get SpaceX")
     @Story("Test Graphql")
     public void TestAddUser_checkReturnedData() {
 

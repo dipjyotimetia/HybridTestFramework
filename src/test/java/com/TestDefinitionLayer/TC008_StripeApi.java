@@ -20,9 +20,9 @@ public class TC008_StripeApi extends ApiActions {
     private static final Logger logger = LogManager.getLogger(TC008_StripeApi.class);
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(description = "E2E test for all beers")
-    @Description("Get All Beers")
-    @Story("Test Beers")
+    @Test(description = "E2E test for all Stripe Orders")
+    @Description("Get All Orders")
+    @Story("Test Orders")
     public void AllOrders() {
         RestAssured.baseURI = "http://localhost:12111";
         Header header = new Header("Authorization", "Bearer sk_test_123");

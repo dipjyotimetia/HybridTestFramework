@@ -5,15 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.jackson.Jacksonized;
 
+import java.util.ArrayList;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Jacksonized
-public class Booking {
-    private String firstname;
-    private String lastname;
-    private int totalprice;
-    private boolean depositpaid;
-    private Bookingdates bookingdates;
-    private String additionalneeds;
+public class Trades {
+    public ArrayList<Coin> coins;
+    public ArrayList<Object> exchanges;
 }

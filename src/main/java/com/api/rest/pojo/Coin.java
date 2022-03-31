@@ -1,13 +1,14 @@
 package com.api.rest.pojo;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.jackson.Jacksonized;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Jacksonized
-public class Bookingdates{
-    public String checkin;
-    public String checkout;
+public class Coin{
+    public Item item;
 }
