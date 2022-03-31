@@ -9,9 +9,7 @@
 
 In the era of [cloud-native](https://docs.microsoft.com/en-us/dotnet/architecture/cloud-native/definition) world we cannot stick to a particular framework, however due to projects requirement we often need to evolve the existing testing
 solution in such a way so that it can cater multiple testing requirement, hence [HybridTestFramework](https://github.com/dipjyotimetia/HybridTestFramework) is targeting to create a bridge between the kind of legacy systems
-or the systems which are still in a transition phase of migrate to cloud with super cool cloud-native systems.
-Also, it's worth to mention as we are trying to follow the pattern of [testing pyramid](https://martinfowler.com/articles/practical-test-pyramid.html) where the testing is more focused for the api followed by WebUI, in future
-the framework focus will be more towards the apis and events.   
+or the systems which are still in a transition phase of migrate to cloud with super cool cloud-native systems. 
 
 <img src="docs/img/framework.png" width="900">
 
@@ -104,7 +102,7 @@ $ docker-compose -f docker-compose-kafka.yml down --rmi all
 
 ```shell
 $ kubectl apply -f selenium-k8s-deploy-svc.yaml
-$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml
+$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.5.0/aio/deploy/recommended.yaml
 $ kubectl proxy
 $ kubectl describe secret -n kube-system | grep deployment -A 12
 ## To delete deployments
@@ -116,6 +114,6 @@ $ kubectl delete deployment selenium-hub
 navigate to `http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/`   
 <img src="https://github.com/dipjyotimetia/HybridTestFramework/blob/master/docs/img/kubernetes.png" width="800">
 
-### Execution Gif
+### Browserstack Execution Gif
 
 ![browserstack](https://github.com/dipjyotimetia/HybridTestFramework/blob/master/docs/gif/videogif.gif)
