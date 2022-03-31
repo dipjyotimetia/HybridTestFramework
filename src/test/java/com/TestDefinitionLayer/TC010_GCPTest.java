@@ -10,7 +10,6 @@ import com.google.pubsub.v1.PullResponse;
 import com.pubsub.Pubsub;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Link;
-import lombok.extern.slf4j.Slf4j;
 import org.testcontainers.containers.PubSubEmulatorContainer;
 import org.testcontainers.utility.DockerImageName;
 import org.testng.Assert;
@@ -22,7 +21,6 @@ import java.io.IOException;
 
 @Link("https://jira.cloud.com")
 @Feature("GRPCApi")
-@Slf4j
 public class TC010_GCPTest {
     String PROJECT_ID = "DEMO_PROJECT_ID";
     String TOPIC_ID = "DEMO_TOPIC_ID";
@@ -34,7 +32,7 @@ public class TC010_GCPTest {
     @BeforeTest
     public void beforeTest() {
         pubSubEmulatorContainer.start();
-        log.info("Starting pubSub container");
+        System.out.println("Starting pubSub container");
     }
 
     @Test
@@ -65,6 +63,6 @@ public class TC010_GCPTest {
     @AfterTest
     public void StopContainer() {
         pubSubEmulatorContainer.stop();
-        log.info("Stopping  pubSub container");
+        System.out.println("Stopping  pubSub container");
     }
 }
