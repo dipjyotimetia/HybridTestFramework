@@ -116,7 +116,7 @@ public class UserActions extends DriverManager {
                     .ignoring(NoSuchElementException.class);
             wait.until(ExpectedConditions.visibilityOf(element));
 
-        } catch (ElementNotVisibleException e) {
+        } catch (ElementNotInteractableException e) {
             e.printStackTrace();
         }
     }

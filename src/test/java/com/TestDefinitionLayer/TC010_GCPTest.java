@@ -8,6 +8,8 @@ import com.google.pubsub.v1.PubsubMessage;
 import com.google.pubsub.v1.PullRequest;
 import com.google.pubsub.v1.PullResponse;
 import com.pubsub.Pubsub;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Link;
 import org.testcontainers.containers.PubSubEmulatorContainer;
 import org.testcontainers.utility.DockerImageName;
 import org.testng.Assert;
@@ -17,6 +19,8 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 
+@Link("https://jira.cloud.com")
+@Feature("GRPCApi")
 public class TC010_GCPTest {
     String PROJECT_ID = "DEMO_PROJECT_ID";
     String TOPIC_ID = "DEMO_TOPIC_ID";

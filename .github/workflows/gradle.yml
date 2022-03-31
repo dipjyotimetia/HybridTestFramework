@@ -1,4 +1,4 @@
-name: CI
+name: Tests
 
 on:
   push:
@@ -17,7 +17,7 @@ jobs:
         run: docker-compose -f docker-compose.mock.yml up -d
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: Build with Gradle
+      - name: Running End To End Test
         run: ./gradlew task e2e
         env:
           BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}

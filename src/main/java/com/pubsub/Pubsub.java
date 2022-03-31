@@ -35,6 +35,14 @@ public class Pubsub {
         channel.shutdown();
     }
 
+    /**
+     * Publish Avro message
+     * @param projectId
+     * @param topicId
+     * @throws IOException
+     * @throws ExecutionException
+     * @throws InterruptedException
+     */
     public void publishAvroRecords(String projectId, String topicId)
             throws IOException, ExecutionException, InterruptedException {
 
@@ -97,6 +105,11 @@ public class Pubsub {
         }
     }
 
+    /**
+     *
+     * @param projectID
+     * @param topicId
+     */
     public void createTopic(String projectID, String topicId) {
         try (TopicAdminClient topicAdminClient = TopicAdminClient.create(topicAdminSettings)) {
             TopicName topicName = TopicName.of(projectID, topicId);
@@ -106,6 +119,12 @@ public class Pubsub {
         }
     }
 
+    /**
+     *
+     * @param subscriptionId
+     * @param projectID
+     * @param topicId
+     */
     public void createSubscription(String subscriptionId, String projectID, String topicId) {
         try {
             SubscriptionAdminClient subscriptionAdminClient = SubscriptionAdminClient.create(subscriptionAdminSettings);
@@ -116,6 +135,12 @@ public class Pubsub {
         }
     }
 
+    /**
+     *
+     * @param projectID
+     * @param topicID
+     * @return
+     */
     public Publisher createPublisher(String projectID, String topicID) {
         try {
             return Publisher.newBuilder(TopicName.of(projectID, topicID))
@@ -128,6 +153,10 @@ public class Pubsub {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public SubscriberStubSettings subscriberStubSettings() {
         try {
             return SubscriberStubSettings.newBuilder()

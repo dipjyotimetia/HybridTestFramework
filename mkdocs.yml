@@ -45,9 +45,10 @@ nav:
     - Setup: setup.md
     - Selenium: selenium.md
     - Apis: api.md
+    - gRPC: grpc.md
+    - GraphQL: graphql.md
     - Kafka: kafka.md
     - AWS: aws.md
-    - gRPC: grpc.md
 
 markdown_extensions:
   - admonition

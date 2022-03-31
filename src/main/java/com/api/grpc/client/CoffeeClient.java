@@ -1,5 +1,6 @@
-package com.api.grpc;
+package com.api.grpc.client;
 
+import com.api.grpc.RpcActions;
 import com.coffee.*;
 import com.google.protobuf.Timestamp;
 import io.grpc.ManagedChannel;
@@ -11,7 +12,7 @@ import java.util.Iterator;
 import java.util.UUID;
 
 @Slf4j
-public class CoffeeClient extends Common {
+public class CoffeeClient extends RpcActions {
 
     CoffeeGrpc.CoffeeBlockingStub coffeeServiceStub;
 

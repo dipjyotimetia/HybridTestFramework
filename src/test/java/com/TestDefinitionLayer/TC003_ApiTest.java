@@ -25,82 +25,65 @@ SOFTWARE.
 package com.TestDefinitionLayer;
 
 import com.api.rest.ApiActions;
+import com.api.rest.pojo.Booking;
+import com.api.rest.pojo.Bookingdates;
+import com.api.rest.pojo.Trades;
 import io.qameta.allure.*;
-import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 @Link("https://jira.cloud.com")
-@Feature("Api1")
-@Feature("Api2")
+@Feature("RestApi")
+@Slf4j
 public class TC003_ApiTest extends ApiActions {
-    private static final Logger logger = LogManager.getLogger(TC003_ApiTest.class);
-
     @Severity(SeverityLevel.CRITICAL)
-    @Test(description = "E2E test for all beers")
-    @Description("Get All Beers")
-    @Story("Test Beers")
-    public void AllBeers() {
-        RestAssured.baseURI = "https://api.punkapi.com";
+    @Test(description = "E2E test for Trading Coins")
+    @Description("Get Trading Coins")
+    @Story("Test CryptoCoins")
+    public void TestTradings() {
+        setBaseURI("https://api.coingecko.com");
 
-        Response response = httpGet("/v2/beers");
+        Response response = httpGet("/api/v3/search/trending");
         Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
-        //logger.info("Response Body is =>  " + getBody(response));
-        String tagLine = (String) jsonPathEvaluator(response, "$[0].tagline");
-        String description = (String) jsonPathEvaluator(response, "$[0].description");
-        log("Tag Line: " + tagLine);
-        log("Description: " + description);
+        Trades trades = response.getBody().as(Trades.class);
+        Assert.assertNotNull(trades.getCoins().get(0).item.name);
+        Assert.assertNotNull(trades.getCoins().get(0).item.slug);
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(description = "E2E test for random beers")
-    @Description("Get Random Beers")
-    @Story("Test Beers")
-    public void RandomBeers() {
-        RestAssured.baseURI = "https://api.punkapi.com";
+    @Test(description = "E2E test for ExchangeInfo")
+    @Description("Get ExchangeInfo")
+    @Story("Test CryptoCoins")
+    public void TestExchangeInfo() {
+        setBaseURI("https://api.binance.com");
 
-        Response response = httpGet("/v2/beers/random");
+        Response response = httpGet("/api/v3/exchangeInfo?symbol=BNBBTC");
         Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
-        //logger.info("Response Body is =>  " + getBody(response));
-        String tagLine = (String) jsonPathEvaluator(response, "$[0].tagline");
-        String description = (String) jsonPathEvaluator(response, "$[0].description");
-        log("Tag Line: " + tagLine);
-        log("Description: " + description);
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(description = "E2E test for single beers")
-    @Description("Get Single Beers")
-    @Story("Test Beers")
-    public void SingleBeer() {
-        RestAssured.baseURI = "https://api.punkapi.com";
+    @Test(description = "E2E test for Booking System", priority = 1)
+    @Description("Make Booking")
+    @Story("Test Booking")
+    public void TestAddBooking() {
+        setBaseURI("https://restful-booker.herokuapp.com");
 
-        Response response = httpGet("/v2/beers/1");
+        Bookingdates bookingdates = new Bookingdates(
+                "2018-01-01",
+                "2019-01-01"
+        );
+        Booking booking = new Booking(
+                "Jim",
+                "Brown",
+                111,
+                true,
+                bookingdates,
+                "Breakfast"
+        );
+
+        Response response = httpPost(booking, "/booking");
         Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
-        //logger.info("Response Body is =>  " + getBody(response));
-        String tagLine = (String) jsonPathEvaluator(response, "$[0].tagline");
-        String description = (String) jsonPathEvaluator(response, "$[0].description");
-        log("Tag Line: " + tagLine);
-        log("Description: " + description);
     }
-
-    @Severity(SeverityLevel.CRITICAL)
-    @Test(description = "E2E test for brewery")
-    @Description("Get All Brewery")
-    @Story("Test Beers")
-    public void Brewery() {
-        RestAssured.baseURI = "https://api.openbrewerydb.org";
-
-        Response response = httpGet("/breweries");
-        Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
-        //logger.info("Response Body is =>  " + getBody(response));
-        String name = (String) jsonPathEvaluator(response, "$[0].name");
-        String webSite = (String) jsonPathEvaluator(response, "$[0].website_url");
-        log("Name: " + name);
-        log("WebSite: " + webSite);
-    }
-
 }

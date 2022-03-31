@@ -31,11 +31,11 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.http.Header;
 import io.restassured.http.Method;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
 import io.restassured.specification.RequestSpecification;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONObject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -44,20 +44,31 @@ import java.util.Date;
 @Slf4j
 public class ApiActions {
 
+    public JsonPath httpGetPath(String path) {
+        return RestAssured.given()
+                .when()
+                .get(path)
+                .then()
+                .assertThat()
+                .statusCode(200)
+                .assertThat()
+                .extract().body().jsonPath();
+    }
+
     /**
      * http request with parameter
      *
      * @param params jsonObject
      * @return returns httpRequest
      */
-    private RequestSpecification httpRequestPost(JSONObject params) {
+    private RequestSpecification httpRequestPost(Object params) {
         return RestAssured
                 .given()
                 .filter(new AllureRestAssured())
                 .with()
                 .contentType(ContentType.JSON)
                 .with()
-                .body(params.toJSONString());
+                .body(params);
     }
 
     /**
@@ -112,7 +123,7 @@ public class ApiActions {
      * @param path   endpoint
      * @return response
      */
-    protected Response httpPost(JSONObject params, String path) {
+    protected Response httpPost(Object params, String path) {
         return httpRequestPost(params).request(Method.POST, path);
     }
 
@@ -157,8 +168,19 @@ public class ApiActions {
      * @param path   endpoint
      * @return response
      */
-    protected Response httpPut(JSONObject params, String path) {
+    protected Response httpPut(Object params, String path) {
         return httpRequestPost(params).request(Method.PUT, path);
+    }
+
+    /**
+     * http patch
+     *
+     * @param params params
+     * @param path   endpoint
+     * @return response
+     */
+    protected Response httpPatch(Object params, String path) {
+        return httpRequestPost(params).request(Method.PATCH, path);
     }
 
     /**
@@ -226,8 +248,7 @@ public class ApiActions {
         try {
             DateFormat date = new SimpleDateFormat("dd-MM-yyyy");
             Date date1 = new Date();
-            String abc1 = date.format(date1);
-            return abc1;
+            return date.format(date1);
         } catch (Exception e) {
             log.error(e.getMessage());
         }

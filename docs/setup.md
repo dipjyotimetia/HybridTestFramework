@@ -1,23 +1,23 @@
 # Project Setup
 
-* Install intellij
+* Install IntelliJ IDEA
   https://www.jetbrains.com/idea/download/
 * Install docker desktop
   https://www.docker.com/products/docker-desktop
 * Java JDK_11  
-  https://adoptium.net/?variant=openjdk11 or any latest version.
+  https://adoptium.net/temurin/archive
 * Gradle
-  https://gradle.org/next-steps/?version=6.9&format=bin
+  https://gradle.org/next-steps/?version=6.8.3&format=bin
 * Allure
-  https://github.com/allure-framework/allure2/releases/download/2.17.3/allure-2.17.3.zip
+  https://github.com/allure-framework/allure2/archive/2.17.3.zip
 * Set Environment variables
-    * JAVA_HOME: Pointing to the Java SDK folder\bin
-    * GRADLE_HOME: Pointing to Gradle directory\bin.
-    * ALLURE_HOME: Pointing to allure directory\bin.
+  * JAVA_HOME: Pointing to the Java SDK folder\bin
+  * GRADLE_HOME: Pointing to Gradle directory\bin.
+  * ALLURE_HOME: Pointing to allure directory\bin.
 
 ## Java 11 JDK Installation and config
 
-* Download Java 11 JDK from [here](https://adoptium.net/?variant=openjdk11)
+* Download Java 11 JDK from [here](https://adoptium.net/temurin/archive)
 * Install downloaded Java 11 JDK.
 * System Properties -> Environment Variables -> System Variables -> New -> `JAVA_HOME` and Value
   as `C:\Program Files\Eclipse Adoptium\jdk-11.0.13.8-hotspot` (path where JDK is installed)
@@ -31,7 +31,7 @@
 
 ## Recommended IDE
 
-* Please install Community Edition of `Intellij IDEA`
+* Please install Community Edition of `IntelliJ IDEA`
   from [here](https://www.jetbrains.com/idea/download/#section=windows)
 
 ### Getting Started
