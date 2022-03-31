@@ -23,6 +23,7 @@ SOFTWARE.
  */
 package com.api.rest;
 
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import io.qameta.allure.Step;
@@ -50,14 +51,14 @@ public class ApiActions {
      * @param params jsonObject
      * @return returns httpRequest
      */
-    private RequestSpecification httpRequestPost(JSONObject params) {
+    private RequestSpecification httpRequestPost(ObjectWriter params) {
         return RestAssured
                 .given()
                 .filter(new AllureRestAssured())
                 .with()
                 .contentType(ContentType.JSON)
                 .with()
-                .body(params.toJSONString());
+                .body(params);
     }
 
     /**
@@ -112,7 +113,7 @@ public class ApiActions {
      * @param path   endpoint
      * @return response
      */
-    protected Response httpPost(JSONObject params, String path) {
+    protected Response httpPost(ObjectWriter params, String path) {
         return httpRequestPost(params).request(Method.POST, path);
     }
 
@@ -157,7 +158,7 @@ public class ApiActions {
      * @param path   endpoint
      * @return response
      */
-    protected Response httpPut(JSONObject params, String path) {
+    protected Response httpPut(ObjectWriter params, String path) {
         return httpRequestPost(params).request(Method.PUT, path);
     }
 
