@@ -19,7 +19,7 @@ public class TC006_KafkaTest {
     final String value = "hello kafka";
 
     Properties properties = new Properties();
-    Kafka core = new Kafka();
+    Kafka kafka = new Kafka();
 
     @BeforeTest
     public void beforeTest() {
@@ -28,12 +28,12 @@ public class TC006_KafkaTest {
     }
 
     @Test
-    public void TestKafkaProducer() {
+    public void TestKafkaProducer() throws Exception {
         properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaContainer.getBootstrapServers());
         properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         // Create the producer
-        core.CreateTopic(topic, value, properties);
+        kafka.CreateTopic(topic, value, properties);
     }
 
     @AfterTest
