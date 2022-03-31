@@ -86,5 +86,4 @@ public class TC003_ApiTest extends ApiActions {
         Response response = httpPost(booking, "/booking");
         Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
     }
-
 }
