@@ -1,6 +1,6 @@
 package com.TestDefinitionLayer;
 
-import com.api.graphql.GraphAction;
+import com.api.graphql.GraphActions;
 import com.api.graphql.pojo.GraphQLQuery;
 import com.api.graphql.pojo.QueryLimit;
 import com.api.graphql.pojo.User;
@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.equalTo;
 
 @Link("https://jira.cloud.com")
 @Feature("GraphAPi")
-public class TC004_GraphQLTest extends GraphAction {
+public class TC004_GraphQLTest extends GraphActions {
     private final String spaceXEndpoint = "https://api.spacex.land/graphql/";
 
     @Severity(SeverityLevel.NORMAL)
@@ -24,7 +24,6 @@ public class TC004_GraphQLTest extends GraphAction {
     @Description("Get StarWars")
     @Story("Test Graphql")
     public void TestStarWars() {
-        RestAssured.baseURI = "https://swapi-graphql.netlify.app/.netlify/functions/index";
         String query = "query Query {\n" +
                 "  allFilms {\n" +
                 "    films {\n" +
@@ -44,8 +43,9 @@ public class TC004_GraphQLTest extends GraphAction {
                 "  }\n" +
                 "}";
 
-        String jsonString = GraphqlToJson(query);
+        String jsonString = graphqlToJson(query);
 
+        setBaseURI("https://swapi-graphql.netlify.app/.netlify/functions/index");
         RestAssured
                 .given()
                 .contentType("application/json")
@@ -62,7 +62,6 @@ public class TC004_GraphQLTest extends GraphAction {
     @Description("Get Fruit Shop")
     @Story("Test Graphql")
     public void TestFruitShop() {
-        RestAssured.baseURI = "https://www.predic8.de/fruit-shop-graphql?";
         String query = "query{\n" +
                 "  products(id: \"7\") {\n" +
                 "    name\n" +
@@ -76,8 +75,9 @@ public class TC004_GraphQLTest extends GraphAction {
                 "    }\n" +
                 "  }\n" +
                 "}";
-        String jsonString = GraphqlToJson(query);
+        String jsonString = graphqlToJson(query);
 
+        setBaseURI("https://www.predic8.de/fruit-shop-graphql?");
         RestAssured
                 .given()
                 .contentType("application/json")
@@ -96,7 +96,7 @@ public class TC004_GraphQLTest extends GraphAction {
     public void TestCompanyData() {
         GraphQLQuery query = new GraphQLQuery();
         query.setQuery("{ company { name ceo coo } }");
-        GraphResponse(spaceXEndpoint, query, "data.company.ceo", "Elon Musk");
+        graphResponse(spaceXEndpoint, query, "data.company.ceo", "Elon Musk");
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -112,7 +112,7 @@ public class TC004_GraphQLTest extends GraphAction {
         variables.put("limit", 10);
 
         query.setVariables(variables.toString());
-        GraphResponse(spaceXEndpoint, query, "data.launches[0].mission_name", "Thaicom 6");
+        graphResponse(spaceXEndpoint, query, "data.launches[0].mission_name", "Thaicom 6");
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -128,7 +128,7 @@ public class TC004_GraphQLTest extends GraphAction {
         queryLimit.setLimit(10);
 
         query.setVariables(queryLimit);
-        GraphResponse(spaceXEndpoint, query, "data.launches[0].mission_name", "Thaicom 6");
+        graphResponse(spaceXEndpoint, query, "data.launches[0].mission_name", "Thaicom 6");
     }
 
     @Severity(SeverityLevel.CRITICAL)

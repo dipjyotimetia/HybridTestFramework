@@ -1,20 +1,35 @@
 package com.api.graphql;
 
+import com.api.rest.ApiActions;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.json.JSONObject;
 
 import static org.hamcrest.Matchers.equalTo;
 
-public class GraphAction {
+public class GraphActions extends ApiActions {
 
-    public String GraphqlToJson(String payload) {
+    /**
+     * GraphqlTOJson
+     *
+     * @param payload
+     * @return
+     */
+    public String graphqlToJson(String payload) {
         JSONObject json = new JSONObject();
         json.put("query", payload);
         return json.toString();
     }
 
-    public void GraphResponse(String host, Object query, String queryPath, String validator) {
+    /**
+     * Graph Response
+     *
+     * @param host
+     * @param query
+     * @param queryPath
+     * @param validator
+     */
+    public void graphResponse(String host, Object query, String queryPath, String validator) {
         RestAssured.given()
                 .contentType(ContentType.JSON)
                 .body(query)

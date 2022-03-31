@@ -1,5 +1,6 @@
-package com.api.grpc;
+package com.api.grpc.client;
 
+import com.api.grpc.RpcActions;
 import com.greet.*;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -13,7 +14,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
-public class GreetClient {
+public class GreetClient extends RpcActions {
     public ManagedChannel channel;
     GreetServiceGrpc.GreetServiceBlockingStub greetServiceStub;
     GreetServiceGrpc.GreetServiceStub asyncStub;

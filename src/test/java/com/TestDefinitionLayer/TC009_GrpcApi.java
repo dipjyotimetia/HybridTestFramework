@@ -1,6 +1,6 @@
 package com.TestDefinitionLayer;
 
-import com.api.grpc.CoffeeClient;
+import com.api.grpc.client.CoffeeClient;
 import com.coffee.CoffeeSize;
 import com.coffee.GetCoffeeResponse;
 import com.coffee.UpdateCoffeeResponse;

@@ -9,15 +9,15 @@ import java.io.File;
 import java.io.IOException;
 
 @Slf4j
-public class Common {
-    enum AuthType {
+public class RpcActions {
+    public enum AuthType {
         TLS,
         Insecure,
         TLS_CA,
         GOOGLE
     }
 
-    enum ChannelType {
+    public enum ChannelType {
         LOCALHOST,
         TLS
     }
