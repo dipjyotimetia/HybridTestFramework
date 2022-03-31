@@ -28,91 +28,74 @@ import com.api.rest.ApiActions;
 import io.qameta.allure.*;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 @Link("https://jira.cloud.com")
-@Feature("Api1")
-@Feature("Api2")
+@Feature("RestApi")
+@Slf4j
 public class TC003_ApiTest extends ApiActions {
-    private static final Logger logger = LogManager.getLogger(TC003_ApiTest.class);
 
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "E2E test for all beers")
-    @Description("Get All Beers")
-    @Story("Test Beers")
-    public void AllBeers() {
-        RestAssured.baseURI = "https://api.punkapi.com";
+    @Description("Get Treding Coints")
+    @Story("Test CryptoCoins")
+    public void TestTradings() {
+        setBaseURI("https://api.coingecko.com");
 
-        Response response = httpGet("/v2/beers");
+        Response response = httpGet("/api/v3/search/trending");
         Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
-        //logger.info("Response Body is =>  " + getBody(response));
-        String tagLine = (String) jsonPathEvaluator(response, "$[0].tagline");
-        String description = (String) jsonPathEvaluator(response, "$[0].description");
-        log("Tag Line: " + tagLine);
-        log("Description: " + description);
+        String name = (String) jsonPathEvaluator(response, "coins.[0].item.name");
+        String price = (String) jsonPathEvaluator(response, "coins.[0].item.price_btc");
+        log("Name: " + name);
+        log("Price: " + price);
     }
 
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "E2E test for random beers")
     @Description("Get Random Beers")
-    @Story("Test Beers")
-    public void RandomBeers() {
-        RestAssured.baseURI = "https://api.punkapi.com";
+    @Story("Test CryptoCoins")
+    public void TestGlobalCurrencies() {
+        setBaseURI("https://api.coingecko.com");
 
-        Response response = httpGet("/v2/beers/random");
+        Response response = httpGet("/api/v3/global");
         Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
         //logger.info("Response Body is =>  " + getBody(response));
-        String tagLine = (String) jsonPathEvaluator(response, "$[0].tagline");
-        String description = (String) jsonPathEvaluator(response, "$[0].description");
-        log("Tag Line: " + tagLine);
-        log("Description: " + description);
+        String activeCurrencies = (String) jsonPathEvaluator(response, "$.data.active_cryptocurrencies");
+        String totalMarkets = (String) jsonPathEvaluator(response, "$.data.markets");
+        String btcVolume = (String) jsonPathEvaluator(response, "$.data.total_volume.btc");
+        log("ActiveCurrencies: " + activeCurrencies);
+        log("TotalMarkets: " + totalMarkets);
+        log("BTCVolume: " + btcVolume);
     }
 
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "E2E test for single beers")
     @Description("Get Single Beers")
-    @Story("Test Beers")
-    public void SingleBeer() {
-        RestAssured.baseURI = "https://api.punkapi.com";
+    @Story("Test CryptoCoins")
+    public void TestExchangeInfo() {
+        setBaseURI("https://api.binance.com");
 
-        Response response = httpGet("/v2/beers/1");
+        Response response = httpGet("/api/v3/exchangeInfo?symbol=BNBBTC");
+        String[] permission = new String[]{"SPOT", "MARGIN"};
+        String[] orderType = new String[]{"LIMIT", "LIMIT_MAKER", "MARKET", "STOP_LOSS_LIMIT", "TAKE_PROFIT_LIMIT"};
+
         Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
-        //logger.info("Response Body is =>  " + getBody(response));
-        String tagLine = (String) jsonPathEvaluator(response, "$[0].tagline");
-        String description = (String) jsonPathEvaluator(response, "$[0].description");
-        log("Tag Line: " + tagLine);
-        log("Description: " + description);
+        Assert.assertEquals(jsonPathEvaluator(response, "$.symbols[0].symbol"), "BNBBTC");
+        Assert.assertEquals(jsonPathEvaluator(response, "$.symbols[0].permissions"), permission);
+        Assert.assertEquals(jsonPathEvaluator(response, "$.symbols[0].orderTypes"), orderType);
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(description = "E2E test for brewery")
-    @Description("Get All Brewery")
-    @Story("Test Beers")
-    public void Brewery() {
-        RestAssured.baseURI = "https://api.openbrewerydb.org";
-
-        Response response = httpGet("/breweries");
-        Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
-        //logger.info("Response Body is =>  " + getBody(response));
-        String name = (String) jsonPathEvaluator(response, "$[0].name");
-        String webSite = (String) jsonPathEvaluator(response, "$[0].website_url");
-        log("Name: " + name);
-        log("WebSite: " + webSite);
-    }
-
-    @Severity(SeverityLevel.CRITICAL)
-    @Test(description = "E2E test for all branches")
-    @Description("Get All Beers")
-    @Story("Test Bank")
+    @Test(description = "E2E test for all users")
+    @Description("Get All Users")
+    @Story("Test Users")
     public void AllUsers() {
-        RestAssured.baseURI = "https://reqres.in";
+        setBaseURI("https://reqres.in");
 
         Response response = httpGet("/api/users?page=1");
         Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
-        //logger.info("Response Body is =>  " + getBody(response));
         String email = (String) jsonPathEvaluator(response, "$.data[0].email");
         String avatar = (String) jsonPathEvaluator(response, "$.data[0].avatar");
         log("Email: " + email);
@@ -122,7 +105,7 @@ public class TC003_ApiTest extends ApiActions {
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "E2E test for all banks")
     @Description("Get All Banks")
-    @Story("Test Bank")
+    @Story("Test OpenBanking")
     public void AllBanks() {
         RestAssured.baseURI = "https://apisandbox.openbankproject.com";
 
@@ -137,15 +120,4 @@ public class TC003_ApiTest extends ApiActions {
         log("fullName: " + fullName);
     }
 
-    @Severity(SeverityLevel.CRITICAL)
-    //@Test(description = "E2E test for all bank branches")
-    @Description("Get All Branches")
-    @Story("Test Branches")
-    public void AllBranches() {
-        RestAssured.baseURI = "https://apis-bank-test.apigee.net";
-
-        Response response = httpGet("/apis/v2.0.1/locations/branches");
-        Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
-        //logger.info("Response Body is =>  " + getBody(response));
-    }
 }
