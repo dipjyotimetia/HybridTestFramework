@@ -9,7 +9,7 @@ plugins {
 }
 
 ext {
-    grpcVersion = "1.45.0"
+    grpcVersion = "1.45.1"
     protoVersion = "3.19.4"
 }
 
