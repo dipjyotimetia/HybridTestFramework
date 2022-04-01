@@ -77,7 +77,7 @@ dependencies {
     implementation project(":contract")
     implementation 'software.amazon.awssdk:dynamodb:2.17.155'
     implementation 'software.amazon.awssdk:s3:2.17.161'
-    implementation 'software.amazon.awssdk:sqs:2.17.155'
+    implementation 'software.amazon.awssdk:sqs:2.17.161'
     implementation 'software.amazon.awssdk:lambda:2.17.161'
     implementation 'software.amazon.awssdk:sns:2.17.155'
     implementation 'software.amazon.awssdk:devicefarm:2.17.155'
