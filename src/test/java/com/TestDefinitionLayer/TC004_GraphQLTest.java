@@ -94,7 +94,7 @@ public class TC004_GraphQLTest extends GraphActions {
     @Description("Get SpaceX")
     @Story("Test Graphql")
     public void TestCompanyData() {
-        GraphQLQuery query = new GraphQLQuery();
+        GraphQLQuery query = GraphQLQuery.builder().build();
         query.setQuery("{ company { name ceo coo } }");
         graphResponse(spaceXEndpoint, query, "data.company.ceo", "Elon Musk");
     }
@@ -105,7 +105,7 @@ public class TC004_GraphQLTest extends GraphActions {
     @Story("Test Graphql")
     public void TestLaunches_checkMissionName() {
 
-        GraphQLQuery query = new GraphQLQuery();
+        GraphQLQuery query = GraphQLQuery.builder().build();
         query.setQuery("query getLaunches($limit: Int!){ launches(limit: $limit) { mission_name } }");
 
         JSONObject variables = new JSONObject();
@@ -121,10 +121,10 @@ public class TC004_GraphQLTest extends GraphActions {
     @Story("Test Graphql")
     public void TestLaunches_checkMissionName_POJO() {
 
-        GraphQLQuery query = new GraphQLQuery();
+        GraphQLQuery query = GraphQLQuery.builder().build();
         query.setQuery("query getLaunches($limit: Int!){ launches(limit: $limit) { mission_name } }");
 
-        QueryLimit queryLimit = new QueryLimit();
+        QueryLimit queryLimit = QueryLimit.builder().build();
         queryLimit.setLimit(10);
 
         query.setVariables(queryLimit);
@@ -137,14 +137,14 @@ public class TC004_GraphQLTest extends GraphActions {
     @Story("Test Graphql")
     public void TestAddUser_checkReturnedData() {
 
-        GraphQLQuery query = new GraphQLQuery();
+        GraphQLQuery query = GraphQLQuery.builder().build();
         query.setQuery("mutation insert_users ($id: uuid!, $name: String!, $rocket: String!) { insert_users(objects: {id: $id, name: $name, rocket: $rocket}) { returning { id name rocket } } }");
 
-        User myUser = new User(
-                UUID.randomUUID(),
-                "Bas",
-                "My awesome rocket"
-        );
+        User myUser = User.builder()
+                .id(UUID.randomUUID())
+                .name("Bas")
+                .rocket("My awesome rocket")
+                .build();
         query.setVariables(myUser);
 
         RestAssured.given()

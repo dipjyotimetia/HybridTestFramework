@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.extern.jackson.Jacksonized;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Jacksonized

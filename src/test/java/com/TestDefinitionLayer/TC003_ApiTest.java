@@ -70,18 +70,19 @@ public class TC003_ApiTest extends ApiActions {
     public void TestAddBooking() {
         setBaseURI("https://restful-booker.herokuapp.com");
 
-        Bookingdates bookingdates = new Bookingdates(
-                "2018-01-01",
-                "2019-01-01"
-        );
-        Booking booking = new Booking(
-                "Jim",
-                "Brown",
-                111,
-                true,
-                bookingdates,
-                "Breakfast"
-        );
+        Bookingdates bookingdates = Bookingdates.builder()
+                .checkin("2018-01-01")
+                .checkout("2019-01-01")
+                .build();
+
+        Booking booking = Booking.builder()
+                .firstname("Jim")
+                .lastname("Brown")
+                .totalprice(111)
+                .depositpaid(true)
+                .bookingdates(bookingdates)
+                .additionalneeds("Breakfast")
+                .build();
 
         Response response = httpPost(booking, "/booking");
         Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
