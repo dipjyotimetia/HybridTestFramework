@@ -30,7 +30,7 @@ plugins {
 
 ext {
     grpcVersion = "1.45.1"
-    protoVersion = "3.19.4"
+    protoVersion = '3.20.0'
     containerVersion = "1.16.3"
     kafkaVersion = "7.0.1-ce"
 }
@@ -85,7 +85,7 @@ dependencies {
     implementation 'com.google.cloud:google-cloud-firestore:3.0.20'
     implementation 'com.google.cloud:google-cloud-pubsub:1.116.2'
     implementation 'com.google.cloud:google-cloud-core-http:2.5.11'
-    implementation 'com.google.cloud:google-cloud-secretmanager:2.1.3'
+    implementation 'com.google.cloud:google-cloud-secretmanager:2.1.5'
     implementation 'com.google.cloud:google-cloud-bigquery:2.10.3'
     implementation 'org.seleniumhq.selenium:selenium-java:4.1.3'
     implementation 'org.seleniumhq.selenium:selenium-server:4.0.0-alpha-2'
