@@ -37,8 +37,8 @@ public class TC006_KafkaTest {
         Config conf = Config
                 .builder()
                 .Topic(topic)
-                .data(value)
-                .properties(properties)
+                .Data(value)
+                .Properties(properties)
                 .build();
         kafka.CreateTopic(conf);
     }

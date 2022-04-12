@@ -1,9 +1,11 @@
 package com.pubsub;
 
 import lombok.Builder;
+import lombok.Data;
 
 import java.util.Properties;
 
+@Data
 @Builder
 public class Config {
     private String Topic;
@@ -12,6 +14,6 @@ public class Config {
     private String Partition;
     private String SchemaRegistry;
     private String GroupID;
-    private Properties properties;
-    private String data;
+    private Properties Properties;
+    private String Data;
 }
