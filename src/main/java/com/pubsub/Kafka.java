@@ -24,50 +24,46 @@ import java.util.Properties;
 @Slf4j
 public class Kafka {
 
-    private Properties getKafkaStreamsConfig(String bootstrapURL, String schemaRegistry) {
+    private Properties getKafkaStreamsConfig(Config config) {
         // Create producer properties
         Properties properties = new Properties();
         properties.setProperty(ProducerConfig.ACKS_CONFIG, "1");
         properties.setProperty(ProducerConfig.RETRIES_CONFIG, "10");
 
-        properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapURL);
+        properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, config.getBootstrapURL());
         properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class.getName());
-        properties.setProperty("schema.registry.url", schemaRegistry);
+        properties.setProperty("schema.registry.url", config.getSchemaRegistry());
         return properties;
     }
 
-    private Properties setConsumerConfig(String bootstrapServer, String groupID) {
+    private Properties setConsumerConfig(Config config) {
         Properties properties = new Properties();
-        properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer);
+        properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, config.getBootstrapURL());
         properties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         properties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaAvroDeserializer.class.getName());
-        properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, groupID);
+        properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, config.getGroupID());
         properties.setProperty(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
         properties.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest"); // "earliest/latest/none"
-        properties.setProperty("schema.registry.url", "http://127.0.0.1:8081");
+        properties.setProperty("schema.registry.url", config.getSchemaRegistry());
         properties.setProperty("specific.avro.reader", "true");
         return properties;
     }
 
     /**
-     * Create kafka topics
-     *
-     * @param topic
-     * @param value
-     * @param properties
+     * @param config
      */
-    public void CreateTopic(String topic, String value, Properties properties) {
+    public void CreateTopic(Config config) {
         // Create the producer
-        KafkaProducer<String, String> producer = new KafkaProducer<>(properties);
-        ProducerRecord<String, String> record = new ProducerRecord<>(topic, value);
+        KafkaProducer<String, String> producer = new KafkaProducer<>(config.getProperties());
+        ProducerRecord<String, String> record = new ProducerRecord<>(config.getTopic(), config.getData());
         System.out.println("Creating producer");
         // Send Data
         producer.send(record, (metadata, e) -> {
             // Execute every time record is successfully send
             if (e == null) {
                 log.info(String.valueOf(metadata.timestamp()));
-                log.info(topic, metadata.topic());
+                log.info(config.getTopic(), metadata.topic());
                 log.info(String.valueOf(metadata.hasOffset()));
                 log.info(String.valueOf(metadata.hasTimestamp()));
             } else {
@@ -81,11 +77,11 @@ public class Kafka {
     /**
      * Produce kafka messages
      *
-     * @param topic
+     * @param config
      * @throws Exception
      */
-    public void producer(String topic) throws Exception {
-        Properties configProperty = getKafkaStreamsConfig("", "");
+    public void producer(Config config) throws Exception {
+        Properties configProperty = getKafkaStreamsConfig(config);
         KafkaProducer<String, Customer> kafkaProducer = new KafkaProducer<>(configProperty);
 
         for (int i = 0; i < 10; i++) {
@@ -100,7 +96,7 @@ public class Kafka {
                     .build();
 
             ProducerRecord<String, Customer> producerRecord = new ProducerRecord<>(
-                    topic, customer
+                    config.getTopic(), customer
             );
 
             kafkaProducer.send(producerRecord, (metadata, exception) -> {
@@ -119,12 +115,12 @@ public class Kafka {
     /**
      * Consume kafka messages
      *
-     * @param topic
+     * @param config
      */
-    public void consumer(String topic) {
-        Properties configProperties = setConsumerConfig("", "");
+    public void consumer(Config config) {
+        Properties configProperties = setConsumerConfig(config);
         try (KafkaConsumer<String, Customer> kafkaConsumer = new KafkaConsumer<>(configProperties)) {
-            kafkaConsumer.subscribe(Collections.singleton(topic));
+            kafkaConsumer.subscribe(Collections.singleton(config.getTopic()));
             log.info("Waiting for data");
             while (true) {
                 ConsumerRecords<String, Customer> records = kafkaConsumer.poll(Duration.ofMillis(500));
