@@ -1,5 +1,6 @@
 package com.TestDefinitionLayer;
 
+import com.pubsub.Config;
 import com.pubsub.Kafka;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -33,7 +34,13 @@ public class TC006_KafkaTest {
         properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         // Create the producer
-        kafka.CreateTopic(topic, value, properties);
+        Config conf = Config
+                .builder()
+                .Topic(topic)
+                .Data(value)
+                .Properties(properties)
+                .build();
+        kafka.createTopic(conf);
     }
 
     @AfterTest
