@@ -51,9 +51,10 @@ public class Kafka {
     }
 
     /**
-     * @param config
+     * create topics
+     * @param config config
      */
-    public void CreateTopic(Config config) {
+    public void createTopic(Config config) {
         // Create the producer
         KafkaProducer<String, String> producer = new KafkaProducer<>(config.getProperties());
         ProducerRecord<String, String> record = new ProducerRecord<>(config.getTopic(), config.getData());

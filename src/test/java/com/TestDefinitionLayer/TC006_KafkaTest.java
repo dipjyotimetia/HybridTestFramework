@@ -40,7 +40,7 @@ public class TC006_KafkaTest {
                 .Data(value)
                 .Properties(properties)
                 .build();
-        kafka.CreateTopic(conf);
+        kafka.createTopic(conf);
     }
 
     @AfterTest
