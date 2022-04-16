@@ -76,7 +76,7 @@ task E2E(type: Test) {
 
 dependencies {
     implementation project(":contract")
-    implementation 'software.amazon.awssdk:s3:2.17.165'
+    implementation 'software.amazon.awssdk:s3:2.17.172'
     implementation 'software.amazon.awssdk:sqs:2.17.165'
     implementation 'software.amazon.awssdk:sns:2.17.165'
     implementation 'software.amazon.awssdk:devicefarm:2.17.165'
