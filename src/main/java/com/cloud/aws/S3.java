@@ -34,7 +34,6 @@ import java.io.File;
 @Slf4j
 public class S3 extends Config {
     Region region = Region.AP_SOUTHEAST_2;
-//    S3Client s3Client = SetupS3(region, "DEV");
 
     /**
      * Create Bucket

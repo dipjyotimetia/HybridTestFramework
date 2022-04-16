@@ -1,5 +1,6 @@
 .allure/**/**
 .idea/**/**
+.vscode/**/**
 .gradle/**/**
 .settings/**
 .project
@@ -12,3 +13,4 @@ ScreensDoc/**/**
 logs/logfile.log
 /build/
 /contract/build
+/Reports/

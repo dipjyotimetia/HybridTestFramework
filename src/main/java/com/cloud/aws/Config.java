@@ -25,8 +25,6 @@ package com.cloud.aws;
 
 import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
-import software.amazon.awssdk.services.lambda.LambdaClient;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.sns.SnsClient;
 import software.amazon.awssdk.services.sqs.SqsClient;
@@ -51,29 +49,6 @@ public class Config {
                 break;
             case "PROD":
                 client = S3Client.builder().region(region).build();
-                break;
-            default:
-                log.info("");
-                break;
-        }
-        return client;
-    }
-
-    /**
-     * Setup DynamoDB client connection
-     *
-     * @param region cloud region
-     * @param env    environment
-     * @return dynamoClient
-     */
-    public DynamoDbClient setupDynamoDB(Region region, String env) {
-        DynamoDbClient client = DynamoDbClient.builder().region(region).build();
-        switch (env) {
-            case "DEV":
-                client = DynamoDbClient.builder().region(region).endpointOverride(URI.create("http://localhost:4566")).build();
-                break;
-            case "PROD":
-                client = DynamoDbClient.builder().region(region).build();
                 break;
             default:
                 log.info("");
@@ -127,28 +102,4 @@ public class Config {
         }
         return client;
     }
-
-    /**
-     * Setup SetupLambda client connection
-     *
-     * @param region cloud region
-     * @param env    environment
-     * @return lambdaClient
-     */
-    public LambdaClient setupLambda(Region region, String env) {
-        LambdaClient client = LambdaClient.builder().region(region).build();
-        switch (env) {
-            case "DEV":
-                client = LambdaClient.builder().region(region).endpointOverride(URI.create("http://localhost:4566")).build();
-                break;
-            case "PROD":
-                client = LambdaClient.builder().region(region).build();
-                break;
-            default:
-                log.info("");
-                break;
-        }
-        return client;
-    }
-
 }
