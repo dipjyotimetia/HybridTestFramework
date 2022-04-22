@@ -32,7 +32,7 @@ ext {
     grpcVersion = "1.45.1"
     protoVersion = '3.20.1'
     containerVersion = "1.17.1"
-    kafkaVersion = "7.1.0-ce"
+    kafkaVersion = "7.1.1-ce"
 }
 
 group 'com.HybridTestFramework'
