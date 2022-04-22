@@ -45,7 +45,9 @@ RUN FIREFOX_DOWNLOAD_URL=$(if [ $FIREFOX_VERSION = "latest" ] || [ $FIREFOX_VERS
   && mv /opt/firefox /opt/firefox-$FIREFOX_VERSION \
   && ln -fs /opt/firefox-$FIREFOX_VERSION/firefox /usr/bin/firefox
 
-RUN chmod +x gradlew
+WORKDIR /app
+COPY . .
+RUN chmod +x /app/gradlew
 
-ENTRYPOINT ["./gradlew task e2e"]
+RUN gradle wrapper
 
