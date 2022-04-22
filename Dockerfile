@@ -45,6 +45,7 @@ RUN FIREFOX_DOWNLOAD_URL=$(if [ $FIREFOX_VERSION = "latest" ] || [ $FIREFOX_VERS
   && mv /opt/firefox /opt/firefox-$FIREFOX_VERSION \
   && ln -fs /opt/firefox-$FIREFOX_VERSION/firefox /usr/bin/firefox
 
-#docker build -t hybridtestframework:1.0 .
-#docker tag hybridtestframework:1.0 docker.pkg.github.com/dipjyotimetia/hybridtestframewrok/hybridtestframework:1.0
-#docker push docker.pkg.github.com/dipjyotimetia/hybridtestframewrok/hybridtestframework:1.0
+RUN chmod +x gradlew
+
+ENTRYPOINT ["./gradlew task e2e"]
+
