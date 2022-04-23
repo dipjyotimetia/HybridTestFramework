@@ -46,8 +46,11 @@ RUN FIREFOX_DOWNLOAD_URL=$(if [ $FIREFOX_VERSION = "latest" ] || [ $FIREFOX_VERS
   && ln -fs /opt/firefox-$FIREFOX_VERSION/firefox /usr/bin/firefox
 
 WORKDIR /app
-COPY . .
-RUN chmod +x /app/gradlew
 
+COPY . .
+ADD ./scripts ./scripts
+RUN chmod +x /app/gradlew
+RUN chmod +x /app/scripts/**
 RUN gradle wrapper
 
+ENTRYPOINT ["./scripts/start.sh"]
