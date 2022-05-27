@@ -105,7 +105,7 @@ dependencies {
     implementation 'com.github.javafaker:javafaker:1.0.2'
     implementation 'io.rest-assured:rest-assured:5.0.1'
     implementation 'io.rest-assured:json-schema-validator:5.1.0'
-    implementation 'io.rest-assured:json-path:5.0.1'
+    implementation 'io.rest-assured:json-path:5.1.0'
     implementation 'com.atlassian.oai:swagger-request-validator-restassured:2.27.3'
     implementation 'com.atlassian.oai:swagger-request-validator-pact:2.27.3'
     implementation 'org.json:json:20220320'
