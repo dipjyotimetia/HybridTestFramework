@@ -33,7 +33,7 @@ ext {
     protoVersion = '3.21.0'
     containerVersion = "1.17.1"
     kafkaVersion = "7.1.1-ce"
-    awsVersion ="2.17.199"
+    awsVersion ="2.17.201"
 }
 
 group 'com.HybridTestFramework'
