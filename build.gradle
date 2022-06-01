@@ -82,7 +82,7 @@ dependencies {
     implementation "software.amazon.awssdk:sns:${awsVersion}"
     implementation "software.amazon.awssdk:devicefarm:${awsVersion}"
     implementation 'com.google.cloud:google-cloud-pubsub:1.118.0'
-    implementation 'org.seleniumhq.selenium:selenium-java:4.2.0'
+    implementation 'org.seleniumhq.selenium:selenium-java:4.2.1'
     implementation 'org.seleniumhq.selenium:selenium-server:4.0.0-alpha-2'
     implementation 'io.github.bonigarcia:webdrivermanager:5.2.0'
     implementation 'com.browserstack:browserstack-local-java:1.0.6'
