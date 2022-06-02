@@ -20,7 +20,7 @@ jobs:
         uses: docker/setup-buildx-action@v2
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           images: ${{ secrets.DOCKER_HUB_USERNAME }}/hybridtestframework
       - name: Build and push
