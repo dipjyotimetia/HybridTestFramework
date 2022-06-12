@@ -1,4 +1,4 @@
-package com.pubsub;
+package com.eventing;
 
 import com.avro.Customer;
 import com.cloud.gcp.Config;

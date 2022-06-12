@@ -1,4 +1,4 @@
-package com.pubsub;
+package com.eventing;
 
 import lombok.Builder;
 import lombok.Data;

@@ -7,7 +7,7 @@ import com.google.pubsub.v1.ProjectSubscriptionName;
 import com.google.pubsub.v1.PubsubMessage;
 import com.google.pubsub.v1.PullRequest;
 import com.google.pubsub.v1.PullResponse;
-import com.pubsub.Pubsub;
+import com.eventing.Pubsub;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Link;
 import org.testcontainers.containers.PubSubEmulatorContainer;

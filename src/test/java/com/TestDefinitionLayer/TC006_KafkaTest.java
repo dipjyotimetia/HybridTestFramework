@@ -1,7 +1,7 @@
 package com.TestDefinitionLayer;
 
-import com.pubsub.Config;
-import com.pubsub.Kafka;
+import com.eventing.Config;
+import com.eventing.Kafka;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.testcontainers.containers.KafkaContainer;
