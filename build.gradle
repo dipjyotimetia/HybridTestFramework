@@ -150,7 +150,7 @@ dependencies {
     implementation "org.testcontainers:gcloud:${containerVersion}"
     implementation 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
-    compile group: 'com.epam.healenium', name: 'healenium-web', version: '3.2.4'
+    implementation 'com.epam.healenium:healenium-web:3.2.4'
 }
 
 // https://github.com/DiUS/java-faker/issues/327#issuecomment-1091166953
