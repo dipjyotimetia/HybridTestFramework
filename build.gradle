@@ -101,7 +101,7 @@ dependencies {
     implementation 'org.apache.poi:poi-ooxml:5.2.2'
     implementation 'org.apache.poi:poi:5.2.2'
     implementation 'org.apache.xmlbeans:xmlbeans:5.1.0'
-    implementation 'com.microsoft.sqlserver:mssql-jdbc:11.1.1.jre11-preview'
+    implementation 'com.microsoft.sqlserver:mssql-jdbc:11.1.2.jre11-preview'
     implementation 'org.slf4j:slf4j-simple:1.7.36'
     implementation 'com.github.javafaker:javafaker:1.0.2'
     implementation 'io.rest-assured:rest-assured:5.1.1'
