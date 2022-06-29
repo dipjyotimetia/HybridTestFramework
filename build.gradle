@@ -32,7 +32,7 @@ ext {
     grpcVersion = "1.47.0"
     protoVersion = '3.21.2'
     containerVersion = '1.17.2'
-    kafkaVersion = "7.1.1-ce"
+    kafkaVersion = "7.1.2-ce"
     awsVersion = "2.17.221"
     ceVersion = "2.3.0"
 }
@@ -119,7 +119,7 @@ dependencies {
     implementation 'io.qameta.allure:allure-testng:2.18.0'
     implementation 'io.qameta.allure:allure-rest-assured:2.18.0'
     implementation 'io.qameta.allure:allure-attachments:2.18.1'
-    implementation 'org.apache.pulsar:pulsar-client:2.10.0'
+    implementation 'org.apache.pulsar:pulsar-client:2.10.1'
     implementation 'org.apache.avro:avro:1.11.0'
     // https://stackoverflow.com/questions/40923471/cannot-compile-with-protocol-buffers-3-1-0
     //implementation "org.apache.avro:avro-tools:1.11.0"
@@ -131,7 +131,7 @@ dependencies {
     implementation "io.cloudevents:cloudevents-api:${ceVersion}"
     implementation "io.cloudevents:cloudevents-kafka:${ceVersion}"
     implementation "io.cloudevents:cloudevents-protobuf:${ceVersion}"
-    implementation 'io.confluent:kafka-avro-serializer:7.1.1'
+    implementation 'io.confluent:kafka-avro-serializer:7.1.2'
     implementation 'cloud.localstack:localstack-utils:0.2.20'
     implementation 'com.google.guava:guava:31.1-jre'
     runtimeOnly "io.grpc:grpc-netty-shaded:${grpcVersion}"
