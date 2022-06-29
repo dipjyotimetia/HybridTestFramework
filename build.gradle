@@ -33,7 +33,7 @@ ext {
     protoVersion = '3.21.2'
     containerVersion = '1.17.2'
     kafkaVersion = "7.1.1-ce"
-    awsVersion = "2.17.219"
+    awsVersion = "2.17.221"
     ceVersion = "2.3.0"
 }
 
@@ -131,7 +131,7 @@ dependencies {
     implementation "io.cloudevents:cloudevents-api:${ceVersion}"
     implementation "io.cloudevents:cloudevents-kafka:${ceVersion}"
     implementation "io.cloudevents:cloudevents-protobuf:${ceVersion}"
-    implementation 'io.confluent:kafka-avro-serializer:7.1.1'
+    implementation 'io.confluent:kafka-avro-serializer:7.1.2'
     implementation 'cloud.localstack:localstack-utils:0.2.20'
     implementation 'com.google.guava:guava:31.1-jre'
     runtimeOnly "io.grpc:grpc-netty-shaded:${grpcVersion}"
