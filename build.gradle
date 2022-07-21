@@ -131,7 +131,7 @@ dependencies {
     implementation "io.cloudevents:cloudevents-api:${ceVersion}"
     implementation "io.cloudevents:cloudevents-kafka:${ceVersion}"
     implementation "io.cloudevents:cloudevents-protobuf:${ceVersion}"
-    implementation 'io.confluent:kafka-avro-serializer:7.2.0'
+    implementation 'io.confluent:kafka-avro-serializer:7.2.1'
     implementation 'cloud.localstack:localstack-utils:0.2.20'
     implementation 'com.google.guava:guava:31.1-jre'
     runtimeOnly "io.grpc:grpc-netty-shaded:${grpcVersion}"
