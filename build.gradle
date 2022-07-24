@@ -79,7 +79,7 @@ task web(type: Test) {
 task mobile(type: Test) {
     useTestNG() {
         useDefaultListeners = true
-        suites 'src/test/java/suite/mobiletng.xml'
+        suites 'src/test/java/suite/mobileng.xml'
         // includeGroups 'smoke'
     }
     testLogging.events "passed", "skipped", "failed"
