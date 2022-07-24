@@ -248,8 +248,8 @@ public class DriverController extends WebOptions {
                 _driverThread.quit();
             } else {
                 _mobileThread.quit();
-                _createService().stop();
-                _stopAppiumServer();
+//                _createService().stop();
+//                _stopAppiumServer();
             }
         }
     }
