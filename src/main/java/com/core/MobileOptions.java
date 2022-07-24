@@ -64,10 +64,10 @@ abstract class MobileOptions {
      */
     void _cloudCapabilities(String cloudProvider, DesiredCapabilities _caps, String device) throws IOException {
         switch (cloudProvider) {
-            case "SAUSE":
+            case "sause":
                 _saucelabsCapabilities(_caps, device);
                 break;
-            case "BROWSERSTACK":
+            case "browserstack":
                 _browserstackCapabilities(_caps, device);
                 break;
             default:

@@ -116,7 +116,7 @@ public class DriverController extends WebOptions {
                     _driverThread = new RemoteWebDriver(URI.create("http://localhost:4444/").toURL(), getBrowserOptions(browser, perf));
                     log.info("Grid client setup for Docker containers successful");
                     break;
-                case "BROWSERSTACK":
+                case "browserstack":
                     log.info("Make sure that browserstack configs provided");
                     _driverThread = new RemoteWebDriver(new URL("https://" + username + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub"), addBrowserStackCapabilities(browser, testName));
                     log.info("Grid client setup for browserstack successful");
@@ -153,8 +153,6 @@ public class DriverController extends WebOptions {
      */
     private synchronized void initMobileDriver(String device, String cloud) {
         try {
-            File appDir = new File("input/app");
-            File app = new File(appDir, "***.apk");
             switch (device) {
                 case "NEXUS":
                     log.info("Selected device is NEXUS");
