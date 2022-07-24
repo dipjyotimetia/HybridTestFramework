@@ -3,9 +3,10 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/2ffd9c97725645c2bcda860988dc0baf)](https://www.codacy.com/gh/dipjyotimetia/HybridTestFramework/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dipjyotimetia/HybridTestFramework&amp;utm_campaign=Badge_Grade)
 [![This project is using Percy.io for visual regression testing.](https://percy.io/static/images/percy-badge.svg)](https://percy.io/CypressTest/Selenium)
 ![CI](https://github.com/dipjyotimetia/HybridTestFramework/workflows/CI/badge.svg)
-[![CodeQLAnalysis](https://github.com/dipjyotimetia/HybridTestFramework/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/dipjyotimetia/HybridTestFramework/actions/workflows/codeql-analysis.yml)   
-[![SupportedBy JetBrains](https://github.com/TestautoDev/Tricks-And-Tips/blob/master/jetbrains.svg)](https://www.jetbrains.com/?from=HybridTestFramework)
-
+[![CodeQLAnalysis](https://github.com/dipjyotimetia/HybridTestFramework/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/dipjyotimetia/HybridTestFramework/actions/workflows/codeql-analysis.yml)      
+[![Discord Chat](https://www.vectorlogo.zone/logos/discordapp/discordapp-ar21.svg)](https://discord.gg/eE3gjXqXHx)   
+[![SupportedBy JetBrains](https://github.com/TestautoDev/Tricks-And-Tips/blob/master/jetbrains.svg)](https://www.jetbrains.com/?from=HybridTestFramework)   
+     
 
 In the era of [cloud-native](https://docs.microsoft.com/en-us/dotnet/architecture/cloud-native/definition) world we cannot stick to a particular framework, however due to projects requirement we often need to evolve the existing testing
 solution in such a way so that it can cater multiple testing requirement, hence [HybridTestFramework](https://github.com/dipjyotimetia/HybridTestFramework) is targeting to create a bridge between the kind of legacy systems
