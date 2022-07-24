@@ -18,7 +18,7 @@ jobs:
 #      - name: Grant execute permission for gradlew
 #        run: chmod +x gradlew
 #      - name: Running End To End Test
-#        run: ./gradlew task E2EWeb
+#        run: ./gradlew task web
 #        env:
 #          BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
 #          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
@@ -44,7 +44,7 @@ jobs:
           USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
           ACCESS: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
       - name: Gradle Run Test Browserstack
-        run: ./gradlew task E2EMobile
+        run: ./gradlew task mobile
         env:
           BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
           BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}

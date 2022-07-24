@@ -65,10 +65,21 @@ dockerCompose {
     removeContainers = true
 }
 
-task E2E(type: Test) {
+task web(type: Test) {
     useTestNG() {
         useDefaultListeners = true
         suites 'src/test/java/suite/testng.xml'
+        // includeGroups 'smoke'
+    }
+    testLogging.events "passed", "skipped", "failed"
+    testLogging.showStandardStreams = true
+    testLogging.exceptionFormat = "full"
+}
+
+task mobile(type: Test) {
+    useTestNG() {
+        useDefaultListeners = true
+        suites 'src/test/java/suite/mobiletng.xml'
         // includeGroups 'smoke'
     }
     testLogging.events "passed", "skipped", "failed"
