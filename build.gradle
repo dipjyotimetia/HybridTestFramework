@@ -52,7 +52,7 @@ repositories {
 }
 
 allure {
-    version = "2.17.3"
+    version = "2.18.1"
 }
 
 // dockerCompose.isRequiredBy(test)
@@ -65,10 +65,21 @@ dockerCompose {
     removeContainers = true
 }
 
-task E2E(type: Test) {
+task E2EWeb(type: Test) {
     useTestNG() {
         useDefaultListeners = true
         suites 'src/test/java/suite/testng.xml'
+        // includeGroups 'smoke'
+    }
+    testLogging.events "passed", "skipped", "failed"
+    testLogging.showStandardStreams = true
+    testLogging.exceptionFormat = "full"
+}
+
+task E2EMobile(type: Test) {
+    useTestNG() {
+        useDefaultListeners = true
+        suites 'src/test/java/suite/mobileng.xml'
         // includeGroups 'smoke'
     }
     testLogging.events "passed", "skipped", "failed"
@@ -85,6 +96,7 @@ dependencies {
     implementation 'com.google.cloud:google-cloud-pubsub:1.119.1'
     implementation 'org.seleniumhq.selenium:selenium-java:4.3.0'
     implementation 'org.seleniumhq.selenium:selenium-server:4.0.0-alpha-2'
+    implementation 'io.appium:java-client:8.1.1'
     implementation 'io.github.bonigarcia:webdrivermanager:5.2.0'
     implementation 'com.browserstack:browserstack-local-java:1.0.6'
     implementation 'com.deque:axe-selenium:3.0'
@@ -110,14 +122,14 @@ dependencies {
     implementation 'com.atlassian.oai:swagger-request-validator-restassured:2.28.1'
     implementation 'com.atlassian.oai:swagger-request-validator-pact:2.28.1'
     implementation 'org.json:json:20220320'
-    implementation 'com.konghq:unirest-java:3.13.8'
+    implementation 'com.konghq:unirest-java:3.13.10'
     implementation 'net.lightbody.bmp:browsermob-core:2.1.5'
     implementation 'org.zaproxy:zap-clientapi:1.10.0'
     implementation 'org.zaproxy:zap:2.11.1'
     implementation 'net.lingala.zip4j:zip4j:2.11.1'
     implementation 'io.qameta.allure:allure-gradle:2.8.1'
-    implementation 'io.qameta.allure:allure-testng:2.18.0'
-    implementation 'io.qameta.allure:allure-rest-assured:2.18.0'
+    implementation 'io.qameta.allure:allure-testng:2.18.1'
+    implementation 'io.qameta.allure:allure-rest-assured:2.18.1'
     implementation 'io.qameta.allure:allure-attachments:2.18.1'
     implementation 'org.apache.pulsar:pulsar-client:2.10.0'
     implementation 'org.apache.avro:avro:1.11.0'
@@ -149,8 +161,20 @@ dependencies {
     implementation "org.testcontainers:localstack:${containerVersion}"
     implementation "org.testcontainers:gcloud:${containerVersion}"
     implementation 'org.projectlombok:lombok:1.18.24'
-    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
     implementation 'com.epam.healenium:healenium-web:3.2.5'
+    implementation 'org.yaml:snakeyaml:1.30'
+    testImplementation 'us.abstracta.jmeter:jmeter-java-dsl:0.62'
+    components {
+        withModule("org.apache.jmeter:ApacheJMeter_core", JmeterRule)
+        withModule("org.apache.jmeter:ApacheJMeter_java", JmeterRule)
+        withModule("org.apache.jmeter:ApacheJMeter", JmeterRule)
+        withModule("org.apache.jmeter:ApacheJMeter_http", JmeterRule)
+        withModule("org.apache.jmeter:ApacheJMeter_functions", JmeterRule)
+        withModule("org.apache.jmeter:ApacheJMeter_components", JmeterRule)
+        withModule("org.apache.jmeter:ApacheJMeter_config", JmeterRule)
+        withModule("org.apache.jmeter:jorphan", JmeterRule)
+    }
 }
 
 // https://github.com/DiUS/java-faker/issues/327#issuecomment-1091166953
@@ -159,6 +183,18 @@ configurations.all {
         if (details.requested.module.toString() == 'org.yaml:snakeyaml') {
             details.artifactSelection {
                 it.selectArtifact(DependencyArtifact.DEFAULT_TYPE, null, null)
+            }
+        }
+    }
+}
+
+// this is required due to JMeter open issue: https://bz.apache.org/bugzilla/show_bug.cgi?id=64465
+@CacheableRule
+class JmeterRule implements ComponentMetadataRule {
+    void execute(ComponentMetadataContext context) {
+        context.details.allVariants {
+            withDependencies {
+                removeAll { it.group == "org.apache.jmeter" && it.name == "bom" }
             }
         }
     }

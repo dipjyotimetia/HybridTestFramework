@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 @Slf4j
-abstract class DriverOptions {
+abstract class WebOptions extends MobileOptions{
 
     /**
      * get chrome options
@@ -70,7 +70,7 @@ abstract class DriverOptions {
         options.addArguments("--disable-browser-side-navigation");
         options.addArguments("--disable-gpu");
         if (perf.equalsIgnoreCase("YES")) {
-            options.merge(WebDriverController.performance());
+            options.merge(DriverController.performance());
         }
         log.info("Chrome options added");
         return options;

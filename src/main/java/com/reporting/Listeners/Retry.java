@@ -64,9 +64,15 @@ public class Retry extends DriverManager implements IRetryAnalyzer {
     public void extendReportsFailOperations(ITestResult iTestResult) {
         try {
             Object testClass = iTestResult.getInstance();
-            this.driverThread = ((DriverManager) testClass).getDriver();
-            String base64Screenshot = "data:image/png;base64," + ((TakesScreenshot) driverThread).getScreenshotAs(OutputType.BASE64);
-            ExtentTestManager.getTest().log(Status.FAIL, "Test Failed", MediaEntityBuilder.createScreenCaptureFromBase64String(base64Screenshot).build());
+            if (this.driverThread != null) {
+                this.driverThread = ((DriverManager) testClass).getWebDriver();
+                String base64Screenshot = "data:image/png;base64," + ((TakesScreenshot) driverThread).getScreenshotAs(OutputType.BASE64);
+                ExtentTestManager.getTest().log(Status.FAIL, "Test Failed", MediaEntityBuilder.createScreenCaptureFromBase64String(base64Screenshot).build());
+            } else {
+                this.mobileThread = ((DriverManager) testClass).getMobileDriver();
+                String base64Screenshot = "data:image/png;base64," + ((TakesScreenshot) mobileThread).getScreenshotAs(OutputType.BASE64);
+                ExtentTestManager.getTest().log(Status.FAIL, "Test Failed", MediaEntityBuilder.createScreenCaptureFromBase64String(base64Screenshot).build());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

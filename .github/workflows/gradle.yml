@@ -7,22 +7,52 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+#  web:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v3
+#      - name: Setup AWS Localstack
+#        run: docker-compose -f docker-compose.localstack.yml up -d
+#      - name: Setup mock server
+#        run: docker-compose -f docker-compose.mock.yml up -d
+#      - name: Grant execute permission for gradlew
+#        run: chmod +x gradlew
+#      - name: Running End To End Test
+#        run: ./gradlew task E2EWeb
+#        env:
+#          BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+#          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+#          DEFAULT_REGION: ap-southeast-2
+#          AWS_ACCOUNT_ID: "000000000000"
+#          AWS_ACCESS_KEY_ID: dummy-access-key
+#          AWS_SECRET_ACCESS_KEY: dummy-secret-key
+
+  mobile:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Setup AWS Localstack
-        run: docker-compose -f docker-compose.localstack.yml up -d
-      - name: Setup mock server
-        run: docker-compose -f docker-compose.mock.yml up -d
+      - uses: actions/checkout@v2
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: Running End To End Test
-        run: ./gradlew task e2e
+      - name: Upload app and set app location
+        id: app-upload
+        run: |
+          IPA_UPLOAD_RESPONSE=$(curl -u "$USERNAME:$ACCESS" -X POST https://api-cloud.browserstack.com/app-automate/upload -F "url=https://github.com/saucelabs/sample-app-mobile/releases/download/2.7.1/iOS.RealDevice.SauceLabs.Mobile.Sample.app.2.7.1.ipa")
+          APK_UPLOAD_RESPONSE=$(curl -u "$USERNAME:$ACCESS" -X POST https://api-cloud.browserstack.com/app-automate/upload -F "url=https://github.com/saucelabs/sample-app-mobile/releases/download/2.7.1/Android.SauceLabs.Mobile.Sample.app.2.7.1.apk")
+          echo "::set-output name=IPA_URL::$(echo $IPA_UPLOAD_RESPONSE | jq -r '.app_url')"
+          echo "::set-output name=APK_URL::$(echo $APK_UPLOAD_RESPONSE | jq -r '.app_url')"
+        env:
+          USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+          ACCESS: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+      - name: Gradle Run Test Browserstack
+        run: ./gradlew task E2EMobile
         env:
           BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
           BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-          DEFAULT_REGION: ap-southeast-2
-          AWS_ACCOUNT_ID: "000000000000"
-          AWS_ACCESS_KEY_ID: dummy-access-key
-          AWS_SECRET_ACCESS_KEY: dummy-secret-key
+          IPA_URL: ${{steps.app-upload.outputs.IPA_URL}}
+          APK_URL: ${{steps.app-upload.outputs.APK_URL}}
+      - name: Generate Report
+        run: ./gradlew task allureReport
+      - uses: actions/upload-artifact@v2
+        with:
+          name: allure-report
+          path: build/reports/allure-report

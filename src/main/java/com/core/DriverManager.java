@@ -24,14 +24,15 @@ SOFTWARE.
 package com.core;
 
 
+import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.WebDriver;
 
-public class DriverManager extends WebDriverController {
-
+public class DriverManager extends DriverController {
     public WebDriver driverThread;
+    public AppiumDriver mobileThread;
 
     public DriverManager() {
-        this.driverThread = super.getDriver();
+        this.driverThread = super.getWebDriver();
+        this.mobileThread = super.getMobileDriver();
     }
-
 }

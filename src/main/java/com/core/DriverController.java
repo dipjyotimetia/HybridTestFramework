@@ -23,6 +23,10 @@ SOFTWARE.
  */
 package com.core;
 
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.ios.IOSDriver;
+import io.appium.java_client.remote.MobileCapabilityType;
 import lombok.extern.slf4j.Slf4j;
 import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.client.ClientUtil;
@@ -44,39 +48,56 @@ import software.amazon.awssdk.services.devicefarm.DeviceFarmClient;
 import software.amazon.awssdk.services.devicefarm.model.CreateTestGridUrlRequest;
 import software.amazon.awssdk.services.devicefarm.model.CreateTestGridUrlResponse;
 
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.Inet4Address;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 
 
 @Slf4j
-public class WebDriverController extends DriverOptions {
+public class DriverController extends WebOptions {
     private static WebDriver _driverThread = null;
+    private static AppiumDriver _mobileThread = null;
     private static BrowserMobProxyServer proxy;
     private final String username = System.getenv("BROWSERSTACK_USERNAME");
     private final String accessKey = System.getenv("BROWSERSTACK_ACCESS_KEY");
     private String testName = null;
 
-    @Parameters({"browser", "grid", "perf"})
+    @Parameters({"type", "browser", "device", "grid", "perf"})
     @BeforeClass
-    public void setup(String browser, String grid, String perf) {
+    public void setup(String type, String browser, String device, String grid, String perf) {
         testName = this.getClass().getName().substring(24);
-        initDriver(browser, grid, perf);
+        switch (type) {
+            case "web":
+                initWebDriver(browser, grid, perf);
+                break;
+            case "mobile":
+                initMobileDriver(device, grid);
+                break;
+            default:
+                log.info("select test type to proceed with one testing");
+        }
     }
 
-    public WebDriver getDriver() {
+    public WebDriver getWebDriver() {
         return _driverThread;
     }
 
+    public AppiumDriver getMobileDriver() {
+        return _mobileThread;
+    }
+
     /**
-     * Initialize driver
+     * Initialize web driver
      *
      * @param browser browser
      * @param grid    grid
      * @param perf    perf
      */
-    private synchronized void initDriver(String browser, String grid, String perf) {
+    private synchronized void initWebDriver(String browser, String grid, String perf) {
         DeviceFarmClient client = DeviceFarmClient.builder().region(Region.AP_SOUTHEAST_2).build();
         CreateTestGridUrlRequest request = CreateTestGridUrlRequest.builder()
                 .expiresInSeconds(300)
@@ -126,6 +147,71 @@ public class WebDriverController extends DriverOptions {
     }
 
     /**
+     * Initialize mobile driver
+     *
+     * @param device device
+     */
+    private synchronized void initMobileDriver(String device, String cloud) {
+        try {
+            File appDir = new File("input/app");
+            File app = new File(appDir, "***.apk");
+            switch (device) {
+                case "NEXUS":
+                    log.info("Selected device is NEXUS");
+                    _caps.setCapability(MobileCapabilityType.UDID, "NEXUS");
+                    _caps.setCapability(MobileCapabilityType.DEVICE_NAME, "NEXUS");
+                    _androidCapabilities(_caps);
+                    _cloudCapabilities(cloud, _caps, "NEXUS");
+                    _mobileThread = new AndroidDriver(createURL(cloud), _caps);
+                    break;
+                case "PIXEL":
+                    log.info("Selected device is PIXEL");
+                    _caps.setCapability(MobileCapabilityType.UDID, "PIXEL");
+                    _caps.setCapability(MobileCapabilityType.DEVICE_NAME, "PIXEL");
+                    _androidCapabilities(_caps);
+                    _cloudCapabilities(cloud, _caps, "PIXEL");
+                    _mobileThread = new AndroidDriver(createURL(cloud), _caps);
+                    break;
+                case "samsung":
+                    log.info("Selected device is SAMSUNG");
+                    _cloudCapabilities(cloud, _caps, "samsung");
+                    _androidCapabilities(_caps);
+                    _mobileThread = new AndroidDriver(createURL(cloud), _caps);
+                    break;
+                case "iPhone12":
+                    log.info("Selected device is IPHONE");
+                    _cloudCapabilities(cloud, _caps, "iPhone12");
+                    _iosCapabilities(_caps);
+                    _mobileThread = new IOSDriver(createURL(cloud), _caps);
+                    break;
+                case "IPHONE":
+                    log.info("Selected device is IPHONE");
+                    _caps.setCapability(MobileCapabilityType.UDID, "iphone");
+                    _caps.setCapability(MobileCapabilityType.DEVICE_NAME, "iphone");
+                    _iosCapabilities(_caps);
+                    _cloudCapabilities(cloud, _caps, "IPHONE");
+                    _mobileThread = new IOSDriver(createURL(cloud), _caps);
+                    break;
+                case "WEB":
+                    log.info("Selected device is WEB");
+                    _caps.setCapability(MobileCapabilityType.UDID, "NEXUS");
+                    _caps.setCapability(MobileCapabilityType.DEVICE_NAME, "NEXUS");
+                    _createService().start();
+                    _cloudCapabilities(cloud, _caps, "WEB");
+                    _mobileThread = new AndroidDriver(createURL(cloud), _caps);
+                    break;
+            }
+        } catch (NullPointerException |
+                 MalformedURLException ex) {
+            log.error("Appium driver could not be initialised for device", ex);
+            throw new RuntimeException("Appium driver could not be initialised for device: " + device);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        log.info("Driver initialized");
+    }
+
+    /**
      * Added performance capability
      *
      * @return capabilities
@@ -160,7 +246,13 @@ public class WebDriverController extends DriverOptions {
         } catch (Exception e) {
             log.info("Performance tests not included");
         } finally {
-            _driverThread.quit();
+            if (_driverThread != null) {
+                _driverThread.quit();
+            } else {
+                _mobileThread.quit();
+                _createService().stop();
+                _stopAppiumServer();
+            }
         }
     }
 }

@@ -23,8 +23,8 @@ SOFTWARE.
  */
 package com.TestDefinitionLayer;
 
-import com.core.UserActions;
-import com.pages.LoginPage;
+import com.core.WebActions;
+import com.pages.web.LoginPage;
 import com.reporting.ExtentReports.ExtentTestManager;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Link;
@@ -35,7 +35,7 @@ import org.testng.annotations.Test;
 @Link("https://jira.cloud.com")
 @Feature("Api1")
 @Feature("Api2")
-public class TC001_Test extends UserActions {
+public class TC001_Test extends WebActions {
 
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "E2E test for App")

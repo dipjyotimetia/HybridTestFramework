@@ -50,7 +50,11 @@ public class TestListener extends DriverManager implements ITestListener {
     @Override
     public void onStart(ITestContext iTestContext) {
         log.info("I am in onStart method " + iTestContext.getName());
-        iTestContext.setAttribute("WebDriver", this.driverThread);
+        if (this.driverThread != null) {
+            iTestContext.setAttribute("WebDriver", this.driverThread);
+        } else {
+            iTestContext.setAttribute("WebDriver", this.mobileThread);
+        }
     }
 
     @Override
@@ -82,9 +86,15 @@ public class TestListener extends DriverManager implements ITestListener {
                 saveScreenshotPNG();
                 log.error("I am in onTestFailure method " + getTestMethodName(iTestResult) + " failed");
                 Object testClass = iTestResult.getInstance();
-                this.driverThread = ((DriverManager) testClass).getDriver();
-                String base64Screenshot = "data:image/png;base64," + ((TakesScreenshot) driverThread).
-                        getScreenshotAs(OutputType.BASE64);
+                this.driverThread = ((DriverManager) testClass).getWebDriver();
+                String base64Screenshot = "data:image/png;base64," + ((TakesScreenshot) driverThread).getScreenshotAs(OutputType.BASE64);
+                ExtentTestManager.getTest().log(Status.FAIL, "Test Failed", MediaEntityBuilder.createScreenCaptureFromBase64String(base64Screenshot).build());
+            } else {
+                saveScreenshotPNG();
+                log.error("I am in onTestFailure method " + getTestMethodName(iTestResult) + " failed");
+                Object testClass = iTestResult.getInstance();
+                this.mobileThread = ((DriverManager) testClass).getMobileDriver();
+                String base64Screenshot = "data:image/png;base64," + ((TakesScreenshot) mobileThread).getScreenshotAs(OutputType.BASE64);
                 ExtentTestManager.getTest().log(Status.FAIL, "Test Failed", MediaEntityBuilder.createScreenCaptureFromBase64String(base64Screenshot).build());
             }
         } catch (Exception e) {
@@ -106,7 +116,11 @@ public class TestListener extends DriverManager implements ITestListener {
 
     @Attachment(value = "Page screenshot", type = "image/png")
     public byte[] saveScreenshotPNG() {
-        return ((TakesScreenshot) this.driverThread).getScreenshotAs(OutputType.BYTES);
+        if ((this.driverThread != null)) {
+            return ((TakesScreenshot) this.driverThread).getScreenshotAs(OutputType.BYTES);
+        } else {
+            return ((TakesScreenshot) this.mobileThread).getScreenshotAs(OutputType.BYTES);
+        }
     }
 
     @Attachment(value = "0", type = "text/plain")

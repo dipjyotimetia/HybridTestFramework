@@ -61,7 +61,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
 @Slf4j
-public class UserActions extends DriverManager {
+public class WebActions extends DriverManager {
     private static final Faker faker = new Faker();
     private static String datetime = null;
     private static int counter = 0;
