@@ -5,11 +5,11 @@
         <listener class-name="com.reporting.Listeners.TestListener"/>
         <listener class-name="com.reporting.Listeners.AnnotationTransformer"/>
     </listeners>
+    <parameter name="type" value="mobile"/>
     <parameter name="perf" value="NO"/>
     <parameter name="browser" value="chrome"/>
 <!--    <test name="E2E Tests iOS">-->
 <!--        <parameter name="device" value="iPhone12"/>-->
-<!--        <parameter name="apps" value="N"/>-->
 <!--        <parameter name="grid" value="BROWSERSTACK"/> &lt;!&ndash; LOCAL or DOCKER or CLOUD or BROWSERSTACK&ndash;&gt;-->
 <!--        <parameter name="perf" value="NO"/>-->
 <!--        <classes>-->
@@ -18,7 +18,6 @@
 <!--    </test>-->
     <test name="E2E Tests Android">
         <parameter name="device" value="samsung"/>
-        <parameter name="apps" value="Y"/>
         <parameter name="grid" value="BROWSERSTACK"/> <!-- LOCAL or DOCKER or CLOUD or BROWSERSTACK-->
         <classes>
             <class name="com.TestDefinitionLayer.TC_Test_SauseLabsApp"/>
