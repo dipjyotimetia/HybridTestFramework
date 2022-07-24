@@ -85,18 +85,21 @@ abstract class MobileOptions {
     private void _browserstackCapabilities(DesiredCapabilities _caps, String device) {
         switch (device) {
             case "samsung":
-                _caps.setCapability("os_version", "10.0");
-                _caps.setCapability("device", "Samsung Galaxy S20");
+                _caps.setCapability("platformName", "android");
+                _caps.setCapability("platformVersion", "10.0");
+                _caps.setCapability("deviceName", "Samsung Galaxy S20");
                 _caps.setCapability("app", apk_url);
                 break;
             case "pixel":
-                _caps.setCapability("os_version", "9.0");
-                _caps.setCapability("device", "Google Pixel 3");
+                _caps.setCapability("platformName", "android");
+                _caps.setCapability("platformVersion", "9.0");
+                _caps.setCapability("deviceName", "Google Pixel 3");
                 _caps.setCapability("app", apk_url);
                 break;
             case "iPhone12":
-                _caps.setCapability("os_version", "14");
-                _caps.setCapability("device", "iPhone 12");
+                _caps.setCapability("platformName", "ios");
+                _caps.setCapability("platformVersion", "14");
+                _caps.setCapability("deviceName", "iPhone 12");
                 _caps.setCapability("app", ipa_url);
                 break;
             default:
