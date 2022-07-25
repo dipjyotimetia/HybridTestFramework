@@ -48,6 +48,8 @@ jobs:
         env:
           BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
           BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
           IPA_URL: ${{steps.app-upload.outputs.IPA_URL}}
           APK_URL: ${{steps.app-upload.outputs.APK_URL}}
       - name: Generate Report

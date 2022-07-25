@@ -7,6 +7,7 @@ import io.appium.java_client.remote.MobilePlatform;
 import io.appium.java_client.service.local.AppiumServiceBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.exec.OS;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.service.DriverService;
 
@@ -32,7 +33,7 @@ abstract class MobileOptions {
     private final String accessKey = System.getenv("BROWSERSTACK_ACCESS_KEY");
     private final String serverUrl = "http://" + serverIp + ":" + appiumPort + "/wd/hub";
     private final String cloudURL = "https://" + username + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub";
-    private final String sauceURL = "https://" + sauce_username + ":" + sauce_accessKey + "@ondemand.us-west-1.saucelabs.com:443/wd/hub";
+    private final String sauceURL = "https://" + sauce_username + ":" + sauce_accessKey + "ondemand.apac-southeast-1.saucelabs.com:443/wd/hub";
 
     /**
      * CreateURL
@@ -58,17 +59,17 @@ abstract class MobileOptions {
      * Cloud Capabilities
      *
      * @param cloudProvider cloudProvider
-     * @param _caps         capabilities
+     * @param caps         capabilities
      * @param device        device
      * @throws IOException exception
      */
-    void cloudCapabilities(String cloudProvider, DesiredCapabilities _caps, String device) throws IOException {
+    void cloudCapabilities(String cloudProvider, DesiredCapabilities caps, String device) throws IOException {
         switch (cloudProvider) {
-            case "sause":
-                saucelabsCapabilities(_caps, device);
+            case "sauce":
+                saucelabsCapabilities(caps, device);
                 break;
             case "browserstack":
-                browserstackCapabilities(_caps, device);
+                browserstackCapabilities(caps, device);
                 break;
             default:
                 createService().start();
@@ -79,114 +80,120 @@ abstract class MobileOptions {
     /**
      * Browserstack capabilities
      *
-     * @param _caps  capabilities
+     * @param caps  capabilities
      * @param device device
      */
-    private void browserstackCapabilities(DesiredCapabilities _caps, String device) {
+    private void browserstackCapabilities(DesiredCapabilities caps, String device) {
         switch (device) {
             case "samsung":
-                _caps.setCapability("platformName", "android");
-                _caps.setCapability("platformVersion", "10.0");
-                _caps.setCapability("deviceName", "Samsung Galaxy S20");
-                _caps.setCapability("app", apk_url);
+                caps.setCapability("platformName", "android");
+                caps.setCapability("platformVersion", "10.0");
+                caps.setCapability("deviceName", "Samsung Galaxy S20");
+                caps.setCapability("app", apk_url);
                 break;
             case "pixel":
-                _caps.setCapability("platformName", "android");
-                _caps.setCapability("platformVersion", "9.0");
-                _caps.setCapability("deviceName", "Google Pixel 3");
-                _caps.setCapability("app", apk_url);
+                caps.setCapability("platformName", "android");
+                caps.setCapability("platformVersion", "9.0");
+                caps.setCapability("deviceName", "Google Pixel 3");
+                caps.setCapability("app", apk_url);
                 break;
             case "iPhone12":
-                _caps.setCapability("platformName", "ios");
-                _caps.setCapability("platformVersion", "14");
-                _caps.setCapability("deviceName", "iPhone 12");
-                _caps.setCapability("app", ipa_url);
+                caps.setCapability("platformName", "ios");
+                caps.setCapability("platformVersion", "14");
+                caps.setCapability("deviceName", "iPhone 12");
+                caps.setCapability("app", ipa_url);
                 break;
             default:
                 System.out.println("No device found");
                 break;
         }
-//        _caps.setCapability("browserstack.appium_version", appConfig.getAppiumVersion());
-//        _caps.setCapability("project", appConfig.getApplicationName());
-//        _caps.setCapability("build", testName + sysTime());
-//        _caps.setCapability("name", testName);
+//        caps.setCapability("browserstack.appium_version", appConfig.getAppiumVersion());
+//        caps.setCapability("project", appConfig.getApplicationName());
+//        caps.setCapability("build", testName + sysTime());
+//        caps.setCapability("name", testName);
     }
 
     /**
      * Saucelabs capabilities
      * https://saucelabs.com/platform/platform-configurator
      *
-     * @param _caps  capabilities
+     * @param caps  capabilities
      * @param device device
      */
-    private void saucelabsCapabilities(DesiredCapabilities _caps, String device) {
+    private void saucelabsCapabilities(MutableCapabilities caps, String device) {
+        MutableCapabilities sauceOptions = new MutableCapabilities();
+        sauceOptions.setCapability("appiumVersion", "1.22.1");
+//        sauceOptions.setCapability("build", "<your build id>");
+//        sauceOptions.setCapability("name", "<your test name>");
         switch (device) {
             case "samsung":
-                _caps.setCapability("platformName", "Android");
-                _caps.setCapability("appium:platformVersion", "11");
-                _caps.setCapability("appium:deviceName", "Samsung.*Galaxy.*");
-                _caps.setCapability("appium:orientation", "portrait");
-                _caps.setCapability("sauceLabsImageInjectionEnabled", true);
-                _caps.setCapability("autoGrantPermissions", true);
-                _caps.setCapability("idleTimeout", "90");
-                _caps.setCapability("newCommandTimeout", "90");
-                _caps.setCapability("appium:app", "https://github.com/saucelabs/sample-app-mobile/releases/download/2.7.1/Android.SauceLabs.Mobile.Sample.app.2.7.1.apk");
+                caps.setCapability("platformName", "Android");
+                caps.setCapability("appium:platformVersion", "12");
+                caps.setCapability("appium:deviceName", "Google Pixel 4a (5G) GoogleAPI Emulator");
+                caps.setCapability("appium:orientation", "portrait");
+                caps.setCapability("sauceLabsImageInjectionEnabled", true);
+                caps.setCapability("autoGrantPermissions", true);
+                caps.setCapability("idleTimeout", "90");
+                caps.setCapability("newCommandTimeout", "90");
+                caps.setCapability("appium:app", "https://github.com/saucelabs/sample-app-mobile/releases/download/2.7.1/Android.SauceLabs.Mobile.Sample.app.2.7.1.apk");
+                caps.setCapability("sauce:options", sauceOptions);
                 break;
             case "iPhone12":
-                _caps.setCapability("platformName", "iOS");
-                _caps.setCapability("appium:platformVersion", "15.0");
-                _caps.setCapability("appium:deviceName", "iPhone .*");
-                _caps.setCapability("appium:orientation", "portrait");
-                _caps.setCapability("automationName", "XCUITEST");
-                _caps.setCapability("sauceLabsImageInjectionEnabled", true);
-                _caps.setCapability("autoAcceptAlerts", true);
-                _caps.setCapability("idleTimeout", "90");
-                _caps.setCapability("newCommandTimeout", "90");
-                _caps.setCapability("app", "https://github.com/saucelabs/sample-app-mobile/releases/download/2.7.1/iOS.RealDevice.SauceLabs.Mobile.Sample.app.2.7.1.ipa");
+                caps.setCapability("platformName", "iOS");
+                caps.setCapability("appium:platformVersion", "15.0");
+                caps.setCapability("appium:deviceName", "iPhone .*");
+                caps.setCapability("appium:orientation", "portrait");
+                caps.setCapability("automationName", "XCUITEST");
+                caps.setCapability("sauceLabsImageInjectionEnabled", true);
+                caps.setCapability("autoAcceptAlerts", true);
+                caps.setCapability("idleTimeout", "90");
+                caps.setCapability("newCommandTimeout", "90");
+                caps.setCapability("app", "https://github.com/saucelabs/sample-app-mobile/releases/download/2.7.1/iOS.RealDevice.SauceLabs.Mobile.Sample.app.2.7.1.ipa");
+                caps.setCapability("sauce:options", sauceOptions);
                 break;
             default:
                 System.out.println("No device found");
                 break;
         }
-        _caps.setCapability("username", sauce_username);
-        _caps.setCapability("accessKey", sauce_accessKey);
-        _caps.setCapability("deviceType", "phone");
-        _caps.setCapability("deviceOrientation", "portrait");
+        caps.setCapability("username", sauce_username);
+        caps.setCapability("accessKey", sauce_accessKey);
+        caps.setCapability("deviceType", "phone");
+        caps.setCapability("deviceOrientation", "portrait");
     }
 
     /**
      * Android capabilities
      *
-     * @param _caps capabilities
+     * @param caps capabilities
      */
-    void androidCapabilities(DesiredCapabilities _caps) {
-        _caps.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.ANDROID);
-        _caps.setCapability(MobileCapabilityType.NO_RESET, true);
-        _caps.setCapability(MobileCapabilityType.FULL_RESET, false);
-        _caps.setCapability(MobileCapabilityType.AUTO_WEBVIEW, false);
-        _caps.setCapability(AndroidMobileCapabilityType.AUTO_GRANT_PERMISSIONS, true);
-        _caps.setCapability(AndroidMobileCapabilityType.APPLICATION_NAME, "UiAutomator2");
-        _caps.setCapability(AndroidMobileCapabilityType.ANDROID_INSTALL_TIMEOUT, 60);
-        _caps.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, "com.swaglabsmobileapp");
-        // _caps.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, "com.swaglabsmobileapp.MainActivity");
+    void androidCapabilities(DesiredCapabilities caps) {
+        caps.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.ANDROID);
+        caps.setCapability(MobileCapabilityType.NO_RESET, true);
+        caps.setCapability(MobileCapabilityType.FULL_RESET, false);
+        caps.setCapability(MobileCapabilityType.AUTO_WEBVIEW, false);
+        caps.setCapability(AndroidMobileCapabilityType.AUTO_GRANT_PERMISSIONS, true);
+        caps.setCapability(AndroidMobileCapabilityType.APPLICATION_NAME, "UiAutomator2");
+        caps.setCapability(AndroidMobileCapabilityType.ANDROID_INSTALL_TIMEOUT, 60);
+        caps.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, "com.swaglabsmobileapp");
+        // caps.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, "com.swaglabsmobileapp.MainActivity");
     }
 
     /**
      * IOS capabilities
      *
-     * @param _caps capabilities
+     * @param caps capabilities
      */
-    void iosCapabilities(DesiredCapabilities _caps) {
-        _caps.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.IOS);
-        _caps.setCapability(MobileCapabilityType.FULL_RESET, false);
-        _caps.setCapability(AndroidMobileCapabilityType.AUTO_GRANT_PERMISSIONS, true);
-        _caps.setCapability(AndroidMobileCapabilityType.APPLICATION_NAME, "XCUITest");
-        _caps.setCapability(MobileCapabilityType.NO_RESET, true);
-        // _caps.setCapability(IOSMobileCapabilityType.XCODE_ORG_ID, "");
-        // _caps.setCapability(IOSMobileCapabilityType.XCODE_SIGNING_ID, "");
-        // _caps.setCapability(IOSMobileCapabilityType.UPDATE_WDA_BUNDLEID, "");
-        _caps.setCapability(IOSMobileCapabilityType.BUNDLE_ID, "com.saucelabs.SwagLabsMobileApp");
-        _caps.setCapability(IOSMobileCapabilityType.APP_NAME, "com.saucelabs.SwagLabsMobileApp");
+    void iosCapabilities(DesiredCapabilities caps) {
+        caps.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.IOS);
+        caps.setCapability(MobileCapabilityType.FULL_RESET, false);
+        caps.setCapability(AndroidMobileCapabilityType.AUTO_GRANT_PERMISSIONS, true);
+        caps.setCapability(AndroidMobileCapabilityType.APPLICATION_NAME, "XCUITest");
+        caps.setCapability(MobileCapabilityType.NO_RESET, true);
+        // caps.setCapability(IOSMobileCapabilityType.XCODE_ORG_ID, "");
+        // caps.setCapability(IOSMobileCapabilityType.XCODE_SIGNING_ID, "");
+        // caps.setCapability(IOSMobileCapabilityType.UPDATE_WDA_BUNDLEID, "");
+        caps.setCapability(IOSMobileCapabilityType.BUNDLE_ID, "com.saucelabs.SwagLabsMobileApp");
+        caps.setCapability(IOSMobileCapabilityType.APP_NAME, "com.saucelabs.SwagLabsMobileApp");
     }
 
     /**

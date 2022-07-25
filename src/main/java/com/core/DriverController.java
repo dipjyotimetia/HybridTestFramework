@@ -61,8 +61,8 @@ public class DriverController extends WebOptions {
     private static WebDriver driverThread = null;
     private static AppiumDriver mobileThread = null;
     private static BrowserMobProxyServer proxy;
-    private final String username = System.getenv("BROWSERSTACK_USERNAME");
-    private final String accessKey = System.getenv("BROWSERSTACK_ACCESS_KEY");
+    private final String browserstack_username = System.getenv("BROWSERSTACK_USERNAME");
+    private final String browserstack_access_key = System.getenv("BROWSERSTACK_ACCESS_KEY");
     private String testName = null;
 
     @Parameters({"type", "browser", "device", "grid", "perf"})
@@ -104,23 +104,23 @@ public class DriverController extends WebOptions {
                 .build();
         try {
             switch (grid) {
-                case "CLOUD":
+                case "aws":
                     log.info("Make sure that the environment variables AWS_ACCESS_KEY and AWS_SECRET_KEY are configured in your testing environment.");
                     CreateTestGridUrlResponse response = client.createTestGridUrl(request);
                     driverThread = new RemoteWebDriver(new URL(response.url()), addCloudCapabilities(browser));
                     log.info("Grid client setup for AWS Device farm successful");
                     break;
-                case "DOCKER":
+                case "docker":
                     log.info("Make sure that docker containers are up and running");
                     driverThread = new RemoteWebDriver(URI.create("http://localhost:4444/").toURL(), getBrowserOptions(browser, perf));
                     log.info("Grid client setup for Docker containers successful");
                     break;
                 case "browserstack":
                     log.info("Make sure that browserstack configs provided");
-                    driverThread = new RemoteWebDriver(new URL("https://" + username + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub"), addBrowserStackCapabilities(browser, testName));
+                    driverThread = new RemoteWebDriver(new URL("https://" + browserstack_username + ":" + browserstack_access_key + "@hub-cloud.browserstack.com/wd/hub"), addBrowserStackCapabilities(browser, testName));
                     log.info("Grid client setup for browserstack successful");
                     break;
-                case "LOCAL":
+                case "local":
                     switch (browser) {
                         case "firefox":
                             driverThread = new FirefoxDriver(getFirefoxOptions());
