@@ -128,6 +128,7 @@ abstract class MobileOptions {
         switch (device) {
             case "samsung":
                 caps.setCapability("platformName", "Android");
+                caps.setCapability("browserName", "Chrome");
                 caps.setCapability("appium:platformVersion", "12");
                 caps.setCapability("appium:deviceName", "Google Pixel 4a (5G) GoogleAPI Emulator");
                 caps.setCapability("appium:orientation", "portrait");
