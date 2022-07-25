@@ -155,10 +155,10 @@ abstract class MobileOptions {
                 System.out.println("No device found");
                 break;
         }
-        caps.setCapability("username", sauce_username);
-        caps.setCapability("accessKey", sauce_accessKey);
-        caps.setCapability("deviceType", "phone");
-        caps.setCapability("deviceOrientation", "portrait");
+//        caps.setCapability("username", sauce_username);
+//        caps.setCapability("accessKey", sauce_accessKey);
+//        caps.setCapability("deviceType", "phone");
+//        caps.setCapability("deviceOrientation", "portrait");
     }
 
     /**
