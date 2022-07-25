@@ -20,7 +20,7 @@ import java.util.Objects;
 abstract class MobileOptions {
     private static final String nodeJS = System.getenv("NODE_HOME") + "/node.exe";
     private static final String appiumJS = System.getenv("APPIUM_HOME") + "/main.js";
-    DesiredCapabilities _caps = new DesiredCapabilities();
+    DesiredCapabilities caps = new DesiredCapabilities();
     private static DriverService service;
     private final String apk_url = System.getenv("APK_URL");
     private final String ipa_url = System.getenv("IPA_URL");
@@ -62,16 +62,16 @@ abstract class MobileOptions {
      * @param device        device
      * @throws IOException exception
      */
-    void _cloudCapabilities(String cloudProvider, DesiredCapabilities _caps, String device) throws IOException {
+    void cloudCapabilities(String cloudProvider, DesiredCapabilities _caps, String device) throws IOException {
         switch (cloudProvider) {
             case "sause":
-                _saucelabsCapabilities(_caps, device);
+                saucelabsCapabilities(_caps, device);
                 break;
             case "browserstack":
-                _browserstackCapabilities(_caps, device);
+                browserstackCapabilities(_caps, device);
                 break;
             default:
-                _createService().start();
+                createService().start();
                 break;
         }
     }
@@ -82,7 +82,7 @@ abstract class MobileOptions {
      * @param _caps  capabilities
      * @param device device
      */
-    private void _browserstackCapabilities(DesiredCapabilities _caps, String device) {
+    private void browserstackCapabilities(DesiredCapabilities _caps, String device) {
         switch (device) {
             case "samsung":
                 _caps.setCapability("platformName", "android");
@@ -119,7 +119,7 @@ abstract class MobileOptions {
      * @param _caps  capabilities
      * @param device device
      */
-    private void _saucelabsCapabilities(DesiredCapabilities _caps, String device) {
+    private void saucelabsCapabilities(DesiredCapabilities _caps, String device) {
         switch (device) {
             case "samsung":
                 _caps.setCapability("platformName", "Android");
@@ -159,7 +159,7 @@ abstract class MobileOptions {
      *
      * @param _caps capabilities
      */
-    void _androidCapabilities(DesiredCapabilities _caps) {
+    void androidCapabilities(DesiredCapabilities _caps) {
         _caps.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.ANDROID);
         _caps.setCapability(MobileCapabilityType.NO_RESET, true);
         _caps.setCapability(MobileCapabilityType.FULL_RESET, false);
@@ -176,7 +176,7 @@ abstract class MobileOptions {
      *
      * @param _caps capabilities
      */
-    void _iosCapabilities(DesiredCapabilities _caps) {
+    void iosCapabilities(DesiredCapabilities _caps) {
         _caps.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.IOS);
         _caps.setCapability(MobileCapabilityType.FULL_RESET, false);
         _caps.setCapability(AndroidMobileCapabilityType.AUTO_GRANT_PERMISSIONS, true);
@@ -194,7 +194,7 @@ abstract class MobileOptions {
      *
      * @return service
      */
-    DriverService _createService() {
+    DriverService createService() {
         new AppiumServiceBuilder()
                 .usingDriverExecutable(new File(nodeJS))
                 .withAppiumJS(new File(appiumJS))

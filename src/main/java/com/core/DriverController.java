@@ -48,7 +48,6 @@ import software.amazon.awssdk.services.devicefarm.DeviceFarmClient;
 import software.amazon.awssdk.services.devicefarm.model.CreateTestGridUrlRequest;
 import software.amazon.awssdk.services.devicefarm.model.CreateTestGridUrlResponse;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Inet4Address;
@@ -59,8 +58,8 @@ import java.net.URL;
 
 @Slf4j
 public class DriverController extends WebOptions {
-    private static WebDriver _driverThread = null;
-    private static AppiumDriver _mobileThread = null;
+    private static WebDriver driverThread = null;
+    private static AppiumDriver mobileThread = null;
     private static BrowserMobProxyServer proxy;
     private final String username = System.getenv("BROWSERSTACK_USERNAME");
     private final String accessKey = System.getenv("BROWSERSTACK_ACCESS_KEY");
@@ -83,11 +82,11 @@ public class DriverController extends WebOptions {
     }
 
     public WebDriver getWebDriver() {
-        return _driverThread;
+        return driverThread;
     }
 
     public AppiumDriver getMobileDriver() {
-        return _mobileThread;
+        return mobileThread;
     }
 
     /**
@@ -108,31 +107,31 @@ public class DriverController extends WebOptions {
                 case "CLOUD":
                     log.info("Make sure that the environment variables AWS_ACCESS_KEY and AWS_SECRET_KEY are configured in your testing environment.");
                     CreateTestGridUrlResponse response = client.createTestGridUrl(request);
-                    _driverThread = new RemoteWebDriver(new URL(response.url()), addCloudCapabilities(browser));
+                    driverThread = new RemoteWebDriver(new URL(response.url()), addCloudCapabilities(browser));
                     log.info("Grid client setup for AWS Device farm successful");
                     break;
                 case "DOCKER":
                     log.info("Make sure that docker containers are up and running");
-                    _driverThread = new RemoteWebDriver(URI.create("http://localhost:4444/").toURL(), getBrowserOptions(browser, perf));
+                    driverThread = new RemoteWebDriver(URI.create("http://localhost:4444/").toURL(), getBrowserOptions(browser, perf));
                     log.info("Grid client setup for Docker containers successful");
                     break;
                 case "browserstack":
                     log.info("Make sure that browserstack configs provided");
-                    _driverThread = new RemoteWebDriver(new URL("https://" + username + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub"), addBrowserStackCapabilities(browser, testName));
+                    driverThread = new RemoteWebDriver(new URL("https://" + username + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub"), addBrowserStackCapabilities(browser, testName));
                     log.info("Grid client setup for browserstack successful");
                     break;
                 case "LOCAL":
                     switch (browser) {
                         case "firefox":
-                            _driverThread = new FirefoxDriver(getFirefoxOptions());
+                            driverThread = new FirefoxDriver(getFirefoxOptions());
                             log.info("Initiating firefox driver");
                             break;
                         case "chrome":
-                            _driverThread = new ChromeDriver(getChromeOptions(perf));
+                            driverThread = new ChromeDriver(getChromeOptions(perf));
                             log.info("Initiating chrome driver");
                             break;
                         case "edge":
-                            _driverThread = new EdgeDriver(getEdgeOptions());
+                            driverThread = new EdgeDriver(getEdgeOptions());
                             log.info("Initiating edge driver");
                             break;
                         default:
@@ -156,47 +155,47 @@ public class DriverController extends WebOptions {
             switch (device) {
                 case "NEXUS":
                     log.info("Selected device is NEXUS");
-                    _caps.setCapability(MobileCapabilityType.UDID, "NEXUS");
-                    _caps.setCapability(MobileCapabilityType.DEVICE_NAME, "NEXUS");
-                    _androidCapabilities(_caps);
-                    _cloudCapabilities(cloud, _caps, "NEXUS");
-                    _mobileThread = new AndroidDriver(createURL(cloud), _caps);
+                    caps.setCapability(MobileCapabilityType.UDID, "NEXUS");
+                    caps.setCapability(MobileCapabilityType.DEVICE_NAME, "NEXUS");
+                    androidCapabilities(caps);
+                    cloudCapabilities(cloud, caps, "NEXUS");
+                    mobileThread = new AndroidDriver(createURL(cloud), caps);
                     break;
                 case "PIXEL":
                     log.info("Selected device is PIXEL");
-                    _caps.setCapability(MobileCapabilityType.UDID, "PIXEL");
-                    _caps.setCapability(MobileCapabilityType.DEVICE_NAME, "PIXEL");
-                    _androidCapabilities(_caps);
-                    _cloudCapabilities(cloud, _caps, "PIXEL");
-                    _mobileThread = new AndroidDriver(createURL(cloud), _caps);
+                    caps.setCapability(MobileCapabilityType.UDID, "PIXEL");
+                    caps.setCapability(MobileCapabilityType.DEVICE_NAME, "PIXEL");
+                    androidCapabilities(caps);
+                    cloudCapabilities(cloud, caps, "PIXEL");
+                    mobileThread = new AndroidDriver(createURL(cloud), caps);
                     break;
                 case "samsung":
                     log.info("Selected device is SAMSUNG");
-                    _cloudCapabilities(cloud, _caps, "samsung");
-                    _androidCapabilities(_caps);
-                    _mobileThread = new AndroidDriver(createURL(cloud), _caps);
+                    cloudCapabilities(cloud, caps, "samsung");
+                    androidCapabilities(caps);
+                    mobileThread = new AndroidDriver(createURL(cloud), caps);
                     break;
                 case "iPhone12":
                     log.info("Selected device is IPHONE");
-                    _cloudCapabilities(cloud, _caps, "iPhone12");
-                    _iosCapabilities(_caps);
-                    _mobileThread = new IOSDriver(createURL(cloud), _caps);
+                    cloudCapabilities(cloud, caps, "iPhone12");
+                    iosCapabilities(caps);
+                    mobileThread = new IOSDriver(createURL(cloud), caps);
                     break;
                 case "IPHONE":
                     log.info("Selected device is IPHONE");
-                    _caps.setCapability(MobileCapabilityType.UDID, "iphone");
-                    _caps.setCapability(MobileCapabilityType.DEVICE_NAME, "iphone");
-                    _iosCapabilities(_caps);
-                    _cloudCapabilities(cloud, _caps, "IPHONE");
-                    _mobileThread = new IOSDriver(createURL(cloud), _caps);
+                    caps.setCapability(MobileCapabilityType.UDID, "iphone");
+                    caps.setCapability(MobileCapabilityType.DEVICE_NAME, "iphone");
+                    iosCapabilities(caps);
+                    cloudCapabilities(cloud, caps, "IPHONE");
+                    mobileThread = new IOSDriver(createURL(cloud), caps);
                     break;
                 case "WEB":
                     log.info("Selected device is WEB");
-                    _caps.setCapability(MobileCapabilityType.UDID, "NEXUS");
-                    _caps.setCapability(MobileCapabilityType.DEVICE_NAME, "NEXUS");
-                    _createService().start();
-                    _cloudCapabilities(cloud, _caps, "WEB");
-                    _mobileThread = new AndroidDriver(createURL(cloud), _caps);
+                    caps.setCapability(MobileCapabilityType.UDID, "NEXUS");
+                    caps.setCapability(MobileCapabilityType.DEVICE_NAME, "NEXUS");
+                    createService().start();
+                    cloudCapabilities(cloud, caps, "WEB");
+                    mobileThread = new AndroidDriver(createURL(cloud), caps);
                     break;
             }
         } catch (NullPointerException |
@@ -244,10 +243,10 @@ public class DriverController extends WebOptions {
         } catch (Exception e) {
             log.info("Performance tests not included");
         } finally {
-            if (_driverThread != null) {
-                _driverThread.quit();
+            if (driverThread != null) {
+                driverThread.quit();
             } else {
-                _mobileThread.quit();
+                mobileThread.quit();
 //                _createService().stop();
 //                _stopAppiumServer();
             }
