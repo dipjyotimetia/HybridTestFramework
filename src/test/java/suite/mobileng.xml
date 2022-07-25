@@ -13,14 +13,14 @@
 <!--        <parameter name="grid" value="browserstack"/> &lt;!&ndash; LOCAL or DOCKER or CLOUD or BROWSERSTACK&ndash;&gt;-->
 <!--        <parameter name="perf" value="NO"/>-->
 <!--        <classes>-->
-<!--            <class name="com.TestDefinitionLayer.TC_Test_SauseLabsApp"/>-->
+<!--            <class name="com.TestDefinitionLayer.TC_Test_SauceLabsApp"/>-->
 <!--        </classes>-->
 <!--    </test>-->
     <test name="E2E Tests Android">
         <parameter name="device" value="samsung"/>
-        <parameter name="grid" value="sauce"/> <!-- sauce or browserstack or local-->
+        <parameter name="grid" value="browserstack"/> <!-- sauce or browserstack or local-->
         <classes>
-            <class name="com.TestDefinitionLayer.TC_Test_SauseLabsApp"/>
+            <class name="com.TestDefinitionLayer.TC_Test_SauceLabsApp"/>
         </classes>
     </test>
 </suite>

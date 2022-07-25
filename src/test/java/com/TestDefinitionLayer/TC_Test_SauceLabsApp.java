@@ -9,7 +9,7 @@ import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.Test;
 
-public class TC_Test_SauseLabsApp extends MobileActions {
+public class TC_Test_SauceLabsApp extends MobileActions {
     @Link("Test")
     @Feature("test")
     @Severity(SeverityLevel.CRITICAL)
