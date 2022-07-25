@@ -19,17 +19,25 @@ Explain the **motivation** for making this change: here are some points to help 
 
 ### What are the steps to reproduce (after prerequisites)?
 
-## Compatibility
+## Web Compatibility
 
 | Browser | Implemented |
 |---------|:-----------:|
 | Chrome  |     ✅❌      |
 | Firefox |     ✅❌      |
+| Edge    |     ✅❌      |
+
+## Mobile Compatibility
+
+| Mobile  | Implemented |
+|---------|:-----------:|
+| Android |     ✅❌      |
+| IOS     |     ✅❌      |
 
 ## Checklist
 
 <!-- Check completed item, when applicable, via: [X] -->
 
-- [ ] I have tested this on all browsers
+- [ ] Test are compatible for all browsers
 - [ ] I added the documentation in `README.md`
 - [ ] I updated function description

@@ -78,6 +78,7 @@ public class DriverController extends WebOptions {
                 break;
             default:
                 log.info("select test type to proceed with one testing");
+                break;
         }
     }
 
@@ -139,6 +140,7 @@ public class DriverController extends WebOptions {
                     }
                 default:
                     log.info("Running in local docker container");
+                    break;
             }
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -196,6 +198,9 @@ public class DriverController extends WebOptions {
                     createService().start();
                     cloudCapabilities(cloud, caps, "WEB");
                     mobileThread = new AndroidDriver(createURL(cloud), caps);
+                    break;
+                default:
+                    log.info("Required device selection");
                     break;
             }
         } catch (NullPointerException |

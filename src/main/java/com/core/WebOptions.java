@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 @Slf4j
-abstract class WebOptions extends MobileOptions{
+abstract class WebOptions extends MobileOptions {
 
     /**
      * get chrome options
@@ -161,6 +161,7 @@ abstract class WebOptions extends MobileOptions{
                 break;
             default:
                 log.info("No supported browser provided");
+                break;
         }
         return capabilities;
     }
@@ -186,6 +187,9 @@ abstract class WebOptions extends MobileOptions{
             case "edge":
                 capabilities.setCapability("browser", "Edge");
                 capabilities.setCapability("browser_version", "90.0");
+                break;
+            default:
+                log.info("browser selection is required");
                 break;
         }
         return capabilities;
