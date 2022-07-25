@@ -7,25 +7,25 @@ on:
     branches: [ master ]
 
 jobs:
-#  web:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v3
-#      - name: Setup AWS Localstack
-#        run: docker-compose -f docker-compose.localstack.yml up -d
-#      - name: Setup mock server
-#        run: docker-compose -f docker-compose.mock.yml up -d
-#      - name: Grant execute permission for gradlew
-#        run: chmod +x gradlew
-#      - name: Running End To End Test
-#        run: ./gradlew task web
-#        env:
-#          BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
-#          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-#          DEFAULT_REGION: ap-southeast-2
-#          AWS_ACCOUNT_ID: "000000000000"
-#          AWS_ACCESS_KEY_ID: dummy-access-key
-#          AWS_SECRET_ACCESS_KEY: dummy-secret-key
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup AWS Localstack
+        run: docker-compose -f docker-compose.localstack.yml up -d
+      - name: Setup mock server
+        run: docker-compose -f docker-compose.mock.yml up -d
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Running End To End Test
+        run: ./gradlew task web
+        env:
+          BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+          DEFAULT_REGION: ap-southeast-2
+          AWS_ACCOUNT_ID: "000000000000"
+          AWS_ACCESS_KEY_ID: dummy-access-key
+          AWS_SECRET_ACCESS_KEY: dummy-secret-key
 
   mobile:
     runs-on: ubuntu-latest
