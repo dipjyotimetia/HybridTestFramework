@@ -137,6 +137,7 @@ public class DriverController extends WebOptions {
                             break;
                         default:
                             log.info("Browser listed not supported");
+                            break;
                     }
                 default:
                     log.info("Running in local docker container");

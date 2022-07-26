@@ -21,7 +21,7 @@ public class CoffeeClient extends RpcActions {
         coffeeServiceStub = CoffeeGrpc.newBlockingStub(channel);
     }
 
-    public AddCoffeeResponse addCoffee() throws Exception {
+    public AddCoffeeResponse addCoffee() {
         try {
             AddCoffeeRequest addCoffeeRequest = AddCoffeeRequest.newBuilder()
                     .setId(UUID.randomUUID().toString())
@@ -39,7 +39,7 @@ public class CoffeeClient extends RpcActions {
         }
     }
 
-    public UpdateCoffeeResponse updateCoffee() throws Exception {
+    public UpdateCoffeeResponse updateCoffee() {
         try {
             UpdateCoffeeRequest updateCoffeeRequest = UpdateCoffeeRequest.newBuilder()
                     .setName("Hello")

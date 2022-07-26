@@ -12,8 +12,8 @@ public class GraphActions extends ApiActions {
     /**
      * GraphqlTOJson
      *
-     * @param payload
-     * @return
+     * @param payload payload
+     * @return jsonBody
      */
     public String graphqlToJson(String payload) {
         JSONObject json = new JSONObject();
@@ -24,10 +24,10 @@ public class GraphActions extends ApiActions {
     /**
      * Graph Response
      *
-     * @param host
-     * @param query
-     * @param queryPath
-     * @param validator
+     * @param host      host
+     * @param query     graph query
+     * @param queryPath queryPath
+     * @param validator validator
      */
     public void graphResponse(String host, Object query, String queryPath, String validator) {
         RestAssured.given()
