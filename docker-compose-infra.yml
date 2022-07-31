@@ -1,5 +1,5 @@
 # Complete infra creation on the fly jenkins & SonarQube
-version: '3'
+version: '3.8'
 services:
   allure:
     image: "frankescobar/allure-docker-service"
@@ -22,21 +22,30 @@ services:
       - "5252:5252"
 
   selenoid:
-    image: "aerokube/selenoid"
     network_mode: bridge
+    image: aerokube/selenoid
+    container_name: selenoid
+    volumes:
+      - "$PWD:/etc/selenoid"
+      - "$PWD:/opt/selenoid/video"
+      - "$PWD:/opt/selenoid/logs"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    environment:
+      - OVERRIDE_VIDEO_OUTPUT_DIR=PATH_TO_VIDEO_FOLDER
+    command: [ "-conf", "/etc/selenoid/browsers.json", "-video-output-dir", "/opt/selenoid/video", "-log-output-dir", "/opt/selenoid/logs", "-limit", "5" ] # change the limit to have more sessions
     ports:
       - "4444:4444"
-    volumes:
-      - "$PWD:/etc/selenoid/" # assumed current dir contains browsers.json
-      - "/var/run/docker.sock:/var/run/docker.sock"
 
   selenoid-ui:
-    image: "aerokube/selenoid-ui"
     network_mode: bridge
+    image: "aerokube/selenoid-ui"
+    container_name: selenoid-ui
     links:
       - selenoid
     ports:
-      - "8080:8080"
+      - "8083:8080"
+    networks:
+      - selenoid
     command: [ "--selenoid-uri", "http://selenoid:4444" ]
 
   zaproxy:

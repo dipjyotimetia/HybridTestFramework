@@ -25,6 +25,7 @@ SOFTWARE.
 package com.core;
 
 import com.config.AppConfig;
+import com.reporting.Listeners.WebDriverEventHandler;
 import com.typesafe.config.ConfigFactory;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
@@ -43,6 +44,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.events.EventFiringDecorator;
+import org.openqa.selenium.support.events.WebDriverListener;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
@@ -65,6 +68,7 @@ public class DriverController extends WebOptions {
     private static BrowserMobProxyServer proxy;
     private final String browserstack_username = System.getenv("BROWSERSTACK_USERNAME");
     private final String browserstack_access_key = System.getenv("BROWSERSTACK_ACCESS_KEY");
+    WebDriverListener driverListener = new WebDriverEventHandler();
     private String testName = null;
 
     /**
@@ -154,15 +158,15 @@ public class DriverController extends WebOptions {
                 case "local":
                     switch (browser) {
                         case "firefox":
-                            driverThread = new FirefoxDriver(getFirefoxOptions());
+                            driverThread = new EventFiringDecorator(driverListener).decorate(new FirefoxDriver(getFirefoxOptions()));
                             log.info("Initiating firefox driver");
                             break;
                         case "chrome":
-                            driverThread = new ChromeDriver(getChromeOptions(perf));
+                            driverThread = new EventFiringDecorator(driverListener).decorate(new ChromeDriver(getChromeOptions(perf)));
                             log.info("Initiating chrome driver");
                             break;
                         case "edge":
-                            driverThread = new EdgeDriver(getEdgeOptions());
+                            driverThread = new EventFiringDecorator(driverListener).decorate(new EdgeDriver(getEdgeOptions()));
                             log.info("Initiating edge driver");
                             break;
                         default:
