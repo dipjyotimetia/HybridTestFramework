@@ -39,7 +39,7 @@ public class ServerManager {
         if (ANDROID_HOME == null) {
             ANDROID_HOME = System.getenv("ANDROID_HOME");
             if (ANDROID_HOME == null)
-                throw new Exception("Failed to find ANDROID_HOME, make sure the environment variable is set");
+                log.error("Failed to find ANDROID_HOME, make sure the environment variable is set");
         }
         return ANDROID_HOME;
     }
@@ -63,7 +63,7 @@ public class ServerManager {
             Scanner scanner = new Scanner(Runtime.getRuntime().exec(command).getInputStream()).useDelimiter("\\A");
             if (scanner.hasNext()) output = scanner.next();
         } catch (IOException e) {
-            throw new Exception(e.getMessage());
+            log.error("Text is not present");
         }
         return output;
     }
@@ -81,7 +81,7 @@ public class ServerManager {
             while ((line = bufferedReader.readLine()) != null) output.append(line).append("\n");
             bufferedReader.close();
         } catch (IOException error) {
-            error.printStackTrace();
+            log.error(error.getMessage());
         }
         return output.toString();
     }
@@ -89,9 +89,8 @@ public class ServerManager {
     public static void write(File file, String content) {
         try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
             writer.write(content);
-            writer.close();
         } catch (IOException error) {
-            error.printStackTrace();
+            log.error(error.getMessage());
         }
     }
 }

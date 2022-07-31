@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
+
 package com.core;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -129,6 +130,8 @@ abstract class WebOptions extends MobileOptions {
                 return getChromeOptions(perf);
             case "edge":
                 return getEdgeOptions();
+            default:
+                log.error("No browser option provided");
         }
         return null;
     }

@@ -1,5 +1,3 @@
-package com.pages.mobile;
-
 /*
 MIT License
 Copyright (c) 2021 Dipjyoti Metia
@@ -19,6 +17,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
+
+package com.pages.mobile;
 
 import com.core.MobileActions;
 import io.appium.java_client.pagefactory.AndroidFindBy;

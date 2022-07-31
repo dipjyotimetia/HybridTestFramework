@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
+
 package com.core;
 
 import com.config.AppConfig;
@@ -210,14 +211,9 @@ public class DriverController extends WebOptions {
                     log.info("Required device selection");
                     break;
             }
-        } catch (NullPointerException |
-                 MalformedURLException ex) {
+        } catch (NullPointerException | IOException ex) {
             log.error("Appium driver could not be initialised for device", ex);
-            throw new RuntimeException("Appium driver could not be initialised for device: " + device);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
-        log.info("Driver initialized");
     }
 
     /**

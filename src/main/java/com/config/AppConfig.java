@@ -23,8 +23,6 @@ package com.config;
 import com.typesafe.config.Config;
 import lombok.Getter;
 
-import java.util.Properties;
-
 /**
  * @author Dipjyoti Metia
  */

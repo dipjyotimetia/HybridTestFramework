@@ -1,3 +1,27 @@
+/*
+MIT License
+
+Copyright (c) 2020 Dipjyoti Metia
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+ */
+
 package com.core;
 
 import com.csvreader.CsvReader;
@@ -148,7 +172,6 @@ public class MobileActions extends DriverManager {
         }
         if (element == null) {
             log.error("Mobile element not found");
-            throw new Exception(mobileElement + "not found");
         }
         return element;
     }
@@ -251,7 +274,6 @@ public class MobileActions extends DriverManager {
         }
         if (element == null) {
             log.error("Mobile element not found");
-            throw new Exception(mobileElement + "not found");
         }
         return element;
     }
@@ -425,7 +447,7 @@ public class MobileActions extends DriverManager {
      *
      * @param networkSpeed networkSpeed
      */
-    public void networkSpeed_android(String networkSpeed) {
+    public void networkSpeedAndroid(String networkSpeed) {
         switch (networkSpeed) {
             case "FULL":
                 ((AndroidDriver) mobileThread).setNetworkSpeed(NetworkSpeed.FULL);
@@ -450,7 +472,7 @@ public class MobileActions extends DriverManager {
      *
      * @param signalStrength signalStrength
      */
-    public void signalStrength_android(String signalStrength) {
+    public void signalStrengthAndroid(String signalStrength) {
         switch (signalStrength) {
             case "GREAT":
                 ((AndroidDriver) mobileThread).setGsmSignalStrength(GsmSignalStrength.GREAT);
@@ -472,7 +494,7 @@ public class MobileActions extends DriverManager {
      *
      * @param voiceState voiceState
      */
-    public void voiceState_android(String voiceState) {
+    public void voiceStateAndroid(String voiceState) {
         switch (voiceState) {
             case "UNREGISTERED":
                 ((AndroidDriver) mobileThread).setGsmVoice(GsmVoiceState.UNREGISTERED);
@@ -494,7 +516,7 @@ public class MobileActions extends DriverManager {
      *
      * @param powerState powerState
      */
-    public void powerState_android(String powerState) {
+    public void powerStateAndroid(String powerState) {
         switch (powerState) {
             case "ON":
                 ((AndroidDriver) mobileThread).setPowerAC(PowerACState.ON);
@@ -514,7 +536,7 @@ public class MobileActions extends DriverManager {
      * @param connectionState connectionState
      * @param enabled         boolean
      */
-    public void connectionState_android(String connectionState, boolean enabled) {
+    public void connectionStateAndroid(String connectionState, boolean enabled) {
         switch (connectionState) {
             case "AIRPLANE":
                 if (enabled) {
@@ -543,7 +565,7 @@ public class MobileActions extends DriverManager {
     /**
      * Press Back
      */
-    public void pressBack_android() {
+    public void pressBackAndroid() {
         ((AndroidDriver) mobileThread).pressKey(new KeyEvent(AndroidKey.BACK));
         log.info("Press Back");
     }
@@ -551,7 +573,7 @@ public class MobileActions extends DriverManager {
     /**
      * Shake Device
      */
-    public void shakeDevice_ios() {
+    public void shakeDeviceIos() {
         ((IOSDriver) mobileThread).shake();
         log.info("Shake Device");
     }
@@ -559,7 +581,7 @@ public class MobileActions extends DriverManager {
     /**
      * Press Back
      */
-    public void setKeyboardCorrection_ios(boolean bool) {
+    public void setKeyboardCorrectionIos(boolean bool) {
         ((IOSDriver) mobileThread).setKeyboardAutocorrection(bool);
         log.info("Shake Device");
     }
