@@ -163,6 +163,7 @@ dependencies {
     implementation 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
     implementation 'com.epam.healenium:healenium-web:3.2.5'
+    implementation 'com.typesafe:config:1.4.2'
 }
 
 // https://github.com/DiUS/java-faker/issues/327#issuecomment-1091166953

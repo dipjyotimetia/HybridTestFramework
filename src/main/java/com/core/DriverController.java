@@ -23,6 +23,8 @@ SOFTWARE.
  */
 package com.core;
 
+import com.config.AppConfig;
+import com.typesafe.config.ConfigFactory;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
@@ -55,9 +57,9 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 
-
 @Slf4j
 public class DriverController extends WebOptions {
+    private static final AppConfig appConfig = new AppConfig(ConfigFactory.load());
     private static WebDriver driverThread = null;
     private static AppiumDriver mobileThread = null;
     private static BrowserMobProxyServer proxy;
@@ -80,6 +82,10 @@ public class DriverController extends WebOptions {
                 log.info("select test type to proceed with one testing");
                 break;
         }
+    }
+
+    public AppConfig getAppConfig() {
+        return appConfig;
     }
 
     public WebDriver getWebDriver() {
