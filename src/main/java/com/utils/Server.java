@@ -30,7 +30,7 @@ import java.util.Scanner;
  * @author Dipjyoti Metia
  */
 @Slf4j
-public class ServerManager {
+public class Server {
 
     private static String OS;
     private static String ANDROID_HOME;

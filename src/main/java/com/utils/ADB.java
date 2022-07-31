@@ -86,10 +86,10 @@ public class ADB {
         log.debug("Formatting ADB Command: " + command);
         String newCommand = "";
         if (command.startsWith("adb"))
-            newCommand = command.replace("adb ", ServerManager.getAndroidHome() + "/platform-tools/adb ");
-        else throw new Exception("This method is designed to run ADB commands only!");
+            newCommand = command.replace("adb ", Server.getAndroidHome() + "/platform-tools/adb ");
+        else log.error("This method is designed to run ADB commands only!");
         log.debug("Formatted ADB Command: " + newCommand);
-        String output = ServerManager.runCommand(newCommand);
+        String output = Server.runCommand(newCommand);
         log.debug("Output of the ADB Command: " + output);
         if (output == null) return "";
         else return output.trim();

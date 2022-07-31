@@ -961,7 +961,6 @@ public class MobileActions extends DriverManager {
             int flag = 0;
             int i;
             int P_valuenotduplicated = 0;
-            String FileContent = null;
             CsvWriter csvOutput = new CsvWriter(new FileWriter("input\\Datasheet1.csv", false), ',');
             CsvReader csvobj = new CsvReader("input\\Datasheet.csv");
             csvobj.readHeaders();
