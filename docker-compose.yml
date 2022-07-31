@@ -2,44 +2,6 @@
 version: '3.8'
 
 services:
-  allure:
-    image: "frankescobar/allure-docker-service"
-    environment:
-      CHECK_RESULTS_EVERY_SECONDS: 1
-      KEEP_HISTORY: 1
-      KEEP_HISTORY_LATEST: 25
-    ports:
-      - "5050:5050"
-    volumes:
-      - "./build/allure-results:/app/allure-results"
-      - "./build/allure-reports:/app/default-reports"
-
-  allure-ui:
-    image: "frankescobar/allure-docker-service-ui"
-    environment:
-      ALLURE_DOCKER_PUBLIC_API_URL: "http://localhost:5050"
-      ALLURE_DOCKER_PUBLIC_API_URL_PREFIX: ""
-    ports:
-      - "5252:5252"
-
-  selenoid:
-    image: "aerokube/selenoid"
-    network_mode: bridge
-    ports:
-      - "4444:4444"
-    volumes:
-      - "$PWD:/etc/selenoid/" # assumed current dir contains browsers.json
-      - "/var/run/docker.sock:/var/run/docker.sock"
-
-  selenoid-ui:
-    image: "aerokube/selenoid-ui"
-    network_mode: bridge
-    links:
-      - selenoid
-    ports:
-      - "8080:8080"
-    command: [ "--selenoid-uri", "http://selenoid:4444" ]
-
   #  https://dev.to/goodidea/how-to-fake-aws-locally-with-localstack-27me
   localstack:
     image: localstack/localstack:latest
