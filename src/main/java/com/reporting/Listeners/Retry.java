@@ -34,8 +34,8 @@ import org.testng.IRetryAnalyzer;
 import org.testng.ITestResult;
 
 public class Retry extends DriverManager implements IRetryAnalyzer {
-    private int count = 0;
     private static final int maxTry = 0; //Run the failed test 2 times
+    private int count = 0;
 
     /**
      * Retry Times

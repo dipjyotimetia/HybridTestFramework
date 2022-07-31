@@ -20,6 +20,7 @@ SOFTWARE.
 
 package com.TestDefinitionLayer;
 
+import com.eventing.Pubsub;
 import com.google.cloud.pubsub.v1.stub.GrpcSubscriberStub;
 import com.google.cloud.pubsub.v1.stub.SubscriberStub;
 import com.google.protobuf.ByteString;
@@ -27,7 +28,6 @@ import com.google.pubsub.v1.ProjectSubscriptionName;
 import com.google.pubsub.v1.PubsubMessage;
 import com.google.pubsub.v1.PullRequest;
 import com.google.pubsub.v1.PullResponse;
-import com.eventing.Pubsub;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Link;
 import org.testcontainers.containers.PubSubEmulatorContainer;
@@ -42,12 +42,12 @@ import java.io.IOException;
 @Link("https://jira.cloud.com")
 @Feature("GRPCApi")
 public class TC010_GCPTest {
-    String PROJECT_ID = "DEMO_PROJECT_ID";
-    String TOPIC_ID = "DEMO_TOPIC_ID";
-    String SUBSCRIPTION_ID = "DEMO_SUBSCRIPTION_ID";
     public PubSubEmulatorContainer pubSubEmulatorContainer = new PubSubEmulatorContainer(
             DockerImageName.parse("gcr.io/google.com/cloudsdktool/cloud-sdk:367.0.0-emulators")
     );
+    String PROJECT_ID = "DEMO_PROJECT_ID";
+    String TOPIC_ID = "DEMO_TOPIC_ID";
+    String SUBSCRIPTION_ID = "DEMO_SUBSCRIPTION_ID";
 
     @BeforeTest
     public void beforeTest() {

@@ -11,10 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Setup AWS Localstack
-        run: docker-compose -f docker-compose.localstack.yml up -d
-      - name: Setup mock server
-        run: docker-compose -f docker-compose.mock.yml up -d
+      - name: Starting test dependencies
+        run: docker-compose up -d
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Running End To End Test

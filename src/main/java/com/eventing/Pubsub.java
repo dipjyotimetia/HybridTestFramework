@@ -61,6 +61,7 @@ public class Pubsub {
 
     /**
      * Publish Avro message
+     *
      * @param projectId
      * @param topicId
      * @throws IOException
@@ -130,7 +131,6 @@ public class Pubsub {
     }
 
     /**
-     *
      * @param projectID
      * @param topicId
      */
@@ -144,7 +144,6 @@ public class Pubsub {
     }
 
     /**
-     *
      * @param subscriptionId
      * @param projectID
      * @param topicId
@@ -160,7 +159,6 @@ public class Pubsub {
     }
 
     /**
-     *
      * @param projectID
      * @param topicID
      * @return
@@ -178,7 +176,6 @@ public class Pubsub {
     }
 
     /**
-     *
      * @return
      */
     public SubscriberStubSettings subscriberStubSettings() {

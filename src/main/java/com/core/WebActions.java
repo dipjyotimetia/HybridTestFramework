@@ -70,10 +70,6 @@ public class WebActions extends DriverManager {
     private static JavascriptExecutor jsExec;
     private final Map<String, String> dicttoread = new HashMap<>();
 
-    private String getEnv(String env) {
-        return System.getenv(env);
-    }
-
     public static Map<String, String> get(Map<String, String> formParams) {
         return formParams
                 .entrySet()
@@ -94,6 +90,10 @@ public class WebActions extends DriverManager {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    private String getEnv(String env) {
+        return System.getenv(env);
     }
 
     protected void navigate(String url) {
@@ -425,10 +425,6 @@ public class WebActions extends DriverManager {
     protected void deselectAll(WebElement elements) {
         Select select = new Select(elements);
         select.deselectAll();
-    }
-
-    enum SelectBy {
-        INDEX, VALUE, TEXT
     }
 
     /**
@@ -1229,6 +1225,10 @@ public class WebActions extends DriverManager {
         counter = 0;
         log.error("Error Description", e);
         Assert.fail("TestCase Failed", e);
+    }
+
+    enum SelectBy {
+        INDEX, VALUE, TEXT
     }
 
     public enum WebElementBy {

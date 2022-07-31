@@ -76,6 +76,7 @@ public class Kafka {
 
     /**
      * create topics
+     *
      * @param config config
      */
     public void createTopic(Config config) {

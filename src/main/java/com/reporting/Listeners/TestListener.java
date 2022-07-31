@@ -48,6 +48,11 @@ public class TestListener extends DriverManager implements ITestListener {
         return iTestResult.getMethod().getConstructorOrMethod().getName();
     }
 
+    @Attachment(value = "0", type = "text/plain")
+    public static String saveTextLogs(String message) {
+        return message;
+    }
+
     @Override
     public void onStart(ITestContext iTestContext) {
         log.info("I am in onStart method " + iTestContext.getName());
@@ -122,11 +127,6 @@ public class TestListener extends DriverManager implements ITestListener {
         } else {
             return ((TakesScreenshot) this.mobileThread).getScreenshotAs(OutputType.BYTES);
         }
-    }
-
-    @Attachment(value = "0", type = "text/plain")
-    public static String saveTextLogs(String message) {
-        return message;
     }
 //    private void sendStatus(ITestResult iTestResult, String status){
 //        this.testStatus.setTestClass(iTestResult.getTestClass().getName());

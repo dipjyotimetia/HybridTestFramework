@@ -30,18 +30,6 @@ import java.io.IOException;
 
 @Slf4j
 public class RpcActions {
-    public enum AuthType {
-        TLS,
-        Insecure,
-        TLS_CA,
-        GOOGLE
-    }
-
-    public enum ChannelType {
-        LOCALHOST,
-        TLS
-    }
-
     /**
      * Channel credentials
      *
@@ -97,5 +85,17 @@ public class RpcActions {
                 break;
         }
         return channel;
+    }
+
+    public enum AuthType {
+        TLS,
+        Insecure,
+        TLS_CA,
+        GOOGLE
+    }
+
+    public enum ChannelType {
+        LOCALHOST,
+        TLS
     }
 }

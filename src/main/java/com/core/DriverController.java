@@ -54,7 +54,6 @@ import software.amazon.awssdk.services.devicefarm.model.CreateTestGridUrlRespons
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Inet4Address;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 
@@ -67,6 +66,30 @@ public class DriverController extends WebOptions {
     private final String browserstack_username = System.getenv("BROWSERSTACK_USERNAME");
     private final String browserstack_access_key = System.getenv("BROWSERSTACK_ACCESS_KEY");
     private String testName = null;
+
+    /**
+     * Added performance capability
+     *
+     * @return capabilities
+     */
+    protected static DesiredCapabilities performance() {
+        log.info("Make sure that Docker containers are up and running");
+        proxy = new BrowserMobProxyServer();
+        proxy.start();
+        Proxy seleniumProxy = ClientUtil.createSeleniumProxy(proxy);
+        try {
+            String hostIp = Inet4Address.getLocalHost().getHostAddress();
+            seleniumProxy.setHttpProxy(hostIp + ":" + proxy.getPort());
+            seleniumProxy.setSslProxy(hostIp + ":" + proxy.getPort());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        proxy.enableHarCaptureTypes(CaptureType.REQUEST_CONTENT, CaptureType.RESPONSE_CONTENT);
+        proxy.newHar("TestPerformance");
+        DesiredCapabilities caps = new DesiredCapabilities();
+        caps.setCapability(CapabilityType.PROXY, seleniumProxy);
+        return caps;
+    }
 
     @Parameters({"type", "browser", "device", "grid", "perf"})
     @BeforeClass
@@ -120,7 +143,7 @@ public class DriverController extends WebOptions {
                     break;
                 case "docker":
                     log.info("Make sure that docker containers are up and running");
-                    driverThread = new RemoteWebDriver(URI.create("http://localhost:4444/").toURL(), getBrowserOptions(browser, perf));
+                    driverThread = new RemoteWebDriver(URI.create("http://localhost:4445/wd/hub").toURL(), getBrowserOptions(browser, perf));
                     log.info("Grid client setup for Docker containers successful");
                     break;
                 case "browserstack":
@@ -214,30 +237,6 @@ public class DriverController extends WebOptions {
         } catch (NullPointerException | IOException ex) {
             log.error("Appium driver could not be initialised for device", ex);
         }
-    }
-
-    /**
-     * Added performance capability
-     *
-     * @return capabilities
-     */
-    protected static DesiredCapabilities performance() {
-        log.info("Make sure that Docker containers are up and running");
-        proxy = new BrowserMobProxyServer();
-        proxy.start();
-        Proxy seleniumProxy = ClientUtil.createSeleniumProxy(proxy);
-        try {
-            String hostIp = Inet4Address.getLocalHost().getHostAddress();
-            seleniumProxy.setHttpProxy(hostIp + ":" + proxy.getPort());
-            seleniumProxy.setSslProxy(hostIp + ":" + proxy.getPort());
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
-        proxy.enableHarCaptureTypes(CaptureType.REQUEST_CONTENT, CaptureType.RESPONSE_CONTENT);
-        proxy.newHar("TestPerformance");
-        DesiredCapabilities caps = new DesiredCapabilities();
-        caps.setCapability(CapabilityType.PROXY, seleniumProxy);
-        return caps;
     }
 
     @AfterClass

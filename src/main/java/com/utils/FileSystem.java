@@ -43,6 +43,32 @@ import java.nio.file.Paths;
 public class FileSystem {
 
     /**
+     * Check if path exists.
+     *
+     * @param path Path as String.
+     * @return True if path exists. False if path does not exist.
+     */
+    public static boolean exist(String path) {
+        File file = new File(path);
+        return file.exists();
+    }
+
+    /**
+     * Ensure path exists (create if does not exists).
+     *
+     * @param directory Path to directory.
+     */
+    public static void ensureFolderExists(String directory) {
+        File file = new File(directory);
+        if (!file.exists()) {
+            boolean result = file.mkdirs();
+            if (!result) {
+                log.error("Failed to create folder: " + directory);
+            }
+        }
+    }
+
+    /**
      * unzip file
      *
      * @param source      source
@@ -89,32 +115,6 @@ public class FileSystem {
     public String readFile(String filePath) throws IOException {
         byte[] encoded = Files.readAllBytes(Paths.get(filePath));
         return new String(encoded, Charset.defaultCharset());
-    }
-
-    /**
-     * Check if path exists.
-     *
-     * @param path Path as String.
-     * @return True if path exists. False if path does not exist.
-     */
-    public static boolean exist(String path) {
-        File file = new File(path);
-        return file.exists();
-    }
-
-    /**
-     * Ensure path exists (create if does not exists).
-     *
-     * @param directory Path to directory.
-     */
-    public static void ensureFolderExists(String directory) {
-        File file = new File(directory);
-        if (!file.exists()) {
-            boolean result = file.mkdirs();
-            if (!result) {
-                log.error("Failed to create folder: " + directory);
-            }
-        }
     }
 
     /**

@@ -1,6 +1,5 @@
 # Complete infra creation for selenium chrome/firefox and owasp security testing
-
-version: '3'
+version: '3.8'
 
 services:
   allure:
@@ -23,28 +22,73 @@ services:
     ports:
       - "5252:5252"
 
-  firefox:
-    image: selenium/node-firefox:4.1.3
-    volumes:
-      - /dev/shm:/dev/shm
-    depends_on:
-      - hub
-    environment:
-      HUB_HOST: hub
-
-  chrome:
-    image: selenium/node-chrome:4.1.3
-    volumes:
-      - /dev/shm:/dev/shm
-    depends_on:
-      - hub
-    environment:
-      HUB_HOST: hub
-
-  hub:
-    image: selenium/hub:4.1.3
+  selenoid:
+    image: "aerokube/selenoid"
+    network_mode: bridge
     ports:
       - "4444:4444"
+    volumes:
+      - "$PWD:/etc/selenoid/" # assumed current dir contains browsers.json
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+  selenoid-ui:
+    image: "aerokube/selenoid-ui"
+    network_mode: bridge
+    links:
+      - selenoid
+    ports:
+      - "8080:8080"
+    command: [ "--selenoid-uri", "http://selenoid:4444" ]
+
+  #  https://dev.to/goodidea/how-to-fake-aws-locally-with-localstack-27me
+  localstack:
+    image: localstack/localstack:latest
+    container_name: localstack
+    environment:
+      - AWS_DEFAULT_REGION=ap-southeast-2
+      - EDGE_PORT=4566
+      - SERVICES=s3,sns,sqs,lambda,dynamodb
+      - DEBUG=1
+    ports:
+      - '4566:4566'
+    volumes:
+      - "${TEMPDIR:-/tmp/localstack}:/tmp/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+  stripe-mock:
+    image: stripemock/stripe-mock:latest
+    container_name: stripemock
+    ports:
+      - '12111-12112:12111-12112'
+
+  pubsub:
+    image: google/cloud-sdk:latest
+    container_name: pubsub_emulator
+    command: [ "gcloud", "beta", "emulators", "pubsub", "start", "--host-port=0.0.0.0:8085", "--project=local-pubsub" ]
+    ports:
+      - "8085:8085"
+
+  kafka-broker:
+    image: docker.vectorized.io/vectorized/redpanda:v22.1.6
+    container_name: kafka-broker
+    ports:
+      - "9093:9093"
+      - "8081:8081"
+      - "29092:29092"
+    command:
+      - redpanda
+      - start
+      - --smp
+      - '1'
+      - --reserve-memory
+      - 0M
+      - --overprovisioned
+      - --node-id
+      - '0'
+      - --kafka-addr
+      - PLAINTEXT://0.0.0.0:29092,OUTSIDE://0.0.0.0:9092
+      - --advertise-kafka-addr
+      - PLAINTEXT://kafka-broker:29092,OUTSIDE://localhost:9092
 
   zaproxy:
     image: owasp/zap2docker-stable:latest

@@ -45,7 +45,6 @@ import java.util.Objects;
 abstract class MobileOptions {
     private static final String nodeJS = System.getenv("NODE_HOME") + "/node.exe";
     private static final String appiumJS = System.getenv("APPIUM_HOME") + "/main.js";
-    DesiredCapabilities caps = new DesiredCapabilities();
     private static DriverService service;
     private final String apk_url = System.getenv("APK_URL");
     private final String ipa_url = System.getenv("IPA_URL");
@@ -58,6 +57,7 @@ abstract class MobileOptions {
     private final String serverUrl = "http://" + serverIp + ":" + appiumPort + "/wd/hub";
     private final String cloudURL = "https://" + username + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub";
     private final String sauceURL = "https://" + sauce_username + ":" + sauce_accessKey + "@ondemand.apac-southeast-1.saucelabs.com:443/wd/hub";
+    DesiredCapabilities caps = new DesiredCapabilities();
 
     /**
      * CreateURL
@@ -83,7 +83,7 @@ abstract class MobileOptions {
      * Cloud Capabilities
      *
      * @param cloudProvider cloudProvider
-     * @param caps         capabilities
+     * @param caps          capabilities
      * @param device        device
      * @throws IOException exception
      */
@@ -104,7 +104,7 @@ abstract class MobileOptions {
     /**
      * Browserstack capabilities
      *
-     * @param caps  capabilities
+     * @param caps   capabilities
      * @param device device
      */
     private void browserstackCapabilities(DesiredCapabilities caps, String device) {
@@ -141,7 +141,7 @@ abstract class MobileOptions {
      * Saucelabs capabilities
      * https://saucelabs.com/platform/platform-configurator
      *
-     * @param caps  capabilities
+     * @param caps   capabilities
      * @param device device
      */
     private void saucelabsCapabilities(MutableCapabilities caps, String device) {

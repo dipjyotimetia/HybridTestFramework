@@ -1,8 +1,0 @@
-version: '3.8'
-services:
-  pubsub:
-    image: google/cloud-sdk:latest
-    container_name: pubsub_emulator
-    command: [ "gcloud", "beta", "emulators", "pubsub", "start", "--host-port=0.0.0.0:8085", "--project=local-pubsub" ]
-    ports:
-      - "8085:8085"
