@@ -139,6 +139,9 @@ public class MobileActions extends DriverManager {
             case CLASS:
                 by = (By) mobileThread.findElement(By.className(byElement));
                 break;
+            default:
+                log.info("no default element selected");
+                break;
         }
         return by;
     }
@@ -301,6 +304,9 @@ public class MobileActions extends DriverManager {
             case CLASS:
                 by = (By) mobileThread.findElement(By.className(byElement));
                 break;
+            default:
+                log.info("no default element selected");
+                break;
         }
         return by;
     }
@@ -364,16 +370,19 @@ public class MobileActions extends DriverManager {
                 if (mobileThread.findElements(By.xpath(element)).size() != 0) {
                     log.info(element + ": element is exists");
                     returnValue = true;
+                    break;
                 }
             case ID:
                 if (mobileThread.findElements(By.id(element)).size() != 0) {
                     log.info(element + ": element is exists");
                     returnValue = true;
+                    break;
                 }
             case CLASS:
                 if (mobileThread.findElements(By.className(element)).size() != 0) {
                     log.info(element + ": element is exists");
                     returnValue = true;
+                    break;
                 }
             default:
                 log.info("Element type is not available");
@@ -808,9 +817,11 @@ public class MobileActions extends DriverManager {
             case "Email":
                 value = "testauto" + faker.internet().emailAddress();
                 log.info("EmailAddress: " + value);
+                break;
             case "Mobile":
                 value = "0" + RandomStringUtils.randomNumeric(9);
                 log.info("MobileNo: " + value);
+                break;
             default:
                 log.info("Random type not found");
                 break;
@@ -961,7 +972,6 @@ public class MobileActions extends DriverManager {
                 String p_testcaseName = csvobj.get("TestcaseName").trim();
                 String p_testcaseInstance = csvobj.get("TestcaseInstance").trim();
                 if (t_testcasename.equalsIgnoreCase(p_testcaseName) && (t_instance == Integer.parseInt(p_testcaseInstance))) {
-                    flag = 1;
                     for (i = 1; i < csvobj.getColumnCount() / 2 + 1; i++) {
                         String p_filed = csvobj.get("Field" + i).trim();
                         if (p_filed.equalsIgnoreCase(t_field)) {
@@ -989,7 +999,7 @@ public class MobileActions extends DriverManager {
             csvOutput.flush();
             csvOutput.close();
             csvobj.close();
-            RenameCsvFile("input\\Datasheet1.csv", "input\\Datasheet.csv");
+            renameCsvFile("input\\Datasheet1.csv", "input\\Datasheet.csv");
             if (flag == 0) {
                 log.info("No data present for the testname");
             }
@@ -1040,7 +1050,7 @@ public class MobileActions extends DriverManager {
      * @param source sourceFile
      * @param dest   destinationFile
      */
-    private boolean RenameCsvFile(String source, String dest) {
+    private boolean renameCsvFile(String source, String dest) {
         boolean b = false;
         try {
             boolean b1 = false;
@@ -1054,8 +1064,7 @@ public class MobileActions extends DriverManager {
             Thread.sleep(500);
             log.info(String.valueOf(b1));
             File file = new File(source);
-            final String st = dest;
-            b = file.renameTo(new File(st));
+            b = file.renameTo(new File(dest));
             log.info(String.valueOf(b));
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -1083,7 +1092,7 @@ public class MobileActions extends DriverManager {
      *
      * @param p_testcaseName1 testcaseName
      */
-    protected void CreateImageDoc(String p_testcaseName1) {
+    protected void createImageDoc(String p_testcaseName1) {
         try (XWPFDocument doc = new XWPFDocument()) {
             XWPFParagraph p = doc.createParagraph();
             XWPFRun r = p.createRun();
@@ -1130,7 +1139,7 @@ public class MobileActions extends DriverManager {
     /**
      * System date format
      */
-    protected void SystemDateFormat() {
+    protected void systemDateFormat() {
         String abc1 = null;
         try {
             DateFormat date = new SimpleDateFormat("yyyy.MM.dd_hh.mm");

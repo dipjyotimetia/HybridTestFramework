@@ -241,7 +241,7 @@ abstract class MobileOptions {
     /**
      * Stop appium server
      */
-    public void _stopAppiumServer() {
+    public void stopAppiumServer() {
         if (OS.isFamilyWindows()) {
             Runtime runtime = Runtime.getRuntime();
             try {
