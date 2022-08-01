@@ -120,7 +120,7 @@ dependencies {
     implementation 'io.qameta.allure:allure-rest-assured:2.18.0'
     implementation 'io.qameta.allure:allure-attachments:2.18.1'
     implementation 'org.apache.pulsar:pulsar-client:2.10.1'
-    implementation 'org.apache.avro:avro:1.11.0'
+    implementation 'org.apache.avro:avro:1.11.1'
     // https://stackoverflow.com/questions/40923471/cannot-compile-with-protocol-buffers-3-1-0
     //implementation "org.apache.avro:avro-tools:1.11.0"
     implementation "org.apache.kafka:kafka_2.13:${kafkaVersion}"
