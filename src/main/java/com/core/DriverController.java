@@ -25,7 +25,7 @@ SOFTWARE.
 package com.core;
 
 import com.config.AppConfig;
-import com.reporting.Listeners.WebDriverEventHandler;
+import com.reporting.listeners.WebDriverEventHandler;
 import com.typesafe.config.ConfigFactory;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;

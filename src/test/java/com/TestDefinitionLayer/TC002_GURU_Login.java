@@ -26,7 +26,7 @@ package com.TestDefinitionLayer;
 
 import com.core.WebActions;
 import com.pages.web.LoginPageGuru;
-import com.reporting.ExtentReports.ExtentTestManager;
+import com.reporting.extentreport.ExtentTestManager;
 import io.qameta.allure.*;
 import org.testng.annotations.Test;
 

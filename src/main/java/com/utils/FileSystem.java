@@ -75,10 +75,9 @@ public class FileSystem {
      * @param destination destination
      */
     private void unzip(String source, String destination) {
-        try {
-            ZipFile zipFile = new ZipFile(source);
+        try (ZipFile zipFile = new ZipFile(source)) {
             zipFile.extractAll(destination);
-        } catch (ZipException e) {
+        } catch (IOException e) {
             log.error(e.getMessage());
         }
     }
@@ -99,9 +98,7 @@ public class FileSystem {
             }
             log.info("Delete " + path);
         } catch (Exception e) {
-            String errorMessage = "Failed to delete " + path;
-            log.error(errorMessage);
-            throw new IOException(errorMessage);
+            log.error("Failed to delete " + path);
         }
     }
 

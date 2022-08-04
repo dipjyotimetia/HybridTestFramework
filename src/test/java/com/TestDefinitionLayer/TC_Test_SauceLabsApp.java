@@ -22,7 +22,7 @@ package com.TestDefinitionLayer;
 
 import com.core.MobileActions;
 import com.pages.mobile.LoginPage;
-import com.reporting.ExtentReports.ExtentTestManager;
+import com.reporting.extentreport.ExtentTestManager;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Link;
 import io.qameta.allure.Severity;

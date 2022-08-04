@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
 
-package com.reporting.Listeners;
+package com.reporting.listeners;
 
 import org.testng.IAnnotationTransformer;
 import org.testng.annotations.ITestAnnotation;
