@@ -30,7 +30,7 @@ plugins {
 
 ext {
     grpcVersion = "1.48.0"
-    protoVersion = '3.21.2'
+    protoVersion = '3.21.3'
 }
 
 group 'com.HybridTestFramework'
@@ -113,6 +113,6 @@ dependencies {
     compileOnly 'org.apache.tomcat:annotations-api:6.0.53' // necessary for Java 9+
     implementation "com.google.protobuf:protobuf-java:${protoVersion}"
     runtimeOnly "com.google.protobuf:protobuf-java-util:${protoVersion}"
-    implementation group: 'org.apache.avro', name: 'avro', version: '1.11.0'
+    implementation group: 'org.apache.avro', name: 'avro', version: '1.11.1'
     implementation 'org.openapitools:openapi-generator:6.0.1'
 }

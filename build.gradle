@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
+
 plugins {
     id "java"
     id "idea"
@@ -30,7 +31,7 @@ plugins {
 
 ext {
     grpcVersion = "1.48.0"
-    protoVersion = '3.21.2'
+    protoVersion = '3.21.3'
     containerVersion = '1.17.3'
     kafkaVersion = "7.2.1-ce"
     awsVersion = "2.17.236"
@@ -93,7 +94,7 @@ dependencies {
     implementation "software.amazon.awssdk:sqs:${awsVersion}"
     implementation "software.amazon.awssdk:sns:${awsVersion}"
     implementation "software.amazon.awssdk:devicefarm:${awsVersion}"
-    implementation 'com.google.cloud:google-cloud-pubsub:1.120.1'
+    implementation 'com.google.cloud:google-cloud-pubsub:1.120.2'
     implementation 'org.seleniumhq.selenium:selenium-java:4.3.0'
     implementation 'org.seleniumhq.selenium:selenium-server:4.0.0-alpha-2'
     implementation 'io.appium:java-client:8.1.1'

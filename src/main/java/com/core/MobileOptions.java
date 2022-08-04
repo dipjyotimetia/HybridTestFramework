@@ -96,7 +96,7 @@ abstract class MobileOptions {
                 browserstackCapabilities(caps, device);
                 break;
             default:
-                createService().start();
+                log.info("Setting up local appium server");
                 break;
         }
     }
@@ -224,18 +224,17 @@ abstract class MobileOptions {
     /**
      * Create appium driver service
      *
-     * @return service
+     * @return appiumService
      */
-    DriverService createService() {
-        new AppiumServiceBuilder()
+    public DriverService createAppiumService() {
+        return new AppiumServiceBuilder()
                 .usingDriverExecutable(new File(nodeJS))
                 .withAppiumJS(new File(appiumJS))
-//                .withIPAddress(serverIp)
+                .withIPAddress(serverIp)
 //                .usingPort(APPIUM_Port)
 //                .withArgument(Arg.TIMEOUT, "120")
 //                .withArgument(Arg.LOG_LEVEL, "warn")
                 .build();
-        return service;
     }
 
     /**
