@@ -1,65 +1,24 @@
 # Complete infra creation for selenium chrome/firefox and owasp security testing
-
-version: '3'
+version: '3.8'
 
 services:
-  allure:
-    image: "frankescobar/allure-docker-service"
+  #  https://dev.to/goodidea/how-to-fake-aws-locally-with-localstack-27me
+  localstack:
+    image: localstack/localstack:latest
+    container_name: localstack
     environment:
-      CHECK_RESULTS_EVERY_SECONDS: 1
-      KEEP_HISTORY: 1
-      KEEP_HISTORY_LATEST: 25
+      - AWS_DEFAULT_REGION=ap-southeast-2
+      - EDGE_PORT=4566
+      - SERVICES=s3,sns,sqs,lambda,dynamodb
+      - DEBUG=1
     ports:
-      - "5050:5050"
+      - '4566:4566'
     volumes:
-      - "./build/allure-results:/app/allure-results"
-      - "./build/allure-reports:/app/default-reports"
+      - "${TEMPDIR:-/tmp/localstack}:/tmp/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
 
-  allure-ui:
-    image: "frankescobar/allure-docker-service-ui"
-    environment:
-      ALLURE_DOCKER_PUBLIC_API_URL: "http://localhost:5050"
-      ALLURE_DOCKER_PUBLIC_API_URL_PREFIX: ""
+  stripe-mock:
+    image: stripemock/stripe-mock:latest
+    container_name: stripemock
     ports:
-      - "5252:5252"
-
-  firefox:
-    image: selenium/node-firefox:4.1.3
-    volumes:
-      - /dev/shm:/dev/shm
-    depends_on:
-      - hub
-    environment:
-      HUB_HOST: hub
-
-  chrome:
-    image: selenium/node-chrome:4.1.3
-    volumes:
-      - /dev/shm:/dev/shm
-    depends_on:
-      - hub
-    environment:
-      HUB_HOST: hub
-
-  hub:
-    image: selenium/hub:4.1.3
-    ports:
-      - "4444:4444"
-
-  zaproxy:
-    image: owasp/zap2docker-stable:latest
-    command: [
-      #"zap.sh",
-      "zap-x.sh",
-      #"zap-webswing.sh",
-      "-daemon",
-      "-host", "0.0.0.0", "-port", "8082",
-      "-config", "api.disablekey=true",
-      "-config", "api.addrs.addr.name=.*",
-      "-config", "api.addrs.addr.regex=true",
-      "-config", "api.key=d025okl6n7blpkrr0iee6c7hsi",
-      #"-addoninstall FOOXYZ",
-      "-addonupdate"
-    ]
-    ports:
-      - "127.0.0.1:8082:8082"
+      - '12111-12112:12111-12112'

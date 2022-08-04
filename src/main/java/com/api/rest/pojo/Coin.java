@@ -11,6 +11,6 @@ import lombok.extern.jackson.Jacksonized;
 @AllArgsConstructor
 @NoArgsConstructor
 @Jacksonized
-public class Coin{
+public class Coin {
     public Item item;
 }

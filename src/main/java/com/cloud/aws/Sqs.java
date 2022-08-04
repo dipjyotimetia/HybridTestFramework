@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
+
 package com.cloud.aws;
 
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,32 @@ import java.util.List;
 
 @Slf4j
 public class Sqs {
+
+    /**
+     * DeleteSQSQueue
+     *
+     * @param sqsClient sqsClient
+     * @param queueName queueName
+     */
+    public static void deleteSQSQueue(SqsClient sqsClient, String queueName) {
+        try {
+            GetQueueUrlRequest getQueueRequest = GetQueueUrlRequest.builder()
+                    .queueName(queueName)
+                    .build();
+
+            String queueUrl = sqsClient.getQueueUrl(getQueueRequest).queueUrl();
+
+            DeleteQueueRequest deleteQueueRequest = DeleteQueueRequest.builder()
+                    .queueUrl(queueUrl)
+                    .build();
+
+            sqsClient.deleteQueue(deleteQueueRequest);
+
+        } catch (SqsException e) {
+            log.error(e.awsErrorDetails().errorMessage());
+            System.exit(1);
+        }
+    }
 
     /**
      * Create Queue
@@ -85,32 +112,6 @@ public class Sqs {
             System.exit(1);
         }
         return "";
-    }
-
-    /**
-     * DeleteSQSQueue
-     *
-     * @param sqsClient sqsClient
-     * @param queueName queueName
-     */
-    public static void deleteSQSQueue(SqsClient sqsClient, String queueName) {
-        try {
-            GetQueueUrlRequest getQueueRequest = GetQueueUrlRequest.builder()
-                    .queueName(queueName)
-                    .build();
-
-            String queueUrl = sqsClient.getQueueUrl(getQueueRequest).queueUrl();
-
-            DeleteQueueRequest deleteQueueRequest = DeleteQueueRequest.builder()
-                    .queueUrl(queueUrl)
-                    .build();
-
-            sqsClient.deleteQueue(deleteQueueRequest);
-
-        } catch (SqsException e) {
-            log.error(e.awsErrorDetails().errorMessage());
-            System.exit(1);
-        }
     }
 
     /**

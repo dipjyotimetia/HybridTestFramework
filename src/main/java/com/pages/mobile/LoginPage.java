@@ -18,24 +18,38 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
 
-package com.api.graphql.pojo;
+package com.pages.mobile;
 
-import lombok.Builder;
-import lombok.Data;
+import com.core.MobileActions;
+import io.appium.java_client.pagefactory.*;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.PageFactory;
 
-import java.util.UUID;
+/**
+ * @author Dipjyoti Metia
+ */
+public class LoginPage extends MobileActions {
 
-@Data
-@Builder
-public class User {
+    @iOSXCUITFindBys(value = {@iOSXCUITBy(accessibility = "test-Username"), @iOSXCUITBy(xpath = "//XCUIElementTypeTextField[@name=\"test-Username\"]")})
+    @AndroidFindBy(accessibility = "test-Username")
+    private WebElement userName;
 
-    private UUID id;
-    private String name;
-    private String rocket;
+    @iOSXCUITFindBy(accessibility = "test-Password")
+    @AndroidFindBy(accessibility = "test-Password")
+    private WebElement password;
 
-    public User(UUID id, String name, String rocket) {
-        this.id = id;
-        this.name = name;
-        this.rocket = rocket;
+    @iOSXCUITFindBy(accessibility = "test-LOGIN")
+    @AndroidFindBy(accessibility = "test-LOGIN")
+    private WebElement loginButton;
+
+    public LoginPage() {
+        super();
+        PageFactory.initElements(new AppiumFieldDecorator(mobileThread), this);
+    }
+
+    public void login() {
+        enter(userName, "standard_user");
+        enter(password, "secret_sauce");
+        click(loginButton);
     }
 }

@@ -1,6 +1,35 @@
-version: '3'
+version: '3.8'
 
 services:
+  pubsub:
+    image: google/cloud-sdk:latest
+    container_name: pubsub_emulator
+    command: [ "gcloud", "beta", "emulators", "pubsub", "start", "--host-port=0.0.0.0:8085", "--project=local-pubsub" ]
+    ports:
+      - "8085:8085"
+
+  kafka-broker:
+    image: docker.vectorized.io/vectorized/redpanda:v22.1.6
+    container_name: kafka-broker
+    ports:
+      - "9093:9093"
+      - "8081:8081"
+      - "29092:29092"
+    command:
+      - redpanda
+      - start
+      - --smp
+      - '1'
+      - --reserve-memory
+      - 0M
+      - --overprovisioned
+      - --node-id
+      - '0'
+      - --kafka-addr
+      - PLAINTEXT://0.0.0.0:29092,OUTSIDE://0.0.0.0:9092
+      - --advertise-kafka-addr
+      - PLAINTEXT://kafka-broker:29092,OUTSIDE://localhost:9092
+
   zookeeper:
     image: confluentinc/cp-zookeeper:7.0.1
     hostname: zookeeper

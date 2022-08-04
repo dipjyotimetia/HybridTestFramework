@@ -21,20 +21,21 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package com.reporting.Listeners;
+
+package com.reporting.listeners;
 
 import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
 import com.core.DriverManager;
-import com.reporting.ExtentReports.ExtentTestManager;
+import com.reporting.extentreport.ExtentTestManager;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.testng.IRetryAnalyzer;
 import org.testng.ITestResult;
 
 public class Retry extends DriverManager implements IRetryAnalyzer {
-    private int count = 0;
     private static final int maxTry = 0; //Run the failed test 2 times
+    private int count = 0;
 
     /**
      * Retry Times
@@ -64,9 +65,15 @@ public class Retry extends DriverManager implements IRetryAnalyzer {
     public void extendReportsFailOperations(ITestResult iTestResult) {
         try {
             Object testClass = iTestResult.getInstance();
-            this.driverThread = ((DriverManager) testClass).getDriver();
-            String base64Screenshot = "data:image/png;base64," + ((TakesScreenshot) driverThread).getScreenshotAs(OutputType.BASE64);
-            ExtentTestManager.getTest().log(Status.FAIL, "Test Failed", MediaEntityBuilder.createScreenCaptureFromBase64String(base64Screenshot).build());
+            if (this.driverThread != null) {
+                this.driverThread = ((DriverManager) testClass).getWebDriver();
+                String base64Screenshot = "data:image/png;base64," + ((TakesScreenshot) driverThread).getScreenshotAs(OutputType.BASE64);
+                ExtentTestManager.getTest().log(Status.FAIL, "Test Failed", MediaEntityBuilder.createScreenCaptureFromBase64String(base64Screenshot).build());
+            } else {
+                this.mobileThread = ((DriverManager) testClass).getMobileDriver();
+                String base64Screenshot = "data:image/png;base64," + ((TakesScreenshot) mobileThread).getScreenshotAs(OutputType.BASE64);
+                ExtentTestManager.getTest().log(Status.FAIL, "Test Failed", MediaEntityBuilder.createScreenCaptureFromBase64String(base64Screenshot).build());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

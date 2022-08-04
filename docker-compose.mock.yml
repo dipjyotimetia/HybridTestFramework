@@ -1,8 +1,0 @@
-version: '3.0'
-
-services:
-  stripe-mock:
-    image: stripemock/stripe-mock:latest
-    container_name: stripemock
-    ports:
-      - '12111-12112:12111-12112'

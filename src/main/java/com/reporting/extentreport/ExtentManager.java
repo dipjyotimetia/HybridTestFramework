@@ -22,33 +22,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
 
-package com.TestDefinitionLayer;
+package com.reporting.extentreport;
 
-import com.security.Zap;
-import com.security.ZapApi;
-import org.testng.annotations.Test;
-import org.zaproxy.clientapi.core.ClientApiException;
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 
-import static org.assertj.core.api.Assertions.assertThat;
+public class ExtentManager {
+    private static ExtentReports extent;
 
-public class TC002_SecurityTest {
-    private static final String TARGET = "http://zero.webappsecurity.com/online-banking.html";
-
-    private final ZapApi zapApi = new ZapApi(TARGET);
-    private final Zap zap = new Zap(zapApi);
-
-    @Test
-    public void zapSecurityTest() {
-        try {
-            zap.doSpidering();
-            zap.doPassiveScan();
-            zap.doActiveScan();
-
-            zapApi.generateHtmlReport("report.html");
-
-            assertThat(zapApi.getNumberOfAlerts()).isZero();
-        } catch (ClientApiException | InterruptedException ce) {
-            ce.printStackTrace();
+    public synchronized static ExtentReports getReporter() {
+        if (extent == null) {
+            //Set HTML reporting file location
+            String workingDir = System.getProperty("user.dir");
+            ExtentSparkReporter htmlReporter = new ExtentSparkReporter(workingDir + "\\Reports\\ExtentReportResults.html");
+            extent = new ExtentReports();
+            extent.attachReporter(htmlReporter);
+//            extent.attachReporter(workingDir + "\\Reports\\ExtentReportResults.html", true);
         }
+        return extent;
     }
 }

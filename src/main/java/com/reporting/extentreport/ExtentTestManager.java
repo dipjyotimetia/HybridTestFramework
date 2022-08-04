@@ -22,33 +22,28 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
 
-package com.TestDefinitionLayer;
+package com.reporting.extentreport;
 
-import com.security.Zap;
-import com.security.ZapApi;
-import org.testng.annotations.Test;
-import org.zaproxy.clientapi.core.ClientApiException;
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.HashMap;
+import java.util.Map;
 
-public class TC002_SecurityTest {
-    private static final String TARGET = "http://zero.webappsecurity.com/online-banking.html";
+public class ExtentTestManager {
+    static Map<Object, Object> extentTestMap = new HashMap<>();
+    static ExtentReports extent = ExtentManager.getReporter();
 
-    private final ZapApi zapApi = new ZapApi(TARGET);
-    private final Zap zap = new Zap(zapApi);
+    public static synchronized ExtentTest getTest() {
+        return (ExtentTest) extentTestMap.get((int) Thread.currentThread().getId());
+    }
 
-    @Test
-    public void zapSecurityTest() {
-        try {
-            zap.doSpidering();
-            zap.doPassiveScan();
-            zap.doActiveScan();
+    public static synchronized void endTest() {
+        extent.removeTest((ExtentTest) extentTestMap.get((int) Thread.currentThread().getId()));
+    }
 
-            zapApi.generateHtmlReport("report.html");
-
-            assertThat(zapApi.getNumberOfAlerts()).isZero();
-        } catch (ClientApiException | InterruptedException ce) {
-            ce.printStackTrace();
-        }
+    public static synchronized void startTest(String testName, String desc) {
+        ExtentTest test = extent.createTest(testName, desc);
+        extentTestMap.put((int) Thread.currentThread().getId(), test);
     }
 }

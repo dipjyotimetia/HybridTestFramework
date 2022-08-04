@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
+
 package com.utils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -40,55 +41,6 @@ import java.nio.file.Paths;
  */
 @Slf4j
 public class FileSystem {
-
-    /**
-     * unzip file
-     *
-     * @param source      source
-     * @param destination destination
-     */
-    private void unzip(String source, String destination) {
-        try {
-            ZipFile zipFile = new ZipFile(source);
-            zipFile.extractAll(destination);
-        } catch (ZipException e) {
-            log.error(e.getMessage());
-        }
-    }
-
-    /**
-     * Delete file path.
-     *
-     * @param path Path to file for folder.
-     * @throws IOException When fail to delete it.
-     */
-    public void deletePath(String path) throws IOException {
-        try {
-            File file = new File(path);
-            if (file.isDirectory()) {
-                FileUtils.deleteDirectory(file);
-            } else {
-                file.delete();
-            }
-            log.info("Delete " + path);
-        } catch (Exception e) {
-            String errorMessage = "Failed to delete " + path;
-            log.error(errorMessage);
-            throw new IOException(errorMessage);
-        }
-    }
-
-    /**
-     * Read content of file.
-     *
-     * @param filePath File path as String.
-     * @return Content of file as String.
-     * @throws IOException When fail to read file.
-     */
-    public String readFile(String filePath) throws IOException {
-        byte[] encoded = Files.readAllBytes(Paths.get(filePath));
-        return new String(encoded, Charset.defaultCharset());
-    }
 
     /**
      * Check if path exists.
@@ -114,6 +66,52 @@ public class FileSystem {
                 log.error("Failed to create folder: " + directory);
             }
         }
+    }
+
+    /**
+     * unzip file
+     *
+     * @param source      source
+     * @param destination destination
+     */
+    private void unzip(String source, String destination) {
+        try (ZipFile zipFile = new ZipFile(source)) {
+            zipFile.extractAll(destination);
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
+    }
+
+    /**
+     * Delete file path.
+     *
+     * @param path Path to file for folder.
+     * @throws IOException When fail to delete it.
+     */
+    public void deletePath(String path) throws IOException {
+        try {
+            File file = new File(path);
+            if (file.isDirectory()) {
+                FileUtils.deleteDirectory(file);
+            } else {
+                file.delete();
+            }
+            log.info("Delete " + path);
+        } catch (Exception e) {
+            log.error("Failed to delete " + path);
+        }
+    }
+
+    /**
+     * Read content of file.
+     *
+     * @param filePath File path as String.
+     * @return Content of file as String.
+     * @throws IOException When fail to read file.
+     */
+    public String readFile(String filePath) throws IOException {
+        byte[] encoded = Files.readAllBytes(Paths.get(filePath));
+        return new String(encoded, Charset.defaultCharset());
     }
 
     /**

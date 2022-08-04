@@ -12,5 +12,6 @@ allure-results/**/**
 ScreensDoc/**/**
 logs/logfile.log
 /build/
+/contract/bin
 /contract/build
 /Reports/

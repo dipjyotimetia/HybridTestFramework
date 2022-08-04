@@ -21,18 +21,19 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
+
 package com.TestDefinitionLayer;
 
-import com.core.UserActions;
-import com.pages.LoginPageGuru;
-import com.reporting.ExtentReports.ExtentTestManager;
+import com.core.WebActions;
+import com.pages.web.LoginPageGuru;
+import com.reporting.extentreport.ExtentTestManager;
 import io.qameta.allure.*;
 import org.testng.annotations.Test;
 
 @Link("https://jira.cloud.com")
 @Feature("Api1")
 @Feature("Api2")
-public class TC002_GURU_Login extends UserActions {
+public class TC002_GURU_Login extends WebActions {
 
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "E2E test for App")

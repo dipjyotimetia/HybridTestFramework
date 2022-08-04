@@ -21,14 +21,15 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package com.reporting.Listeners;
+
+package com.reporting.listeners;
 
 import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
 import com.core.DriverManager;
 import com.logging.TestStatus;
-import com.reporting.ExtentReports.ExtentManager;
-import com.reporting.ExtentReports.ExtentTestManager;
+import com.reporting.extentreport.ExtentManager;
+import com.reporting.extentreport.ExtentTestManager;
 import io.qameta.allure.Attachment;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.OutputType;
@@ -47,10 +48,19 @@ public class TestListener extends DriverManager implements ITestListener {
         return iTestResult.getMethod().getConstructorOrMethod().getName();
     }
 
+    @Attachment(value = "0", type = "text/plain")
+    public static String saveTextLogs(String message) {
+        return message;
+    }
+
     @Override
     public void onStart(ITestContext iTestContext) {
         log.info("I am in onStart method " + iTestContext.getName());
-        iTestContext.setAttribute("WebDriver", this.driverThread);
+        if (this.driverThread != null) {
+            iTestContext.setAttribute("WebDriver", this.driverThread);
+        } else {
+            iTestContext.setAttribute("WebDriver", this.mobileThread);
+        }
     }
 
     @Override
@@ -82,9 +92,15 @@ public class TestListener extends DriverManager implements ITestListener {
                 saveScreenshotPNG();
                 log.error("I am in onTestFailure method " + getTestMethodName(iTestResult) + " failed");
                 Object testClass = iTestResult.getInstance();
-                this.driverThread = ((DriverManager) testClass).getDriver();
-                String base64Screenshot = "data:image/png;base64," + ((TakesScreenshot) driverThread).
-                        getScreenshotAs(OutputType.BASE64);
+                this.driverThread = ((DriverManager) testClass).getWebDriver();
+                String base64Screenshot = "data:image/png;base64," + ((TakesScreenshot) driverThread).getScreenshotAs(OutputType.BASE64);
+                ExtentTestManager.getTest().log(Status.FAIL, "Test Failed", MediaEntityBuilder.createScreenCaptureFromBase64String(base64Screenshot).build());
+            } else {
+                saveScreenshotPNG();
+                log.error("I am in onTestFailure method " + getTestMethodName(iTestResult) + " failed");
+                Object testClass = iTestResult.getInstance();
+                this.mobileThread = ((DriverManager) testClass).getMobileDriver();
+                String base64Screenshot = "data:image/png;base64," + ((TakesScreenshot) mobileThread).getScreenshotAs(OutputType.BASE64);
                 ExtentTestManager.getTest().log(Status.FAIL, "Test Failed", MediaEntityBuilder.createScreenCaptureFromBase64String(base64Screenshot).build());
             }
         } catch (Exception e) {
@@ -106,12 +122,11 @@ public class TestListener extends DriverManager implements ITestListener {
 
     @Attachment(value = "Page screenshot", type = "image/png")
     public byte[] saveScreenshotPNG() {
-        return ((TakesScreenshot) this.driverThread).getScreenshotAs(OutputType.BYTES);
-    }
-
-    @Attachment(value = "0", type = "text/plain")
-    public static String saveTextLogs(String message) {
-        return message;
+        if ((this.driverThread != null)) {
+            return ((TakesScreenshot) this.driverThread).getScreenshotAs(OutputType.BYTES);
+        } else {
+            return ((TakesScreenshot) this.mobileThread).getScreenshotAs(OutputType.BYTES);
+        }
     }
 //    private void sendStatus(ITestResult iTestResult, String status){
 //        this.testStatus.setTestClass(iTestResult.getTestClass().getName());

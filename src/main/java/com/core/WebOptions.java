@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
+
 package com.core;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -44,7 +45,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 @Slf4j
-abstract class DriverOptions {
+abstract class WebOptions extends MobileOptions {
 
     /**
      * get chrome options
@@ -70,7 +71,7 @@ abstract class DriverOptions {
         options.addArguments("--disable-browser-side-navigation");
         options.addArguments("--disable-gpu");
         if (perf.equalsIgnoreCase("YES")) {
-            options.merge(WebDriverController.performance());
+            options.merge(DriverController.performance());
         }
         log.info("Chrome options added");
         return options;
@@ -129,6 +130,8 @@ abstract class DriverOptions {
                 return getChromeOptions(perf);
             case "edge":
                 return getEdgeOptions();
+            default:
+                log.error("No browser option provided");
         }
         return null;
     }
@@ -161,6 +164,7 @@ abstract class DriverOptions {
                 break;
             default:
                 log.info("No supported browser provided");
+                break;
         }
         return capabilities;
     }
@@ -186,6 +190,9 @@ abstract class DriverOptions {
             case "edge":
                 capabilities.setCapability("browser", "Edge");
                 capabilities.setCapability("browser_version", "90.0");
+                break;
+            default:
+                log.info("browser selection is required");
                 break;
         }
         return capabilities;

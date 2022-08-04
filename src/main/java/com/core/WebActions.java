@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
+
 package com.core;
 
 import com.csvreader.CsvReader;
@@ -61,17 +62,13 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
 @Slf4j
-public class UserActions extends DriverManager {
+public class WebActions extends DriverManager {
     private static final Faker faker = new Faker();
     private static String datetime = null;
     private static int counter = 0;
     private static WebDriverWait wait;
     private static JavascriptExecutor jsExec;
     private final Map<String, String> dicttoread = new HashMap<>();
-
-    private String getEnv(String env) {
-        return System.getenv(env);
-    }
 
     public static Map<String, String> get(Map<String, String> formParams) {
         return formParams
@@ -93,6 +90,10 @@ public class UserActions extends DriverManager {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    private String getEnv(String env) {
+        return System.getenv(env);
     }
 
     protected void navigate(String url) {
@@ -343,6 +344,7 @@ public class UserActions extends DriverManager {
                 break;
             default:
                 log.info("Provided option not found");
+                break;
         }
     }
 
@@ -411,6 +413,7 @@ public class UserActions extends DriverManager {
                 break;
             default:
                 log.info("Provided option not found");
+                break;
         }
     }
 
@@ -422,10 +425,6 @@ public class UserActions extends DriverManager {
     protected void deselectAll(WebElement elements) {
         Select select = new Select(elements);
         select.deselectAll();
-    }
-
-    enum SelectBy {
-        INDEX, VALUE, TEXT
     }
 
     /**
@@ -1044,7 +1043,6 @@ public class UserActions extends DriverManager {
         }
         if (element == null) {
             log.error("Web element not found");
-            throw new Exception(webElement + "not found");
         }
         return element;
     }
@@ -1081,7 +1079,6 @@ public class UserActions extends DriverManager {
         }
         if (element == null) {
             log.error("Web element not found");
-            throw new Exception(webElement + "not found");
         }
         return element;
     }
@@ -1121,6 +1118,7 @@ public class UserActions extends DriverManager {
                 break;
             default:
                 log.info("Element display type not available");
+                break;
         }
         return returnValue;
     }
@@ -1227,6 +1225,10 @@ public class UserActions extends DriverManager {
         counter = 0;
         log.error("Error Description", e);
         Assert.fail("TestCase Failed", e);
+    }
+
+    enum SelectBy {
+        INDEX, VALUE, TEXT
     }
 
     public enum WebElementBy {

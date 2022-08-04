@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
+
 plugins {
     id "java"
     id "idea"
@@ -30,7 +31,7 @@ plugins {
 
 ext {
     grpcVersion = "1.48.0"
-    protoVersion = '3.21.2'
+    protoVersion = '3.21.3'
     containerVersion = '1.17.3'
     kafkaVersion = "7.2.1-ce"
     awsVersion = "2.17.236"
@@ -52,7 +53,7 @@ repositories {
 }
 
 allure {
-    version = "2.17.3"
+    version = "2.18.1"
 }
 
 // dockerCompose.isRequiredBy(test)
@@ -65,10 +66,21 @@ dockerCompose {
     removeContainers = true
 }
 
-task E2E(type: Test) {
+task web(type: Test) {
     useTestNG() {
         useDefaultListeners = true
         suites 'src/test/java/suite/testng.xml'
+        // includeGroups 'smoke'
+    }
+    testLogging.events "passed", "skipped", "failed"
+    testLogging.showStandardStreams = true
+    testLogging.exceptionFormat = "full"
+}
+
+task mobile(type: Test) {
+    useTestNG() {
+        useDefaultListeners = true
+        suites 'src/test/java/suite/mobileng.xml'
         // includeGroups 'smoke'
     }
     testLogging.events "passed", "skipped", "failed"
@@ -82,9 +94,10 @@ dependencies {
     implementation "software.amazon.awssdk:sqs:${awsVersion}"
     implementation "software.amazon.awssdk:sns:${awsVersion}"
     implementation "software.amazon.awssdk:devicefarm:${awsVersion}"
-    implementation 'com.google.cloud:google-cloud-pubsub:1.120.1'
+    implementation 'com.google.cloud:google-cloud-pubsub:1.120.2'
     implementation 'org.seleniumhq.selenium:selenium-java:4.3.0'
     implementation 'org.seleniumhq.selenium:selenium-server:4.0.0-alpha-2'
+    implementation 'io.appium:java-client:8.1.1'
     implementation 'io.github.bonigarcia:webdrivermanager:5.2.1'
     implementation 'com.browserstack:browserstack-local-java:1.0.6'
     implementation 'com.deque:axe-selenium:3.0'
@@ -110,14 +123,14 @@ dependencies {
     implementation 'com.atlassian.oai:swagger-request-validator-restassured:2.28.2'
     implementation 'com.atlassian.oai:swagger-request-validator-pact:2.29.0'
     implementation 'org.json:json:20220320'
-    implementation 'com.konghq:unirest-java:3.13.8'
+    implementation 'com.konghq:unirest-java:3.13.10'
     implementation 'net.lightbody.bmp:browsermob-core:2.1.5'
     implementation 'org.zaproxy:zap-clientapi:1.10.0'
     implementation 'org.zaproxy:zap:2.11.1'
     implementation 'net.lingala.zip4j:zip4j:2.11.1'
     implementation 'io.qameta.allure:allure-gradle:2.8.1'
-    implementation 'io.qameta.allure:allure-testng:2.18.0'
-    implementation 'io.qameta.allure:allure-rest-assured:2.18.0'
+    implementation 'io.qameta.allure:allure-testng:2.18.1'
+    implementation 'io.qameta.allure:allure-rest-assured:2.18.1'
     implementation 'io.qameta.allure:allure-attachments:2.18.1'
     implementation 'org.apache.pulsar:pulsar-client:2.10.1'
     implementation 'org.apache.avro:avro:1.11.0'
@@ -149,8 +162,9 @@ dependencies {
     implementation "org.testcontainers:localstack:${containerVersion}"
     implementation "org.testcontainers:gcloud:${containerVersion}"
     implementation 'org.projectlombok:lombok:1.18.24'
-    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
     implementation 'com.epam.healenium:healenium-web:3.2.5'
+    implementation 'com.typesafe:config:1.4.2'
 }
 
 // https://github.com/DiUS/java-faker/issues/327#issuecomment-1091166953

@@ -4,7 +4,7 @@ FROM ubuntu:bionic-20220415
 LABEL maintainer="HybridTestFramework dipjyotimetia@gmail.com"
 
 ENV GRADLE_VERSION 6.9
-ENV ALLURE_VERSION 2.17.3
+ENV ALLURE_VERSION 2.18.1
 
 # install packages
 RUN apt-get -o Acquire::Check-Valid-Until=false update

@@ -1,18 +1,14 @@
 /*
 MIT License
-
-Copyright (c) 2020 Dipjyoti Metia
-
+Copyright (c) 2021 Dipjyoti Metia
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
-
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
-
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,31 +20,35 @@ SOFTWARE.
 
 package com.TestDefinitionLayer;
 
-import com.security.Zap;
-import com.security.ZapApi;
+import com.core.MobileActions;
+import com.pages.mobile.LoginPage;
+import com.reporting.extentreport.ExtentTestManager;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Link;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.Test;
-import org.zaproxy.clientapi.core.ClientApiException;
 
-import static org.assertj.core.api.Assertions.assertThat;
+public class TC_Test_SauceLabsApp extends MobileActions {
+    @Link("Test")
+    @Feature("test")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(description = "Demo Test")
+    public void E2E_TestSauseLabs() {
 
-public class TC002_SecurityTest {
-    private static final String TARGET = "http://zero.webappsecurity.com/online-banking.html";
+        String TCname = "TC_Test_IOSSause";
 
-    private final ZapApi zapApi = new ZapApi(TARGET);
-    private final Zap zap = new Zap(zapApi);
+        LoginPage loginPage = new LoginPage();
 
-    @Test
-    public void zapSecurityTest() {
+//        ExtentTestManager.getTest().setDescription("Sause Login");
+
         try {
-            zap.doSpidering();
-            zap.doPassiveScan();
-            zap.doActiveScan();
-
-            zapApi.generateHtmlReport("report.html");
-
-            assertThat(zapApi.getNumberOfAlerts()).isZero();
-        } catch (ClientApiException | InterruptedException ce) {
-            ce.printStackTrace();
+            loginPage.login();
+        } catch (Exception e) {
+//            catchBlock(e);
+        } finally {
+            ExtentTestManager.endTest();
         }
+
     }
 }

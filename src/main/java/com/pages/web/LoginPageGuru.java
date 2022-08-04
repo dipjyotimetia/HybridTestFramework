@@ -21,60 +21,66 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
-package com.pages;
 
-import com.core.UserActions;
+package com.pages.web;
+
+import com.core.WebActions;
 import io.qameta.allure.Step;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.*;
-
-import java.util.List;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 @Slf4j
-public class LoginPage extends UserActions {
+public class LoginPageGuru extends WebActions {
 
-    //Element that won't get changed
-    @CacheLookup
-    @FindBy(css = "#header div.header_user_info a")
-    private WebElement signInLink;
+    @FindBy(id = "email")
+    private WebElement email;
 
-    @FindBy(xpath = "//*[@id=\"email\"]")
-    private WebElement username;
-
-    @FindBy(xpath = "//*[@id=\"passwd\"]")
+    @FindBy(id = "pass")
     private WebElement password;
 
-    @FindBy(xpath = "//*[@id=\"login_form\"]/div/p[1]/a")
-    private WebElement forgotPasswordLink;
-
-    //Multiple element match
-    @FindAll({@FindBy(how = How.XPATH, using = "//*[@id=\"SubmitLogin\"]"),
-            @FindBy(how = How.ID_OR_NAME, using = "SubmitLogin")})
+    @FindBy(id = "send2")
     private WebElement loginButton;
 
-    //List of elements
-    @FindBys(@FindBy(xpath = "//*[@id=\"down\"]"))
-    private List<WebElement> testDropDown;
+    @FindBy(id = "advice-validate-password-pass")
+    private WebElement errorText;
 
-    public LoginPage() {
+
+    public LoginPageGuru() {
         super();
         PageFactory.initElements(driverThread, this);
     }
 
-    @Step("Login step for test:{0}, for method: {method}")
-    public void Login(String tcName) {
+    public void login(String tcName) {
         try {
-            navigate("http://automationpractice.com/index.php");
-            click(signInLink);
-            enter(username, "");
-            enter(password, "");
+            navigate("http://live.guru99.com/index.php/customer/account/login/");
+            enter(email, "testnow@gmail.com");
+            enter(password, "123456");
             click(loginButton);
-
-            captureImage(tcName);
+            // captureImage(tcName);
         } catch (Exception e) {
             log.error(e.getMessage());
         }
+    }
 
+    @Step("Verify password step for test:{0}, for method: {method}")
+    public void verifyPassword(String tcName) {
+        try {
+            navigate("http://live.guru99.com/index.php/customer/account/login/");
+            waitForElement(email);
+            enter(email, "testnow@gmail.com");
+            enter(password, "12345");
+            click(loginButton);
+            // captureImage(tcName);
+            String actualValue = "Please enter 6 or more characters without leading or trailing spaces.";
+            compareText(actualValue, getText(errorText));
+            clear(password);
+            enter(password, "123456");
+            click(loginButton);
+            // captureImage(tcName);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
     }
 }

@@ -1,6 +1,70 @@
 # Complete infra creation on the fly jenkins & SonarQube
-version: '3'
+version: '3.8'
 services:
+  allure:
+    image: "frankescobar/allure-docker-service"
+    environment:
+      CHECK_RESULTS_EVERY_SECONDS: 1
+      KEEP_HISTORY: 1
+      KEEP_HISTORY_LATEST: 25
+    ports:
+      - "5050:5050"
+    volumes:
+      - "./build/allure-results:/app/allure-results"
+      - "./build/allure-reports:/app/default-reports"
+
+  allure-ui:
+    image: "frankescobar/allure-docker-service-ui"
+    environment:
+      ALLURE_DOCKER_PUBLIC_API_URL: "http://localhost:5050"
+      ALLURE_DOCKER_PUBLIC_API_URL_PREFIX: ""
+    ports:
+      - "5252:5252"
+
+  selenoid:
+    network_mode: bridge
+    image: aerokube/selenoid
+    container_name: selenoid
+    volumes:
+      - "$PWD:/etc/selenoid"
+      - "$PWD:/opt/selenoid/video"
+      - "$PWD:/opt/selenoid/logs"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    environment:
+      - OVERRIDE_VIDEO_OUTPUT_DIR=PATH_TO_VIDEO_FOLDER
+    command: [ "-conf", "/etc/selenoid/browsers.json", "-video-output-dir", "/opt/selenoid/video", "-log-output-dir", "/opt/selenoid/logs", "-limit", "5" ] # change the limit to have more sessions
+    ports:
+      - "4444:4444"
+
+  selenoid-ui:
+    network_mode: bridge
+    image: "aerokube/selenoid-ui"
+    container_name: selenoid-ui
+    links:
+      - selenoid
+    ports:
+      - "8083:8080"
+    networks:
+      - selenoid
+    command: [ "--selenoid-uri", "http://selenoid:4444" ]
+
+  zaproxy:
+    image: owasp/zap2docker-stable:latest
+    command: [
+      #"zap.sh",
+      "zap-x.sh",
+      #"zap-webswing.sh",
+      "-daemon",
+      "-host", "0.0.0.0", "-port", "8082",
+      "-config", "api.disablekey=true",
+      "-config", "api.addrs.addr.name=.*",
+      "-config", "api.addrs.addr.regex=true",
+      "-config", "api.key=d025okl6n7blpkrr0iee6c7hsi",
+      #"-addoninstall FOOXYZ",
+      "-addonupdate"
+    ]
+    ports:
+      - "127.0.0.1:8082:8082"
 
   jenkins:
     image: jenkins/jenkins:lts
