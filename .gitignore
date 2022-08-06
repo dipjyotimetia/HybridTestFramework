@@ -15,3 +15,6 @@ logs/logfile.log
 /contract/bin
 /contract/build
 /Reports/
+
+# Mac Files
+.DS_Store

@@ -58,7 +58,8 @@ $ cd
 $ import project from intellij as a gradle project
 $ gradle clean
 $ gradle build
-$ gradle task E2E
+$ gradle task web
+$ gradle task mobile
 $ gradle allureReport
 $ gradle allureServe
 ```
