@@ -14,7 +14,7 @@ pipeline {
 
           stage('End to End Test'){
             steps {
-                sh 'gradle task E2E'
+                sh 'gradle task web'
             }
           }
     }
@@ -35,7 +35,7 @@ pipeline {
                     allowMissing: false,
                     alwaysLinkToLastBuild: true,
                     keepAll: false,
-                    reportDir: 'build/reports/tests/E2E',
+                    reportDir: 'build/reports/tests/web',
                     reportFiles: 'index.html',
                     reportName: 'Gradle Report'
                 ]
