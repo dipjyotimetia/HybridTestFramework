@@ -21,33 +21,6 @@ services:
     ports:
       - "5252:5252"
 
-  selenoid:
-    network_mode: bridge
-    image: aerokube/selenoid
-    container_name: selenoid
-    volumes:
-      - "$PWD:/etc/selenoid"
-      - "$PWD:/opt/selenoid/video"
-      - "$PWD:/opt/selenoid/logs"
-      - "/var/run/docker.sock:/var/run/docker.sock"
-    environment:
-      - OVERRIDE_VIDEO_OUTPUT_DIR=PATH_TO_VIDEO_FOLDER
-    command: [ "-conf", "/etc/selenoid/browsers.json", "-video-output-dir", "/opt/selenoid/video", "-log-output-dir", "/opt/selenoid/logs", "-limit", "5" ] # change the limit to have more sessions
-    ports:
-      - "4444:4444"
-
-  selenoid-ui:
-    network_mode: bridge
-    image: "aerokube/selenoid-ui"
-    container_name: selenoid-ui
-    links:
-      - selenoid
-    ports:
-      - "8083:8080"
-    networks:
-      - selenoid
-    command: [ "--selenoid-uri", "http://selenoid:4444" ]
-
   zaproxy:
     image: owasp/zap2docker-stable:latest
     command: [
