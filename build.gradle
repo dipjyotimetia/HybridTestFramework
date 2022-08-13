@@ -130,7 +130,7 @@ dependencies {
     implementation 'net.lingala.zip4j:zip4j:2.11.1'
     implementation 'io.qameta.allure:allure-gradle:2.8.1'
     implementation 'io.qameta.allure:allure-testng:2.19.0'
-    implementation 'io.qameta.allure:allure-rest-assured:2.18.1'
+    implementation 'io.qameta.allure:allure-rest-assured:2.19.0'
     implementation 'io.qameta.allure:allure-attachments:2.18.1'
     implementation 'org.apache.pulsar:pulsar-client:2.10.1'
     implementation 'org.apache.avro:avro:1.11.0'
