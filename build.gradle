@@ -98,7 +98,7 @@ dependencies {
     implementation 'org.seleniumhq.selenium:selenium-java:4.4.0'
     implementation 'org.seleniumhq.selenium:selenium-server:4.0.0-alpha-2'
     implementation 'io.appium:java-client:8.1.1'
-    implementation 'io.github.bonigarcia:webdrivermanager:5.2.1'
+    implementation 'io.github.bonigarcia:webdrivermanager:5.3.0'
     implementation 'com.browserstack:browserstack-local-java:1.0.6'
     implementation 'com.deque:axe-selenium:3.0'
     implementation 'org.awaitility:awaitility:4.2.0'
