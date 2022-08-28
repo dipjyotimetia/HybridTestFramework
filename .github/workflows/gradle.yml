@@ -2,13 +2,14 @@ name: Tests
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 env:
   BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
   BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
 jobs:
   web:
@@ -26,6 +27,13 @@ jobs:
           AWS_ACCOUNT_ID: "000000000000"
           AWS_ACCESS_KEY_ID: dummy-access-key
           AWS_SECRET_ACCESS_KEY: dummy-secret-key
+      - uses: 8398a7/action-slack@v3
+        name: Slack Alert
+        if: always()
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+          text: "Web Test."
 
   mobile:
     runs-on: ubuntu-latest
@@ -56,3 +64,10 @@ jobs:
         with:
           name: allure-report
           path: build/reports/allure-report
+      - uses: 8398a7/action-slack@v3
+        name: Slack Alert
+        if: always()
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+          text: "Mobile Test."
