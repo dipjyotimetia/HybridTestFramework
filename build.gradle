@@ -30,18 +30,16 @@ plugins {
 }
 
 ext {
-    grpcVersion = "1.48.0"
+    grpcVersion = '1.48.1'
     protoVersion = '3.21.5'
     containerVersion = '1.17.3'
     kafkaVersion = "7.2.1-ce"
-    awsVersion = "2.17.257"
+    awsVersion = '2.17.261'
     ceVersion = "2.3.0"
 }
 
 group 'com.HybridTestFramework'
 version = '1.0-SNAPSHOT'
-
-sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
     maven { url "https://repo.maven.apache.org/maven2" }
@@ -53,7 +51,7 @@ repositories {
 }
 
 allure {
-    version = "2.18.1"
+    version = "2.19.0"
 }
 
 // dockerCompose.isRequiredBy(test)
@@ -98,12 +96,12 @@ dependencies {
     implementation 'org.seleniumhq.selenium:selenium-java:4.4.0'
     implementation 'org.seleniumhq.selenium:selenium-server:4.0.0-alpha-2'
     implementation 'io.appium:java-client:8.1.1'
-    implementation 'io.github.bonigarcia:webdrivermanager:5.3.0'
+    implementation 'io.github.bonigarcia:webdrivermanager:5.2.3'
     implementation 'com.browserstack:browserstack-local-java:1.0.6'
     implementation 'com.deque:axe-selenium:3.0'
     implementation 'org.awaitility:awaitility:4.2.0'
     implementation 'com.github.tomakehurst:wiremock:2.27.2'
-    implementation 'org.apache.sshd:sshd-core:2.8.0'
+    implementation 'org.apache.sshd:sshd-core:2.9.0'
     implementation 'org.assertj:assertj-core:3.23.1'
     implementation 'org.hamcrest:hamcrest-all:1.3'
     implementation 'org.testng:testng:7.6.1'
@@ -120,8 +118,8 @@ dependencies {
     implementation 'io.rest-assured:rest-assured:5.1.1'
     implementation 'io.rest-assured:json-schema-validator:5.1.1'
     implementation 'io.rest-assured:json-path:5.1.1'
-    implementation 'com.atlassian.oai:swagger-request-validator-restassured:2.28.2'
-    implementation 'com.atlassian.oai:swagger-request-validator-pact:2.29.0'
+    implementation 'com.atlassian.oai:swagger-request-validator-restassured:2.30.0'
+    implementation 'com.atlassian.oai:swagger-request-validator-pact:2.30.0'
     implementation 'org.json:json:20220320'
     implementation 'com.konghq:unirest-java:3.13.10'
     implementation 'net.lightbody.bmp:browsermob-core:2.1.5'
