@@ -60,7 +60,7 @@ jobs:
           APK_URL: ${{steps.app-upload.outputs.APK_URL}}
       - name: Generate Report
         run: ./gradlew task allureReport
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: allure-report
           path: build/reports/allure-report
