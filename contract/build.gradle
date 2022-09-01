@@ -103,6 +103,8 @@ protobuf {
 //    delete protobuf.generatedFilesBaseDir
 //}
 
+tasks.withType(Copy).all { duplicatesStrategy 'exclude' }
+
 dependencies {
     runtimeOnly "io.grpc:grpc-netty-shaded:${grpcVersion}"
     implementation "io.grpc:grpc-protobuf:${grpcVersion}"
