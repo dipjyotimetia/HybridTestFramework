@@ -121,7 +121,7 @@ dependencies {
     implementation 'com.atlassian.oai:swagger-request-validator-restassured:2.30.0'
     implementation 'com.atlassian.oai:swagger-request-validator-pact:2.30.0'
     implementation 'org.json:json:20220320'
-    implementation 'com.konghq:unirest-java:3.13.10'
+    implementation 'com.konghq:unirest-java:3.13.11'
     implementation 'net.lightbody.bmp:browsermob-core:2.1.5'
     implementation 'org.zaproxy:zap-clientapi:1.10.0'
     implementation 'org.zaproxy:zap:2.11.1'
