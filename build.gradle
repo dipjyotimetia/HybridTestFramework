@@ -26,7 +26,7 @@ plugins {
     id "java"
     id "idea"
     id "io.qameta.allure" version "2.10.0"
-    id "com.avast.gradle.docker-compose" version "0.16.8"
+    id "com.avast.gradle.docker-compose" version "0.16.9"
 }
 
 ext {
