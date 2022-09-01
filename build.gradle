@@ -95,7 +95,7 @@ dependencies {
     implementation 'com.google.cloud:google-cloud-pubsub:1.120.12'
     implementation 'org.seleniumhq.selenium:selenium-java:4.4.0'
     implementation 'org.seleniumhq.selenium:selenium-server:4.0.0-alpha-2'
-    implementation 'io.appium:java-client:8.1.1'
+    implementation 'io.appium:java-client:8.2.0'
     implementation 'io.github.bonigarcia:webdrivermanager:5.2.3'
     implementation 'com.browserstack:browserstack-local-java:1.0.6'
     implementation 'com.deque:axe-selenium:3.0'
