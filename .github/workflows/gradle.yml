@@ -18,6 +18,13 @@ jobs:
       - uses: actions/checkout@v3
       - name: Starting test dependencies
         run: docker-compose up -d
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 11
+      - uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: 6.9.0
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Running End To End Test
