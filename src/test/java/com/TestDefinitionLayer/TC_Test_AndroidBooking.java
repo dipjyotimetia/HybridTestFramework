@@ -27,9 +27,13 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Link;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
 public class TC_Test_AndroidBooking extends MobileActions {
+
+    @Autowired
+    HomePage homePage;
 
     @Link("Test")
     @Feature("test")
@@ -38,8 +42,6 @@ public class TC_Test_AndroidBooking extends MobileActions {
     public void E2E_TestAndroid_Bookings() {
 
         String TCname = "TC_Test_AndroidBooking";
-
-        HomePage homePage = new HomePage();
 
 //        ExtentTestManager.getTest().setDescription("Search for bookings");
 
