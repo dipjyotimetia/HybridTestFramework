@@ -27,10 +27,13 @@ import io.appium.java_client.pagefactory.iOSXCUITBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Dipjyoti Metia
  */
+@Component
 public class HomePage extends MobileActions {
 
     @AndroidFindBy(id = "com.booking:id/search_details_text")

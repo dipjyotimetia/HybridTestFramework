@@ -24,10 +24,12 @@ import com.core.MobileActions;
 import io.appium.java_client.pagefactory.*;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Dipjyoti Metia
  */
+@Component
 public class LoginPage extends MobileActions {
 
     @iOSXCUITFindBys(value = {@iOSXCUITBy(accessibility = "test-Username"), @iOSXCUITBy(xpath = "//XCUIElementTypeTextField[@name=\"test-Username\"]")})

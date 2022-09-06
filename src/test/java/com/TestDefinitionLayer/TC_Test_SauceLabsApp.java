@@ -27,9 +27,17 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Link;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Lazy;
 import org.testng.annotations.Test;
 
+@SpringBootTest
 public class TC_Test_SauceLabsApp extends MobileActions {
+    @Lazy
+    @Autowired
+    private LoginPage loginPage;
+
     @Link("Test")
     @Feature("test")
     @Severity(SeverityLevel.CRITICAL)
@@ -37,8 +45,6 @@ public class TC_Test_SauceLabsApp extends MobileActions {
     public void E2E_TestSauseLabs() {
 
         String TCname = "TC_Test_IOSSause";
-
-        LoginPage loginPage = new LoginPage();
 
 //        ExtentTestManager.getTest().setDescription("Sause Login");
 
