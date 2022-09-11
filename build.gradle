@@ -119,7 +119,7 @@ dependencies {
     implementation 'com.microsoft.sqlserver:mssql-jdbc:11.2.1.jre11'
     implementation 'org.slf4j:slf4j-simple:2.0.0'
     implementation 'com.github.javafaker:javafaker:1.0.2'
-    implementation 'io.rest-assured:rest-assured:5.1.1'
+    implementation 'io.rest-assured:rest-assured:5.2.0'
     implementation 'io.rest-assured:json-schema-validator:5.1.1'
     implementation 'io.rest-assured:json-path:5.1.1'
     implementation 'com.atlassian.oai:swagger-request-validator-restassured:2.30.0'
