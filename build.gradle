@@ -114,7 +114,7 @@ dependencies {
     implementation 'com.aventstack:extentreports:5.0.9'
     implementation 'net.sourceforge.javacsv:javacsv:2.0'
     implementation 'org.apache.poi:poi-ooxml:5.2.3'
-    implementation 'org.apache.poi:poi:5.2.2'
+    implementation 'org.apache.poi:poi:5.2.3'
     implementation 'org.apache.xmlbeans:xmlbeans:5.1.1'
     implementation 'com.microsoft.sqlserver:mssql-jdbc:11.2.1.jre11'
     implementation 'org.slf4j:slf4j-simple:2.0.1'
