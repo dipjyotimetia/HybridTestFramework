@@ -54,7 +54,7 @@ abstract class WebOptions extends MobileOptions {
      * @return chrome
      */
     protected ChromeOptions getChromeOptions(String perf) {
-        WebDriverManager.chromedriver().setup();
+//        WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
         options.setHeadless(SystemUtils.IS_OS_LINUX);
         options.setPageLoadStrategy(PageLoadStrategy.NONE);
@@ -83,7 +83,7 @@ abstract class WebOptions extends MobileOptions {
      * @return options
      */
     protected FirefoxOptions getFirefoxOptions() {
-        WebDriverManager.firefoxdriver().setup();
+//        WebDriverManager.firefoxdriver().setup();
         System.setProperty(FirefoxDriver.Capability.MARIONETTE, "true");
         System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE, "/dev/null");
         FirefoxOptions options = new FirefoxOptions();
@@ -104,7 +104,7 @@ abstract class WebOptions extends MobileOptions {
      * @return options
      */
     protected EdgeOptions getEdgeOptions() {
-        WebDriverManager.edgedriver().setup();
+//        WebDriverManager.edgedriver().setup();
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.setHeadless(true);
         chromeOptions.setPageLoadStrategy(PageLoadStrategy.NONE);
