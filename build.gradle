@@ -127,7 +127,7 @@ dependencies {
     implementation 'org.json:json:20220924'
     implementation 'com.konghq:unirest-java:3.14.0'
     implementation 'net.lightbody.bmp:browsermob-core:2.1.5'
-    implementation 'org.zaproxy:zap-clientapi:1.10.0'
+    implementation 'org.zaproxy:zap-clientapi:1.11.0'
     implementation 'org.zaproxy:zap:2.12.0'
     implementation 'net.lingala.zip4j:zip4j:2.11.2'
     implementation 'io.qameta.allure:allure-gradle:2.8.1'
