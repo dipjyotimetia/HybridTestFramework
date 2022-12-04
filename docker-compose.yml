@@ -12,7 +12,7 @@ services:
       - SERVICES=s3,sns,sqs,lambda,dynamodb
       - DEBUG=1
     ports:
-      - '4566:4566'
+      - '4566-4583:4566-4583'
     volumes:
       - "${TEMPDIR:-/tmp/localstack}:/tmp/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
