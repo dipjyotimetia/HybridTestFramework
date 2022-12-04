@@ -43,7 +43,6 @@ group 'com.HybridTestFramework'
 version = '1.0-SNAPSHOT'
 
 repositories {
-    maven { url "https://repo.maven.apache.org/maven2" }
     maven { url "https://plugins.gradle.org/m2/" }
     maven { url "https://packages.confluent.io/maven/" }
     mavenCentral()
@@ -166,6 +165,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
     implementation 'com.typesafe:config:1.4.2'
     implementation 'org.apache.logging.log4j:log4j-core:2.19.0'
+    implementation 'io.netty:netty-tcnative-boringssl-static:2.0.53.Final'
 }
 
 // https://github.com/DiUS/java-faker/issues/327#issuecomment-1091166953
