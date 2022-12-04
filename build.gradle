@@ -33,7 +33,7 @@ ext {
     grpcVersion = '1.51.0'
     protoVersion = '3.21.9'
     containerVersion = '1.17.6'
-    kafkaVersion = "7.3.0-ce"
+    kafkaVersion = "3.3.1"
     awsVersion = '2.18.28'
     ceVersion = "2.4.0"
     allureVersion= "2.20.1"
@@ -165,7 +165,6 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
     implementation 'com.typesafe:config:1.4.2'
     implementation 'org.apache.logging.log4j:log4j-core:2.19.0'
-    implementation 'io.netty:netty-tcnative-boringssl-static:2.0.53.Final'
 }
 
 // https://github.com/DiUS/java-faker/issues/327#issuecomment-1091166953
