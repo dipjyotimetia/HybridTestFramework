@@ -64,7 +64,7 @@ dockerCompose {
     removeContainers = true
 }
 
-task web(type: Test) {
+tasks.register('web', Test) {
     useTestNG() {
         useDefaultListeners = true
         suites 'src/test/java/suite/testng.xml'
@@ -77,7 +77,7 @@ task web(type: Test) {
     }
 }
 
-task mobile(type: Test) {
+tasks.register('mobile', Test){
     useTestNG() {
         useDefaultListeners = true
         suites 'src/test/java/suite/mobileng.xml'
