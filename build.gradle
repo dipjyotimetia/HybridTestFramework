@@ -44,8 +44,10 @@ version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    maven { url "https://packages.confluent.io/maven/" }
     google()
     gradlePluginPortal()
+    mavenLocal()
 }
 
 allure {
