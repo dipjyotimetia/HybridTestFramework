@@ -43,8 +43,6 @@ group 'com.HybridTestFramework'
 version = '1.0-SNAPSHOT'
 
 repositories {
-    maven { url "https://plugins.gradle.org/m2/" }
-    maven { url "https://packages.confluent.io/maven/" }
     mavenCentral()
     google()
     gradlePluginPortal()
