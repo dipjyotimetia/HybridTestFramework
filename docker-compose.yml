@@ -6,11 +6,14 @@ services:
   localstack:
     image: localstack/localstack:latest
     container_name: localstack
+    hostname: localstack
     environment:
       - AWS_DEFAULT_REGION=ap-southeast-2
       - EDGE_PORT=4566
       - SERVICES=s3,sns,sqs,lambda,dynamodb
       - DEBUG=1
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - DATA_DIR=/tmp/localstack/data
     ports:
       - '4566-4583:4566-4583'
     volumes:
