@@ -168,7 +168,7 @@ dependencies {
 }
 
 // https://github.com/DiUS/java-faker/issues/327#issuecomment-1091166953
-configurations.all {
+configurations.configureEach {
     resolutionStrategy.eachDependency { details ->
         if (details.requested.module.toString() == 'org.yaml:snakeyaml') {
             details.artifactSelection {
