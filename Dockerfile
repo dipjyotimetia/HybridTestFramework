@@ -1,10 +1,10 @@
 # base image
-FROM ubuntu:bionic-20220415
+FROM ubuntu:bionic-20221019
 
 LABEL maintainer="HybridTestFramework dipjyotimetia@gmail.com"
 
 ENV GRADLE_VERSION 7.5.1
-ENV ALLURE_VERSION 2.19.0
+ENV ALLURE_VERSION 2.20.0
 
 # install packages
 RUN apt-get -o Acquire::Check-Valid-Until=false update
@@ -18,9 +18,9 @@ RUN wget https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.
 ENV GRADLE_HOME /opt/gradle-${GRADLE_VERSION}
 ENV PATH $PATH:$GRADLE_HOME/bin
 
-RUN echo "export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64" >> ~/.bashrc
+RUN echo "export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64" >> ~/.bashrc
 
-ENV JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
+ENV JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"
 ENV PATH $JAVA_HOME/bin:$PATH
 
 # Install allure
