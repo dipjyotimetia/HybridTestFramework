@@ -40,24 +40,14 @@ public class RpcActions {
     public ChannelCredentials credentials(AuthType authType) throws IOException {
         ChannelCredentials credentials = null;
         switch (authType) {
-            case TLS:
-                credentials = TlsChannelCredentials.create();
-                break;
-            case Insecure:
-                credentials = InsecureChannelCredentials.create();
-                break;
-            case TLS_CA:
-                credentials = TlsChannelCredentials.newBuilder()
-                        .trustManager(new File("roots.pem"))
-                        .build();
-                break;
-            case GOOGLE:
-                credentials = CompositeChannelCredentials
-                        .create(TlsChannelCredentials.create(), MoreCallCredentials.from(GoogleCredentials.getApplicationDefault()));
-                break;
-            default:
-                log.error("required a valid input parameter");
-                break;
+            case TLS -> credentials = TlsChannelCredentials.create();
+            case Insecure -> credentials = InsecureChannelCredentials.create();
+            case TLS_CA -> credentials = TlsChannelCredentials.newBuilder()
+                    .trustManager(new File("roots.pem"))
+                    .build();
+            case GOOGLE -> credentials = CompositeChannelCredentials
+                    .create(TlsChannelCredentials.create(), MoreCallCredentials.from(GoogleCredentials.getApplicationDefault()));
+            default -> log.error("required a valid input parameter");
         }
         return credentials;
     }
@@ -74,15 +64,9 @@ public class RpcActions {
     public ManagedChannel channel(String targetURL, ChannelType channelType, AuthType authType) throws IOException {
         ManagedChannel channel = null;
         switch (channelType) {
-            case LOCALHOST:
-                channel = ManagedChannelBuilder.forTarget(targetURL).usePlaintext().build();
-                break;
-            case TLS:
-                channel = Grpc.newChannelBuilder(targetURL, credentials(authType)).build();
-                break;
-            default:
-                log.error("required a valid input parameter");
-                break;
+            case LOCALHOST -> channel = ManagedChannelBuilder.forTarget(targetURL).usePlaintext().build();
+            case TLS -> channel = Grpc.newChannelBuilder(targetURL, credentials(authType)).build();
+            default -> log.error("required a valid input parameter");
         }
         return channel;
     }

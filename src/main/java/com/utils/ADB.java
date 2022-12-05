@@ -194,23 +194,13 @@ public class ADB {
         String status = "";
 
         switch (level) {
-            case Unknown:
-                status = "1";
-                break;
-            case Charging:
-                status = "2";
-                break;
-            case Discharging:
-                status = "3";
-                break;
-            case NotCharging:
-                status = "4";
-                break;
-            case Full:
-                status = "5";
-                break;
-            default:
-                break;
+            case Unknown -> status = "1";
+            case Charging -> status = "2";
+            case Discharging -> status = "3";
+            case NotCharging -> status = "4";
+            case Full -> status = "5";
+            default -> {
+            }
         }
         command("adb -s" + ID + "dumpsys battery set level" + status);
         log.info("Battery status is changed to " + status);

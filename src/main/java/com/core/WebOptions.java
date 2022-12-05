@@ -123,14 +123,16 @@ abstract class WebOptions extends MobileOptions {
      */
     protected MutableCapabilities getBrowserOptions(String browser, String perf) {
         switch (browser) {
-            case "firefox":
+            case "firefox" -> {
                 return getFirefoxOptions();
-            case "chrome":
+            }
+            case "chrome" -> {
                 return getChromeOptions(perf);
-            case "edge":
+            }
+            case "edge" -> {
                 return getEdgeOptions();
-            default:
-                log.error("No browser option provided");
+            }
+            default -> log.error("No browser option provided");
         }
         return null;
     }
@@ -143,27 +145,25 @@ abstract class WebOptions extends MobileOptions {
     protected DesiredCapabilities addCloudCapabilities(String browser) {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         switch (browser) {
-            case "chrome":
+            case "chrome" -> {
                 capabilities.setCapability("browserName", "chrome");
                 capabilities.setCapability("browserVersion", "90");
                 capabilities.setCapability("platform", "windows");
                 log.info("Adding aws chrome capabilities");
-                break;
-            case "firefox":
+            }
+            case "firefox" -> {
                 capabilities.setCapability("browserName", "firefox");
                 capabilities.setCapability("browserVersion", "88");
                 capabilities.setCapability("platform", "windows");
                 log.info("Adding aws firefox capabilities");
-                break;
-            case "edge":
+            }
+            case "edge" -> {
                 capabilities.setCapability("browserName", "edge");
                 capabilities.setCapability("browserVersion", "90");
                 capabilities.setCapability("platform", "windows");
                 log.info("Adding aws firefox capabilities");
-                break;
-            default:
-                log.info("No supported browser provided");
-                break;
+            }
+            default -> log.info("No supported browser provided");
         }
         return capabilities;
     }
@@ -178,21 +178,19 @@ abstract class WebOptions extends MobileOptions {
         capabilities.setCapability("build", "HybridTestFramework");
         capabilities.setCapability("name", testName);
         switch (browser) {
-            case "chrome":
+            case "chrome" -> {
                 capabilities.setCapability("browser", "Chrome");
                 capabilities.setCapability("browser_version", "90.0");
-                break;
-            case "firefox":
+            }
+            case "firefox" -> {
                 capabilities.setCapability("browser", "Firefox");
                 capabilities.setCapability("browser_version", "88.0");
-                break;
-            case "edge":
+            }
+            case "edge" -> {
                 capabilities.setCapability("browser", "Edge");
                 capabilities.setCapability("browser_version", "90.0");
-                break;
-            default:
-                log.info("browser selection is required");
-                break;
+            }
+            default -> log.info("browser selection is required");
         }
         return capabilities;
     }

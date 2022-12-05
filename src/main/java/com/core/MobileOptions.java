@@ -89,15 +89,9 @@ abstract class MobileOptions {
      */
     void cloudCapabilities(String cloudProvider, DesiredCapabilities caps, String device) throws IOException {
         switch (cloudProvider) {
-            case "sauce":
-                saucelabsCapabilities(caps, device);
-                break;
-            case "browserstack":
-                browserstackCapabilities(caps, device);
-                break;
-            default:
-                log.info("Setting up local appium server");
-                break;
+            case "sauce" -> saucelabsCapabilities(caps, device);
+            case "browserstack" -> browserstackCapabilities(caps, device);
+            default -> log.info("Setting up local appium server");
         }
     }
 
@@ -109,27 +103,25 @@ abstract class MobileOptions {
      */
     private void browserstackCapabilities(DesiredCapabilities caps, String device) {
         switch (device) {
-            case "samsung":
+            case "samsung" -> {
                 caps.setCapability("platformName", "android");
                 caps.setCapability("platformVersion", "10.0");
                 caps.setCapability("deviceName", "Samsung Galaxy S20");
                 caps.setCapability("app", apk_url);
-                break;
-            case "pixel":
+            }
+            case "pixel" -> {
                 caps.setCapability("platformName", "android");
                 caps.setCapability("platformVersion", "9.0");
                 caps.setCapability("deviceName", "Google Pixel 3");
                 caps.setCapability("app", apk_url);
-                break;
-            case "iPhone12":
+            }
+            case "iPhone12" -> {
                 caps.setCapability("platformName", "ios");
                 caps.setCapability("platformVersion", "14");
                 caps.setCapability("deviceName", "iPhone 12");
                 caps.setCapability("app", ipa_url);
-                break;
-            default:
-                System.out.println("No device found");
-                break;
+            }
+            default -> System.out.println("No device found");
         }
 //        caps.setCapability("browserstack.appium_version", appConfig.getAppiumVersion());
 //        caps.setCapability("project", appConfig.getApplicationName());
@@ -139,7 +131,7 @@ abstract class MobileOptions {
 
     /**
      * Saucelabs capabilities
-     * https://saucelabs.com/platform/platform-configurator
+     * <a href="https://saucelabs.com/platform/platform-configurator">...</a>
      *
      * @param caps   capabilities
      * @param device device
@@ -150,7 +142,7 @@ abstract class MobileOptions {
 //        sauceOptions.setCapability("build", "<your build id>");
 //        sauceOptions.setCapability("name", "<your test name>");
         switch (device) {
-            case "samsung":
+            case "samsung" -> {
                 caps.setCapability("platformName", "Android");
                 caps.setCapability("browserName", "Chrome");
                 caps.setCapability("appium:platformVersion", "12");
@@ -162,8 +154,8 @@ abstract class MobileOptions {
                 caps.setCapability("newCommandTimeout", "90");
                 caps.setCapability("appium:app", "https://github.com/saucelabs/sample-app-mobile/releases/download/2.7.1/Android.SauceLabs.Mobile.Sample.app.2.7.1.apk");
                 caps.setCapability("sauce:options", sauceOptions);
-                break;
-            case "iPhone12":
+            }
+            case "iPhone12" -> {
                 caps.setCapability("platformName", "iOS");
                 caps.setCapability("appium:platformVersion", "15.0");
                 caps.setCapability("appium:deviceName", "iPhone .*");
@@ -175,10 +167,8 @@ abstract class MobileOptions {
                 caps.setCapability("newCommandTimeout", "90");
                 caps.setCapability("app", "https://github.com/saucelabs/sample-app-mobile/releases/download/2.7.1/iOS.RealDevice.SauceLabs.Mobile.Sample.app.2.7.1.ipa");
                 caps.setCapability("sauce:options", sauceOptions);
-                break;
-            default:
-                System.out.println("No device found");
-                break;
+            }
+            default -> System.out.println("No device found");
         }
 //        caps.setCapability("username", sauce_username);
 //        caps.setCapability("accessKey", sauce_accessKey);

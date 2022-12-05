@@ -333,18 +333,10 @@ public class WebActions extends DriverManager {
     protected void selectElement(WebElement element, SelectBy selectBy, Object t) {
         Select select = new Select(element);
         switch (selectBy) {
-            case INDEX:
-                select.selectByIndex((Integer) t);
-                break;
-            case VALUE:
-                select.selectByValue((String) t);
-                break;
-            case TEXT:
-                select.selectByVisibleText((String) t);
-                break;
-            default:
-                log.info("Provided option not found");
-                break;
+            case INDEX -> select.selectByIndex((Integer) t);
+            case VALUE -> select.selectByValue((String) t);
+            case TEXT -> select.selectByVisibleText((String) t);
+            default -> log.info("Provided option not found");
         }
     }
 
@@ -402,18 +394,10 @@ public class WebActions extends DriverManager {
     protected void deselectElement(WebElement element, SelectBy selectBy, Object t) {
         Select select = new Select(element);
         switch (selectBy) {
-            case INDEX:
-                select.deselectByIndex((Integer) t);
-                break;
-            case VALUE:
-                select.deselectByValue((String) t);
-                break;
-            case TEXT:
-                select.deselectByVisibleText((String) t);
-                break;
-            default:
-                log.info("Provided option not found");
-                break;
+            case INDEX -> select.deselectByIndex((Integer) t);
+            case VALUE -> select.deselectByValue((String) t);
+            case TEXT -> select.deselectByVisibleText((String) t);
+            default -> log.info("Provided option not found");
         }
     }
 
@@ -1022,24 +1006,12 @@ public class WebActions extends DriverManager {
     private List<WebElement> getWebElements(String webElement, WebElementBy elementBy) throws Exception {
         List<WebElement> element = new ArrayList<>();
         switch (elementBy) {
-            case XPATH:
-                element = driverThread.findElements(By.xpath(webElement));
-                break;
-            case ID:
-                element = driverThread.findElements(By.id(webElement));
-                break;
-            case NAME:
-                element = driverThread.findElements(By.name(webElement));
-                break;
-            case CSS:
-                element = driverThread.findElements(By.cssSelector(webElement));
-                break;
-            case CLASS:
-                element = driverThread.findElements(By.className(webElement));
-                break;
-            default:
-                log.info("Element type not found");
-                break;
+            case XPATH -> element = driverThread.findElements(By.xpath(webElement));
+            case ID -> element = driverThread.findElements(By.id(webElement));
+            case NAME -> element = driverThread.findElements(By.name(webElement));
+            case CSS -> element = driverThread.findElements(By.cssSelector(webElement));
+            case CLASS -> element = driverThread.findElements(By.className(webElement));
+            default -> log.info("Element type not found");
         }
         if (element == null) {
             log.error("Web element not found");
@@ -1058,24 +1030,12 @@ public class WebActions extends DriverManager {
     private WebElement getWebElement(String webElement, WebElementBy elementBy) throws Exception {
         WebElement element = null;
         switch (elementBy) {
-            case XPATH:
-                element = driverThread.findElement(By.xpath(webElement));
-                break;
-            case ID:
-                element = driverThread.findElement(By.id(webElement));
-                break;
-            case NAME:
-                element = driverThread.findElement(By.name(webElement));
-                break;
-            case CSS:
-                element = driverThread.findElement(By.cssSelector(webElement));
-                break;
-            case CLASS:
-                element = driverThread.findElement(By.className(webElement));
-                break;
-            default:
-                log.info("Element type not found");
-                break;
+            case XPATH -> element = driverThread.findElement(By.xpath(webElement));
+            case ID -> element = driverThread.findElement(By.id(webElement));
+            case NAME -> element = driverThread.findElement(By.name(webElement));
+            case CSS -> element = driverThread.findElement(By.cssSelector(webElement));
+            case CLASS -> element = driverThread.findElement(By.className(webElement));
+            default -> log.info("Element type not found");
         }
         if (element == null) {
             log.error("Web element not found");
@@ -1107,18 +1067,10 @@ public class WebActions extends DriverManager {
     protected Boolean isElementDisplayed(WebElement element, DisplayType displayType) {
         boolean returnValue = false;
         switch (displayType) {
-            case IS_ENABLED:
-                returnValue = element.isEnabled();
-                break;
-            case IS_SELECTED:
-                returnValue = element.isSelected();
-                break;
-            case IS_DISPLAYED:
-                returnValue = element.isDisplayed();
-                break;
-            default:
-                log.info("Element display type not available");
-                break;
+            case IS_ENABLED -> returnValue = element.isEnabled();
+            case IS_SELECTED -> returnValue = element.isSelected();
+            case IS_DISPLAYED -> returnValue = element.isDisplayed();
+            default -> log.info("Element display type not available");
         }
         return returnValue;
     }

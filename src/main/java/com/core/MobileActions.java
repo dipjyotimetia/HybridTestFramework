@@ -127,21 +127,11 @@ public class MobileActions extends DriverManager {
     private By getWebElementBy(String byElement, MobileBy mobileBy) {
         By by = null;
         switch (mobileBy) {
-            case ID:
-                by = (By) mobileThread.findElement(By.id(byElement));
-                break;
-            case XPATH:
-                by = (By) mobileThread.findElement(By.xpath(byElement));
-                break;
-            case NAME:
-                by = (By) mobileThread.findElement(By.name(byElement));
-                break;
-            case CLASS:
-                by = (By) mobileThread.findElement(By.className(byElement));
-                break;
-            default:
-                log.info("no default element selected");
-                break;
+            case ID -> by = (By) mobileThread.findElement(By.id(byElement));
+            case XPATH -> by = (By) mobileThread.findElement(By.xpath(byElement));
+            case NAME -> by = (By) mobileThread.findElement(By.name(byElement));
+            case CLASS -> by = (By) mobileThread.findElement(By.className(byElement));
+            default -> log.info("no default element selected");
         }
         return by;
     }
@@ -157,21 +147,11 @@ public class MobileActions extends DriverManager {
     private WebElement getWebElement(String mobileElement, MobileBy mobileBy) throws Exception {
         WebElement element = null;
         switch (mobileBy) {
-            case XPATH:
-                element = mobileThread.findElement(By.xpath(mobileElement));
-                break;
-            case ID:
-                element = mobileThread.findElement(By.id(mobileElement));
-                break;
-            case NAME:
-                element = mobileThread.findElement(By.name(mobileElement));
-                break;
-            case CLASS:
-                element = mobileThread.findElement(By.className(mobileElement));
-                break;
-            default:
-                log.info("Element type not found");
-                break;
+            case XPATH -> element = mobileThread.findElement(By.xpath(mobileElement));
+            case ID -> element = mobileThread.findElement(By.id(mobileElement));
+            case NAME -> element = mobileThread.findElement(By.name(mobileElement));
+            case CLASS -> element = mobileThread.findElement(By.className(mobileElement));
+            default -> log.info("Element type not found");
         }
         if (element == null) {
             log.error("Mobile element not found");
@@ -259,21 +239,11 @@ public class MobileActions extends DriverManager {
     private WebElement getMobileElement(String mobileElement, MobileBy mobileBy) throws Exception {
         WebElement element = null;
         switch (mobileBy) {
-            case XPATH:
-                element = mobileThread.findElement(By.xpath(mobileElement));
-                break;
-            case ID:
-                element = mobileThread.findElement(By.id(mobileElement));
-                break;
-            case NAME:
-                element = mobileThread.findElement(By.name(mobileElement));
-                break;
-            case CLASS:
-                element = mobileThread.findElement(By.className(mobileElement));
-                break;
-            default:
-                log.info("Element type not found");
-                break;
+            case XPATH -> element = mobileThread.findElement(By.xpath(mobileElement));
+            case ID -> element = mobileThread.findElement(By.id(mobileElement));
+            case NAME -> element = mobileThread.findElement(By.name(mobileElement));
+            case CLASS -> element = mobileThread.findElement(By.className(mobileElement));
+            default -> log.info("Element type not found");
         }
         if (element == null) {
             log.error("Mobile element not found");
@@ -292,21 +262,11 @@ public class MobileActions extends DriverManager {
     private By getMobileElementBy(String byElement, MobileBy mobileBy) {
         By by = null;
         switch (mobileBy) {
-            case ID:
-                by = (By) mobileThread.findElement(By.id(byElement));
-                break;
-            case XPATH:
-                by = (By) mobileThread.findElement(By.xpath(byElement));
-                break;
-            case NAME:
-                by = (By) mobileThread.findElement(By.name(byElement));
-                break;
-            case CLASS:
-                by = (By) mobileThread.findElement(By.className(byElement));
-                break;
-            default:
-                log.info("no default element selected");
-                break;
+            case ID -> by = (By) mobileThread.findElement(By.id(byElement));
+            case XPATH -> by = (By) mobileThread.findElement(By.xpath(byElement));
+            case NAME -> by = (By) mobileThread.findElement(By.name(byElement));
+            case CLASS -> by = (By) mobileThread.findElement(By.className(byElement));
+            default -> log.info("no default element selected");
         }
         return by;
     }
@@ -458,21 +418,11 @@ public class MobileActions extends DriverManager {
      */
     public void networkSpeedAndroid(String networkSpeed) {
         switch (networkSpeed) {
-            case "FULL":
-                ((AndroidDriver) mobileThread).setNetworkSpeed(NetworkSpeed.FULL);
-                break;
-            case "GPRS":
-                ((AndroidDriver) mobileThread).setNetworkSpeed(NetworkSpeed.GPRS);
-                break;
-            case "HSDPA":
-                ((AndroidDriver) mobileThread).setNetworkSpeed(NetworkSpeed.HSDPA);
-                break;
-            case "LTE":
-                ((AndroidDriver) mobileThread).setNetworkSpeed(NetworkSpeed.LTE);
-                break;
-            default:
-                log.info("network speed not available");
-                break;
+            case "FULL" -> ((AndroidDriver) mobileThread).setNetworkSpeed(NetworkSpeed.FULL);
+            case "GPRS" -> ((AndroidDriver) mobileThread).setNetworkSpeed(NetworkSpeed.GPRS);
+            case "HSDPA" -> ((AndroidDriver) mobileThread).setNetworkSpeed(NetworkSpeed.HSDPA);
+            case "LTE" -> ((AndroidDriver) mobileThread).setNetworkSpeed(NetworkSpeed.LTE);
+            default -> log.info("network speed not available");
         }
     }
 
@@ -483,18 +433,10 @@ public class MobileActions extends DriverManager {
      */
     public void signalStrengthAndroid(String signalStrength) {
         switch (signalStrength) {
-            case "GREAT":
-                ((AndroidDriver) mobileThread).setGsmSignalStrength(GsmSignalStrength.GREAT);
-                break;
-            case "MODERATE":
-                ((AndroidDriver) mobileThread).setGsmSignalStrength(GsmSignalStrength.MODERATE);
-                break;
-            case "NONE":
-                ((AndroidDriver) mobileThread).setGsmSignalStrength(GsmSignalStrength.NONE_OR_UNKNOWN);
-                break;
-            default:
-                log.info("Signal Strength not available");
-                break;
+            case "GREAT" -> ((AndroidDriver) mobileThread).setGsmSignalStrength(GsmSignalStrength.GREAT);
+            case "MODERATE" -> ((AndroidDriver) mobileThread).setGsmSignalStrength(GsmSignalStrength.MODERATE);
+            case "NONE" -> ((AndroidDriver) mobileThread).setGsmSignalStrength(GsmSignalStrength.NONE_OR_UNKNOWN);
+            default -> log.info("Signal Strength not available");
         }
     }
 
@@ -505,18 +447,10 @@ public class MobileActions extends DriverManager {
      */
     public void voiceStateAndroid(String voiceState) {
         switch (voiceState) {
-            case "UNREGISTERED":
-                ((AndroidDriver) mobileThread).setGsmVoice(GsmVoiceState.UNREGISTERED);
-                break;
-            case "ROAMING":
-                ((AndroidDriver) mobileThread).setGsmVoice(GsmVoiceState.ROAMING);
-                break;
-            case "SEARCHING":
-                ((AndroidDriver) mobileThread).setGsmVoice(GsmVoiceState.SEARCHING);
-                break;
-            default:
-                log.info("Voice state not available");
-                break;
+            case "UNREGISTERED" -> ((AndroidDriver) mobileThread).setGsmVoice(GsmVoiceState.UNREGISTERED);
+            case "ROAMING" -> ((AndroidDriver) mobileThread).setGsmVoice(GsmVoiceState.ROAMING);
+            case "SEARCHING" -> ((AndroidDriver) mobileThread).setGsmVoice(GsmVoiceState.SEARCHING);
+            default -> log.info("Voice state not available");
         }
     }
 
@@ -527,15 +461,9 @@ public class MobileActions extends DriverManager {
      */
     public void powerStateAndroid(String powerState) {
         switch (powerState) {
-            case "ON":
-                ((AndroidDriver) mobileThread).setPowerAC(PowerACState.ON);
-                break;
-            case "OFF":
-                ((AndroidDriver) mobileThread).setPowerAC(PowerACState.OFF);
-                break;
-            default:
-                log.info("Voice state not available");
-                break;
+            case "ON" -> ((AndroidDriver) mobileThread).setPowerAC(PowerACState.ON);
+            case "OFF" -> ((AndroidDriver) mobileThread).setPowerAC(PowerACState.OFF);
+            default -> log.info("Voice state not available");
         }
     }
 
@@ -547,27 +475,25 @@ public class MobileActions extends DriverManager {
      */
     public void connectionStateAndroid(String connectionState, boolean enabled) {
         switch (connectionState) {
-            case "AIRPLANE":
+            case "AIRPLANE" -> {
                 if (enabled) {
                     ((AndroidDriver) mobileThread).setConnection(new ConnectionState(ConnectionState.AIRPLANE_MODE_MASK)).isAirplaneModeEnabled();
                 }
                 ((AndroidDriver) mobileThread).setConnection(new ConnectionState(ConnectionState.AIRPLANE_MODE_MASK));
-                break;
-            case "DATA":
+            }
+            case "DATA" -> {
                 if (enabled) {
                     ((AndroidDriver) mobileThread).setConnection(new ConnectionState(ConnectionState.DATA_MASK)).isDataEnabled();
                 }
                 ((AndroidDriver) mobileThread).setConnection(new ConnectionState(ConnectionState.DATA_MASK));
-                break;
-            case "WIFI":
+            }
+            case "WIFI" -> {
                 if (enabled) {
                     ((AndroidDriver) mobileThread).setConnection(new ConnectionState(ConnectionState.WIFI_MASK)).isWiFiEnabled();
                 }
                 ((AndroidDriver) mobileThread).setConnection(new ConnectionState(ConnectionState.WIFI_MASK));
-                break;
-            default:
-                log.info("Connection state not available");
-                break;
+            }
+            default -> log.info("Connection state not available");
         }
     }
 
@@ -802,29 +728,27 @@ public class MobileActions extends DriverManager {
     protected String generateRandomData(String randomType) {
         String value = null;
         switch (randomType) {
-            case "FirstName":
+            case "FirstName" -> {
                 value = "testauto" + faker.name().firstName();
                 log.info("FirstName: " + value);
-                break;
-            case "LastName":
+            }
+            case "LastName" -> {
                 value = faker.name().lastName();
                 log.info("LastName: " + value);
-                break;
-            case "UserName":
+            }
+            case "UserName" -> {
                 value = RandomStringUtils.randomAlphabetic(6);
                 log.info("Username: " + value);
-                break;
-            case "Email":
+            }
+            case "Email" -> {
                 value = "testauto" + faker.internet().emailAddress();
                 log.info("EmailAddress: " + value);
-                break;
-            case "Mobile":
+            }
+            case "Mobile" -> {
                 value = "0" + RandomStringUtils.randomNumeric(9);
                 log.info("MobileNo: " + value);
-                break;
-            default:
-                log.info("Random type not found");
-                break;
+            }
+            default -> log.info("Random type not found");
         }
         return value;
     }
@@ -1015,12 +939,9 @@ public class MobileActions extends DriverManager {
      * @param updatedValue updated Value
      */
     protected void writeData(String testCaseName, String fieldName, String updatedValue) {
-        String filed = fieldName;
-        String value = updatedValue;
-        String testCase = testCaseName;
         String url = "jdbc:sqlite:input/testdata";
-        String selectQuery = "SELECT " + filed + " FROM testdata WHERE TestcaseName='" + testCase + "'";
-        String query = "UPDATE testdata SET " + filed + "='" + value + "' WHERE TestcaseName='" + testCase + "'";
+        String selectQuery = "SELECT " + fieldName + " FROM testdata WHERE TestcaseName='" + testCaseName + "'";
+        String query = "UPDATE testdata SET " + fieldName + "='" + updatedValue + "' WHERE TestcaseName='" + testCaseName + "'";
         Connection conn = null;
         ResultSet rs = null;
         Statement stmt = null;
@@ -1031,8 +952,8 @@ public class MobileActions extends DriverManager {
                 stmt.executeUpdate(query);
                 rs = stmt.executeQuery(selectQuery);
                 while (rs.next()) {
-                    System.out.println(rs.getString(filed));
-                    log.info("New Field: " + filed + " is added successfully with value: " + rs.getString(filed));
+                    System.out.println(rs.getString(fieldName));
+                    log.info("New Field: " + fieldName + " is added successfully with value: " + rs.getString(fieldName));
                 }
             }
             rs.close();

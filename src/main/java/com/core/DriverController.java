@@ -102,15 +102,9 @@ public class DriverController extends WebOptions {
     public void setup(String type, String browser, String device, String grid, String perf) {
         testName = this.getClass().getName().substring(24);
         switch (type) {
-            case "web":
-                initWebDriver(browser, grid, perf);
-                break;
-            case "mobile":
-                initMobileDriver(device, grid);
-                break;
-            default:
-                log.info("select test type to proceed with one testing");
-                break;
+            case "web" -> initWebDriver(browser, grid, perf);
+            case "mobile" -> initMobileDriver(device, grid);
+            default -> log.info("select test type to proceed with one testing");
         }
     }
 
@@ -162,24 +156,22 @@ public class DriverController extends WebOptions {
                     break;
                 case "local":
                     switch (browser) {
-                        case "firefox":
+                        case "firefox" -> {
                             driverThread = new EventFiringDecorator(driverListener).
                                     decorate(new FirefoxDriver(getFirefoxOptions()));
                             log.info("Initiating firefox driver");
-                            break;
-                        case "chrome":
+                        }
+                        case "chrome" -> {
                             driverThread = new EventFiringDecorator(driverListener).
                                     decorate(new ChromeDriver(getChromeOptions(perf)));
                             log.info("Initiating chrome driver");
-                            break;
-                        case "edge":
+                        }
+                        case "edge" -> {
                             driverThread = new EventFiringDecorator(driverListener).
                                     decorate(new EdgeDriver(getEdgeOptions()));
                             log.info("Initiating edge driver");
-                            break;
-                        default:
-                            log.info("Browser listed not supported");
-                            break;
+                        }
+                        default -> log.info("Browser listed not supported");
                     }
                 default:
                     log.info("Running in local docker container");
@@ -198,53 +190,51 @@ public class DriverController extends WebOptions {
     private synchronized void initMobileDriver(String device, String cloud) {
         try {
             switch (device) {
-                case "NEXUS":
+                case "NEXUS" -> {
                     log.info("Selected device is NEXUS");
                     caps.setCapability(MobileCapabilityType.UDID, "NEXUS");
                     caps.setCapability(MobileCapabilityType.DEVICE_NAME, "NEXUS");
                     androidCapabilities(caps);
                     cloudCapabilities(cloud, caps, "NEXUS");
                     mobileThread = new AndroidDriver(createURL(cloud), caps);
-                    break;
-                case "PIXEL":
+                }
+                case "PIXEL" -> {
                     log.info("Selected device is PIXEL");
                     caps.setCapability(MobileCapabilityType.UDID, "PIXEL");
                     caps.setCapability(MobileCapabilityType.DEVICE_NAME, "PIXEL");
                     androidCapabilities(caps);
                     cloudCapabilities(cloud, caps, "PIXEL");
                     mobileThread = new AndroidDriver(createURL(cloud), caps);
-                    break;
-                case "samsung":
+                }
+                case "samsung" -> {
                     log.info("Selected device is SAMSUNG");
                     cloudCapabilities(cloud, caps, "samsung");
                     androidCapabilities(caps);
                     mobileThread = new AndroidDriver(createURL(cloud), caps);
-                    break;
-                case "iPhone12":
+                }
+                case "iPhone12" -> {
                     log.info("Selected device is IPHONE");
                     cloudCapabilities(cloud, caps, "iPhone12");
                     iosCapabilities(caps);
                     mobileThread = new IOSDriver(createURL(cloud), caps);
-                    break;
-                case "IPHONE":
+                }
+                case "IPHONE" -> {
                     log.info("Selected device is IPHONE");
                     caps.setCapability(MobileCapabilityType.UDID, "iphone");
                     caps.setCapability(MobileCapabilityType.DEVICE_NAME, "iphone");
                     iosCapabilities(caps);
                     cloudCapabilities(cloud, caps, "IPHONE");
                     mobileThread = new IOSDriver(createURL(cloud), caps);
-                    break;
-                case "EMULATOR":
+                }
+                case "EMULATOR" -> {
                     log.info("Selected device is EMULATOR");
                     appiumService = createAppiumService();
                     caps.setCapability(MobileCapabilityType.UDID, "NEXUS");
                     caps.setCapability(MobileCapabilityType.DEVICE_NAME, "NEXUS");
                     appiumService.start();
                     mobileThread = new AndroidDriver(createURL(cloud), caps);
-                    break;
-                default:
-                    log.info("Required device selection");
-                    break;
+                }
+                default -> log.info("Required device selection");
             }
         } catch (NullPointerException | IOException ex) {
             log.error("Appium driver could not be initialised for device", ex);

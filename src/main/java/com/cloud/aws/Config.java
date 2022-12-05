@@ -45,15 +45,10 @@ public class Config {
     public S3Client setupS3(Region region, String env) {
         S3Client client = S3Client.builder().region(region).build();
         switch (env) {
-            case "DEV":
-                client = S3Client.builder().region(region).endpointOverride(URI.create("http://localhost:4566")).build();
-                break;
-            case "PROD":
-                client = S3Client.builder().region(region).build();
-                break;
-            default:
-                log.info("");
-                break;
+            case "DEV" ->
+                    client = S3Client.builder().region(region).endpointOverride(URI.create("http://localhost:4566")).build();
+            case "PROD" -> client = S3Client.builder().region(region).build();
+            default -> log.info("");
         }
         return client;
     }
@@ -68,15 +63,10 @@ public class Config {
     public SqsClient setupSQS(Region region, String env) {
         SqsClient client = SqsClient.builder().region(region).build();
         switch (env) {
-            case "DEV":
-                client = SqsClient.builder().region(region).endpointOverride(URI.create("http://localhost:4566")).build();
-                break;
-            case "PROD":
-                client = SqsClient.builder().region(region).build();
-                break;
-            default:
-                log.info("");
-                break;
+            case "DEV" ->
+                    client = SqsClient.builder().region(region).endpointOverride(URI.create("http://localhost:4566")).build();
+            case "PROD" -> client = SqsClient.builder().region(region).build();
+            default -> log.info("");
         }
         return client;
     }
@@ -91,15 +81,10 @@ public class Config {
     public SnsClient setupSNS(Region region, String env) {
         SnsClient client = SnsClient.builder().region(region).build();
         switch (env) {
-            case "DEV":
-                client = SnsClient.builder().region(region).endpointOverride(URI.create("http://localhost:4566")).build();
-                break;
-            case "PROD":
-                client = SnsClient.builder().region(region).build();
-                break;
-            default:
-                log.info("");
-                break;
+            case "DEV" ->
+                    client = SnsClient.builder().region(region).endpointOverride(URI.create("http://localhost:4566")).build();
+            case "PROD" -> client = SnsClient.builder().region(region).build();
+            default -> log.info("");
         }
         return client;
     }
