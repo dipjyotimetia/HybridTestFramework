@@ -8,11 +8,12 @@ updates:
   - package-ecosystem: "gradle" # See documentation for possible values
     directory: "/" # Location of package manifests
     schedule:
-      interval: "monthly"
+      interval: "weekly"
       time: "10:00"
       timezone: Australia/Melbourne
     rebase-strategy: "auto"
     labels:
       - "security"
       - "dependencies"
+      - "automerge"
     open-pull-requests-limit: 20
