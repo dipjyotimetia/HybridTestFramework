@@ -96,7 +96,7 @@ dependencies {
     implementation "software.amazon.awssdk:sqs:${awsVersion}"
     implementation "software.amazon.awssdk:sns:${awsVersion}"
     implementation "software.amazon.awssdk:devicefarm:${awsVersion}"
-    implementation 'com.google.cloud:google-cloud-pubsub:1.121.1'
+    implementation 'com.google.cloud:google-cloud-pubsub:1.122.1'
     implementation 'org.seleniumhq.selenium:selenium-java:4.7.0'
     implementation 'org.seleniumhq.selenium:selenium-server:4.0.0-alpha-2'
     implementation 'io.appium:java-client:8.3.0'
