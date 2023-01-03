@@ -187,7 +187,7 @@ abstract class MobileOptions {
         caps.setCapability(MobileCapabilityType.FULL_RESET, false);
         caps.setCapability(MobileCapabilityType.AUTO_WEBVIEW, false);
         caps.setCapability(AndroidMobileCapabilityType.AUTO_GRANT_PERMISSIONS, true);
-        caps.setCapability(AndroidMobileCapabilityType.APPLICATION_NAME, "UiAutomator2");
+//        caps.setCapability(AndroidMobileCapabilityType.APPLICATION_NAME, "UiAutomator2");
         caps.setCapability(AndroidMobileCapabilityType.ANDROID_INSTALL_TIMEOUT, 60);
         caps.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, "com.swaglabsmobileapp");
         // caps.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, "com.swaglabsmobileapp.MainActivity");
@@ -202,7 +202,7 @@ abstract class MobileOptions {
         caps.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.IOS);
         caps.setCapability(MobileCapabilityType.FULL_RESET, false);
         caps.setCapability(AndroidMobileCapabilityType.AUTO_GRANT_PERMISSIONS, true);
-        caps.setCapability(AndroidMobileCapabilityType.APPLICATION_NAME, "XCUITest");
+//        caps.setCapability(AndroidMobileCapabilityType.APPLICATION_NAME, "XCUITest");
         caps.setCapability(MobileCapabilityType.NO_RESET, true);
         // caps.setCapability(IOSMobileCapabilityType.XCODE_ORG_ID, "");
         // caps.setCapability(IOSMobileCapabilityType.XCODE_SIGNING_ID, "");

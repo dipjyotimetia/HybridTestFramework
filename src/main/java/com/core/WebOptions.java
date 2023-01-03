@@ -82,8 +82,8 @@ abstract class WebOptions extends MobileOptions {
      * @return options
      */
     protected FirefoxOptions getFirefoxOptions() {
-//        WebDriverManager.firefoxdriver().setup();
-        System.setProperty(FirefoxDriver.Capability.MARIONETTE, "true");
+        //WebDriverManager.firefoxdriver().setup();
+        //System.setProperty(FirefoxDriver.Capability.MARIONETTE, "true");
         System.setProperty(FirefoxDriver.SystemProperty.BROWSER_LOGFILE, "/dev/null");
         FirefoxOptions options = new FirefoxOptions();
         FirefoxProfile profile = new FirefoxProfile();
@@ -91,7 +91,7 @@ abstract class WebOptions extends MobileOptions {
         profile.setAssumeUntrustedCertificateIssuer(false);
         profile.setPreference("network.proxy.type", 0);
         options.setHeadless(SystemUtils.IS_OS_LINUX);
-        options.setCapability(FirefoxDriver.Capability.PROFILE, profile);
+        //options.setCapability(FirefoxDriver.Capability.PROFILE, profile);
         //setFirefoxOWASP(options);
         log.info("Firefox options added");
         return options;
