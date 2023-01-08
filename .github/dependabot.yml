@@ -17,3 +17,6 @@ updates:
       - "dependencies"
       - "automerge"
     open-pull-requests-limit: 20
+    ignore:
+      - dependency-name: "express"
+        versions: ["3.3.1"]
