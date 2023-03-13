@@ -33,7 +33,7 @@ ext {
     grpcVersion = '1.53.0'
     protoVersion = '3.22.2'
     containerVersion = '1.17.6'
-    kafkaVersion = "7.3.2-ce"
+    kafkaVersion = "3.4.0"
     awsVersion = '2.20.22'
     ceVersion = "2.4.2"
     allureVersion= "2.21.0"
@@ -139,7 +139,7 @@ dependencies {
     //implementation "org.apache.avro:avro-tools:1.11.0"
     implementation "org.apache.kafka:kafka-clients:${kafkaVersion}"
     implementation "org.apache.kafka:kafka-streams:${kafkaVersion}"
-    implementation "io.confluent:kafka-avro-serializer:${kafkaVersion}"
+    implementation "io.confluent:kafka-avro-serializer:7.3.2"
     implementation "io.cloudevents:cloudevents-core:${ceVersion}"
     implementation "io.cloudevents:cloudevents-api:${ceVersion}"
     implementation "io.cloudevents:cloudevents-kafka:${ceVersion}"
