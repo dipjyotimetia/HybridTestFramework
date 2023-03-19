@@ -33,7 +33,7 @@ ext {
     grpcVersion = '1.53.0'
     protoVersion = '3.22.2'
     containerVersion = '1.17.6'
-    kafkaVersion = "3.4.0"
+    kafkaVersion = "7.3.2-ce"
     awsVersion = '2.20.22'
     ceVersion = "2.4.2"
     allureVersion= "2.21.0"
