@@ -100,7 +100,7 @@ dependencies {
     implementation 'com.google.cloud:google-cloud-pubsub:1.123.5'
     implementation 'org.seleniumhq.selenium:selenium-java:4.8.1'
     implementation 'io.appium:java-client:8.3.0'
-    implementation 'com.browserstack:browserstack-local-java:1.0.6'
+    implementation 'com.browserstack:browserstack-local-java:1.0.7'
     implementation 'com.deque:axe-selenium:3.0'
     implementation 'org.awaitility:awaitility:4.2.0'
     implementation 'com.github.tomakehurst:wiremock:2.27.2'
