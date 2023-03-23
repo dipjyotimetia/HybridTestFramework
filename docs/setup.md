@@ -4,12 +4,12 @@
   https://www.jetbrains.com/idea/download/
 * Install docker desktop
   https://www.docker.com/products/docker-desktop
-* Java JDK_11  
+* Java JDK_17  
   https://adoptium.net/temurin/archive
 * Gradle
-  https://gradle.org/next-steps/?version=6.8.3&format=bin
+  https://gradle.org/next-steps/?version=8.0.2&format=bin
 * Allure
-  https://github.com/allure-framework/allure2/archive/2.17.3.zip
+  https://github.com/allure-framework/allure2/archive/2.21.0.zip
 * Set Environment variables
   * JAVA_HOME: Pointing to the Java SDK folder\bin
   * GRADLE_HOME: Pointing to Gradle directory\bin.
@@ -17,10 +17,10 @@
 
 ## Java 11 JDK Installation and config
 
-* Download Java 11 JDK from [here](https://adoptium.net/temurin/archive)
-* Install downloaded Java 11 JDK.
+* Download Java 17 JDK from [here](https://adoptium.net/temurin/archive)
+* Install downloaded Java 17 JDK.
 * System Properties -> Environment Variables -> System Variables -> New -> `JAVA_HOME` and Value
-  as `C:\Program Files\Eclipse Adoptium\jdk-11.0.13.8-hotspot` (path where JDK is installed)
+  as `C:\Program Files\Eclipse Adoptium\jdk-17.0.5.8-hotspot` (path where JDK is installed)
 * System Properties -> Environment Variables -> System Variables -> Select `Path` and Edit -> Add `%JAVA_HOME%\bin`
 * Once Environment variables are configured, open command prompt and run `java -v` and `echo $JAVA_HOME` to check
   whether java version installed is returned. e.g <br/>

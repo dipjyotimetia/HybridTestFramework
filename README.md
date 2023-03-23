@@ -39,12 +39,12 @@ or the systems which are still in a transition phase of migrate to cloud with su
   https://www.jetbrains.com/idea/download/
 * Install docker desktop
   https://www.docker.com/products/docker-desktop
-* Java JDK_11  
+* Java JDK_17  
   https://adoptium.net/temurin/archive
 * Gradle
-  https://gradle.org/next-steps/?version=6.8.3&format=bin
+  https://gradle.org/next-steps/?version=8.0.2&format=bin
 * Allure
-  https://github.com/allure-framework/allure2/archive/2.17.3.zip
+  https://github.com/allure-framework/allure2/archive/2.21.0.zip
 * Set Environment variables
     * JAVA_HOME: Pointing to the Java SDK folder\bin
     * GRADLE_HOME: Pointing to Gradle directory\bin.
