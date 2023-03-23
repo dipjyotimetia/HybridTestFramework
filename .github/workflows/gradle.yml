@@ -24,13 +24,8 @@ jobs:
           java-version: 17
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: Running End To End Test
+      - name: Running End To End Web Test
         run: ./gradlew task web
-        env:
-          DEFAULT_REGION: ap-southeast-2
-          AWS_ACCOUNT_ID: "000000000000"
-          AWS_ACCESS_KEY_ID: dummy-access-key
-          AWS_SECRET_ACCESS_KEY: dummy-secret-key
       - uses: 8398a7/action-slack@v3
         name: Slack Alert
         if: always()
@@ -79,3 +74,30 @@ jobs:
           status: ${{ job.status }}
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
           text: "Mobile Test."
+
+  api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Starting test dependencies
+        run: docker-compose up -d
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Running End To End Api Test
+        run: ./gradlew task api
+        env:
+          DEFAULT_REGION: ap-southeast-2
+          AWS_ACCOUNT_ID: "000000000000"
+          AWS_ACCESS_KEY_ID: dummy-access-key
+          AWS_SECRET_ACCESS_KEY: dummy-secret-key
+      - uses: 8398a7/action-slack@v3
+        name: Slack Alert
+        if: always()
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+          text: "Api Test."

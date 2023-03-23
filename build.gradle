@@ -68,7 +68,20 @@ dockerCompose {
 tasks.register('web', Test) {
     useTestNG() {
         useDefaultListeners = true
-        suites 'src/test/java/suite/testng.xml'
+        suites 'src/test/java/suite/webng.xml'
+        // includeGroups 'smoke'
+    }
+    testLogging.events "passed", "skipped", "failed"
+    testLogging.showStandardStreams = true
+    beforeTest { descriptor ->
+        logger.lifecycle("Running test: " + descriptor)
+    }
+}
+
+tasks.register('api', Test){
+    useTestNG() {
+        useDefaultListeners = true
+        suites 'src/test/java/suite/aping.xml'
         // includeGroups 'smoke'
     }
     testLogging.events "passed", "skipped", "failed"
