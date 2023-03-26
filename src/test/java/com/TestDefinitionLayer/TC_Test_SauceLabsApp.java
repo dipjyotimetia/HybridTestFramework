@@ -34,7 +34,7 @@ public class TC_Test_SauceLabsApp extends MobileActions {
     @Feature("test")
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "Demo Test")
-    public void E2E_TestSauseLabs() {
+    public void E2E_Test_SauceLabsApp() {
 
         String TCname = "TC_Test_IOSSause";
 
