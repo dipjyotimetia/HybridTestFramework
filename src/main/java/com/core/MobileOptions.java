@@ -32,6 +32,7 @@ import io.appium.java_client.service.local.AppiumServiceBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.exec.OS;
 import org.openqa.selenium.MutableCapabilities;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.service.DriverService;
 
@@ -181,7 +182,8 @@ abstract class MobileOptions {
      * @param caps capabilities
      */
     void androidCapabilities(DesiredCapabilities caps) {
-        caps.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.ANDROID);
+        caps.setCapability(CapabilityType.PLATFORM_NAME, MobilePlatform.ANDROID);
+        caps.setCapability(MobileCapabilityType.PLATFORM_VERSION, "13.0");
         caps.setCapability(MobileCapabilityType.NO_RESET, true);
         caps.setCapability(MobileCapabilityType.FULL_RESET, false);
         caps.setCapability(MobileCapabilityType.AUTO_WEBVIEW, false);
@@ -198,9 +200,9 @@ abstract class MobileOptions {
      * @param caps capabilities
      */
     void iosCapabilities(DesiredCapabilities caps) {
-        caps.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.IOS);
+        caps.setCapability(CapabilityType.PLATFORM_NAME, MobilePlatform.IOS);
+        caps.setCapability(MobileCapabilityType.PLATFORM_VERSION, "16");
         caps.setCapability(MobileCapabilityType.FULL_RESET, false);
-        caps.setCapability(AndroidMobileCapabilityType.AUTO_GRANT_PERMISSIONS, true);
 //        caps.setCapability(AndroidMobileCapabilityType.APPLICATION_NAME, "XCUITest");
         caps.setCapability(MobileCapabilityType.NO_RESET, true);
         // caps.setCapability(IOSMobileCapabilityType.XCODE_ORG_ID, "");
