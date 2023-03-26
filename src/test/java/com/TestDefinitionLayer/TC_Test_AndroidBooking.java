@@ -21,7 +21,7 @@ SOFTWARE.
 package com.TestDefinitionLayer;
 
 import com.core.MobileActions;
-import com.pages.mobile.HomePage;
+import com.pages.mobile.SauceHomePage;
 import com.reporting.extentreport.ExtentTestManager;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Link;
@@ -39,7 +39,7 @@ public class TC_Test_AndroidBooking extends MobileActions {
 
         String TCname = "TC_Test_AndroidBooking";
 
-        HomePage homePage = new HomePage();
+        SauceHomePage homePage = new SauceHomePage();
 
 //        ExtentTestManager.getTest().setDescription("Search for bookings");
 

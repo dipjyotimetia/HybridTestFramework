@@ -31,7 +31,7 @@ import org.openqa.selenium.support.PageFactory;
 /**
  * @author Dipjyoti Metia
  */
-public class HomePage extends MobileActions {
+public class SauceHomePage extends MobileActions {
 
     @AndroidFindBy(id = "com.booking:id/search_details_text")
     @iOSXCUITBy(xpath = "")
@@ -61,12 +61,12 @@ public class HomePage extends MobileActions {
     @AndroidFindBy(id = "com.booking:id/search_search")
     private WebElement searchButton;
 
-    public HomePage() {
+    public SauceHomePage() {
         super();
         PageFactory.initElements(new AppiumFieldDecorator(driverThread), this);
     }
 
-    public HomePage searchDestination() {
+    public SauceHomePage searchDestination() {
         if (driverThread.findElements(By.id("com.booking:id/bt_accept")).size() != 0) {
             click(acceptCookie);
             click(closeButton);
@@ -78,7 +78,7 @@ public class HomePage extends MobileActions {
         return this;
     }
 
-    public HomePage selectDate() {
+    public SauceHomePage selectDate() {
         click(selectDate);
         return this;
     }
