@@ -114,10 +114,6 @@ public class DriverController extends WebOptions {
         return driverThread;
     }
 
-//    public AppiumDriver getMobileDriver() {
-//        return (AppiumDriver) driverThread;
-//    }
-
     /**
      * Initialize web driver
      *

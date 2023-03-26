@@ -42,15 +42,9 @@ import org.testng.ITestResult;
 public class TestListener extends DriverManager implements ITestListener {
 
     private TestStatus testStatus;
-//    private ResultSender rs= new ResultSender();
 
     private static String getTestMethodName(ITestResult iTestResult) {
         return iTestResult.getMethod().getConstructorOrMethod().getName();
-    }
-
-    @Attachment(value = "0", type = "text/plain")
-    public static String saveTextLogs(String message) {
-        return message;
     }
 
     @Override
@@ -75,31 +69,26 @@ public class TestListener extends DriverManager implements ITestListener {
 
     @Override
     public void onTestSuccess(ITestResult iTestResult) {
-//        this.sendStatus(iTestResult,"PASS");
+        //this.sendStatus(iTestResult,"PASS");
         log.info("I am in onTestSuccess method " + getTestMethodName(iTestResult) + " succeed");
         ExtentTestManager.getTest().log(Status.PASS, "Test passed");
     }
 
     @Override
     public void onTestFailure(ITestResult iTestResult) {
-        try {
-
-            //        this.sendStatus(iTestResult,"FAIL");
-            saveScreenshotPNG();
-            log.error("I am in onTestFailure method " + getTestMethodName(iTestResult) + " failed");
-            Object testClass = iTestResult.getInstance();
-            this.driverThread = ((DriverManager) testClass).getWebDriver();
-            String base64Screenshot = "data:image/png;base64," + ((TakesScreenshot) driverThread).getScreenshotAs(OutputType.BASE64);
-            ExtentTestManager.getTest().log(Status.FAIL, "Test Failed", MediaEntityBuilder.createScreenCaptureFromBase64String(base64Screenshot).build());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        //this.sendStatus(iTestResult,"FAIL");
+        log.error("I am in onTestFailure method " + getTestMethodName(iTestResult) + " failed");
+        Object testClass = iTestResult.getInstance();
+        this.driverThread = ((DriverManager) testClass).getWebDriver();
+        String base64Screenshot = "data:image/png;base64," + ((TakesScreenshot) driverThread).
+                getScreenshotAs(OutputType.BASE64);
+        ExtentTestManager.getTest().log(Status.FAIL, "Test Failed",
+                MediaEntityBuilder.createScreenCaptureFromBase64String(base64Screenshot).build());
     }
 
     @Override
     public void onTestSkipped(ITestResult iTestResult) {
-//        this.sendStatus(iTestResult,"SKIP");
+        //this.sendStatus(iTestResult,"SKIP");
         log.warn("I am in onTestSkipped method " + getTestMethodName(iTestResult) + " skipped");
         ExtentTestManager.getTest().log(Status.SKIP, "Test Skipped");
     }
@@ -109,16 +98,11 @@ public class TestListener extends DriverManager implements ITestListener {
         log.error("Test failed but it is in defined success ratio " + getTestMethodName(iTestResult));
     }
 
-    @Attachment(value = "Page screenshot", type = "image/png")
-    public byte[] saveScreenshotPNG() {
-
-        return ((TakesScreenshot) this.driverThread).getScreenshotAs(OutputType.BYTES);
-    }
-//    private void sendStatus(ITestResult iTestResult, String status){
-//        this.testStatus.setTestClass(iTestResult.getTestClass().getName());
-//        this.testStatus.setDescription(iTestResult.getMethod().getDescription());
-//        this.testStatus.setStatus(status);
+    private void sendStatus(ITestResult iTestResult, String status) {
+        this.testStatus.setTestClass(iTestResult.getTestClass().getName());
+        this.testStatus.setDescription(iTestResult.getMethod().getDescription());
+        this.testStatus.setStatus(status);
 //        this.testStatus.setExecutionDate(LocalDateTime.now().toString());
-//        rs.send(this.testStatus);
-//    }
+//        ResultSender.send(this.testStatus);
+    }
 }
