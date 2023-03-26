@@ -181,7 +181,7 @@ abstract class MobileOptions {
      *
      * @param caps capabilities
      */
-    void androidCapabilities(DesiredCapabilities caps) {
+    public void androidCapabilities(DesiredCapabilities caps) {
         caps.setCapability("platformName", "android");
         caps.setCapability("platformVersion", "13.0");
 //        caps.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, "com.swaglabsmobileapp");
@@ -193,7 +193,7 @@ abstract class MobileOptions {
      *
      * @param caps capabilities
      */
-    void iosCapabilities(DesiredCapabilities caps) {
+    public void iosCapabilities(DesiredCapabilities caps) {
         caps.setCapability("platformName", "ios");
         caps.setCapability("platformVersion", "16");
         // _caps.setCapability(IOSMobileCapabilityType.XCODE_ORG_ID, "");
