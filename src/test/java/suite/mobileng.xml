@@ -11,7 +11,6 @@
     <test name="E2E Tests iOS">
         <parameter name="device" value="iPhone14"/>
         <parameter name="grid" value="browserstack"/> <!-- LOCAL or DOCKER or CLOUD or BROWSERSTACK-->
-        <parameter name="perf" value="NO"/>
         <classes>
             <class name="com.TestDefinitionLayer.TC_Test_SauceLabsApp"/>
         </classes>

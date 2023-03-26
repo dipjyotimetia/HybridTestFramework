@@ -64,7 +64,7 @@ import java.net.URL;
 @Slf4j
 public class DriverController extends WebOptions {
     private static final AppConfig appConfig = new AppConfig(ConfigFactory.load());
-    private static RemoteWebDriver driverThread = null;
+    private static WebDriver driverThread = null;
     private static BrowserMobProxyServer proxy;
     private final String browserstack_username = System.getenv("BROWSERSTACK_USERNAME");
     private final String browserstack_access_key = System.getenv("BROWSERSTACK_ACCESS_KEY");
@@ -112,10 +112,6 @@ public class DriverController extends WebOptions {
 
     public WebDriver getWebDriver() {
         return driverThread;
-    }
-
-    public AppiumDriver getMobileDriver() {
-        return (AppiumDriver) driverThread;
     }
 
     /**

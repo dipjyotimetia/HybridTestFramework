@@ -21,7 +21,7 @@ SOFTWARE.
 package com.TestDefinitionLayer;
 
 import com.core.MobileActions;
-import com.pages.mobile.LoginPage;
+import com.pages.mobile.SauceLoginPage;
 import com.reporting.extentreport.ExtentTestManager;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Link;
@@ -34,11 +34,11 @@ public class TC_Test_SauceLabsApp extends MobileActions {
     @Feature("test")
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "Demo Test")
-    public void E2E_TestSauseLabs() {
+    public void E2E_Test_SauceLabsApp() {
 
         String TCname = "TC_Test_IOSSause";
 
-        LoginPage loginPage = new LoginPage();
+        SauceLoginPage loginPage = new SauceLoginPage();
 
 //        ExtentTestManager.getTest().setDescription("Sause Login");
 

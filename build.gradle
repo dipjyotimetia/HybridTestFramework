@@ -114,7 +114,6 @@ dependencies {
     implementation 'org.seleniumhq.selenium:selenium-java:4.8.2'
     implementation 'org.seleniumhq.selenium:selenium-remote-driver:4.8.2'
     implementation 'io.appium:java-client:8.3.0'
-    implementation 'com.browserstack:browserstack-local-java:1.0.7'
     implementation 'com.deque:axe-selenium:3.0'
     implementation 'org.awaitility:awaitility:4.2.0'
     implementation 'com.github.tomakehurst:wiremock:2.27.2'
@@ -177,6 +176,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.26'
     implementation 'com.typesafe:config:1.4.2'
     implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
+    implementation 'org.javassist:javassist:3.29.2-GA'
 }
 
 // https://github.com/DiUS/java-faker/issues/327#issuecomment-1091166953

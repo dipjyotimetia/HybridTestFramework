@@ -28,7 +28,7 @@ import org.openqa.selenium.support.PageFactory;
 /**
  * @author Dipjyoti Metia
  */
-public class LoginPage extends MobileActions {
+public class SauceLoginPage extends MobileActions {
 
     @iOSXCUITFindBys(value = {@iOSXCUITBy(accessibility = "test-Username"), @iOSXCUITBy(xpath = "//XCUIElementTypeTextField[@name=\"test-Username\"]")})
     @AndroidFindBy(accessibility = "test-Username")
@@ -42,9 +42,9 @@ public class LoginPage extends MobileActions {
     @AndroidFindBy(accessibility = "test-LOGIN")
     private WebElement loginButton;
 
-    public LoginPage() {
+    public SauceLoginPage() {
         super();
-        PageFactory.initElements(new AppiumFieldDecorator(mobileThread), this);
+        PageFactory.initElements(new AppiumFieldDecorator(driverThread), this);
     }
 
     public void login() {
