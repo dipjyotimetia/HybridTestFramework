@@ -63,11 +63,11 @@ public class HomePage extends MobileActions {
 
     public HomePage() {
         super();
-        PageFactory.initElements(new AppiumFieldDecorator(mobileThread), this);
+        PageFactory.initElements(new AppiumFieldDecorator(driverThread), this);
     }
 
     public HomePage searchDestination() {
-        if (mobileThread.findElements(By.id("com.booking:id/bt_accept")).size() != 0) {
+        if (driverThread.findElements(By.id("com.booking:id/bt_accept")).size() != 0) {
             click(acceptCookie);
             click(closeButton);
         }

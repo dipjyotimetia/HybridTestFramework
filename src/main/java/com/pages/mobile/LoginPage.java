@@ -44,7 +44,7 @@ public class LoginPage extends MobileActions {
 
     public LoginPage() {
         super();
-        PageFactory.initElements(new AppiumFieldDecorator(mobileThread), this);
+        PageFactory.initElements(new AppiumFieldDecorator(driverThread), this);
     }
 
     public void login() {
