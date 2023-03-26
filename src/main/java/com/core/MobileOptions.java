@@ -85,9 +85,8 @@ abstract class MobileOptions {
      * @param cloudProvider cloudProvider
      * @param caps          capabilities
      * @param device        device
-     * @throws IOException exception
      */
-    void cloudCapabilities(String cloudProvider, DesiredCapabilities caps, String device) throws IOException {
+    void cloudCapabilities(String cloudProvider, DesiredCapabilities caps, String device) {
         switch (cloudProvider) {
             case "sauce" -> saucelabsCapabilities(caps, device);
             case "browserstack" -> browserstackCapabilities(caps, device);
