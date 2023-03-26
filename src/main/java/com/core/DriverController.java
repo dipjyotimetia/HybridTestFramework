@@ -243,7 +243,6 @@ public class DriverController extends WebOptions {
             if (driverThread != null) {
                 driverThread.quit();
             } else {
-                driverThread.quit();
                 if (appiumService != null) {
                     appiumService.stop();
                     stopAppiumServer();

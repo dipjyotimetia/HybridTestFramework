@@ -184,8 +184,8 @@ abstract class MobileOptions {
     public void androidCapabilities(DesiredCapabilities caps) {
         caps.setCapability("platformName", "android");
         caps.setCapability("platformVersion", "13.0");
-//        caps.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, "com.swaglabsmobileapp");
-        // caps.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, "com.swaglabsmobileapp.MainActivity");
+        caps.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, "com.swaglabsmobileapp");
+         caps.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, "com.swaglabsmobileapp.MainActivity");
     }
 
     /**
@@ -200,8 +200,8 @@ abstract class MobileOptions {
         // _caps.setCapability(IOSMobileCapabilityType.XCODE_SIGNING_ID, "");
         // _caps.setCapability(IOSMobileCapabilityType.UPDATE_WDA_BUNDLEID, "");
 //        caps.setCapability(IOSMobileCapabilityType.AUTO_DISMISS_ALERTS, true);
-//        caps.setCapability(IOSMobileCapabilityType.BUNDLE_ID, "com.saucelabs.SwagLabsMobileApp");
-//        caps.setCapability(IOSMobileCapabilityType.APP_NAME, "com.saucelabs.SwagLabsMobileApp");
+        caps.setCapability(IOSMobileCapabilityType.BUNDLE_ID, "com.saucelabs.SwagLabsMobileApp");
+        caps.setCapability(IOSMobileCapabilityType.APP_NAME, "com.saucelabs.SwagLabsMobileApp");
     }
 
     /**
