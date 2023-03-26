@@ -176,7 +176,6 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.26'
     implementation 'com.typesafe:config:1.4.2'
     implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
-    implementation 'org.javassist:javassist:3.29.2-GA'
 }
 
 // https://github.com/DiUS/java-faker/issues/327#issuecomment-1091166953

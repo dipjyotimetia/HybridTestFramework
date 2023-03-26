@@ -44,7 +44,7 @@ public class SauceLoginPage extends MobileActions {
 
     public SauceLoginPage() {
         super();
-        PageFactory.initElements(new AppiumFieldDecorator(driverThread), this);
+        PageFactory.initElements(driverThread, this);
     }
 
     public void login() {

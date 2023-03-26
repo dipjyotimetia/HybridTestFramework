@@ -165,7 +165,7 @@ public class MobileActions extends DriverManager {
      *
      * @param element element
      */
-    protected void click(WebElement element) {
+    public void click(WebElement element) {
         try {
             fluentWait(element, 10);
             element.click();
@@ -207,7 +207,7 @@ public class MobileActions extends DriverManager {
      * @param element element
      * @param value   value
      */
-    protected void enter(WebElement element, String value) {
+    public void enter(WebElement element, String value) {
         try {
             fluentWait(element, 10);
             element.click();

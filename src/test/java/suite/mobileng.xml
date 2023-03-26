@@ -12,14 +12,14 @@
         <parameter name="device" value="iPhone14"/>
         <parameter name="grid" value="browserstack"/> <!-- LOCAL or DOCKER or CLOUD or BROWSERSTACK-->
         <classes>
-            <class name="com.TestDefinitionLayer.TC_Test_SauceLabsApp"/>
+            <class name="com.TestDefinitionLayer.TC12_SauceLabsApp"/>
         </classes>
     </test>
     <test name="E2E Tests Android">
         <parameter name="device" value="samsung"/>
         <parameter name="grid" value="browserstack"/> <!-- sauce or browserstack or local-->
         <classes>
-            <class name="com.TestDefinitionLayer.TC_Test_SauceLabsApp"/>
+            <class name="com.TestDefinitionLayer.TC12_SauceLabsApp"/>
         </classes>
     </test>
 </suite>

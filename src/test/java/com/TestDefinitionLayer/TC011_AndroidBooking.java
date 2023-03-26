@@ -29,13 +29,13 @@ import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.Test;
 
-public class TC_Test_AndroidBooking extends MobileActions {
+public class TC011_AndroidBooking extends MobileActions {
 
     @Link("Test")
     @Feature("test")
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "Demo Test")
-    public void E2E_TestAndroid_Bookings() {
+    public void TestAndroidBookings() {
 
         String TCname = "TC_Test_AndroidBooking";
 
