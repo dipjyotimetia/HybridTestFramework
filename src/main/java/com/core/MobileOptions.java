@@ -104,26 +104,27 @@ abstract class MobileOptions {
         switch (device) {
             case "samsung" -> {
                 caps.setCapability("platformName", "android");
-                caps.setCapability("platformVersion", "13.0");
-                caps.setCapability("deviceName", "Samsung Galaxy S23");
+                caps.setCapability("os_version", "13.0");
+                caps.setCapability("device", "Samsung Galaxy S23");
                 caps.setCapability("app", apk_url);
             }
             case "pixel" -> {
                 caps.setCapability("platformName", "android");
-                caps.setCapability("platformVersion", "13.0");
-                caps.setCapability("deviceName", "Google Pixel 3");
+                caps.setCapability("os_version", "13.0");
+                caps.setCapability("device", "Google Pixel 3");
                 caps.setCapability("app", apk_url);
             }
             case "iPhone14" -> {
                 caps.setCapability("platformName", "ios");
-                caps.setCapability("platformVersion", "16");
-                caps.setCapability("deviceName", "iPhone 14");
+                caps.setCapability("os_version", "16");
+                caps.setCapability("device", "iPhone 14");
                 caps.setCapability("app", ipa_url);
             }
             default -> System.out.println("No device found");
         }
         caps.setCapability("browserstack.appium_version", "1.22.0");
         caps.setCapability("project", "HybridTestFramework");
+        caps.setCapability("isRealMobile", true);
 //        caps.setCapability("build", testName + sysTime());
 //        caps.setCapability("name", testName);
     }

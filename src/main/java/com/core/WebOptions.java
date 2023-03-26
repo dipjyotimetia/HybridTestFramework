@@ -173,22 +173,24 @@ abstract class WebOptions extends MobileOptions {
      */
     protected DesiredCapabilities addBrowserStackCapabilities(String browser, String testName) {
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("os", "Windows");
-        capabilities.setCapability("os_version", "10");
-        capabilities.setCapability("build", "HybridTestFramework");
         capabilities.setCapability("name", testName);
+        capabilities.setCapability("os", "Windows");
+        capabilities.setCapability("osVersion", "11");
+        capabilities.setCapability("build", "HybridTestFramework");
+        capabilities.setCapability("local", false);
+        capabilities.setCapability("seleniumVersion", "4.8.0");
         switch (browser) {
             case "chrome" -> {
-                capabilities.setCapability("browser", "Chrome");
-                capabilities.setCapability("browser_version", "90.0");
+                capabilities.setCapability("browserName", "Chrome");
+                capabilities.setCapability("browserVersion", "latest");
             }
             case "firefox" -> {
-                capabilities.setCapability("browser", "Firefox");
-                capabilities.setCapability("browser_version", "88.0");
+                capabilities.setCapability("browserName", "Firefox");
+                capabilities.setCapability("browserVersion", "latest");
             }
             case "edge" -> {
-                capabilities.setCapability("browser", "Edge");
-                capabilities.setCapability("browser_version", "90.0");
+                capabilities.setCapability("browserName", "Edge");
+                capabilities.setCapability("browserVersion", "latest");
             }
             default -> log.info("browser selection is required");
         }

@@ -65,12 +65,10 @@ import java.net.URL;
 public class DriverController extends WebOptions {
     private static final AppConfig appConfig = new AppConfig(ConfigFactory.load());
     private static RemoteWebDriver driverThread = null;
-    private static RemoteWebDriver mobileThread = null;
     private static BrowserMobProxyServer proxy;
     private final String browserstack_username = System.getenv("BROWSERSTACK_USERNAME");
     private final String browserstack_access_key = System.getenv("BROWSERSTACK_ACCESS_KEY");
     DriverService appiumService = null;
-    WebDriverListener driverListener = new WebDriverEventHandler();
     private String testName = null;
 
     /**
@@ -117,7 +115,7 @@ public class DriverController extends WebOptions {
     }
 
     public AppiumDriver getMobileDriver() {
-        return (AppiumDriver) mobileThread;
+        return (AppiumDriver) driverThread;
     }
 
     /**
@@ -190,7 +188,7 @@ public class DriverController extends WebOptions {
                     caps.setCapability(MobileCapabilityType.DEVICE_NAME, "NEXUS");
                     androidCapabilities(caps);
                     cloudCapabilities(cloud, caps, "NEXUS");
-                    mobileThread = new RemoteWebDriver(createURL(cloud), caps);
+                    driverThread = new RemoteWebDriver(createURL(cloud), caps);
                 }
                 case "PIXEL" -> {
                     log.info("Selected device is PIXEL");
@@ -198,19 +196,19 @@ public class DriverController extends WebOptions {
                     caps.setCapability(MobileCapabilityType.DEVICE_NAME, "PIXEL");
                     androidCapabilities(caps);
                     cloudCapabilities(cloud, caps, "PIXEL");
-                    mobileThread = new RemoteWebDriver(createURL(cloud), caps);
+                    driverThread = new RemoteWebDriver(createURL(cloud), caps);
                 }
                 case "samsung" -> {
                     log.info("Selected device is SAMSUNG");
                     cloudCapabilities(cloud, caps, "samsung");
                     androidCapabilities(caps);
-                    mobileThread = new RemoteWebDriver(createURL(cloud), caps);
+                    driverThread = new RemoteWebDriver(createURL(cloud), caps);
                 }
                 case "iPhone14" -> {
                     log.info("Selected device is IPHONE");
                     cloudCapabilities(cloud, caps, "iPhone14");
                     iosCapabilities(caps);
-                    mobileThread = new RemoteWebDriver(createURL(cloud), caps);
+                    driverThread = new RemoteWebDriver(createURL(cloud), caps);
                 }
                 case "IPHONE" -> {
                     log.info("Selected device is IPHONE");
@@ -218,7 +216,7 @@ public class DriverController extends WebOptions {
                     caps.setCapability(MobileCapabilityType.DEVICE_NAME, "iphone");
                     iosCapabilities(caps);
                     cloudCapabilities(cloud, caps, "IPHONE");
-                    mobileThread = new RemoteWebDriver(createURL(cloud), caps);
+                    driverThread = new RemoteWebDriver(createURL(cloud), caps);
                 }
                 case "EMULATOR" -> {
                     log.info("Selected device is EMULATOR");
@@ -226,7 +224,7 @@ public class DriverController extends WebOptions {
                     caps.setCapability(MobileCapabilityType.UDID, "NEXUS");
                     caps.setCapability(MobileCapabilityType.DEVICE_NAME, "NEXUS");
                     appiumService.start();
-                    mobileThread = new AndroidDriver(createURL(cloud), caps);
+                    driverThread = new AndroidDriver(createURL(cloud), caps);
                 }
                 default -> log.info("Required device selection");
             }
@@ -249,7 +247,7 @@ public class DriverController extends WebOptions {
             if (driverThread != null) {
                 driverThread.quit();
             } else {
-                mobileThread.quit();
+                driverThread.quit();
                 if (appiumService != null) {
                     appiumService.stop();
                     stopAppiumServer();

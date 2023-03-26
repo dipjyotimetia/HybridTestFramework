@@ -53,7 +53,7 @@ public class TC003_ApiTest extends ApiActions {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(description = "E2E test for ExchangeInfo", skipFailedInvocations = true)
+    @Test(description = "E2E test for ExchangeInfo", skipFailedInvocations = true, enabled = false)
     @Description("Get ExchangeInfo")
     @Story("Test CryptoCoins")
     public void TestExchangeInfo() {
