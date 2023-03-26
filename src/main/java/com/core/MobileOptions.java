@@ -184,9 +184,6 @@ abstract class MobileOptions {
     void androidCapabilities(DesiredCapabilities caps) {
         caps.setCapability("platformName", "android");
         caps.setCapability("platformVersion", "13.0");
-        caps.setCapability(MobileCapabilityType.NO_RESET, true);
-        caps.setCapability(MobileCapabilityType.FULL_RESET, false);
-        caps.setCapability(MobileCapabilityType.AUTO_WEBVIEW, false);
         caps.setCapability(AndroidMobileCapabilityType.AUTO_GRANT_PERMISSIONS, true);
         caps.setCapability(AndroidMobileCapabilityType.ANDROID_INSTALL_TIMEOUT, 60);
         caps.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, "com.swaglabsmobileapp");
@@ -201,8 +198,6 @@ abstract class MobileOptions {
     void iosCapabilities(DesiredCapabilities caps) {
         caps.setCapability("platformName", "ios");
         caps.setCapability("platformVersion", "16");
-        caps.setCapability(MobileCapabilityType.FULL_RESET, false);
-        caps.setCapability(MobileCapabilityType.NO_RESET, true);
         // _caps.setCapability(IOSMobileCapabilityType.XCODE_ORG_ID, "");
         // _caps.setCapability(IOSMobileCapabilityType.XCODE_SIGNING_ID, "");
         // _caps.setCapability(IOSMobileCapabilityType.UPDATE_WDA_BUNDLEID, "");
