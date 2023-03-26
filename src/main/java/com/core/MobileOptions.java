@@ -45,7 +45,6 @@ import java.util.Objects;
 abstract class MobileOptions {
     private static final String nodeJS = System.getenv("NODE_HOME") + "/node.exe";
     private static final String appiumJS = System.getenv("APPIUM_HOME") + "/main.js";
-    private static DriverService service;
     private final String apk_url = System.getenv("APK_URL");
     private final String ipa_url = System.getenv("IPA_URL");
     private final String sauce_username = System.getenv("SAUCE_USERNAME");
@@ -55,7 +54,7 @@ abstract class MobileOptions {
     private final String username = System.getenv("BROWSERSTACK_USERNAME");
     private final String accessKey = System.getenv("BROWSERSTACK_ACCESS_KEY");
     private final String serverUrl = "http://" + serverIp + ":" + appiumPort + "/wd/hub";
-    private final String cloudURL = "https://" + username + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub";
+    private final String cloudURL = "https://" + username + ":" + accessKey + "@hub.browserstack.com/wd/hub";
     private final String sauceURL = "https://" + sauce_username + ":" + sauce_accessKey + "@ondemand.apac-southeast-1.saucelabs.com:443/wd/hub";
     DesiredCapabilities caps = new DesiredCapabilities();
 
@@ -105,26 +104,26 @@ abstract class MobileOptions {
         switch (device) {
             case "samsung" -> {
                 caps.setCapability("platformName", "android");
-                caps.setCapability("platformVersion", "10.0");
-                caps.setCapability("deviceName", "Samsung Galaxy S20");
+                caps.setCapability("platformVersion", "13.0");
+                caps.setCapability("deviceName", "Samsung Galaxy S23");
                 caps.setCapability("app", apk_url);
             }
             case "pixel" -> {
                 caps.setCapability("platformName", "android");
-                caps.setCapability("platformVersion", "9.0");
+                caps.setCapability("platformVersion", "13.0");
                 caps.setCapability("deviceName", "Google Pixel 3");
                 caps.setCapability("app", apk_url);
             }
-            case "iPhone12" -> {
+            case "iPhone14" -> {
                 caps.setCapability("platformName", "ios");
-                caps.setCapability("platformVersion", "14");
-                caps.setCapability("deviceName", "iPhone 12");
+                caps.setCapability("platformVersion", "16");
+                caps.setCapability("deviceName", "iPhone 14");
                 caps.setCapability("app", ipa_url);
             }
             default -> System.out.println("No device found");
         }
-//        caps.setCapability("browserstack.appium_version", appConfig.getAppiumVersion());
-//        caps.setCapability("project", appConfig.getApplicationName());
+        caps.setCapability("browserstack.appium_version", "1.22.0");
+        caps.setCapability("project", "HybridTestFramework");
 //        caps.setCapability("build", testName + sysTime());
 //        caps.setCapability("name", testName);
     }

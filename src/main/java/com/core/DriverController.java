@@ -65,7 +65,7 @@ import java.net.URL;
 public class DriverController extends WebOptions {
     private static final AppConfig appConfig = new AppConfig(ConfigFactory.load());
     private static WebDriver driverThread = null;
-    private static AppiumDriver mobileThread = null;
+    private static RemoteWebDriver mobileThread = null;
     private static BrowserMobProxyServer proxy;
     private final String browserstack_username = System.getenv("BROWSERSTACK_USERNAME");
     private final String browserstack_access_key = System.getenv("BROWSERSTACK_ACCESS_KEY");
@@ -117,7 +117,7 @@ public class DriverController extends WebOptions {
     }
 
     public AppiumDriver getMobileDriver() {
-        return mobileThread;
+        return (AppiumDriver) mobileThread;
     }
 
     /**
@@ -138,37 +138,31 @@ public class DriverController extends WebOptions {
                 case "aws":
                     log.info("Make sure that the environment variables AWS_ACCESS_KEY and AWS_SECRET_KEY are configured in your testing environment.");
                     CreateTestGridUrlResponse response = client.createTestGridUrl(request);
-                    driverThread = new EventFiringDecorator(driverListener).
-                            decorate(new RemoteWebDriver(new URL(response.url()), addCloudCapabilities(browser)));
+                    driverThread = new RemoteWebDriver(new URL(response.url()), addCloudCapabilities(browser));
                     log.info("Grid client setup for AWS Device farm successful");
                     break;
                 case "docker":
                     log.info("Make sure that docker containers are up and running");
-                    driverThread = new EventFiringDecorator(driverListener).
-                            decorate(new RemoteWebDriver(URI.create("http://localhost:4445/wd/hub").toURL(), getBrowserOptions(browser, perf)));
+                    driverThread = new RemoteWebDriver(URI.create("http://localhost:4445/wd/hub").toURL(), getBrowserOptions(browser, perf));
                     log.info("Grid client setup for Docker containers successful");
                     break;
                 case "browserstack":
                     log.info("Make sure that browserstack configs provided");
-                    driverThread = new EventFiringDecorator(driverListener).
-                            decorate(new RemoteWebDriver(new URL("https://" + browserstack_username + ":" + browserstack_access_key + "@hub-cloud.browserstack.com/wd/hub"), addBrowserStackCapabilities(browser, testName)));
+                    driverThread = new RemoteWebDriver(new URL("https://" + browserstack_username + ":" + browserstack_access_key + "@hub.browserstack.com/wd/hub"), addBrowserStackCapabilities(browser, testName));
                     log.info("Grid client setup for browserstack successful");
                     break;
                 case "local":
                     switch (browser) {
                         case "firefox" -> {
-                            driverThread = new EventFiringDecorator(driverListener).
-                                    decorate(new FirefoxDriver(getFirefoxOptions()));
+                            driverThread = new FirefoxDriver(getFirefoxOptions());
                             log.info("Initiating firefox driver");
                         }
                         case "chrome" -> {
-                            driverThread = new EventFiringDecorator(driverListener).
-                                    decorate(new ChromeDriver(getChromeOptions(perf)));
+                            driverThread = new ChromeDriver(getChromeOptions(perf));
                             log.info("Initiating chrome driver");
                         }
                         case "edge" -> {
-                            driverThread = new EventFiringDecorator(driverListener).
-                                    decorate(new EdgeDriver(getEdgeOptions()));
+                            driverThread = new EdgeDriver(getEdgeOptions());
                             log.info("Initiating edge driver");
                         }
                         default -> log.info("Browser listed not supported");
@@ -196,7 +190,7 @@ public class DriverController extends WebOptions {
                     caps.setCapability(MobileCapabilityType.DEVICE_NAME, "NEXUS");
                     androidCapabilities(caps);
                     cloudCapabilities(cloud, caps, "NEXUS");
-                    mobileThread = new AndroidDriver(createURL(cloud), caps);
+                    mobileThread = new RemoteWebDriver(createURL(cloud), caps);
                 }
                 case "PIXEL" -> {
                     log.info("Selected device is PIXEL");
@@ -204,19 +198,19 @@ public class DriverController extends WebOptions {
                     caps.setCapability(MobileCapabilityType.DEVICE_NAME, "PIXEL");
                     androidCapabilities(caps);
                     cloudCapabilities(cloud, caps, "PIXEL");
-                    mobileThread = new AndroidDriver(createURL(cloud), caps);
+                    mobileThread = new RemoteWebDriver(createURL(cloud), caps);
                 }
                 case "samsung" -> {
                     log.info("Selected device is SAMSUNG");
                     cloudCapabilities(cloud, caps, "samsung");
                     androidCapabilities(caps);
-                    mobileThread = new AndroidDriver(createURL(cloud), caps);
+                    mobileThread = new RemoteWebDriver(createURL(cloud), caps);
                 }
-                case "iPhone12" -> {
+                case "iPhone14" -> {
                     log.info("Selected device is IPHONE");
-                    cloudCapabilities(cloud, caps, "iPhone12");
+                    cloudCapabilities(cloud, caps, "iPhone14");
                     iosCapabilities(caps);
-                    mobileThread = new IOSDriver(createURL(cloud), caps);
+                    mobileThread = new RemoteWebDriver(createURL(cloud), caps);
                 }
                 case "IPHONE" -> {
                     log.info("Selected device is IPHONE");
@@ -224,7 +218,7 @@ public class DriverController extends WebOptions {
                     caps.setCapability(MobileCapabilityType.DEVICE_NAME, "iphone");
                     iosCapabilities(caps);
                     cloudCapabilities(cloud, caps, "IPHONE");
-                    mobileThread = new IOSDriver(createURL(cloud), caps);
+                    mobileThread = new RemoteWebDriver(createURL(cloud), caps);
                 }
                 case "EMULATOR" -> {
                     log.info("Selected device is EMULATOR");
@@ -236,8 +230,8 @@ public class DriverController extends WebOptions {
                 }
                 default -> log.info("Required device selection");
             }
-        } catch (NullPointerException | IOException ex) {
-            log.error("Appium driver could not be initialised for device", ex);
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
         }
     }
 
