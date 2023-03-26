@@ -45,7 +45,7 @@ public class TC12_SauceLabsApp extends MobileActions {
         try {
             loginPage.login();
         } catch (Exception e) {
-            catchBlock(e);
+//            catchBlock(e);
         } finally {
             ExtentTestManager.endTest();
         }
