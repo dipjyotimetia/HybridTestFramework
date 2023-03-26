@@ -181,13 +181,12 @@ abstract class MobileOptions {
      * @param caps capabilities
      */
     void androidCapabilities(DesiredCapabilities caps) {
-        caps.setCapability(CapabilityType.PLATFORM_NAME, MobilePlatform.ANDROID);
-        caps.setCapability(MobileCapabilityType.PLATFORM_VERSION, "13.0");
+        caps.setCapability("platformName", "android");
+        caps.setCapability("platformVersion", "13.0");
         caps.setCapability(MobileCapabilityType.NO_RESET, true);
         caps.setCapability(MobileCapabilityType.FULL_RESET, false);
         caps.setCapability(MobileCapabilityType.AUTO_WEBVIEW, false);
         caps.setCapability(AndroidMobileCapabilityType.AUTO_GRANT_PERMISSIONS, true);
-//        caps.setCapability(AndroidMobileCapabilityType.APPLICATION_NAME, "UiAutomator2");
         caps.setCapability(AndroidMobileCapabilityType.ANDROID_INSTALL_TIMEOUT, 60);
         caps.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, "com.swaglabsmobileapp");
         // caps.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, "com.swaglabsmobileapp.MainActivity");
@@ -199,14 +198,14 @@ abstract class MobileOptions {
      * @param caps capabilities
      */
     void iosCapabilities(DesiredCapabilities caps) {
-        caps.setCapability(CapabilityType.PLATFORM_NAME, MobilePlatform.IOS);
-        caps.setCapability(MobileCapabilityType.PLATFORM_VERSION, "16");
+        caps.setCapability("platformName", "ios");
+        caps.setCapability("platformVersion", "16");
         caps.setCapability(MobileCapabilityType.FULL_RESET, false);
-//        caps.setCapability(AndroidMobileCapabilityType.APPLICATION_NAME, "XCUITest");
         caps.setCapability(MobileCapabilityType.NO_RESET, true);
-        // caps.setCapability(IOSMobileCapabilityType.XCODE_ORG_ID, "");
-        // caps.setCapability(IOSMobileCapabilityType.XCODE_SIGNING_ID, "");
-        // caps.setCapability(IOSMobileCapabilityType.UPDATE_WDA_BUNDLEID, "");
+        // _caps.setCapability(IOSMobileCapabilityType.XCODE_ORG_ID, "");
+        // _caps.setCapability(IOSMobileCapabilityType.XCODE_SIGNING_ID, "");
+        // _caps.setCapability(IOSMobileCapabilityType.UPDATE_WDA_BUNDLEID, "");
+        caps.setCapability(IOSMobileCapabilityType.AUTO_DISMISS_ALERTS, true);
         caps.setCapability(IOSMobileCapabilityType.BUNDLE_ID, "com.saucelabs.SwagLabsMobileApp");
         caps.setCapability(IOSMobileCapabilityType.APP_NAME, "com.saucelabs.SwagLabsMobileApp");
     }
