@@ -52,7 +52,6 @@ public class LoginPageGuru extends WebActions {
         PageFactory.initElements(driverThread, this);
     }
 
-    @Step("Login step for test:{0}, for method: {method}")
     public void login(String tcName) {
         try {
             navigate("http://live.guru99.com/index.php/customer/account/login/");

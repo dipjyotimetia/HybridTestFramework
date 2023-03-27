@@ -24,8 +24,6 @@ SOFTWARE.
 
 package com.core;
 
-import io.appium.java_client.android.options.UiAutomator2Options;
-import io.appium.java_client.ios.options.XCUITestOptions;
 import io.appium.java_client.remote.AndroidMobileCapabilityType;
 import io.appium.java_client.remote.IOSMobileCapabilityType;
 import io.appium.java_client.remote.MobileCapabilityType;
@@ -33,7 +31,6 @@ import io.appium.java_client.remote.MobilePlatform;
 import io.appium.java_client.service.local.AppiumServiceBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.exec.OS;
-import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -43,7 +40,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.Duration;
 import java.util.Objects;
 
 @Slf4j
@@ -189,19 +185,7 @@ abstract class MobileOptions {
         caps.setCapability("platformName", "android");
         caps.setCapability("platformVersion", "13.0");
         caps.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, "com.swaglabsmobileapp");
-        caps.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, "com.swaglabsmobileapp.MainActivity");
-    }
-
-    /**
-     * Android options
-     */
-    public UiAutomator2Options androidOptions(DesiredCapabilities caps) {
-        UiAutomator2Options options = new UiAutomator2Options();
-        options.setPlatformVersion("13.0");
-        options.setAppPackage("com.swaglabsmobileapp");
-        options.setAppActivity("com.swaglabsmobileapp.MainActivity");
-        options.merge(caps);
-        return options;
+         caps.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, "com.swaglabsmobileapp.MainActivity");
     }
 
     /**
@@ -218,19 +202,6 @@ abstract class MobileOptions {
 //        caps.setCapability(IOSMobileCapabilityType.AUTO_DISMISS_ALERTS, true);
         caps.setCapability(IOSMobileCapabilityType.BUNDLE_ID, "com.saucelabs.SwagLabsMobileApp");
         caps.setCapability(IOSMobileCapabilityType.APP_NAME, "com.saucelabs.SwagLabsMobileApp");
-    }
-
-    /**
-     * IOS capabilities
-     *
-     * @param caps capabilities
-     */
-    public XCUITestOptions iOSOptions(DesiredCapabilities caps) {
-        XCUITestOptions options = new XCUITestOptions();
-        options.setPlatformVersion("16");
-        options.setBundleId("com.saucelabs.SwagLabsMobileApp");
-        options.merge(caps);
-        return options;
     }
 
     /**
