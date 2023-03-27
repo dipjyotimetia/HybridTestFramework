@@ -24,6 +24,7 @@ import com.core.MobileActions;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITBy;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
@@ -66,6 +67,7 @@ public class SauceHomePage extends MobileActions {
         PageFactory.initElements(new AppiumFieldDecorator(driverThread), this);
     }
 
+    @Step("Search for destination")
     public SauceHomePage searchDestination() {
         if (driverThread.findElements(By.id("com.booking:id/bt_accept")).size() != 0) {
             click(acceptCookie);
@@ -78,11 +80,13 @@ public class SauceHomePage extends MobileActions {
         return this;
     }
 
+    @Step("Select date")
     public SauceHomePage selectDate() {
         click(selectDate);
         return this;
     }
 
+    @Step("Click on search")
     public void search() {
         click(searchButton);
     }
