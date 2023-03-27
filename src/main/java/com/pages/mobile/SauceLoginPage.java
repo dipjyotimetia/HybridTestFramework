@@ -22,7 +22,6 @@ package com.pages.mobile;
 
 import com.core.MobileActions;
 import io.appium.java_client.pagefactory.*;
-import io.qameta.allure.Step;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
@@ -48,7 +47,6 @@ public class SauceLoginPage extends MobileActions {
         PageFactory.initElements(driverThread, this);
     }
 
-    @Step("Login to Sauce Demo")
     public void login() {
         enter(userName, "standard_user");
         enter(password, "secret_sauce");

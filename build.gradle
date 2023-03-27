@@ -41,8 +41,6 @@ ext {
 
 group 'com.HybridTestFramework'
 version = '1.0-SNAPSHOT'
-description = 'hybrid-test-framework'
-sourceCompatibility = '1.17'
 
 repositories {
     maven { // The google mirror is less flaky than mavenCentral()
