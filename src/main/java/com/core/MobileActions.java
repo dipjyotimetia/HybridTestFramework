@@ -48,6 +48,7 @@ import org.json.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.openqa.selenium.*;
+import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
@@ -522,37 +523,89 @@ public class MobileActions extends DriverManager {
         log.info("Shake Device");
     }
 
-//    /**
-//     * Swipe Down
-//     */
-//    public void swipeDown() {
-//        driverThread.executeScript("scroll", ImmutableMap.of("direction", "down"));
-//        log.info("Swipe Down");
-//    }
-//
-//    /**
-//     * Swipe Up
-//     */
-//    public void swipeUP() {
-//        driverThread.executeScript("scroll", ImmutableMap.of("direction", "up"));
-//        log.info("Swipe Up");
-//    }
-//
-//    /**
-//     * Accept Alert
-//     */
-//    public void acceptAlert() {
-//        driverThread.executeScript("acceptAlert");
-//        log.info("Accept Alert");
-//    }
-//
-//    /**
-//     * Dismiss Alert
-//     */
-//    public void dismissAlert() {
-//        driverThread.executeScript("dismissAlert");
-//        log.info("Dismiss Alert");
-//    }
+    /**
+     * Swipe Down
+     */
+    public void swipeDown() {
+        ((JavascriptExecutor) driverThread).executeScript("scroll", ImmutableMap.of("direction", "down"));
+        log.info("Swipe Down");
+    }
+
+    /**
+     * Swipe Up
+     */
+    public void swipeUP() {
+        ((JavascriptExecutor) driverThread).executeScript("scroll", ImmutableMap.of("direction", "up"));
+        log.info("Swipe Up");
+    }
+
+    /**
+     * Accept Alert
+     */
+    public void acceptAlert() {
+        ((JavascriptExecutor) driverThread).executeScript("acceptAlert");
+        log.info("Accept Alert");
+    }
+
+    /**
+     * Dismiss Alert
+     */
+    public void dismissAlert() {
+        ((JavascriptExecutor) driverThread).executeScript("dismissAlert");
+        log.info("Dismiss Alert");
+    }
+
+    public void longClickGesture(WebElement element) {
+        ((JavascriptExecutor) driverThread).executeScript("mobile: longClickGesture", ImmutableMap.of(
+                "elementId", ((RemoteWebElement) element).getId()
+        ));
+        log.info("Scroll Down");
+    }
+
+    public void doubleClickGesture(WebElement element) {
+        ((JavascriptExecutor) driverThread).executeScript("mobile: doubleClickGesture", ImmutableMap.of(
+                "elementId", ((RemoteWebElement) element).getId()
+        ));
+        log.info("Scroll Down");
+    }
+
+    public void dragGesture(WebElement element) {
+        ((JavascriptExecutor) driverThread).executeScript("mobile: dragGesture", ImmutableMap.of(
+                "elementId", ((RemoteWebElement) element).getId(),
+                "endX", 100,
+                "endY", 100
+        ));
+    }
+
+    public boolean isElementPresent(WebElement element) {
+        return (boolean) (Boolean) ((JavascriptExecutor) driverThread).executeScript("mobile: flingGesture", ImmutableMap.of(
+                "elementId", ((RemoteWebElement) element).getId(),
+                "direction", "down",
+                "speed", 500
+        ));
+    }
+
+    public void pinchOpenGesture(WebElement element) {
+        ((JavascriptExecutor) driverThread).executeScript("mobile: pinchOpenGesture", ImmutableMap.of(
+                "elementId", ((RemoteWebElement) element).getId(),
+                "percent", 0.75
+        ));
+    }
+
+    public void pinchCloseGesture(WebElement element) {
+        ((JavascriptExecutor) driverThread).executeScript("mobile: pinchCloseGesture", ImmutableMap.of(
+                "elementId", ((RemoteWebElement) element).getId(),
+                "percent", 0.75
+        ));
+    }
+
+    public void swipeGesture() {
+        ((JavascriptExecutor) driverThread).executeScript("mobile: swipeGesture", ImmutableMap.of(
+                "left", 100, "top", 100, "width", 200, "height", 200,
+                "direction", "left",
+                "percent", 0.75
+        ));
+    }
 
     /**
      * Get text from the element

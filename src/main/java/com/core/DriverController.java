@@ -197,22 +197,19 @@ public class DriverController extends WebOptions {
                 case "samsung" -> {
                     log.info("Selected device is SAMSUNG");
                     cloudCapabilities(cloud, caps, "samsung");
-                    androidCapabilities(caps);
-                    driverThread = new RemoteWebDriver(createURL(cloud), caps);
+                    driverThread = new RemoteWebDriver(createURL(cloud), androidOptions(caps));
                 }
                 case "iPhone14" -> {
                     log.info("Selected device is IPHONE");
                     cloudCapabilities(cloud, caps, "iPhone14");
-                    iosCapabilities(caps);
-                    driverThread = new RemoteWebDriver(createURL(cloud), caps);
+                    driverThread = new RemoteWebDriver(createURL(cloud), iOSOptions(caps));
                 }
                 case "IPHONE" -> {
                     log.info("Selected device is IPHONE");
                     caps.setCapability(MobileCapabilityType.UDID, "iphone");
                     caps.setCapability(MobileCapabilityType.DEVICE_NAME, "iphone");
-                    iosCapabilities(caps);
                     cloudCapabilities(cloud, caps, "IPHONE");
-                    driverThread = new RemoteWebDriver(createURL(cloud), caps);
+                    driverThread = new RemoteWebDriver(createURL(cloud), iOSOptions(caps));
                 }
                 case "EMULATOR" -> {
                     log.info("Selected device is EMULATOR");
