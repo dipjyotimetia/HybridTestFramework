@@ -188,7 +188,7 @@ abstract class WebOptions extends MobileOptions {
         browserStackOptions.put("debug", "false");
         browserStackOptions.put("consoleLogs", "info");
         browserStackOptions.put("networkLogs", "true");
-        browserStackOptions.put("browserstack", browserStackOptions);
+        browserStackOptions.put("seleniumCdp", true);
         //browserStackOptions.put("local", "true");
         switch (browser) {
             case "chrome" -> {

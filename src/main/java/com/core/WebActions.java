@@ -1190,4 +1190,9 @@ public class WebActions extends DriverManager {
     public enum DisplayType {
         IS_ENABLED, IS_SELECTED, IS_DISPLAYED
     }
+
+    public static void markTestStatus(String status, String reason, WebDriver driver) {
+        JavascriptExecutor jse = (JavascriptExecutor) driver;
+        jse.executeScript("browserstack_executor: {\"action\": \"setSessionStatus\", \"arguments\": {\"status\": \""+status+"\", \"reason\": \""+reason+"\"}}");
+    }
 }

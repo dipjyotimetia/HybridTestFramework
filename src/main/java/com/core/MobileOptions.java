@@ -53,7 +53,7 @@ abstract class MobileOptions {
     private final String username = System.getenv("BROWSERSTACK_USERNAME");
     private final String accessKey = System.getenv("BROWSERSTACK_ACCESS_KEY");
     private final String serverUrl = "http://" + serverIp + ":" + appiumPort;
-    private final String cloudURL = "https://" + username + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub";
+    private final String browserstackURL = "https://" + username + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub";
     private final String sauceURL = "https://" + sauce_username + ":" + sauce_accessKey + "@ondemand.apac-southeast-1.saucelabs.com:443/wd/hub";
     DesiredCapabilities caps = new DesiredCapabilities();
 
@@ -69,8 +69,8 @@ abstract class MobileOptions {
             log.info("Argument to driver object : " + sauceURL);
             return new URL(sauceURL);
         } else if (Objects.equals(cloudProvider, "browserstack")) {
-            log.info("Argument to driver object : " + cloudURL);
-            return new URL(cloudURL);
+            log.info("Argument to driver object : " + browserstackURL);
+            return new URL(browserstackURL);
         } else {
             log.info("Argument to driver object : " + serverUrl);
             return new URL(serverUrl);

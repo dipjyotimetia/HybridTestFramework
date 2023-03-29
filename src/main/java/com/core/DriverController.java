@@ -60,8 +60,6 @@ public class DriverController extends WebOptions {
     private static final AppConfig appConfig = new AppConfig(ConfigFactory.load());
     private static WebDriver driverThread = null;
     private static BrowserMobProxyServer proxy;
-    private final String browserstack_username = System.getenv("BROWSERSTACK_USERNAME");
-    private final String browserstack_access_key = System.getenv("BROWSERSTACK_ACCESS_KEY");
     DriverService appiumService = null;
     private String testName = null;
 
@@ -136,7 +134,7 @@ public class DriverController extends WebOptions {
                     break;
                 case "browserstack":
                     log.info("Make sure that browserstack configs provided");
-                    driverThread = new RemoteWebDriver(new URL("https://" + browserstack_username + ":" + browserstack_access_key + "@hub.browserstack.com/wd/hub"), addBrowserStackCapabilities(browser, testName));
+                    driverThread = new RemoteWebDriver(createURL("browserstack"), addBrowserStackCapabilities(browser, testName));
                     log.info("Grid client setup for browserstack successful");
                     break;
                 case "local":
