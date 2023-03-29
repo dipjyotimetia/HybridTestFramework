@@ -8,7 +8,7 @@ ENV ALLURE_VERSION 2.21.0
 
 # install packages
 RUN apt-get -o Acquire::Check-Valid-Until=false update
-RUN apt-get install -y openjdk-11-jdk vim wget curl zip unzip git python-pip python-dev build-essential
+RUN apt-get install -y openjdk-17-jdk vim wget curl zip unzip git python-pip python-dev build-essential
 
 # Install Gradle
 RUN wget https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip && \
