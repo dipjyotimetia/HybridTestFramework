@@ -24,13 +24,6 @@ jobs:
         run: chmod +x gradlew
       - name: Running End To End Web Test
         run: ./gradlew task web
-      - uses: 8398a7/action-slack@v3
-        name: Slack Alert
-        if: always()
-        with:
-          status: ${{ job.status }}
-          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-          text: "Web Test."
 
   mobile:
     runs-on: ubuntu-latest
@@ -52,7 +45,7 @@ jobs:
         env:
           USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
           ACCESS: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-      - name: Gradle Run Test Browserstack
+      - name: Running End To End Mobile Test
         run: ./gradlew task mobile
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
@@ -65,13 +58,6 @@ jobs:
         with:
           name: allure-report
           path: build/reports/allure-report
-      - uses: 8398a7/action-slack@v3
-        name: Slack Alert
-        if: always()
-        with:
-          status: ${{ job.status }}
-          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-          text: "Mobile Test."
 
   api:
     runs-on: ubuntu-latest
@@ -92,10 +78,3 @@ jobs:
           AWS_ACCOUNT_ID: "000000000000"
           AWS_ACCESS_KEY_ID: dummy-access-key
           AWS_SECRET_ACCESS_KEY: dummy-secret-key
-      - uses: 8398a7/action-slack@v3
-        name: Slack Alert
-        if: always()
-        with:
-          status: ${{ job.status }}
-          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-          text: "Api Test."

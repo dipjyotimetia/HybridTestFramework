@@ -188,7 +188,6 @@ abstract class WebOptions extends MobileOptions {
         browserStackOptions.put("debug", "false");
         browserStackOptions.put("consoleLogs", "info");
         browserStackOptions.put("networkLogs", "true");
-        browserStackOptions.put("seleniumVersion", "4.8.0");
         browserStackOptions.put("browserstack", browserStackOptions);
         //browserStackOptions.put("local", "true");
         switch (browser) {
