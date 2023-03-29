@@ -53,7 +53,7 @@ abstract class MobileOptions {
     private final String username = System.getenv("BROWSERSTACK_USERNAME");
     private final String accessKey = System.getenv("BROWSERSTACK_ACCESS_KEY");
     private final String serverUrl = "http://" + serverIp + ":" + appiumPort;
-    private final String cloudURL = "https://" + username + ":" + accessKey + "@hub.browserstack.com/wd/hub";
+    private final String cloudURL = "https://" + username + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub";
     private final String sauceURL = "https://" + sauce_username + ":" + sauce_accessKey + "@ondemand.apac-southeast-1.saucelabs.com:443/wd/hub";
     DesiredCapabilities caps = new DesiredCapabilities();
 
