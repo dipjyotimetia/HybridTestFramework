@@ -1,5 +1,5 @@
 # base image
-FROM ubuntu:bionic-20221019
+FROM ubuntu:bionic-20230308
 
 LABEL maintainer="HybridTestFramework dipjyotimetia@gmail.com"
 
