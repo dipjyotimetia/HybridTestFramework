@@ -40,6 +40,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -169,16 +170,27 @@ abstract class WebOptions extends MobileOptions {
     }
 
     /**
-     * Add browserstack capabilities
+     * Add browser stack capabilities
+     *
+     * @param browser  browser
+     * @param testName test name
+     * @return capabilities
      */
     protected DesiredCapabilities addBrowserStackCapabilities(String browser, String testName) {
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("name", testName);
-        capabilities.setCapability("os", "Windows");
-        capabilities.setCapability("osVersion", "11");
-        capabilities.setCapability("build", "HybridTestFramework");
-        capabilities.setCapability("local", false);
-        capabilities.setCapability("seleniumVersion", "4.8.0");
+        HashMap<String, Object> browserStackOptions = new HashMap<>();
+        browserStackOptions.put("os", "Windows");
+        browserStackOptions.put("osVersion", "11");
+        browserStackOptions.put("projectName", "HybridTestFramework");
+        browserStackOptions.put("buildName", "BUILD_NAME");
+        browserStackOptions.put("sessionName", testName);
+        browserStackOptions.put("local", "false");
+        browserStackOptions.put("debug", "false");
+        browserStackOptions.put("consoleLogs", "info");
+        browserStackOptions.put("networkLogs", "true");
+        browserStackOptions.put("seleniumVersion", "4.8.0");
+        browserStackOptions.put("browserstack", browserStackOptions);
+        //browserStackOptions.put("local", "true");
         switch (browser) {
             case "chrome" -> {
                 capabilities.setCapability("browserName", "Chrome");
@@ -194,6 +206,7 @@ abstract class WebOptions extends MobileOptions {
             }
             default -> log.info("browser selection is required");
         }
+        capabilities.setCapability("bstack:options", browserStackOptions);
         return capabilities;
     }
 

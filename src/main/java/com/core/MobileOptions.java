@@ -130,12 +130,11 @@ abstract class MobileOptions {
         browserstackOptions.put("appiumVersion", "2.0.0");
         browserstackOptions.put("automationVersion", "latest");
         browserstackOptions.put("projectName", "HybridTestFramework");
-//        browserstackOptions.put("local", "true");
+        //browserstackOptions.put("local", "true");
         browserstackOptions.put("buildName", "browserstack-build-1");
         browserstackOptions.put("sessionName", "first_test");
         caps.setCapability("bstack:options", browserstackOptions);
     }
-
 
     /**
      * Saucelabs capabilities
@@ -147,8 +146,8 @@ abstract class MobileOptions {
     private void saucelabsCapabilities(MutableCapabilities caps, String device) {
         MutableCapabilities sauceOptions = new MutableCapabilities();
         sauceOptions.setCapability("appiumVersion", "1.22.1");
-//        sauceOptions.setCapability("build", "<your build id>");
-//        sauceOptions.setCapability("name", "<your test name>");
+        //sauceOptions.setCapability("build", "<your build id>");
+        //sauceOptions.setCapability("name", "<your test name>");
         switch (device) {
             case "samsung" -> {
                 caps.setCapability("platformName", "Android");
