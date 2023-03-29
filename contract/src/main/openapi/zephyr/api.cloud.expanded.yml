@@ -36,74 +36,74 @@ info:
     url: https://smartbear-tm4j-prod-us-west-2-api-docs.s3-us-west-2.amazonaws.com/images/zs-logo.svg
     altText: Zephyr Scale Cloud
 servers:
-- url: https://api.zephyrscale.smartbear.com/v2
+  - url: https://api.zephyrscale.smartbear.com/v2
 security:
-- AccessToken: []
+  - AccessToken: [ ]
 tags:
-- name: Test Cases
-  description: Operations related to test cases.
-- name: Test Cycles
-  description: Operations related to test cycles.
-- name: Test Executions
-  description: Operations related to test executions.
-- name: Folders
-  description: Operations related to folders.
-- name: Statuses
-  description: Operations related to statuses.
-- name: Priorities
-  description: Operations related to priorities.
-- name: Environments
-  description: Operations related to environments.
-- name: Projects
-  description: Operations related to projects.
-- name: Links
-  description: Operations related to links.
-- name: Automations
-  description: Operations related to test case automations.
+  - name: Test Cases
+    description: Operations related to test cases.
+  - name: Test Cycles
+    description: Operations related to test cycles.
+  - name: Test Executions
+    description: Operations related to test executions.
+  - name: Folders
+    description: Operations related to folders.
+  - name: Statuses
+    description: Operations related to statuses.
+  - name: Priorities
+    description: Operations related to priorities.
+  - name: Environments
+    description: Operations related to environments.
+  - name: Projects
+    description: Operations related to projects.
+  - name: Links
+    description: Operations related to links.
+  - name: Automations
+    description: Operations related to test case automations.
 paths:
   /testcases:
     get:
       tags:
-      - Test Cases
+        - Test Cases
       summary: Get test cases
       description: Retrieves all test cases. Query parameters can be used to filter
         the results.
       operationId: listTestCases
       parameters:
-      - name: projectKey
-        in: query
-        description: Jira project key filter
-        schema:
-          pattern: "([A-Z][A-Z_0-9]+)"
-          type: string
-      - name: folderId
-        in: query
-        description: Folder ID filter
-        schema:
-          minimum: 1
-          type: integer
-          format: int64
-      - name: maxResults
-        in: query
-        description: "A hint as to the maximum number of results to return in each\
+        - name: projectKey
+          in: query
+          description: Jira project key filter
+          schema:
+            pattern: "([A-Z][A-Z_0-9]+)"
+            type: string
+        - name: folderId
+          in: query
+          description: Folder ID filter
+          schema:
+            minimum: 1
+            type: integer
+            format: int64
+        - name: maxResults
+          in: query
+          description: "A hint as to the maximum number of results to return in each\
           \ call. Note that the server reserves the right to impose a maxResults limit\
           \ that is lower than the value that a client provides, due to lack or resources\
           \ or any other condition. When this happens, your results will be truncated.\
           \ Callers should always check the returned maxResults to determine the value\
           \ that is effectively being used."
-        schema:
-          minimum: 1
-          type: integer
-          format: int64
-          default: 10
-      - name: startAt
-        in: query
-        description: Zero-indexed starting position. Should be a multiple of maxResults.
-        schema:
-          minimum: 0
-          type: integer
-          format: int64
-          default: 0
+          schema:
+            minimum: 1
+            type: integer
+            format: int64
+            default: 10
+        - name: startAt
+          in: query
+          description: Zero-indexed starting position. Should be a multiple of maxResults.
+          schema:
+            minimum: 0
+            type: integer
+            format: int64
+            default: 0
       responses:
         "200":
           description: OK
@@ -140,10 +140,10 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
     post:
       tags:
-      - Test Cases
+        - Test Cases
       summary: Create test case
       description: |
         Creates a test case. Fields `priorityName` and `statusName` will be set to default values if not informed. Default values are usually “Normal” for `priorityName` and “Draft” for `statusName`. All required test case custom fields should be present in the request.
@@ -191,22 +191,22 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /testcases/{testCaseKey}:
     get:
       tags:
-      - Test Cases
+        - Test Cases
       summary: Get test case
       description: Returns a test case for the given key.
       operationId: getTestCase
       parameters:
-      - name: testCaseKey
-        in: path
-        description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
-        required: true
-        schema:
-          pattern: "(.+-T[0-9]+)"
-          type: string
+        - name: testCaseKey
+          in: path
+          description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
+          required: true
+          schema:
+            pattern: "(.+-T[0-9]+)"
+            type: string
       responses:
         "200":
           description: OK
@@ -243,23 +243,23 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
     put:
       tags:
-      - Test Cases
+        - Test Cases
       summary: Update test case
       description: "Updates an existing test case. If the project has test case custom\
         \ fields, all custom fields should be present in the request. To leave any\
         \ of them blank, please set them null if they are not required custom fields.\n"
       operationId: updateTestCase
       parameters:
-      - name: testCaseKey
-        in: path
-        description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
-        required: true
-        schema:
-          pattern: "(.+-T[0-9]+)"
-          type: string
+        - name: testCaseKey
+          in: path
+          description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
+          required: true
+          schema:
+            pattern: "(.+-T[0-9]+)"
+            type: string
       requestBody:
         description: Test Case Update
         content:
@@ -299,22 +299,22 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /testcases/{testCaseKey}/links:
     get:
       tags:
-      - Test Cases
+        - Test Cases
       summary: Get links
       description: Returns links for a test case with specified key.
       operationId: getTestCaseLinks
       parameters:
-      - name: testCaseKey
-        in: path
-        description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
-        required: true
-        schema:
-          pattern: "(.+-T[0-9]+)"
-          type: string
+        - name: testCaseKey
+          in: path
+          description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
+          required: true
+          schema:
+            pattern: "(.+-T[0-9]+)"
+            type: string
       responses:
         "200":
           description: OK
@@ -351,22 +351,22 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /testcases/{testCaseKey}/links/issues:
     post:
       tags:
-      - Test Cases
+        - Test Cases
       summary: Create issue links
       description: Creates a link between a test case and a Jira issue.
       operationId: createTestCaseIssueLinks
       parameters:
-      - name: testCaseKey
-        in: path
-        description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
-        required: true
-        schema:
-          pattern: "(.+-T[0-9]+)"
-          type: string
+        - name: testCaseKey
+          in: path
+          description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
+          required: true
+          schema:
+            pattern: "(.+-T[0-9]+)"
+            type: string
       requestBody:
         description: Issue Link Input
         content:
@@ -410,22 +410,22 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /testcases/{testCaseKey}/links/weblinks:
     post:
       tags:
-      - Test Cases
+        - Test Cases
       summary: Create web links
       description: Creates a link between a test case and a generic URL.
       operationId: createTestCaseWebLinks
       parameters:
-      - name: testCaseKey
-        in: path
-        description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
-        required: true
-        schema:
-          pattern: "(.+-T[0-9]+)"
-          type: string
+        - name: testCaseKey
+          in: path
+          description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
+          required: true
+          schema:
+            pattern: "(.+-T[0-9]+)"
+            type: string
       requestBody:
         description: Web Link Input
         content:
@@ -469,44 +469,44 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /testcases/{testCaseKey}/versions:
     get:
       tags:
-      - Test Cases
+        - Test Cases
       summary: Get versions
       description: Returns all test case versions for a test case with specified key.
         Response is ordered by most recent first.
       operationId: listTestCaseVersions
       parameters:
-      - name: testCaseKey
-        in: path
-        description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
-        required: true
-        schema:
-          pattern: "(.+-T[0-9]+)"
-          type: string
-      - name: maxResults
-        in: query
-        description: "A hint as to the maximum number of results to return in each\
+        - name: testCaseKey
+          in: path
+          description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
+          required: true
+          schema:
+            pattern: "(.+-T[0-9]+)"
+            type: string
+        - name: maxResults
+          in: query
+          description: "A hint as to the maximum number of results to return in each\
           \ call. Note that the server reserves the right to impose a maxResults limit\
           \ that is lower than the value that a client provides, due to lack or resources\
           \ or any other condition. When this happens, your results will be truncated.\
           \ Callers should always check the returned maxResults to determine the value\
           \ that is effectively being used."
-        schema:
-          minimum: 1
-          type: integer
-          format: int64
-          default: 10
-      - name: startAt
-        in: query
-        description: Zero-indexed starting position. Should be a multiple of maxResults.
-        schema:
-          minimum: 0
-          type: integer
-          format: int64
-          default: 0
+          schema:
+            minimum: 1
+            type: integer
+            format: int64
+            default: 10
+        - name: startAt
+          in: query
+          description: Zero-indexed starting position. Should be a multiple of maxResults.
+          schema:
+            minimum: 0
+            type: integer
+            format: int64
+            default: 0
       responses:
         "200":
           description: OK
@@ -543,29 +543,29 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /testcases/{testCaseKey}/versions/{version}:
     get:
       tags:
-      - Test Cases
+        - Test Cases
       summary: Get version
       description: Retrieves a specific version of a test case.
       operationId: getTestCaseVersion
       parameters:
-      - name: testCaseKey
-        in: path
-        description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
-        required: true
-        schema:
-          pattern: "(.+-T[0-9]+)"
-          type: string
-      - name: version
-        in: path
-        description: Version of the test case to retrieve.
-        required: true
-        schema:
-          type: integer
-          format: int64
+        - name: testCaseKey
+          in: path
+          description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
+          required: true
+          schema:
+            pattern: "(.+-T[0-9]+)"
+            type: string
+        - name: version
+          in: path
+          description: Version of the test case to retrieve.
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         "200":
           description: OK
@@ -602,22 +602,22 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /testcases/{testCaseKey}/testscript:
     get:
       tags:
-      - Test Cases
+        - Test Cases
       summary: Get test script
       description: Returns the test script for the given test case
       operationId: getTestCaseTestScript
       parameters:
-      - name: testCaseKey
-        in: path
-        description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
-        required: true
-        schema:
-          pattern: "(.+-T[0-9]+)"
-          type: string
+        - name: testCaseKey
+          in: path
+          description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
+          required: true
+          schema:
+            pattern: "(.+-T[0-9]+)"
+            type: string
       responses:
         "200":
           description: OK
@@ -654,23 +654,23 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
     post:
       tags:
-      - Test Cases
+        - Test Cases
       summary: Create test script
       description: "Creates or updates the test script for a test case. If the test\
         \ case currently has a sequence of test steps assigned to it, these will be\
         \ implicitly removed."
       operationId: createTestCaseTestScript
       parameters:
-      - name: testCaseKey
-        in: path
-        description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
-        required: true
-        schema:
-          pattern: "(.+-T[0-9]+)"
-          type: string
+        - name: testCaseKey
+          in: path
+          description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
+          required: true
+          schema:
+            pattern: "(.+-T[0-9]+)"
+            type: string
       requestBody:
         description: Test Script Input
         content:
@@ -714,44 +714,44 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /testcases/{testCaseKey}/teststeps:
     get:
       tags:
-      - Test Cases
+        - Test Cases
       summary: Get test steps
       description: "Returns the test steps for the given test case. Provides a paged\
         \ response, with 100 items per page."
       operationId: getTestCaseTestSteps
       parameters:
-      - name: testCaseKey
-        in: path
-        description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
-        required: true
-        schema:
-          pattern: "(.+-T[0-9]+)"
-          type: string
-      - name: maxResults
-        in: query
-        description: "A hint as to the maximum number of results to return in each\
+        - name: testCaseKey
+          in: path
+          description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
+          required: true
+          schema:
+            pattern: "(.+-T[0-9]+)"
+            type: string
+        - name: maxResults
+          in: query
+          description: "A hint as to the maximum number of results to return in each\
           \ call. Note that the server reserves the right to impose a maxResults limit\
           \ that is lower than the value that a client provides, due to lack or resources\
           \ or any other condition. When this happens, your results will be truncated.\
           \ Callers should always check the returned maxResults to determine the value\
           \ that is effectively being used."
-        schema:
-          minimum: 1
-          type: integer
-          format: int64
-          default: 10
-      - name: startAt
-        in: query
-        description: Zero-indexed starting position. Should be a multiple of maxResults.
-        schema:
-          minimum: 0
-          type: integer
-          format: int64
-          default: 0
+          schema:
+            minimum: 1
+            type: integer
+            format: int64
+            default: 10
+        - name: startAt
+          in: query
+          description: Zero-indexed starting position. Should be a multiple of maxResults.
+          schema:
+            minimum: 0
+            type: integer
+            format: int64
+            default: 0
       responses:
         "200":
           description: OK
@@ -788,10 +788,10 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
     post:
       tags:
-      - Test Cases
+        - Test Cases
       summary: Post test steps
       description: "Assigns a series of test steps to a test case, appending them\
         \ to any existing sequence of test steps. A maximum of 100 steps can be posted\
@@ -802,13 +802,13 @@ paths:
         \ should be present in the request.\n"
       operationId: createTestCaseTestSteps
       parameters:
-      - name: testCaseKey
-        in: path
-        description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
-        required: true
-        schema:
-          pattern: "(.+-T[0-9]+)"
-          type: string
+        - name: testCaseKey
+          in: path
+          description: "The key of the test case. Test case keys are of the format [A-Z]+-T[0-9]+"
+          required: true
+          schema:
+            pattern: "(.+-T[0-9]+)"
+            type: string
       requestBody:
         description: Test Step Input
         content:
@@ -852,50 +852,50 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /testcycles:
     get:
       tags:
-      - Test Cycles
+        - Test Cycles
       summary: Get all Test Cycles
       description: Returns all test cycles. Query parameters can be used to filter
         by project and folder.
       operationId: listTestCycles
       parameters:
-      - name: projectKey
-        in: query
-        description: Jira project key filter
-        schema:
-          pattern: "([A-Z][A-Z_0-9]+)"
-          type: string
-      - name: folderId
-        in: query
-        description: Folder ID filter
-        schema:
-          minimum: 1
-          type: integer
-          format: int64
-      - name: maxResults
-        in: query
-        description: "A hint as to the maximum number of results to return in each\
+        - name: projectKey
+          in: query
+          description: Jira project key filter
+          schema:
+            pattern: "([A-Z][A-Z_0-9]+)"
+            type: string
+        - name: folderId
+          in: query
+          description: Folder ID filter
+          schema:
+            minimum: 1
+            type: integer
+            format: int64
+        - name: maxResults
+          in: query
+          description: "A hint as to the maximum number of results to return in each\
           \ call. Note that the server reserves the right to impose a maxResults limit\
           \ that is lower than the value that a client provides, due to lack or resources\
           \ or any other condition. When this happens, your results will be truncated.\
           \ Callers should always check the returned maxResults to determine the value\
           \ that is effectively being used."
-        schema:
-          minimum: 1
-          type: integer
-          format: int64
-          default: 10
-      - name: startAt
-        in: query
-        description: Zero-indexed starting position. Should be a multiple of maxResults.
-        schema:
-          minimum: 0
-          type: integer
-          format: int64
-          default: 0
+          schema:
+            minimum: 1
+            type: integer
+            format: int64
+            default: 10
+        - name: startAt
+          in: query
+          description: Zero-indexed starting position. Should be a multiple of maxResults.
+          schema:
+            minimum: 0
+            type: integer
+            format: int64
+            default: 0
       responses:
         "200":
           description: OK
@@ -932,10 +932,10 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
     post:
       tags:
-      - Test Cycles
+        - Test Cycles
       summary: Create a Test Cycle
       description: Creates a Test Cycle. All required test cycle custom fields should
         be present in the request.
@@ -983,23 +983,23 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /testcycles/{testCycleIdOrKey}:
     get:
       tags:
-      - Test Cycles
+        - Test Cycles
       summary: Get test cycle
       description: Returns a test cycle for the given key.
       operationId: getTestCycle
       parameters:
-      - name: testCycleIdOrKey
-        in: path
-        description: "The ID or key of the test cycle. Test cycle keys are of the\
+        - name: testCycleIdOrKey
+          in: path
+          description: "The ID or key of the test cycle. Test cycle keys are of the\
           \ format [A-Z]+-R[0-9]+"
-        required: true
-        schema:
-          pattern: "([0-9]+)|(.+-R[0-9]+)"
-          type: string
+          required: true
+          schema:
+            pattern: "([0-9]+)|(.+-R[0-9]+)"
+            type: string
       responses:
         "200":
           description: OK
@@ -1036,10 +1036,10 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
     put:
       tags:
-      - Test Cycles
+        - Test Cycles
       summary: Update test cycle
       description: "Updates an existing test cycle. If the project has test cycle\
         \ custom fields, all custom fields should be present in the request. To leave\
@@ -1047,14 +1047,14 @@ paths:
         \ fields.\n"
       operationId: updateTestCycle
       parameters:
-      - name: testCycleIdOrKey
-        in: path
-        description: "The ID or key of the test cycle. Test cycle keys are of the\
+        - name: testCycleIdOrKey
+          in: path
+          description: "The ID or key of the test cycle. Test cycle keys are of the\
           \ format [A-Z]+-R[0-9]+"
-        required: true
-        schema:
-          pattern: "([0-9]+)|(.+-R[0-9]+)"
-          type: string
+          required: true
+          schema:
+            pattern: "([0-9]+)|(.+-R[0-9]+)"
+            type: string
       requestBody:
         description: Test Cycle Update
         content:
@@ -1101,23 +1101,23 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /testcycles/{testCycleIdOrKey}/links:
     get:
       tags:
-      - Test Cycles
+        - Test Cycles
       summary: Get links
       description: Returns links for a test cycle with specified key.
       operationId: getTestCycleLinks
       parameters:
-      - name: testCycleIdOrKey
-        in: path
-        description: "The ID or key of the test cycle. Test cycle keys are of the\
+        - name: testCycleIdOrKey
+          in: path
+          description: "The ID or key of the test cycle. Test cycle keys are of the\
           \ format [A-Z]+-R[0-9]+"
-        required: true
-        schema:
-          pattern: "([0-9]+)|(.+-R[0-9]+)"
-          type: string
+          required: true
+          schema:
+            pattern: "([0-9]+)|(.+-R[0-9]+)"
+            type: string
       responses:
         "200":
           description: OK
@@ -1154,23 +1154,23 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /testcycles/{testCycleIdOrKey}/links/issues:
     post:
       tags:
-      - Test Cycles
+        - Test Cycles
       summary: Create issue links
       description: Creates a link between a test cycle and a Jira issue.
       operationId: createTestCycleIssueLink
       parameters:
-      - name: testCycleIdOrKey
-        in: path
-        description: "The ID or key of the test cycle. Test cycle keys are of the\
+        - name: testCycleIdOrKey
+          in: path
+          description: "The ID or key of the test cycle. Test cycle keys are of the\
           \ format [A-Z]+-R[0-9]+"
-        required: true
-        schema:
-          pattern: "([0-9]+)|(.+-R[0-9]+)"
-          type: string
+          required: true
+          schema:
+            pattern: "([0-9]+)|(.+-R[0-9]+)"
+            type: string
       requestBody:
         description: Issue Link Input
         content:
@@ -1215,23 +1215,23 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /testcycles/{testCycleIdOrKey}/links/weblinks:
     post:
       tags:
-      - Test Cycles
+        - Test Cycles
       summary: Create web links
       description: Creates a link between a test cycle and a generic URL.
       operationId: createTestCycleWebLink
       parameters:
-      - name: testCycleIdOrKey
-        in: path
-        description: "The ID or key of the test cycle. Test cycle keys are of the\
+        - name: testCycleIdOrKey
+          in: path
+          description: "The ID or key of the test cycle. Test cycle keys are of the\
           \ format [A-Z]+-R[0-9]+"
-        required: true
-        schema:
-          pattern: "([0-9]+)|(.+-R[0-9]+)"
-          type: string
+          required: true
+          schema:
+            pattern: "([0-9]+)|(.+-R[0-9]+)"
+            type: string
       requestBody:
         description: Web Link Input
         content:
@@ -1276,43 +1276,43 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /testplans:
     get:
       tags:
-      - Test Plans
+        - Test Plans
       summary: Get test plans
       description: Retrieves all test plans. Query parameters can be used to filter
         the results.
       operationId: listTestPlans
       parameters:
-      - name: projectKey
-        in: query
-        description: Jira project key filter
-        schema:
-          pattern: "([A-Z][A-Z_0-9]+)"
-          type: string
-      - name: maxResults
-        in: query
-        description: "A hint as to the maximum number of results to return in each\
+        - name: projectKey
+          in: query
+          description: Jira project key filter
+          schema:
+            pattern: "([A-Z][A-Z_0-9]+)"
+            type: string
+        - name: maxResults
+          in: query
+          description: "A hint as to the maximum number of results to return in each\
           \ call. Note that the server reserves the right to impose a maxResults limit\
           \ that is lower than the value that a client provides, due to lack or resources\
           \ or any other condition. When this happens, your results will be truncated.\
           \ Callers should always check the returned maxResults to determine the value\
           \ that is effectively being used."
-        schema:
-          minimum: 1
-          type: integer
-          format: int64
-          default: 10
-      - name: startAt
-        in: query
-        description: Zero-indexed starting position. Should be a multiple of maxResults.
-        schema:
-          minimum: 0
-          type: integer
-          format: int64
-          default: 0
+          schema:
+            minimum: 1
+            type: integer
+            format: int64
+            default: 10
+        - name: startAt
+          in: query
+          description: Zero-indexed starting position. Should be a multiple of maxResults.
+          schema:
+            minimum: 0
+            type: integer
+            format: int64
+            default: 0
       responses:
         "200":
           description: OK
@@ -1349,75 +1349,75 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /testexecutions:
     get:
       tags:
-      - Test Executions
+        - Test Executions
       summary: Get test executions
       description: Returns all test executions. Query parameters can be used to filter
         by project and folder.
       operationId: listTestExecutions
       parameters:
-      - name: projectKey
-        in: query
-        description: Jira project key filter
-        schema:
-          pattern: "([A-Z][A-Z_0-9]+)"
-          type: string
-      - name: testCycle
-        in: query
-        description: Test cycle key filter.
-        schema:
-          pattern: "([0-9]+)|(.+-R[0-9]+)"
-          type: string
-      - name: testCase
-        in: query
-        description: Test case key filter.
-        schema:
-          pattern: "([0-9]+)|(.+-T[0-9]+)"
-          type: string
-      - name: actualEndDateAfter
-        in: query
-        description: "Filter for 'Actual End Date' after the given time. Format: yyyy-MM-dd'T'HH:mm:ss'Z'"
-        schema:
-          type: string
-          format: date-time
-      - name: actualEndDateBefore
-        in: query
-        description: "Filter for 'Actual End Date' before the given time. Format:\
+        - name: projectKey
+          in: query
+          description: Jira project key filter
+          schema:
+            pattern: "([A-Z][A-Z_0-9]+)"
+            type: string
+        - name: testCycle
+          in: query
+          description: Test cycle key filter.
+          schema:
+            pattern: "([0-9]+)|(.+-R[0-9]+)"
+            type: string
+        - name: testCase
+          in: query
+          description: Test case key filter.
+          schema:
+            pattern: "([0-9]+)|(.+-T[0-9]+)"
+            type: string
+        - name: actualEndDateAfter
+          in: query
+          description: "Filter for 'Actual End Date' after the given time. Format: yyyy-MM-dd'T'HH:mm:ss'Z'"
+          schema:
+            type: string
+            format: date-time
+        - name: actualEndDateBefore
+          in: query
+          description: "Filter for 'Actual End Date' before the given time. Format:\
           \ yyyy-MM-dd'T'HH:mm:ss'Z'"
-        schema:
-          type: string
-          format: date-time
-      - name: includeStepLinks
-        in: query
-        description: "If true, execution step issue links will be included in the\
+          schema:
+            type: string
+            format: date-time
+        - name: includeStepLinks
+          in: query
+          description: "If true, execution step issue links will be included in the\
           \ response"
-        schema:
-          type: boolean
-          default: false
-      - name: maxResults
-        in: query
-        description: "A hint as to the maximum number of results to return in each\
+          schema:
+            type: boolean
+            default: false
+        - name: maxResults
+          in: query
+          description: "A hint as to the maximum number of results to return in each\
           \ call. Note that the server reserves the right to impose a maxResults limit\
           \ that is lower than the value that a client provides, due to lack or resources\
           \ or any other condition. When this happens, your results will be truncated.\
           \ Callers should always check the returned maxResults to determine the value\
           \ that is effectively being used."
-        schema:
-          minimum: 1
-          type: integer
-          format: int64
-          default: 10
-      - name: startAt
-        in: query
-        description: Zero-indexed starting position. Should be a multiple of maxResults.
-        schema:
-          minimum: 0
-          type: integer
-          format: int64
-          default: 0
+          schema:
+            minimum: 1
+            type: integer
+            format: int64
+            default: 10
+        - name: startAt
+          in: query
+          description: Zero-indexed starting position. Should be a multiple of maxResults.
+          schema:
+            minimum: 0
+            type: integer
+            format: int64
+            default: 0
       responses:
         "200":
           description: OK
@@ -1454,10 +1454,10 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
     post:
       tags:
-      - Test Executions
+        - Test Executions
       summary: Create test execution
       description: Creates a test execution. All required test execution custom fields
         should be present in the request.
@@ -1508,30 +1508,30 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /testexecutions/{testExecutionIdOrKey}:
     get:
       tags:
-      - Test Executions
+        - Test Executions
       summary: Get test execution
       description: Returns a test execution for the given ID.
       operationId: getTestExecution
       parameters:
-      - name: testExecutionIdOrKey
-        in: path
-        description: "The ID or key of the test execution. Test execution keys are\
+        - name: testExecutionIdOrKey
+          in: path
+          description: "The ID or key of the test execution. Test execution keys are\
           \ of the format [A-Z]+-E[0-9]+"
-        required: true
-        schema:
-          pattern: "([0-9]+)|(.+-E[0-9]+)"
-          type: string
-      - name: includeStepLinks
-        in: query
-        description: "If true, execution step issue links will be included in the\
+          required: true
+          schema:
+            pattern: "([0-9]+)|(.+-E[0-9]+)"
+            type: string
+        - name: includeStepLinks
+          in: query
+          description: "If true, execution step issue links will be included in the\
           \ response"
-        schema:
-          type: boolean
-          default: false
+          schema:
+            type: boolean
+            default: false
       responses:
         "200":
           description: OK
@@ -1568,23 +1568,23 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /testexecutions/{testExecutionIdOrKey}/links:
     get:
       tags:
-      - Test Executions
+        - Test Executions
       summary: Get links
       description: Returns links for a test execution with specified ID.
       operationId: listTestExecutionLinks
       parameters:
-      - name: testExecutionIdOrKey
-        in: path
-        description: "The ID or key of the test execution. Test execution keys are\
+        - name: testExecutionIdOrKey
+          in: path
+          description: "The ID or key of the test execution. Test execution keys are\
           \ of the format [A-Z]+-E[0-9]+"
-        required: true
-        schema:
-          pattern: "([0-9]+)|(.+-E[0-9]+)"
-          type: string
+          required: true
+          schema:
+            pattern: "([0-9]+)|(.+-E[0-9]+)"
+            type: string
       responses:
         "200":
           description: OK
@@ -1621,23 +1621,23 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /testexecutions/{testExecutionIdOrKey}/links/issues:
     post:
       tags:
-      - Test Executions
+        - Test Executions
       summary: Create issue links
       description: Creates a link between a test execution and a Jira issue.
       operationId: createTestExecutionIssueLink
       parameters:
-      - name: testExecutionIdOrKey
-        in: path
-        description: "The ID or key of the test execution. Test execution keys are\
+        - name: testExecutionIdOrKey
+          in: path
+          description: "The ID or key of the test execution. Test execution keys are\
           \ of the format [A-Z]+-E[0-9]+"
-        required: true
-        schema:
-          pattern: "([0-9]+)|(.+-E[0-9]+)"
-          type: string
+          required: true
+          schema:
+            pattern: "([0-9]+)|(.+-E[0-9]+)"
+            type: string
       requestBody:
         description: Issue Link Input
         content:
@@ -1682,36 +1682,36 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /projects:
     get:
       tags:
-      - Projects
+        - Projects
       summary: Get projects
       description: Returns all projects.
       operationId: listProjects
       parameters:
-      - name: maxResults
-        in: query
-        description: "A hint as to the maximum number of results to return in each\
+        - name: maxResults
+          in: query
+          description: "A hint as to the maximum number of results to return in each\
           \ call. Note that the server reserves the right to impose a maxResults limit\
           \ that is lower than the value that a client provides, due to lack or resources\
           \ or any other condition. When this happens, your results will be truncated.\
           \ Callers should always check the returned maxResults to determine the value\
           \ that is effectively being used."
-        schema:
-          minimum: 1
-          type: integer
-          format: int64
-          default: 10
-      - name: startAt
-        in: query
-        description: Zero-indexed starting position. Should be a multiple of maxResults.
-        schema:
-          minimum: 0
-          type: integer
-          format: int64
-          default: 0
+          schema:
+            minimum: 1
+            type: integer
+            format: int64
+            default: 10
+        - name: startAt
+          in: query
+          description: Zero-indexed starting position. Should be a multiple of maxResults.
+          schema:
+            minimum: 0
+            type: integer
+            format: int64
+            default: 0
       responses:
         "200":
           description: OK
@@ -1748,22 +1748,22 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /projects/{projectIdOrKey}:
     get:
       tags:
-      - Projects
+        - Projects
       summary: Get project
       description: Returns a project for the given ID or key.
       operationId: getProject
       parameters:
-      - name: projectIdOrKey
-        in: path
-        description: The ID or key of the Jira project
-        required: true
-        schema:
-          pattern: "([0-9]+)|([A-Z][A-Z_0-9]+)"
-          type: string
+        - name: projectIdOrKey
+          in: path
+          description: The ID or key of the Jira project
+          required: true
+          schema:
+            pattern: "([0-9]+)|([A-Z][A-Z_0-9]+)"
+            type: string
       responses:
         "200":
           description: OK
@@ -1800,48 +1800,48 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /folders:
     get:
       tags:
-      - Folders
+        - Folders
       summary: Get folders
       description: Returns all folder.
       operationId: listFolders
       parameters:
-      - name: maxResults
-        in: query
-        description: "A hint as to the maximum number of results to return in each\
+        - name: maxResults
+          in: query
+          description: "A hint as to the maximum number of results to return in each\
           \ call. Note that the server reserves the right to impose a maxResults limit\
           \ that is lower than the value that a client provides, due to lack or resources\
           \ or any other condition. When this happens, your results will be truncated.\
           \ Callers should always check the returned maxResults to determine the value\
           \ that is effectively being used."
-        schema:
-          minimum: 1
-          type: integer
-          format: int64
-          default: 10
-      - name: startAt
-        in: query
-        description: Zero-indexed starting position. Should be a multiple of maxResults.
-        schema:
-          minimum: 0
-          type: integer
-          format: int64
-          default: 0
-      - name: projectKey
-        in: query
-        description: Jira project key filter
-        schema:
-          pattern: "([A-Z][A-Z_0-9]+)"
-          type: string
-      - name: folderType
-        in: query
-        description: "Folder type filter. Either `\"TEST_CASE\"`, `\"TEST_PLAN\"`\
+          schema:
+            minimum: 1
+            type: integer
+            format: int64
+            default: 10
+        - name: startAt
+          in: query
+          description: Zero-indexed starting position. Should be a multiple of maxResults.
+          schema:
+            minimum: 0
+            type: integer
+            format: int64
+            default: 0
+        - name: projectKey
+          in: query
+          description: Jira project key filter
+          schema:
+            pattern: "([A-Z][A-Z_0-9]+)"
+            type: string
+        - name: folderType
+          in: query
+          description: "Folder type filter. Either `\"TEST_CASE\"`, `\"TEST_PLAN\"`\
           \ or `\"TEST_CYCLE\"`"
-        schema:
-          $ref: '#/components/schemas/FolderType'
+          schema:
+            $ref: '#/components/schemas/FolderType'
       responses:
         "200":
           description: OK
@@ -1878,10 +1878,10 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
     post:
       tags:
-      - Folders
+        - Folders
       summary: Create folder
       description: Creates a folder.
       operationId: createFolder
@@ -1928,23 +1928,23 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /folders/{folderId}:
     get:
       tags:
-      - Folders
+        - Folders
       summary: Get folder
       description: Returns a folder for the given ID.
       operationId: getFolder
       parameters:
-      - name: folderId
-        in: path
-        description: Folder ID
-        required: true
-        schema:
-          minimum: 1
-          type: integer
-          format: int64
+        - name: folderId
+          in: path
+          description: Folder ID
+          required: true
+          schema:
+            minimum: 1
+            type: integer
+            format: int64
       responses:
         "200":
           description: OK
@@ -1981,42 +1981,42 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /priorities:
     get:
       tags:
-      - Priorities
+        - Priorities
       summary: Get priorities
       description: Returns all priorities.
       operationId: listPriorities
       parameters:
-      - name: maxResults
-        in: query
-        description: "A hint as to the maximum number of results to return in each\
+        - name: maxResults
+          in: query
+          description: "A hint as to the maximum number of results to return in each\
           \ call. Note that the server reserves the right to impose a maxResults limit\
           \ that is lower than the value that a client provides, due to lack or resources\
           \ or any other condition. When this happens, your results will be truncated.\
           \ Callers should always check the returned maxResults to determine the value\
           \ that is effectively being used."
-        schema:
-          minimum: 1
-          type: integer
-          format: int64
-          default: 10
-      - name: startAt
-        in: query
-        description: Zero-indexed starting position. Should be a multiple of maxResults.
-        schema:
-          minimum: 0
-          type: integer
-          format: int64
-          default: 0
-      - name: projectKey
-        in: query
-        description: Jira project key filter
-        schema:
-          pattern: "([A-Z][A-Z_0-9]+)"
-          type: string
+          schema:
+            minimum: 1
+            type: integer
+            format: int64
+            default: 10
+        - name: startAt
+          in: query
+          description: Zero-indexed starting position. Should be a multiple of maxResults.
+          schema:
+            minimum: 0
+            type: integer
+            format: int64
+            default: 0
+        - name: projectKey
+          in: query
+          description: Jira project key filter
+          schema:
+            pattern: "([A-Z][A-Z_0-9]+)"
+            type: string
       responses:
         "200":
           description: OK
@@ -2053,22 +2053,22 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /priorities/{priorityId}:
     get:
       tags:
-      - Priorities
+        - Priorities
       summary: Get priority
       description: Returns a priority for the given ID.
       operationId: getPriority
       parameters:
-      - name: priorityId
-        in: path
-        required: true
-        schema:
-          minimum: 1
-          type: integer
-          format: int64
+        - name: priorityId
+          in: path
+          required: true
+          schema:
+            minimum: 1
+            type: integer
+            format: int64
       responses:
         "200":
           description: OK
@@ -2105,46 +2105,46 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /statuses:
     get:
       tags:
-      - Statuses
+        - Statuses
       summary: Get statuses
       description: Returns all statuses.
       operationId: listStatuses
       parameters:
-      - name: maxResults
-        in: query
-        description: "A hint as to the maximum number of results to return in each\
+        - name: maxResults
+          in: query
+          description: "A hint as to the maximum number of results to return in each\
           \ call. Note that the server reserves the right to impose a maxResults limit\
           \ that is lower than the value that a client provides, due to lack or resources\
           \ or any other condition. When this happens, your results will be truncated.\
           \ Callers should always check the returned maxResults to determine the value\
           \ that is effectively being used."
-        schema:
-          minimum: 1
-          type: integer
-          format: int64
-          default: 10
-      - name: startAt
-        in: query
-        description: Zero-indexed starting position. Should be a multiple of maxResults.
-        schema:
-          minimum: 0
-          type: integer
-          format: int64
-          default: 0
-      - name: projectKey
-        in: query
-        description: Jira project key filter
-        schema:
-          pattern: "([A-Z][A-Z_0-9]+)"
-          type: string
-      - name: statusType
-        in: query
-        schema:
-          $ref: '#/components/schemas/StatusType'
+          schema:
+            minimum: 1
+            type: integer
+            format: int64
+            default: 10
+        - name: startAt
+          in: query
+          description: Zero-indexed starting position. Should be a multiple of maxResults.
+          schema:
+            minimum: 0
+            type: integer
+            format: int64
+            default: 0
+        - name: projectKey
+          in: query
+          description: Jira project key filter
+          schema:
+            pattern: "([A-Z][A-Z_0-9]+)"
+            type: string
+        - name: statusType
+          in: query
+          schema:
+            $ref: '#/components/schemas/StatusType'
       responses:
         "200":
           description: OK
@@ -2181,22 +2181,22 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /statuses/{statusId}:
     get:
       tags:
-      - Statuses
+        - Statuses
       summary: Get status
       description: Returns a status for the given ID.
       operationId: getStatus
       parameters:
-      - name: statusId
-        in: path
-        required: true
-        schema:
-          minimum: 1
-          type: integer
-          format: int64
+        - name: statusId
+          in: path
+          required: true
+          schema:
+            minimum: 1
+            type: integer
+            format: int64
       responses:
         "200":
           description: OK
@@ -2233,42 +2233,42 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /environments:
     get:
       tags:
-      - Environments
+        - Environments
       summary: Get environments
       description: Returns all environments.
       operationId: listEnvironments
       parameters:
-      - name: projectKey
-        in: query
-        description: Jira project key filter
-        schema:
-          pattern: "([A-Z][A-Z_0-9]+)"
-          type: string
-      - name: maxResults
-        in: query
-        description: "A hint as to the maximum number of results to return in each\
+        - name: projectKey
+          in: query
+          description: Jira project key filter
+          schema:
+            pattern: "([A-Z][A-Z_0-9]+)"
+            type: string
+        - name: maxResults
+          in: query
+          description: "A hint as to the maximum number of results to return in each\
           \ call. Note that the server reserves the right to impose a maxResults limit\
           \ that is lower than the value that a client provides, due to lack or resources\
           \ or any other condition. When this happens, your results will be truncated.\
           \ Callers should always check the returned maxResults to determine the value\
           \ that is effectively being used."
-        schema:
-          minimum: 1
-          type: integer
-          format: int64
-          default: 10
-      - name: startAt
-        in: query
-        description: Zero-indexed starting position. Should be a multiple of maxResults.
-        schema:
-          minimum: 0
-          type: integer
-          format: int64
-          default: 0
+          schema:
+            minimum: 1
+            type: integer
+            format: int64
+            default: 10
+        - name: startAt
+          in: query
+          description: Zero-indexed starting position. Should be a multiple of maxResults.
+          schema:
+            minimum: 0
+            type: integer
+            format: int64
+            default: 0
       responses:
         "200":
           description: OK
@@ -2305,22 +2305,22 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /environments/{environmentId}:
     get:
       tags:
-      - Environments
+        - Environments
       summary: Get environment
       description: Returns an environment for the given ID.
       operationId: getEnvironment
       parameters:
-      - name: environmentId
-        in: path
-        required: true
-        schema:
-          minimum: 1
-          type: integer
-          format: int64
+        - name: environmentId
+          in: path
+          required: true
+          schema:
+            minimum: 1
+            type: integer
+            format: int64
       responses:
         "200":
           description: OK
@@ -2357,22 +2357,22 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /links/{linkId}:
     delete:
       tags:
-      - Links
+        - Links
       summary: Delete link
       description: Deletes a link for the given ID.
       operationId: deleteLink
       parameters:
-      - name: linkId
-        in: path
-        required: true
-        schema:
-          minimum: 1
-          type: integer
-          format: int64
+        - name: linkId
+          in: path
+          required: true
+          schema:
+            minimum: 1
+            type: integer
+            format: int64
       responses:
         "200":
           description: OK
@@ -2405,35 +2405,35 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /automations/executions/custom:
     post:
       tags:
-      - Automations
+        - Automations
       summary: Custom format
       description: Create results using Zephyr Scale's custom results format.
       operationId: createCustomExecutions
       parameters:
-      - name: projectKey
-        in: query
-        description: Jira project key filter
-        required: true
-        schema:
-          pattern: "([A-Z][A-Z_0-9]+)"
-          type: string
-      - name: autoCreateTestCases
-        in: query
-        description: Indicate if test cases should be created if non existent.
-        schema:
-          type: boolean
-          default: false
-      - name: content-length
-        in: header
-        description: "The content-length header indicates the size of the message\
+        - name: projectKey
+          in: query
+          description: Jira project key filter
+          required: true
+          schema:
+            pattern: "([A-Z][A-Z_0-9]+)"
+            type: string
+        - name: autoCreateTestCases
+          in: query
+          description: Indicate if test cases should be created if non existent.
+          schema:
+            type: boolean
+            default: false
+        - name: content-length
+          in: header
+          description: "The content-length header indicates the size of the message\
           \ body, in bytes. https://datatracker.ietf.org/doc/html/rfc7230#section-3.3.2"
-        required: true
-        schema:
-          type: integer
+          required: true
+          schema:
+            type: integer
       requestBody:
         description: "The zip file containing custom execution results. The max file\
           \ size is 10MB. Optionally, you can send a `testCycle` part in your form\
@@ -2442,7 +2442,7 @@ paths:
           multipart/form-data:
             schema:
               required:
-              - file
+                - file
               type: object
               properties:
                 file:
@@ -2491,35 +2491,35 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /automations/executions/cucumber:
     post:
       tags:
-      - Automations
+        - Automations
       summary: Cucumber format
       description: Create results using the Cucumber results format.
       operationId: createCucumberExecutions
       parameters:
-      - name: projectKey
-        in: query
-        description: Jira project key filter
-        required: true
-        schema:
-          pattern: "([A-Z][A-Z_0-9]+)"
-          type: string
-      - name: autoCreateTestCases
-        in: query
-        description: Indicate if test cases should be created if non existent.
-        schema:
-          type: boolean
-          default: false
-      - name: content-length
-        in: header
-        description: "The content-length header indicates the size of the message\
+        - name: projectKey
+          in: query
+          description: Jira project key filter
+          required: true
+          schema:
+            pattern: "([A-Z][A-Z_0-9]+)"
+            type: string
+        - name: autoCreateTestCases
+          in: query
+          description: Indicate if test cases should be created if non existent.
+          schema:
+            type: boolean
+            default: false
+        - name: content-length
+          in: header
+          description: "The content-length header indicates the size of the message\
           \ body, in bytes. https://datatracker.ietf.org/doc/html/rfc7230#section-3.3.2"
-        required: true
-        schema:
-          type: integer
+          required: true
+          schema:
+            type: integer
       requestBody:
         description: "The zip file containing [Cucumber execution results](https://github.com/cucumber/cucumber-json-schema/blob/main/schema.json)\
           \ as one or more files. The max file size is 2MB. Optionally, you can send\
@@ -2528,7 +2528,7 @@ paths:
           multipart/form-data:
             schema:
               required:
-              - file
+                - file
               type: object
               properties:
                 file:
@@ -2577,37 +2577,37 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /automations/executions/junit:
     post:
       tags:
-      - Automations
+        - Automations
       summary: JUnit XML format
       description: "Create results using the JUnit XML results format. Optionally,\
         \ you can send a `testCycle` part in your form data to customize the created\
         \ test cycle."
       operationId: createJUnitExecutions
       parameters:
-      - name: projectKey
-        in: query
-        description: Jira project key filter
-        required: true
-        schema:
-          pattern: "([A-Z][A-Z_0-9]+)"
-          type: string
-      - name: autoCreateTestCases
-        in: query
-        description: Indicate if test cases should be created if non existent.
-        schema:
-          type: boolean
-          default: false
-      - name: content-length
-        in: header
-        description: "The content-length header indicates the size of the message\
+        - name: projectKey
+          in: query
+          description: Jira project key filter
+          required: true
+          schema:
+            pattern: "([A-Z][A-Z_0-9]+)"
+            type: string
+        - name: autoCreateTestCases
+          in: query
+          description: Indicate if test cases should be created if non existent.
+          schema:
+            type: boolean
+            default: false
+        - name: content-length
+          in: header
+          description: "The content-length header indicates the size of the message\
           \ body, in bytes. https://datatracker.ietf.org/doc/html/rfc7230#section-3.3.2"
-        required: true
-        schema:
-          type: integer
+          required: true
+          schema:
+            type: integer
       requestBody:
         description: The zip or single file containing JUnit execution results. The
           max file size is 10MB
@@ -2615,7 +2615,7 @@ paths:
           multipart/form-data:
             schema:
               required:
-              - file
+                - file
               type: object
               properties:
                 file:
@@ -2664,29 +2664,29 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /automations/testcases:
     get:
       tags:
-      - Automations
+        - Automations
       summary: Retrieve a zip file containing Cucumber Feature Files that matches
         the query passed as parameter.
       operationId: retrieveBDDTestCases
       parameters:
-      - name: projectKey
-        in: query
-        description: Jira project key filter
-        required: true
-        schema:
-          pattern: "([A-Z][A-Z_0-9]+)"
-          type: string
-      - name: Accept
-        in: header
-        required: true
-        schema:
-          type: string
-          enum:
-          - application/zip
+        - name: projectKey
+          in: query
+          description: Jira project key filter
+          required: true
+          schema:
+            pattern: "([A-Z][A-Z_0-9]+)"
+            type: string
+        - name: Accept
+          in: header
+          required: true
+          schema:
+            type: string
+            enum:
+              - application/zip
       responses:
         "200":
           description: A Zip file containing BDD feature files
@@ -2724,11 +2724,11 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
   /healthcheck:
     get:
       tags:
-      - Healthcheck
+        - Healthcheck
       summary: Check the health of this API
       operationId: healthcheck
       responses:
@@ -2763,21 +2763,21 @@ paths:
           uri:
             Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
         security:
-        - AccessToken: []
+          - AccessToken: [ ]
 components:
   schemas:
     TestCaseList:
       allOf:
-      - $ref: '#/components/schemas/PagedList'
-      - properties:
-          values:
-            type: array
-            items:
-              $ref: '#/components/schemas/TestCase'
+        - $ref: '#/components/schemas/PagedList'
+        - properties:
+            values:
+              type: array
+              items:
+                $ref: '#/components/schemas/TestCase'
     PagedList:
       required:
-      - maxResults
-      - startAt
+        - maxResults
+        - startAt
       type: object
       properties:
         next:
@@ -2802,12 +2802,12 @@ components:
           example: true
     TestCase:
       required:
-      - id
-      - key
-      - name
-      - priority
-      - project
-      - status
+        - id
+        - key
+        - name
+        - priority
+        - project
+        - status
       type: object
       properties:
         id:
@@ -2864,11 +2864,11 @@ components:
         id: 10005
         self: https://example.com/rest/api/v2/projects/10005
       allOf:
-      - $ref: '#/components/schemas/ResourceId'
-      - $ref: '#/components/schemas/Link'
+        - $ref: '#/components/schemas/ResourceId'
+        - $ref: '#/components/schemas/Link'
     ResourceId:
       required:
-      - id
+        - id
       type: object
       properties:
         id:
@@ -2896,9 +2896,9 @@ components:
       type: array
       description: Array of labels associated to this entity.
       example:
-      - Regression
-      - Performance
-      - Automated
+        - Regression
+        - Performance
+        - Automated
       items:
         type: string
     JiraComponent:
@@ -2906,32 +2906,32 @@ components:
         id: 10001
         self: https://your-domain.atlassian.net/rest/api/2/component/10001
       allOf:
-      - $ref: '#/components/schemas/ResourceId'
-      - $ref: '#/components/schemas/Link'
+        - $ref: '#/components/schemas/ResourceId'
+        - $ref: '#/components/schemas/Link'
     PriorityLink:
       example:
         id: 10002
         self: https://example.com/rest/api/v2/priority/10002
       allOf:
-      - $ref: '#/components/schemas/ResourceId'
-      - $ref: '#/components/schemas/Link'
+        - $ref: '#/components/schemas/ResourceId'
+        - $ref: '#/components/schemas/Link'
     StatusLink:
       example:
         id: 10000
         self: https://example.com/rest/api/v2/status/10000
       allOf:
-      - $ref: '#/components/schemas/ResourceId'
-      - $ref: '#/components/schemas/Link'
+        - $ref: '#/components/schemas/ResourceId'
+        - $ref: '#/components/schemas/Link'
     FolderLink:
       example:
         id: 100006
         self: https://example.com/rest/api/v2/folder/10006
       allOf:
-      - $ref: '#/components/schemas/ResourceId'
-      - $ref: '#/components/schemas/Link'
+        - $ref: '#/components/schemas/ResourceId'
+        - $ref: '#/components/schemas/Link'
     JiraUserLink:
       required:
-      - accountId
+        - accountId
       properties:
         accountId:
           $ref: '#/components/schemas/JiraUserAccountId'
@@ -2939,7 +2939,7 @@ components:
         self: https://www.example.com/jira/rest/api/2/user?accountId=5b10a2844c20165700ede21g
         accountId: 5b10a2844c20165700ede21g
       allOf:
-      - $ref: '#/components/schemas/Link'
+        - $ref: '#/components/schemas/Link'
     JiraUserAccountId:
       type: string
       description: Atlassian Account ID of the Jira user.
@@ -2948,7 +2948,7 @@ components:
       example:
         self: https://example.com/rest/api/v2/testCases/PROJ-T1/testscript
       allOf:
-      - $ref: '#/components/schemas/Link'
+        - $ref: '#/components/schemas/Link'
     CustomFields:
       type: object
       additionalProperties:
@@ -2964,18 +2964,18 @@ components:
           to the administration panel.
         Implemented: false
         Category:
-        - Performance
-        - Regression
+          - Performance
+          - Regression
         Tester: fa2e582e-5e15-521e-92e3-47e6ca2e7256
     TestCaseLinkList:
       description: This property is ignored on updates.
       allOf:
-      - $ref: '#/components/schemas/Link'
-      - properties:
-          issues:
-            $ref: '#/components/schemas/IssueLinkList'
-          webLinks:
-            $ref: '#/components/schemas/WebLinkList'
+        - $ref: '#/components/schemas/Link'
+        - properties:
+            issues:
+              $ref: '#/components/schemas/IssueLinkList'
+            webLinks:
+              $ref: '#/components/schemas/WebLinkList'
     IssueLinkList:
       type: array
       description: A list of Jira issues linked to this entity
@@ -2983,27 +2983,27 @@ components:
         $ref: '#/components/schemas/IssueLink'
     IssueLink:
       allOf:
-      - $ref: '#/components/schemas/Link'
-      - $ref: '#/components/schemas/IssueLinkInput'
-      - properties:
-          id:
-            $ref: '#/components/schemas/EntityId'
-          target:
-            type: string
-            description: The Jira Cloud REST API endpoint to get the full representation
-              of the issue
-            format: url
-            example: https://myjira.com/rest/api/2/issue/10000
-          type:
-            type: string
-            description: The link type
-            enum:
-            - COVERAGE
-            - BLOCKS
-            - RELATED
+        - $ref: '#/components/schemas/Link'
+        - $ref: '#/components/schemas/IssueLinkInput'
+        - properties:
+            id:
+              $ref: '#/components/schemas/EntityId'
+            target:
+              type: string
+              description: The Jira Cloud REST API endpoint to get the full representation
+                of the issue
+              format: url
+              example: https://myjira.com/rest/api/2/issue/10000
+            type:
+              type: string
+              description: The link type
+              enum:
+                - COVERAGE
+                - BLOCKS
+                - RELATED
     IssueLinkInput:
       required:
-      - issueId
+        - issueId
       type: object
       properties:
         issueId:
@@ -3019,21 +3019,21 @@ components:
         $ref: '#/components/schemas/WebLink'
     WebLink:
       allOf:
-      - $ref: '#/components/schemas/Link'
-      - $ref: '#/components/schemas/WebLinkInput'
-      - properties:
-          id:
-            $ref: '#/components/schemas/EntityId'
-          type:
-            type: string
-            description: The link type
-            enum:
-            - COVERAGE
-            - BLOCKS
-            - RELATED
+        - $ref: '#/components/schemas/Link'
+        - $ref: '#/components/schemas/WebLinkInput'
+        - properties:
+            id:
+              $ref: '#/components/schemas/EntityId'
+            type:
+              type: string
+              description: The link type
+              enum:
+                - COVERAGE
+                - BLOCKS
+                - RELATED
     WebLinkInput:
       required:
-      - url
+        - url
       type: object
       properties:
         description:
@@ -3047,8 +3047,8 @@ components:
           example: https://atlassian.com
     Error:
       required:
-      - errorCode
-      - message
+        - errorCode
+        - message
       type: object
       properties:
         errorCode:
@@ -3059,8 +3059,8 @@ components:
           example: projectKey must not be null
     TestCaseInput:
       required:
-      - name
-      - projectKey
+        - name
+        - projectKey
       type: object
       properties:
         projectKey:
@@ -3113,10 +3113,10 @@ components:
       example: Low
     KeyedCreatedResource:
       allOf:
-      - $ref: '#/components/schemas/CreatedResource'
-      - properties:
-          key:
-            type: string
+        - $ref: '#/components/schemas/CreatedResource'
+        - properties:
+            key:
+              type: string
     CreatedResource:
       type: object
       properties:
@@ -3126,33 +3126,33 @@ components:
           type: string
     TestCaseVersionLinkList:
       allOf:
-      - $ref: '#/components/schemas/PagedList'
-      - properties:
-          values:
-            type: array
-            description: A list of versions for a test case
-            items:
-              $ref: '#/components/schemas/TestCaseVersionLink'
+        - $ref: '#/components/schemas/PagedList'
+        - properties:
+            values:
+              type: array
+              description: A list of versions for a test case
+              items:
+                $ref: '#/components/schemas/TestCaseVersionLink'
     TestCaseVersionLink:
       example:
         id: 10002
         self: https://example.com/rest/api/v2/testCases/PROJ-T1/versions/1
       allOf:
-      - $ref: '#/components/schemas/Link'
-      - properties:
-          id:
-            $ref: '#/components/schemas/EntityId'
+        - $ref: '#/components/schemas/Link'
+        - properties:
+            id:
+              $ref: '#/components/schemas/EntityId'
     TestScript:
       description: Response body when retrieving test scripts
       allOf:
-      - $ref: '#/components/schemas/TestScriptInput'
-      - properties:
-          id:
-            $ref: '#/components/schemas/EntityId'
+        - $ref: '#/components/schemas/TestScriptInput'
+        - properties:
+            id:
+              $ref: '#/components/schemas/EntityId'
     TestScriptInput:
       required:
-      - text
-      - type
+        - text
+        - type
       type: object
       properties:
         type:
@@ -3162,9 +3162,9 @@ components:
             \ via API plugin."
           example: plain
           enum:
-          - plain
-          - bdd
-          - steps
+            - plain
+            - bdd
+            - steps
         text:
           minLength: 1
           type: string
@@ -3173,13 +3173,13 @@ components:
     TestStepsList:
       description: Response body when retrieving test steps
       allOf:
-      - $ref: '#/components/schemas/PagedList'
-      - properties:
-          values:
-            type: array
-            description: The list of test steps
-            items:
-              $ref: '#/components/schemas/TestStep'
+        - $ref: '#/components/schemas/PagedList'
+        - properties:
+            values:
+              type: array
+              description: The list of test steps
+              items:
+                $ref: '#/components/schemas/TestStep'
     TestStep:
       type: object
       properties:
@@ -3208,22 +3208,22 @@ components:
         \ to another test case. One of these options must be specified."
     TestStepTestCase:
       required:
-      - testCaseKey
+        - testCaseKey
       example:
         testCaseKey: PROJ-T2
         self: https://example.com/rest/api/v2/testCases/PROJ-T2/testscript
       allOf:
-      - $ref: '#/components/schemas/Link'
-      - properties:
-          testCaseKey:
-            pattern: "(.+-T[0-9]+)"
-            type: string
-            description: The key of the other test case that the test step should
-              delegate execution to. This cannot be the parent test case.
+        - $ref: '#/components/schemas/Link'
+        - properties:
+            testCaseKey:
+              pattern: "(.+-T[0-9]+)"
+              type: string
+              description: The key of the other test case that the test step should
+                delegate execution to. This cannot be the parent test case.
     TestStepsInput:
       required:
-      - items
-      - mode
+        - items
+        - mode
       type: object
       properties:
         mode:
@@ -3241,19 +3241,19 @@ components:
         \ to the end of the current list."
     TestCycleList:
       allOf:
-      - $ref: '#/components/schemas/PagedList'
-      - properties:
-          values:
-            type: array
-            items:
-              $ref: '#/components/schemas/TestCycle'
+        - $ref: '#/components/schemas/PagedList'
+        - properties:
+            values:
+              type: array
+              items:
+                $ref: '#/components/schemas/TestCycle'
     TestCycle:
       required:
-      - id
-      - key
-      - name
-      - project
-      - status
+        - id
+        - key
+        - name
+        - project
+        - status
       type: object
       properties:
         id:
@@ -3292,8 +3292,8 @@ components:
         id: 10000
         self: https://your-domain.atlassian.net/rest/api/2/version/10000
       allOf:
-      - $ref: '#/components/schemas/ResourceId'
-      - $ref: '#/components/schemas/Link'
+        - $ref: '#/components/schemas/ResourceId'
+        - $ref: '#/components/schemas/Link'
     EntityDescription:
       type: string
       description: Description outlining the scope.
@@ -3311,18 +3311,18 @@ components:
     TestCycleLinkListWithTestPlanLinks:
       description: This property is ignored on updates.
       allOf:
-      - $ref: '#/components/schemas/TestCycleLinkList'
-      - properties:
-          testPlans:
-            $ref: '#/components/schemas/TestCycleTestPlanLinkList'
+        - $ref: '#/components/schemas/TestCycleLinkList'
+        - properties:
+            testPlans:
+              $ref: '#/components/schemas/TestCycleTestPlanLinkList'
     TestCycleLinkList:
       allOf:
-      - $ref: '#/components/schemas/Link'
-      - properties:
-          issues:
-            $ref: '#/components/schemas/IssueLinkList'
-          webLinks:
-            $ref: '#/components/schemas/WebLinkList'
+        - $ref: '#/components/schemas/Link'
+        - properties:
+            issues:
+              $ref: '#/components/schemas/IssueLinkList'
+            webLinks:
+              $ref: '#/components/schemas/WebLinkList'
     TestCycleTestPlanLinkList:
       type: array
       description: A list of test plan links for a test cycle
@@ -3335,23 +3335,23 @@ components:
         type: RELATED
         testPlanId: 2
       allOf:
-      - $ref: '#/components/schemas/ResourceId'
-      - $ref: '#/components/schemas/Link'
-      - properties:
-          testPlanId:
-            type: integer
-            format: int64
-          type:
-            type: string
-            description: The link type
-            enum:
-            - COVERAGE
-            - BLOCKS
-            - RELATED
+        - $ref: '#/components/schemas/ResourceId'
+        - $ref: '#/components/schemas/Link'
+        - properties:
+            testPlanId:
+              type: integer
+              format: int64
+            type:
+              type: string
+              description: The link type
+              enum:
+                - COVERAGE
+                - BLOCKS
+                - RELATED
     TestCycleInput:
       required:
-      - name
-      - projectKey
+        - name
+        - projectKey
       type: object
       properties:
         projectKey:
@@ -3385,19 +3385,19 @@ components:
       example: 10000
     TestPlanList:
       allOf:
-      - $ref: '#/components/schemas/PagedList'
-      - properties:
-          values:
-            type: array
-            items:
-              $ref: '#/components/schemas/TestPlan'
+        - $ref: '#/components/schemas/PagedList'
+        - properties:
+            values:
+              type: array
+              items:
+                $ref: '#/components/schemas/TestPlan'
     TestPlan:
       required:
-      - id
-      - key
-      - name
-      - project
-      - status
+        - id
+        - key
+        - name
+        - project
+        - status
       type: object
       properties:
         id:
@@ -3438,41 +3438,41 @@ components:
         $ref: '#/components/schemas/TestPlanTestCycleLink'
     TestPlanTestCycleLink:
       allOf:
-      - $ref: '#/components/schemas/ResourceId'
-      - $ref: '#/components/schemas/Link'
-      - properties:
-          testCycleId:
-            $ref: '#/components/schemas/EntityId'
-          type:
-            type: string
-            description: The link type
-            enum:
-            - COVERAGE
-            - BLOCKS
-            - RELATED
-          target:
-            type: string
-            description: The test cycle resource
-        example:
-          id: 1
-          self: https://api.zephyrscale.smartbear.com/v2/links/1
-          type: RELATED
-          testCycleId: 2
-          target: https://api.zephyrscale.smartbear.com/v2/testCycles/2
+        - $ref: '#/components/schemas/ResourceId'
+        - $ref: '#/components/schemas/Link'
+        - properties:
+            testCycleId:
+              $ref: '#/components/schemas/EntityId'
+            type:
+              type: string
+              description: The link type
+              enum:
+                - COVERAGE
+                - BLOCKS
+                - RELATED
+            target:
+              type: string
+              description: The test cycle resource
+          example:
+            id: 1
+            self: https://api.zephyrscale.smartbear.com/v2/links/1
+            type: RELATED
+            testCycleId: 2
+            target: https://api.zephyrscale.smartbear.com/v2/testCycles/2
     TestExecutionList:
       allOf:
-      - $ref: '#/components/schemas/PagedList'
-      - properties:
-          values:
-            type: array
-            items:
-              $ref: '#/components/schemas/TestExecution'
+        - $ref: '#/components/schemas/PagedList'
+        - properties:
+            values:
+              type: array
+              items:
+                $ref: '#/components/schemas/TestExecution'
     TestExecution:
       required:
-      - id
-      - project
-      - testCase
-      - testExecutionStatus
+        - id
+        - project
+        - testCase
+        - testExecutionStatus
       type: object
       properties:
         id:
@@ -3524,8 +3524,8 @@ components:
         id: 10005
         self: https://example.com/rest/api/v2/environment/10005
       allOf:
-      - $ref: '#/components/schemas/ResourceId'
-      - $ref: '#/components/schemas/Link'
+        - $ref: '#/components/schemas/ResourceId'
+        - $ref: '#/components/schemas/Link'
     ActualEndDate:
       type: string
       description: "The actual end date of the test cycle. Format: yyyy-MM-dd'T'HH:mm:ss'Z'"
@@ -3540,22 +3540,22 @@ components:
         id: 10010
         self: https://example.com/rest/api/v2/test/10010
       allOf:
-      - $ref: '#/components/schemas/Link'
-      - properties:
-          id:
-            $ref: '#/components/schemas/EntityId'
+        - $ref: '#/components/schemas/Link'
+        - properties:
+            id:
+              $ref: '#/components/schemas/EntityId'
     TestExecutionLinkList:
       allOf:
-      - $ref: '#/components/schemas/Link'
-      - properties:
-          issues:
-            $ref: '#/components/schemas/IssueLinkList'
+        - $ref: '#/components/schemas/Link'
+        - properties:
+            issues:
+              $ref: '#/components/schemas/IssueLinkList'
     TestExecutionInput:
       required:
-      - projectKey
-      - statusName
-      - testCaseKey
-      - testCycleKey
+        - projectKey
+        - statusName
+        - testCaseKey
+        - testCycleKey
       type: object
       properties:
         projectKey:
@@ -3602,7 +3602,7 @@ components:
           $ref: '#/components/schemas/CustomFields'
     TestScriptResultInput:
       required:
-      - statusName
+        - statusName
       type: object
       properties:
         statusName:
@@ -3615,18 +3615,18 @@ components:
           example: User logged in successfully
     ProjectList:
       allOf:
-      - $ref: '#/components/schemas/PagedList'
-      - properties:
-          values:
-            type: array
-            items:
-              $ref: '#/components/schemas/Project'
+        - $ref: '#/components/schemas/PagedList'
+        - properties:
+            values:
+              type: array
+              items:
+                $ref: '#/components/schemas/Project'
     Project:
       required:
-      - enabled
-      - id
-      - jiraProjectId
-      - key
+        - enabled
+        - id
+        - jiraProjectId
+        - key
       type: object
       properties:
         id:
@@ -3645,19 +3645,19 @@ components:
         `"
     FolderList:
       allOf:
-      - $ref: '#/components/schemas/PagedList'
-      - properties:
-          values:
-            type: array
-            items:
-              $ref: '#/components/schemas/Folder'
+        - $ref: '#/components/schemas/PagedList'
+        - properties:
+            values:
+              type: array
+              items:
+                $ref: '#/components/schemas/Folder'
     Folder:
       required:
-      - folderType
-      - id
-      - index
-      - name
-      - parentId
+        - folderType
+        - id
+        - index
+        - name
+        - parentId
       type: object
       properties:
         id:
@@ -3679,9 +3679,9 @@ components:
       example: 1
     FolderInput:
       required:
-      - folderType
-      - name
-      - projectKey
+        - folderType
+        - name
+        - projectKey
       type: object
       properties:
         parentId:
@@ -3700,25 +3700,25 @@ components:
           $ref: '#/components/schemas/FolderType'
     PriorityList:
       allOf:
-      - $ref: '#/components/schemas/PagedList'
-      - properties:
-          values:
-            type: array
-            items:
-              $ref: '#/components/schemas/Priority'
+        - $ref: '#/components/schemas/PagedList'
+        - properties:
+            values:
+              type: array
+              items:
+                $ref: '#/components/schemas/Priority'
     Priority:
       allOf:
-      - $ref: '#/components/schemas/OptionValue'
-      - properties:
-          default:
-            type: boolean
-            default: false
+        - $ref: '#/components/schemas/OptionValue'
+        - properties:
+            default:
+              type: boolean
+              default: false
     OptionValue:
       required:
-      - id
-      - index
-      - name
-      - project
+        - id
+        - index
+        - name
+        - project
       type: object
       properties:
         id:
@@ -3737,39 +3737,39 @@ components:
         `, `\"TEST_EXECUTION\"`"
     StatusList:
       allOf:
-      - $ref: '#/components/schemas/PagedList'
-      - properties:
-          values:
-            type: array
-            items:
-              $ref: '#/components/schemas/Status'
+        - $ref: '#/components/schemas/PagedList'
+        - properties:
+            values:
+              type: array
+              items:
+                $ref: '#/components/schemas/Status'
     Status:
       allOf:
-      - $ref: '#/components/schemas/OptionValue'
-      - properties:
-          color:
-            type: string
-          archived:
-            type: boolean
-            default: false
-          default:
-            type: boolean
-            default: false
+        - $ref: '#/components/schemas/OptionValue'
+        - properties:
+            color:
+              type: string
+            archived:
+              type: boolean
+              default: false
+            default:
+              type: boolean
+              default: false
     EnvironmentList:
       allOf:
-      - $ref: '#/components/schemas/PagedList'
-      - properties:
-          values:
-            type: array
-            items:
-              $ref: '#/components/schemas/Environment'
+        - $ref: '#/components/schemas/PagedList'
+        - properties:
+            values:
+              type: array
+              items:
+                $ref: '#/components/schemas/Environment'
     Environment:
       allOf:
-      - $ref: '#/components/schemas/OptionValue'
-      - properties:
-          archived:
-            type: boolean
-            default: false
+        - $ref: '#/components/schemas/OptionValue'
+        - properties:
+            archived:
+              type: boolean
+              default: false
     AutomationTestCycleInput:
       type: object
       properties:
@@ -3909,20 +3909,20 @@ components:
           Fn::Sub: "${ApiGatewayAuthorizerRole.Arn}"
         authorizerResultTtlInSeconds: 60
 x-tagGroups:
-- name: API Endpoints
-  tags:
-  - Test Cases
-  - Test Cycles
-  - Test Plans
-  - Test Executions
-  - Folders
-  - Statuses
-  - Priorities
-  - Environments
-  - Projects
-  - Links
-  - Automations
-  - Healthcheck
+  - name: API Endpoints
+    tags:
+      - Test Cases
+      - Test Cycles
+      - Test Plans
+      - Test Executions
+      - Folders
+      - Statuses
+      - Priorities
+      - Environments
+      - Projects
+      - Links
+      - Automations
+      - Healthcheck
 x-amazon-apigateway-api-key-source: AUTHORIZER
 x-amazon-apigateway-request-validators:
   basic:
@@ -3939,7 +3939,7 @@ x-amazon-integration:
     uri:
       Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunction.Arn}/invocations"
   security:
-  - AccessToken: []
+    - AccessToken: [ ]
 x-amazon-apigateway-binary-media-types:
-- multipart/form-data
-- application/zip
+  - multipart/form-data
+  - application/zip

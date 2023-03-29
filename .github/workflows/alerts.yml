@@ -3,9 +3,9 @@ name: Alerts
 
 on:
   workflow_run:
-    workflows: [Tests]
-    branches: [master]
-    types: [completed]
+    workflows: [ Tests ]
+    branches: [ master ]
+    types: [ completed ]
 
 env:
   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

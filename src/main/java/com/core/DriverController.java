@@ -25,11 +25,8 @@ SOFTWARE.
 package com.core;
 
 import com.config.AppConfig;
-import com.reporting.listeners.WebDriverEventHandler;
 import com.typesafe.config.ConfigFactory;
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
 import lombok.extern.slf4j.Slf4j;
 import net.lightbody.bmp.BrowserMobProxyServer;
@@ -45,8 +42,6 @@ import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.service.DriverService;
-import org.openqa.selenium.support.events.EventFiringDecorator;
-import org.openqa.selenium.support.events.WebDriverListener;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
@@ -56,7 +51,6 @@ import software.amazon.awssdk.services.devicefarm.model.CreateTestGridUrlRequest
 import software.amazon.awssdk.services.devicefarm.model.CreateTestGridUrlResponse;
 
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.URI;
 import java.net.URL;

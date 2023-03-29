@@ -4,12 +4,16 @@
 
 ![Selenium](img/framework.png)
 
-In the era of [cloud-native](https://docs.microsoft.com/en-us/dotnet/architecture/cloud-native/definition) world we cannot stick to a particular framework, however due to projects requirement we often need to evolve the existing testing
-solution in such a way so that it can cater multiple testing requirement, hence [HybridTestFramework](https://github.com/dipjyotimetia/HybridTestFramework) is targeting to create a bridge between the kind of legacy systems
+In the era of [cloud-native](https://docs.microsoft.com/en-us/dotnet/architecture/cloud-native/definition) world we
+cannot stick to a particular framework, however due to projects requirement we often need to evolve the existing testing
+solution in such a way so that it can cater multiple testing requirement,
+hence [HybridTestFramework](https://github.com/dipjyotimetia/HybridTestFramework) is targeting to create a bridge
+between the kind of legacy systems
 or the systems which are still in a transition phase of migrate to cloud with super cool cloud-native systems.
-Also, it's worth to mention as we are trying to follow the pattern of [testing pyramid](https://martinfowler.com/articles/practical-test-pyramid.html) where the testing is more focused for the api followed by WebUI, in future
+Also, it's worth to mention as we are trying to follow the pattern
+of [testing pyramid](https://martinfowler.com/articles/practical-test-pyramid.html) where the testing is more focused
+for the api followed by WebUI, in future
 the framework focus will be more towards the apis and events.
-
 
 ### Framework Capabilities
 
@@ -30,8 +34,8 @@ the framework focus will be more towards the apis and events.
 * Database testing support.
 * Kubernetes support.
 
-
 ### GitHub actions execution
+
 ![image](img/githubAction.png)
 
 ### JenkinsExecution

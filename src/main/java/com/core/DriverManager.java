@@ -26,7 +26,6 @@ package com.core;
 
 
 import com.config.AppConfig;
-import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.WebDriver;
 
 public class DriverManager extends DriverController {

@@ -36,7 +36,7 @@ ext {
     kafkaVersion = "7.3.2-ce"
     awsVersion = '2.20.34'
     ceVersion = "2.4.2"
-    allureVersion= "2.21.0"
+    allureVersion = "2.21.0"
 }
 
 group 'com.HybridTestFramework'
@@ -78,7 +78,7 @@ tasks.register('web', Test) {
     }
 }
 
-tasks.register('api', Test){
+tasks.register('api', Test) {
     useTestNG() {
         useDefaultListeners = true
         suites 'src/test/java/suite/aping.xml'
@@ -91,7 +91,7 @@ tasks.register('api', Test){
     }
 }
 
-tasks.register('mobile', Test){
+tasks.register('mobile', Test) {
     useTestNG() {
         useDefaultListeners = true
         suites 'src/test/java/suite/mobileng.xml'

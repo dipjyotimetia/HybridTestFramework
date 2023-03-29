@@ -42,13 +42,13 @@ plugins:
 nav:
   - Home: index.md
   - Getting Started:
-    - Setup: setup.md
-    - Selenium: selenium.md
-    - Apis: api.md
-    - gRPC: grpc.md
-    - GraphQL: graphql.md
-    - Kafka: kafka.md
-    - AWS: aws.md
+      - Setup: setup.md
+      - Selenium: selenium.md
+      - Apis: api.md
+      - gRPC: grpc.md
+      - GraphQL: graphql.md
+      - Kafka: kafka.md
+      - AWS: aws.md
 
 markdown_extensions:
   - admonition

@@ -3,6 +3,7 @@
 ### Write your first user journey graph api test
 
 Create new graph api test by using the following test conventions
+
 ```java
 @Severity(SeverityLevel.NORMAL)
 @Test(description = "E2E test for graphql")

@@ -26,13 +26,10 @@ package com.core;
 
 import io.appium.java_client.remote.AndroidMobileCapabilityType;
 import io.appium.java_client.remote.IOSMobileCapabilityType;
-import io.appium.java_client.remote.MobileCapabilityType;
-import io.appium.java_client.remote.MobilePlatform;
 import io.appium.java_client.service.local.AppiumServiceBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.exec.OS;
 import org.openqa.selenium.MutableCapabilities;
-import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.service.DriverService;
 
@@ -185,7 +182,7 @@ abstract class MobileOptions {
         caps.setCapability("platformName", "android");
         caps.setCapability("platformVersion", "13.0");
         caps.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, "com.swaglabsmobileapp");
-         caps.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, "com.swaglabsmobileapp.MainActivity");
+        caps.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, "com.swaglabsmobileapp.MainActivity");
     }
 
     /**

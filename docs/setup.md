@@ -11,9 +11,9 @@
 * Allure
   https://github.com/allure-framework/allure2/archive/2.21.0.zip
 * Set Environment variables
-  * JAVA_HOME: Pointing to the Java SDK folder\bin
-  * GRADLE_HOME: Pointing to Gradle directory\bin.
-  * ALLURE_HOME: Pointing to allure directory\bin.
+    * JAVA_HOME: Pointing to the Java SDK folder\bin
+    * GRADLE_HOME: Pointing to Gradle directory\bin.
+    * ALLURE_HOME: Pointing to allure directory\bin.
 
 ## Java 11 JDK Installation and config
 

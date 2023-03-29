@@ -1,15 +1,17 @@
 # Kafka Testing
 
 ## What is Apache Kafka?
-Apache Kafka is a framework implementation of a software bus using stream-processing. It is an open-source software platform developed by the Apache Software Foundation written in Scala and Java.
+
+Apache Kafka is a framework implementation of a software bus using stream-processing. It is an open-source software
+platform developed by the Apache Software Foundation written in Scala and Java.
 The project aims to provide a unified, high-throughput, low-latency platform for handling real-time data feeds.
-Behind the scenes, Kafka is distributed, scales well, replicates data across brokers (servers), can survive broker downtime, and much more.
+Behind the scenes, Kafka is distributed, scales well, replicates data across brokers (servers), can survive broker
+downtime, and much more.
 ![img.png](img/kafka_desc.png)
 
 ![image](img/confluent_dashboard.png)
 
 ![image](img/confluent_topic.png)
-
 
 ## Topics, Partitions and Offsets
 
@@ -111,12 +113,16 @@ Example of topic B with 2 partitions
 ## Avro
 
 Apache Avro is a data serialization system.
+
 * Avro provides:
     * Rich data structures.
     * A compact, fast, binary data format.
     * A container file, to store persistent data.
     * Remote procedure call (RPC).
-    * Simple integration with dynamic languages. Code generation is not required to read or write data files nor to use or implement RPC protocols. Code generation as an optional optimization, only worth implementing for statically typed languages.
+    * Simple integration with dynamic languages. Code generation is not required to read or write data files nor to use
+      or implement RPC protocols. Code generation as an optional optimization, only worth implementing for statically
+      typed languages.
+
 ```avroschema
 {"namespace": "dip.avro",
   "type": "record",
@@ -128,6 +134,7 @@ Apache Avro is a data serialization system.
   ]
 }
 ```
+
 * Common Fields:
     * Name: Name of the schema
     * Namespace: (equivalent of package in java)

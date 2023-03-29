@@ -27,9 +27,7 @@ package com.core;
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
 import com.github.javafaker.Faker;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Ordering;
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.AppiumFluentWait;
 import io.appium.java_client.android.*;
 import io.appium.java_client.android.connection.ConnectionState;
@@ -50,7 +48,6 @@ import org.json.simple.parser.JSONParser;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
