@@ -145,7 +145,7 @@ abstract class MobileOptions {
      */
     private void saucelabsCapabilities(MutableCapabilities caps, String device) {
         MutableCapabilities sauceOptions = new MutableCapabilities();
-        sauceOptions.setCapability("appiumVersion", "1.22.1");
+        sauceOptions.setCapability("appiumVersion", "2.0.0");
         //sauceOptions.setCapability("build", "<your build id>");
         //sauceOptions.setCapability("name", "<your test name>");
         switch (device) {

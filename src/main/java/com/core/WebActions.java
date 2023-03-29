@@ -40,7 +40,16 @@ import org.awaitility.Awaitility;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.openqa.selenium.*;
+import org.openqa.selenium.devtools.DevTools;
+import org.openqa.selenium.devtools.HasDevTools;
+import org.openqa.selenium.devtools.NetworkInterceptor;
+import org.openqa.selenium.devtools.v111.log.Log;
+import org.openqa.selenium.devtools.v111.performance.Performance;
+import org.openqa.selenium.devtools.v111.performance.model.Metric;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.Augmenter;
+import org.openqa.selenium.remote.http.HttpResponse;
+import org.openqa.selenium.remote.http.Route;
 import org.openqa.selenium.support.Color;
 import org.openqa.selenium.support.ui.*;
 import org.testng.Assert;
@@ -48,6 +57,7 @@ import org.testng.Assert;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -56,6 +66,8 @@ import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.is;
@@ -1191,8 +1203,116 @@ public class WebActions extends DriverManager {
         IS_ENABLED, IS_SELECTED, IS_DISPLAYED
     }
 
-    public static void markTestStatus(String status, String reason, WebDriver driver) {
+    public void listenConsoleLog() throws InterruptedException {
+        Boolean success = false;
+        Augmenter augmenter = new Augmenter();
+        driverThread = augmenter.augment(driverThread);
+
+        DevTools devTools = ((HasDevTools) driverThread).getDevTools();
+        devTools.createSession();
+
+        devTools.send(Log.enable());
+        devTools.addListener(Log.entryAdded(),
+                logEntry -> {
+                    log.info("text: " + logEntry.getText());
+                    log.info("level: " + logEntry.getLevel());
+                });
+        success = true;
+        Thread.sleep(1000 * 10);
+        if (success) {
+            markTestStatus("passed", "Console logs streaming", driverThread);
+        } else {
+            markTestStatus("failed", "Console logs did not stream", driverThread);
+        }
+    }
+
+    public void javascriptException(String url, WebElement element) throws InterruptedException {
+        Boolean success = false;
+        Augmenter augmenter = new Augmenter();
+        driverThread = augmenter.augment(driverThread);
+
+        DevTools devTools = ((HasDevTools) driverThread).getDevTools();
+        devTools.createSession();
+
+        List<JavascriptException> jsExceptionsList = new ArrayList<>();
+        Consumer<JavascriptException> addEntry = jsExceptionsList::add;
+        devTools.getDomains().events().addJavascriptExceptionListener(addEntry);
+
+        driverThread.get(url);
+
+        ((JavascriptExecutor) driverThread).executeScript("arguments[0].setAttribute(arguments[1], arguments[2]);",
+                element, "onclick", "throw new Error('My Error');");
+        element.click();
+
+        Thread.sleep(1000);
+        for (JavascriptException jsException : jsExceptionsList) {
+            System.out.println("JS exception message: " + jsException.getMessage());
+            System.out.println("JS exception system information: " + jsException.getSystemInformation());
+            jsException.printStackTrace();
+            success = true;
+        }
+        Thread.sleep(1000);
+        if (success) {
+            markTestStatus("passed", "Js exception caught", driverThread);
+        } else {
+            markTestStatus("failed", "Js exception was not caught", driverThread);
+        }
+    }
+
+    public void interceptNetwork(String url) {
+        Augmenter augmenter = new Augmenter();
+        driverThread = augmenter.augment(driverThread);
+
+        DevTools devTools = ((HasDevTools) driverThread).getDevTools();
+        devTools.createSession();
+
+        Supplier<InputStream> message = () -> new ByteArrayInputStream("Creamy, delicious cheese!".getBytes(StandardCharsets.UTF_8));
+
+        NetworkInterceptor interceptor = new NetworkInterceptor(
+                driverThread,
+                Route.matching(req -> true)
+                        .to(() -> req -> new HttpResponse()
+                                .setStatus(200)
+                                .addHeader("Content-Type", StandardCharsets.UTF_8.toString())
+                                .setContent(message)));
+        driverThread.get(url);
+        String source = driverThread.getPageSource();
+        log.info(source);
+
+        if (source.contains("delicious cheese!")) {
+            markTestStatus("passed", "Source contains the contents", driverThread);
+        } else {
+            markTestStatus("failed", "Content was not found in the source", driverThread);
+        }
+        interceptor.close();
+    }
+
+    public void performanceMetric(String url) {
+        Boolean success = false;
+        Augmenter augmenter = new Augmenter();
+        driverThread = augmenter.augment(driverThread);
+
+        DevTools devTools = ((HasDevTools) driverThread).getDevTools();
+        devTools.createSession();
+
+        devTools.send(Performance.enable(Optional.empty()));
+        List<Metric> metricList = devTools.send(Performance.getMetrics());
+
+        driverThread.get(url);
+
+        for (Metric m : metricList) {
+            System.out.println(m.getName() + " = " + m.getValue());
+            success = true;
+        }
+        if (success) {
+            markTestStatus("passed", "Performance metrics fetched", driverThread);
+        } else {
+            markTestStatus("failed", "Performance metrics were not fetched", driverThread);
+        }
+    }
+
+    public void markTestStatus(String status, String reason, WebDriver driver) {
         JavascriptExecutor jse = (JavascriptExecutor) driver;
-        jse.executeScript("browserstack_executor: {\"action\": \"setSessionStatus\", \"arguments\": {\"status\": \""+status+"\", \"reason\": \""+reason+"\"}}");
+        jse.executeScript("browserstack_executor: {\"action\": \"setSessionStatus\", \"arguments\": {\"status\": \"" + status + "\", \"reason\": \"" + reason + "\"}}");
     }
 }

@@ -105,14 +105,15 @@ abstract class WebOptions extends MobileOptions {
      */
     protected EdgeOptions getEdgeOptions() {
 //        WebDriverManager.edgedriver().setup();
-        ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.setHeadless(true);
-        chromeOptions.setPageLoadStrategy(PageLoadStrategy.NONE);
-        chromeOptions.addArguments("--ignore-certificate-errors");
-        chromeOptions.addArguments("--disable-popup-blocking");
-        chromeOptions.setBinary(
+        EdgeOptions edgeOptions = new EdgeOptions();
+        edgeOptions.setHeadless(true);
+        edgeOptions.setPageLoadStrategy(PageLoadStrategy.NONE);
+        edgeOptions.addArguments("--ignore-certificate-errors");
+        edgeOptions.addArguments("--disable-popup-blocking");
+        edgeOptions.addArguments("--headless=new");
+        edgeOptions.setBinary(
                 "C:\\Program Files (x86)\\Microsoft\\Edge Dev\\Application\\msedge.exe");
-        return new EdgeOptions().merge(chromeOptions);
+        return new EdgeOptions().merge(edgeOptions);
     }
 
     /**
@@ -148,19 +149,19 @@ abstract class WebOptions extends MobileOptions {
         switch (browser) {
             case "chrome" -> {
                 capabilities.setCapability("browserName", "chrome");
-                capabilities.setCapability("browserVersion", "90");
+                capabilities.setCapability("browserVersion", "latest");
                 capabilities.setCapability("platform", "windows");
                 log.info("Adding aws chrome capabilities");
             }
             case "firefox" -> {
                 capabilities.setCapability("browserName", "firefox");
-                capabilities.setCapability("browserVersion", "88");
+                capabilities.setCapability("browserVersion", "latest");
                 capabilities.setCapability("platform", "windows");
                 log.info("Adding aws firefox capabilities");
             }
             case "edge" -> {
                 capabilities.setCapability("browserName", "edge");
-                capabilities.setCapability("browserVersion", "90");
+                capabilities.setCapability("browserVersion", "latest");
                 capabilities.setCapability("platform", "windows");
                 log.info("Adding aws firefox capabilities");
             }
