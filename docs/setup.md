@@ -71,8 +71,9 @@ Error Handle for dynamic classpath error in intellij:
 Search and modify the below line in .idea workspace.xml
 
 ```xml
+
 <component name="PropertiesComponent">
-    <property name="dynamic.classpath" value="true" />
+    <property name="dynamic.classpath" value="true"/>
 </component>
 ``` 
 

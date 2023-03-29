@@ -137,6 +137,11 @@ public class DriverController extends WebOptions {
                     driverThread = new RemoteWebDriver(createURL("browserstack"), addBrowserStackCapabilities(browser, testName));
                     log.info("Grid client setup for browserstack successful");
                     break;
+                case "lambda":
+                    log.info("Make sure that lambda configs provided");
+                    driverThread = new RemoteWebDriver(createURL("lambda"), addLambdaTestCapabilities(browser, testName));
+                    log.info("Grid client setup for lambda successful");
+                    break;
                 case "local":
                     switch (browser) {
                         case "firefox" -> {

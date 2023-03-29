@@ -1191,18 +1191,6 @@ public class WebActions extends DriverManager {
         Assert.fail("TestCase Failed", e);
     }
 
-    enum SelectBy {
-        INDEX, VALUE, TEXT
-    }
-
-    public enum WebElementBy {
-        XPATH, ID, NAME, CLASS, CSS
-    }
-
-    public enum DisplayType {
-        IS_ENABLED, IS_SELECTED, IS_DISPLAYED
-    }
-
     public void listenConsoleLog() throws InterruptedException {
         Boolean success = false;
         Augmenter augmenter = new Augmenter();
@@ -1314,5 +1302,17 @@ public class WebActions extends DriverManager {
     public void markTestStatus(String status, String reason, WebDriver driver) {
         JavascriptExecutor jse = (JavascriptExecutor) driver;
         jse.executeScript("browserstack_executor: {\"action\": \"setSessionStatus\", \"arguments\": {\"status\": \"" + status + "\", \"reason\": \"" + reason + "\"}}");
+    }
+
+    enum SelectBy {
+        INDEX, VALUE, TEXT
+    }
+
+    public enum WebElementBy {
+        XPATH, ID, NAME, CLASS, CSS
+    }
+
+    public enum DisplayType {
+        IS_ENABLED, IS_SELECTED, IS_DISPLAYED
     }
 }

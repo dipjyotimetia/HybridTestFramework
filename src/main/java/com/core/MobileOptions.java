@@ -29,7 +29,6 @@ import io.appium.java_client.remote.IOSMobileCapabilityType;
 import io.appium.java_client.service.local.AppiumServiceBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.exec.OS;
-import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.service.DriverService;
 
@@ -38,7 +37,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Objects;
 
 @Slf4j
 abstract class MobileOptions {
@@ -46,15 +44,18 @@ abstract class MobileOptions {
     private static final String appiumJS = System.getenv("APPIUM_HOME") + "/main.js";
     private final String apk_url = System.getenv("APK_URL");
     private final String ipa_url = System.getenv("IPA_URL");
-    private final String sauce_username = System.getenv("SAUCE_USERNAME");
-    private final String sauce_accessKey = System.getenv("SAUCE_ACCESS_KEY");
     private final String serverIp = "127.0.0.1";    //Local
     private final String appiumPort = "4723";
-    private final String username = System.getenv("BROWSERSTACK_USERNAME");
-    private final String accessKey = System.getenv("BROWSERSTACK_ACCESS_KEY");
+    private final String bs_username = System.getenv("BROWSERSTACK_USERNAME");
+    private final String bs_accessKey = System.getenv("BROWSERSTACK_ACCESS_KEY");
+    private final String sauce_username = System.getenv("SAUCE_USERNAME");
+    private final String sauce_accessKey = System.getenv("SAUCE_ACCESS_KEY");
+    private final String lambda_username = System.getenv("SAUCE_USERNAME");
+    private final String lambda_accessKey = System.getenv("SAUCE_ACCESS_KEY");
     private final String serverUrl = "http://" + serverIp + ":" + appiumPort;
-    private final String browserstackURL = "https://" + username + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub";
-    private final String sauceURL = "https://" + sauce_username + ":" + sauce_accessKey + "@ondemand.apac-southeast-1.saucelabs.com:443/wd/hub";
+    private final String browserstackURL = "https://" + bs_username + ":" + bs_accessKey + "@hub-cloud.browserstack.com/wd/hub";
+    private final String sauceURL = "https://" + sauce_username + ":" + sauce_accessKey + "@ondemand.apac-southeast-1.saucelabs.com/wd/hub";
+    private final String lambdaURL = "https://" + lambda_username + ":" + lambda_accessKey + "@hub.lambdatest.com/wd/hub";
     DesiredCapabilities caps = new DesiredCapabilities();
 
     /**
@@ -65,15 +66,23 @@ abstract class MobileOptions {
      * @throws MalformedURLException exception
      */
     URL createURL(String cloudProvider) throws MalformedURLException {
-        if (Objects.equals(cloudProvider, "sauce")) {
-            log.info("Argument to driver object : " + sauceURL);
-            return new URL(sauceURL);
-        } else if (Objects.equals(cloudProvider, "browserstack")) {
-            log.info("Argument to driver object : " + browserstackURL);
-            return new URL(browserstackURL);
-        } else {
-            log.info("Argument to driver object : " + serverUrl);
-            return new URL(serverUrl);
+        switch (cloudProvider) {
+            case "sauce" -> {
+                log.info("Argument to driver object : " + sauceURL);
+                return new URL(sauceURL);
+            }
+            case "browserstack" -> {
+                log.info("Argument to driver object : " + browserstackURL);
+                return new URL(browserstackURL);
+            }
+            case "lambda" -> {
+                log.info("Argument to driver object : " + lambdaURL);
+                return new URL(lambdaURL);
+            }
+            default -> {
+                log.info("Argument to driver object : " + serverUrl);
+                return new URL(serverUrl);
+            }
         }
     }
 
@@ -88,6 +97,7 @@ abstract class MobileOptions {
         switch (cloudProvider) {
             case "sauce" -> saucelabsCapabilities(caps, device);
             case "browserstack" -> browserstackCapabilities(caps, device);
+            case "lambda" -> lambdaTestCapabilities(caps, device);
             default -> log.info("Setting up local appium server");
         }
     }
@@ -99,6 +109,56 @@ abstract class MobileOptions {
      * @param device device
      */
     private void browserstackCapabilities(DesiredCapabilities caps, String device) {
+        deviceCapabilities(caps, device);
+        HashMap<String, Object> browserstackOptions = new HashMap<>();
+        browserstackOptions.put("automationVersion", "latest");
+        browserstackOptions.put("appiumVersion", "2.0.0");
+        browserstackOptions.put("projectName", "HybridTestFramework");
+        //browserstackOptions.put("local", "true");
+        browserstackOptions.put("buildName", "browserstack-build-1");
+        browserstackOptions.put("sessionName", "first_test");
+        caps.setCapability("bstack:options", browserstackOptions);
+        log.info("Setting up browserstack capabilities");
+    }
+
+    /**
+     * LambdaTest capabilities
+     *
+     * @param caps   capabilities
+     * @param device device
+     */
+    private void lambdaTestCapabilities(DesiredCapabilities caps, String device) {
+        deviceCapabilities(caps, device);
+        HashMap<String, Object> ltOptions = new HashMap<>();
+        ltOptions.put("appiumVersion", "2.0.0");
+        ltOptions.put("w3c", true);
+        ltOptions.put("isRealMobile", true);
+        caps.setCapability("lt:options", ltOptions);
+        log.info("Setting up lambdatest capabilities");
+    }
+
+    /**
+     * Saucelabs capabilities
+     * <a href="https://saucelabs.com/platform/platform-configurator">...</a>
+     *
+     * @param caps   capabilities
+     * @param device device
+     */
+    private void saucelabsCapabilities(DesiredCapabilities caps, String device) {
+        deviceCapabilities(caps, device);
+        HashMap<String, Object> sauceOptions = new HashMap<>();
+        sauceOptions.put("appiumVersion", "2.0.0");
+        caps.setCapability("sauce:options", sauceOptions);
+        log.info("Setting up saucelabs capabilities");
+    }
+
+    /**
+     * Device capabilities
+     *
+     * @param caps   capabilities
+     * @param device device
+     */
+    private void deviceCapabilities(DesiredCapabilities caps, String device) {
         switch (device) {
             case "samsung" -> {
                 caps.setCapability("browserName", "chrome");
@@ -126,61 +186,6 @@ abstract class MobileOptions {
             }
             default -> System.out.println("No device found");
         }
-        HashMap<String, Object> browserstackOptions = new HashMap<>();
-        browserstackOptions.put("appiumVersion", "2.0.0");
-        browserstackOptions.put("automationVersion", "latest");
-        browserstackOptions.put("projectName", "HybridTestFramework");
-        //browserstackOptions.put("local", "true");
-        browserstackOptions.put("buildName", "browserstack-build-1");
-        browserstackOptions.put("sessionName", "first_test");
-        caps.setCapability("bstack:options", browserstackOptions);
-    }
-
-    /**
-     * Saucelabs capabilities
-     * <a href="https://saucelabs.com/platform/platform-configurator">...</a>
-     *
-     * @param caps   capabilities
-     * @param device device
-     */
-    private void saucelabsCapabilities(MutableCapabilities caps, String device) {
-        MutableCapabilities sauceOptions = new MutableCapabilities();
-        sauceOptions.setCapability("appiumVersion", "2.0.0");
-        //sauceOptions.setCapability("build", "<your build id>");
-        //sauceOptions.setCapability("name", "<your test name>");
-        switch (device) {
-            case "samsung" -> {
-                caps.setCapability("platformName", "Android");
-                caps.setCapability("browserName", "Chrome");
-                caps.setCapability("appium:platformVersion", "12");
-                caps.setCapability("appium:deviceName", "Google Pixel 4a (5G) GoogleAPI Emulator");
-                caps.setCapability("appium:orientation", "portrait");
-                caps.setCapability("sauceLabsImageInjectionEnabled", true);
-                caps.setCapability("autoGrantPermissions", true);
-                caps.setCapability("idleTimeout", "90");
-                caps.setCapability("newCommandTimeout", "90");
-                caps.setCapability("appium:app", "https://github.com/saucelabs/sample-app-mobile/releases/download/2.7.1/Android.SauceLabs.Mobile.Sample.app.2.7.1.apk");
-                caps.setCapability("sauce:options", sauceOptions);
-            }
-            case "iPhone12" -> {
-                caps.setCapability("platformName", "iOS");
-                caps.setCapability("appium:platformVersion", "15.0");
-                caps.setCapability("appium:deviceName", "iPhone .*");
-                caps.setCapability("appium:orientation", "portrait");
-                caps.setCapability("automationName", "XCUITEST");
-                caps.setCapability("sauceLabsImageInjectionEnabled", true);
-                caps.setCapability("autoAcceptAlerts", true);
-                caps.setCapability("idleTimeout", "90");
-                caps.setCapability("newCommandTimeout", "90");
-                caps.setCapability("app", "https://github.com/saucelabs/sample-app-mobile/releases/download/2.7.1/iOS.RealDevice.SauceLabs.Mobile.Sample.app.2.7.1.ipa");
-                caps.setCapability("sauce:options", sauceOptions);
-            }
-            default -> System.out.println("No device found");
-        }
-//        caps.setCapability("username", sauce_username);
-//        caps.setCapability("accessKey", sauce_accessKey);
-//        caps.setCapability("deviceType", "phone");
-//        caps.setCapability("deviceOrientation", "portrait");
     }
 
     /**

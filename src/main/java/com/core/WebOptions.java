@@ -26,6 +26,7 @@ package com.core;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.SystemUtils;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -111,8 +112,7 @@ abstract class WebOptions extends MobileOptions {
         edgeOptions.addArguments("--ignore-certificate-errors");
         edgeOptions.addArguments("--disable-popup-blocking");
         edgeOptions.addArguments("--headless=new");
-        edgeOptions.setBinary(
-                "C:\\Program Files (x86)\\Microsoft\\Edge Dev\\Application\\msedge.exe");
+        edgeOptions.setBinary("C:\\Program Files (x86)\\Microsoft\\Edge Dev\\Application\\msedge.exe");
         return new EdgeOptions().merge(edgeOptions);
     }
 
@@ -207,6 +207,42 @@ abstract class WebOptions extends MobileOptions {
             default -> log.info("browser selection is required");
         }
         capabilities.setCapability("bstack:options", browserStackOptions);
+        return capabilities;
+    }
+
+    /**
+     * Add browser stack capabilities
+     *
+     * @param browser  browser
+     * @param testName test name
+     * @return capabilities
+     */
+    protected Capabilities addLambdaTestCapabilities(String browser, String testName) {
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        HashMap<String, Object> ltOptions = new HashMap<>();
+        ltOptions.put("seCdp", true);
+        ltOptions.put("project", "HybridTestFramework");
+        ltOptions.put("name", testName);
+        ltOptions.put("selenium_version", "4.8.0");
+        switch (browser) {
+            case "chrome" -> {
+                ChromeOptions browserOptions = new ChromeOptions();
+                browserOptions.setPlatformName("Windows 11");
+                browserOptions.setBrowserVersion("111.0");
+            }
+            case "firefox" -> {
+                FirefoxOptions browserOptions = new FirefoxOptions();
+                browserOptions.setPlatformName("Windows 11");
+                browserOptions.setBrowserVersion("latest");
+            }
+            case "edge" -> {
+                EdgeOptions browserOptions = new EdgeOptions();
+                browserOptions.setPlatformName("Windows 11");
+                browserOptions.setBrowserVersion("latest");
+            }
+            default -> log.info("browser selection is required");
+        }
+        capabilities.setCapability("LT:Options", ltOptions);
         return capabilities;
     }
 
