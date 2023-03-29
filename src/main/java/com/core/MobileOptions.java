@@ -37,6 +37,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Objects;
 
 @Slf4j
@@ -100,31 +101,41 @@ abstract class MobileOptions {
     private void browserstackCapabilities(DesiredCapabilities caps, String device) {
         switch (device) {
             case "samsung" -> {
+                caps.setCapability("browserName", "chrome");
                 caps.setCapability("platformName", "android");
-                caps.setCapability("os_version", "13.0");
-                caps.setCapability("device", "Samsung Galaxy S23");
-                caps.setCapability("app", apk_url);
+                caps.setCapability("appium:platformVersion", "13.0");
+                caps.setCapability("appium:deviceName", "Samsung Galaxy S23");
+                caps.setCapability("appium:automationName", "uiautomator2");
+                caps.setCapability("appium:app", apk_url);
             }
             case "pixel" -> {
+                caps.setCapability("browserName", "chrome");
                 caps.setCapability("platformName", "android");
-                caps.setCapability("os_version", "13.0");
-                caps.setCapability("device", "Google Pixel 3");
-                caps.setCapability("app", apk_url);
+                caps.setCapability("appium:platformVersion", "13.0");
+                caps.setCapability("appium:deviceName", "Google Pixel 3");
+                caps.setCapability("appium:automationName", "uiautomator2");
+                caps.setCapability("appium:app", apk_url);
             }
             case "iPhone14" -> {
+                caps.setCapability("browserName", "safari");
                 caps.setCapability("platformName", "ios");
-                caps.setCapability("os_version", "16");
-                caps.setCapability("device", "iPhone 14");
-                caps.setCapability("app", ipa_url);
+                caps.setCapability("appium:platformVersion", "16");
+                caps.setCapability("appium:deviceName", "iPhone 14");
+                caps.setCapability("appium:automationName", "xcuitest");
+                caps.setCapability("appium:app", ipa_url);
             }
             default -> System.out.println("No device found");
         }
-        caps.setCapability("browserstack.appium_version", "1.22.0");
-        caps.setCapability("project", "HybridTestFramework");
-        caps.setCapability("isRealMobile", true);
-//        caps.setCapability("build", testName + sysTime());
-//        caps.setCapability("name", testName);
+        HashMap<String, Object> browserstackOptions = new HashMap<>();
+        browserstackOptions.put("appiumVersion", "2.0.0");
+        browserstackOptions.put("automationVersion", "latest");
+        browserstackOptions.put("projectName", "HybridTestFramework");
+//        browserstackOptions.put("local", "true");
+        browserstackOptions.put("buildName", "browserstack-build-1");
+        browserstackOptions.put("sessionName", "first_test");
+        caps.setCapability("bstack:options", browserstackOptions);
     }
+
 
     /**
      * Saucelabs capabilities
