@@ -519,38 +519,6 @@ public class MobileActions extends DriverManager {
         log.info("Shake Device");
     }
 
-//    /**
-//     * Swipe Down
-//     */
-//    public void swipeDown() {
-//        driverThread.executeScript("scroll", ImmutableMap.of("direction", "down"));
-//        log.info("Swipe Down");
-//    }
-//
-//    /**
-//     * Swipe Up
-//     */
-//    public void swipeUP() {
-//        driverThread.executeScript("scroll", ImmutableMap.of("direction", "up"));
-//        log.info("Swipe Up");
-//    }
-//
-//    /**
-//     * Accept Alert
-//     */
-//    public void acceptAlert() {
-//        driverThread.executeScript("acceptAlert");
-//        log.info("Accept Alert");
-//    }
-//
-//    /**
-//     * Dismiss Alert
-//     */
-//    public void dismissAlert() {
-//        driverThread.executeScript("dismissAlert");
-//        log.info("Dismiss Alert");
-//    }
-
     /**
      * Get text from the element
      *

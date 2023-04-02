@@ -114,56 +114,57 @@ public class DriverController extends WebOptions {
      * @param perf    perf
      */
     private synchronized void initWebDriver(String browser, String grid, String perf) {
-        DeviceFarmClient client = DeviceFarmClient.builder().region(Region.AP_SOUTHEAST_2).build();
-        CreateTestGridUrlRequest request = CreateTestGridUrlRequest.builder()
-                .expiresInSeconds(300)
-                .projectArn("arn:aws:devicefarm:ap-southeast-2:111122223333:testgrid-project:1111111-2222-3333-4444-555555555")
-                .build();
-        try {
-            switch (grid) {
-                case "aws":
-                    log.info("Make sure that the environment variables AWS_ACCESS_KEY and AWS_SECRET_KEY are configured in your testing environment.");
-                    CreateTestGridUrlResponse response = client.createTestGridUrl(request);
-                    driverThread = new RemoteWebDriver(new URL(response.url()), addCloudCapabilities(browser));
-                    log.info("Grid client setup for AWS Device farm successful");
-                    break;
-                case "docker":
-                    log.info("Make sure that docker containers are up and running");
-                    driverThread = new RemoteWebDriver(URI.create("http://localhost:4445/wd/hub").toURL(), getBrowserOptions(browser, perf));
-                    log.info("Grid client setup for Docker containers successful");
-                    break;
-                case "browserstack":
-                    log.info("Make sure that browserstack configs provided");
-                    driverThread = new RemoteWebDriver(createURL("browserstack"), addBrowserStackCapabilities(browser, testName));
-                    log.info("Grid client setup for browserstack successful");
-                    break;
-                case "lambda":
-                    log.info("Make sure that lambda configs provided");
-                    driverThread = new RemoteWebDriver(createURL("lambda"), addLambdaTestCapabilities(browser, testName));
-                    log.info("Grid client setup for lambda successful");
-                    break;
-                case "local":
-                    switch (browser) {
-                        case "firefox" -> {
-                            driverThread = new FirefoxDriver(getFirefoxOptions());
-                            log.info("Initiating firefox driver");
+        try (DeviceFarmClient client = DeviceFarmClient.builder().region(Region.AP_SOUTHEAST_2).build()) {
+            CreateTestGridUrlRequest request = CreateTestGridUrlRequest.builder()
+                    .expiresInSeconds(300)
+                    .projectArn("arn:aws:devicefarm:ap-southeast-2:111122223333:testgrid-project:1111111-2222-3333-4444-555555555")
+                    .build();
+            try {
+                switch (grid) {
+                    case "aws":
+                        log.info("Make sure that the environment variables AWS_ACCESS_KEY and AWS_SECRET_KEY are configured in your testing environment.");
+                        CreateTestGridUrlResponse response = client.createTestGridUrl(request);
+                        driverThread = new RemoteWebDriver(new URL(response.url()), addCloudCapabilities(browser));
+                        log.info("Grid client setup for AWS Device farm successful");
+                        break;
+                    case "docker":
+                        log.info("Make sure that docker containers are up and running");
+                        driverThread = new RemoteWebDriver(URI.create("http://localhost:4445/wd/hub").toURL(), getBrowserOptions(browser, perf));
+                        log.info("Grid client setup for Docker containers successful");
+                        break;
+                    case "browserstack":
+                        log.info("Make sure that browserstack configs provided");
+                        driverThread = new RemoteWebDriver(createURL("browserstack"), addBrowserStackCapabilities(browser, testName));
+                        log.info("Grid client setup for browserstack successful");
+                        break;
+                    case "lambda":
+                        log.info("Make sure that lambda configs provided");
+                        driverThread = new RemoteWebDriver(createURL("lambda"), addLambdaTestCapabilities(browser, testName));
+                        log.info("Grid client setup for lambda successful");
+                        break;
+                    case "local":
+                        switch (browser) {
+                            case "firefox" -> {
+                                driverThread = new FirefoxDriver(getFirefoxOptions());
+                                log.info("Initiating firefox driver");
+                            }
+                            case "chrome" -> {
+                                driverThread = new ChromeDriver(getChromeOptions(perf));
+                                log.info("Initiating chrome driver");
+                            }
+                            case "edge" -> {
+                                driverThread = new EdgeDriver(getEdgeOptions());
+                                log.info("Initiating edge driver");
+                            }
+                            default -> log.info("Browser listed not supported");
                         }
-                        case "chrome" -> {
-                            driverThread = new ChromeDriver(getChromeOptions(perf));
-                            log.info("Initiating chrome driver");
-                        }
-                        case "edge" -> {
-                            driverThread = new EdgeDriver(getEdgeOptions());
-                            log.info("Initiating edge driver");
-                        }
-                        default -> log.info("Browser listed not supported");
-                    }
-                default:
-                    log.info("Running in local docker container");
-                    break;
+                    default:
+                        log.info("Running in local docker container");
+                        break;
+                }
+            } catch (Exception e) {
+                log.error(e.getMessage());
             }
-        } catch (Exception e) {
-            log.error(e.getMessage());
         }
     }
 

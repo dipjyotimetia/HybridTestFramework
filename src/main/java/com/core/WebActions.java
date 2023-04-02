@@ -1037,9 +1037,8 @@ public class WebActions extends DriverManager {
      * @param webElement webElement
      * @param elementBy  typeOf element
      * @return element
-     * @throws Exception exception
      */
-    private WebElement getWebElement(String webElement, WebElementBy elementBy) throws Exception {
+    private WebElement getWebElement(String webElement, WebElementBy elementBy) {
         WebElement element = null;
         switch (elementBy) {
             case XPATH -> element = driverThread.findElement(By.xpath(webElement));

@@ -35,7 +35,7 @@ public class Android {
     private static String OS;
     private static String ANDROID_HOME;
 
-    public static String getAndroidHome() throws Exception {
+    public static String getAndroidHome() {
         if (ANDROID_HOME == null) {
             ANDROID_HOME = System.getenv("ANDROID_HOME");
             if (ANDROID_HOME == null)
