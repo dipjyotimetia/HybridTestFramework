@@ -9,7 +9,7 @@ services:
       - "8085:8085"
 
   redpanda:
-    image: docker.vectorized.io/vectorized/redpanda:v23.1.1
+    image: docker.vectorized.io/vectorized/redpanda:v23.1.4
     container_name: redpanda
     command:
       - redpanda start
@@ -27,7 +27,7 @@ services:
       - "29092:29092"
 
   console:
-    image: docker.redpanda.com/redpandadata/console:v2.2.2
+    image: docker.redpanda.com/redpandadata/console:v2.2.3
     entrypoint: /bin/sh
     command: -c "echo \"$$CONSOLE_CONFIG_FILE\" > /tmp/config.yml; /app/console"
     environment:
@@ -46,4 +46,3 @@ services:
       - "8080:8080"
     depends_on:
       - redpanda
-
