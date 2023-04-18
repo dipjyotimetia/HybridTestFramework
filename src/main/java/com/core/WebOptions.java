@@ -45,14 +45,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 
+/**
+ * WebOptions is an abstract class that provides methods to configure web browsers for testing.
+ * <p>
+ * It includes methods for setting up Chrome, Firefox, and Edge browser options, as well as cloud capabilities
+ * <p>
+ * for running tests on BrowserStack and LambdaTest.
+ * <p>
+ * This class extends MobileOptions.
+ */
 @Slf4j
 abstract class WebOptions extends MobileOptions {
 
     /**
-     * get chrome options
+     * Returns ChromeOptions with various settings for performance and security.
      *
-     * @param perf perf option
-     * @return chrome
+     * @param perf String indicating whether performance testing is enabled ("YES" to enable, other values to disable)
+     * @return ChromeOptions object with desired settings
      */
     protected ChromeOptions getChromeOptions(String perf) {
 //        WebDriverManager.chromedriver().setup();
@@ -79,9 +88,9 @@ abstract class WebOptions extends MobileOptions {
     }
 
     /**
-     * Get firefox options
+     * Returns FirefoxOptions with various settings for performance and security.
      *
-     * @return options
+     * @return FirefoxOptions object with desired settings
      */
     protected FirefoxOptions getFirefoxOptions() {
         //WebDriverManager.firefoxdriver().setup();
@@ -117,11 +126,11 @@ abstract class WebOptions extends MobileOptions {
     }
 
     /**
-     * Get Browser options
+     * Returns MutableCapabilities object with the specified browser options and performance settings.
      *
-     * @param browser browser
-     * @param perf    perf
-     * @return browserOption
+     * @param browser String indicating the browser to use ("chrome", "firefox", "edge")
+     * @param perf    String indicating whether performance testing is enabled ("YES" to enable, other values to disable)
+     * @return MutableCapabilities object with the specified browser options and performance settings
      */
     protected MutableCapabilities getBrowserOptions(String browser, String perf) {
         switch (browser) {
@@ -140,9 +149,10 @@ abstract class WebOptions extends MobileOptions {
     }
 
     /**
-     * Cloud capabilities
+     * Returns DesiredCapabilities object with cloud capabilities for the specified browser.
      *
-     * @param browser browser
+     * @param browser String indicating the browser to use ("chrome", "firefox", "edge")
+     * @return DesiredCapabilities object with cloud capabilities for the specified browser
      */
     protected DesiredCapabilities addCloudCapabilities(String browser) {
         DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -171,11 +181,11 @@ abstract class WebOptions extends MobileOptions {
     }
 
     /**
-     * Add browser stack capabilities
+     * Returns DesiredCapabilities object with BrowserStack capabilities for the specified browser and test name.
      *
-     * @param browser  browser
-     * @param testName test name
-     * @return capabilities
+     * @param browser  String indicating the browser to use ("chrome", "firefox", "edge")
+     * @param testName String containing the name of the test
+     * @return DesiredCapabilities object with BrowserStack capabilities for the specified browser and test name
      */
     protected DesiredCapabilities addBrowserStackCapabilities(String browser, String testName) {
         DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -211,11 +221,11 @@ abstract class WebOptions extends MobileOptions {
     }
 
     /**
-     * Add browser stack capabilities
+     * Returns Capabilities object with LambdaTest capabilities for the specified browser and test name.
      *
-     * @param browser  browser
-     * @param testName test name
-     * @return capabilities
+     * @param browser  String indicating the browser to use ("chrome", "firefox", "edge")
+     * @param testName String containing the name of the test
+     * @return Capabilities object with LambdaTest capabilities for the specified browser and test name
      */
     protected Capabilities addLambdaTestCapabilities(String browser, String testName) {
         DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -247,9 +257,9 @@ abstract class WebOptions extends MobileOptions {
     }
 
     /**
-     * logging preference
+     * Returns LoggingPreferences object with logging preferences for various log types.
      *
-     * @return prefs
+     * @return LoggingPreferences object with logging preferences
      */
     private LoggingPreferences pref() {
         LoggingPreferences pref = new LoggingPreferences();

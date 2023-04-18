@@ -1,5 +1,5 @@
-# Complete infra creation on the fly jenkins & SonarQube
 version: '3.8'
+
 services:
   allure:
     image: "frankescobar/allure-docker-service"
@@ -23,18 +23,26 @@ services:
 
   zaproxy:
     image: owasp/zap2docker-stable:latest
-    command: [
-      #"zap.sh",
-      "zap-x.sh",
-      #"zap-webswing.sh",
-      "-daemon",
-      "-host", "0.0.0.0", "-port", "8082",
-      "-config", "api.disablekey=true",
-      "-config", "api.addrs.addr.name=.*",
-      "-config", "api.addrs.addr.regex=true",
-      "-config", "api.key=d025okl6n7blpkrr0iee6c7hsi",
-      #"-addoninstall FOOXYZ",
-      "-addonupdate"
-    ]
+    command:
+      # Uncomment one of the following lines depending on the desired ZAP mode
+      # "zap.sh",
+      - "zap-x.sh"
+      # "zap-webswing.sh",
+      - "-daemon"
+      - "-host"
+      - "0.0.0.0"
+      - "-port"
+      - "8082"
+      - "-config"
+      - "api.disablekey=true"
+      - "-config"
+      - "api.addrs.addr.name=.*"
+      - "-config"
+      - "api.addrs.addr.regex=true"
+      - "-config"
+      - "api.key=d025okl6n7blpkrr0iee6c7hsi"
+      # Uncomment the following line to install a specific add-on
+      # "-addoninstall FOOXYZ",
+      - "-addonupdate"
     ports:
       - "127.0.0.1:8082:8082"

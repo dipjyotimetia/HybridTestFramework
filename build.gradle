@@ -179,7 +179,7 @@ dependencies {
     implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
 }
 
-// https://github.com/DiUS/java-faker/issues/327#issuecomment-1091166953
+// https://github.com/DiUS/java-faker/issues/331#issuecomment-1091166953
 configurations.configureEach {
     resolutionStrategy.eachDependency { details ->
         if (details.requested.module.toString() == 'org.yaml:snakeyaml') {

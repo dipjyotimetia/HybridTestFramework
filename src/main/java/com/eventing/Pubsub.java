@@ -42,6 +42,12 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * This class provides methods for publishing and subscribing messages using the Google Cloud Pub/Sub framework.
+ * It is used for creating topics, creating subscriptions, and publishing messages to topics in Avro format.
+ *
+ * @author Dipjyoti Metia
+ */
 @Slf4j
 public class Pubsub {
     SubscriptionAdminSettings subscriptionAdminSettings;
@@ -60,13 +66,13 @@ public class Pubsub {
     }
 
     /**
-     * Publish Avro message
+     * Publishes Avro records to the specified Google Cloud Pub/Sub topic.
      *
-     * @param projectId
-     * @param topicId
-     * @throws IOException
-     * @throws ExecutionException
-     * @throws InterruptedException
+     * @param projectId the Google Cloud project ID
+     * @param topicId   the Pub/Sub topic ID
+     * @throws IOException          if an I/O error occurs
+     * @throws ExecutionException   if an error occurs while processing the request
+     * @throws InterruptedException if the thread is interrupted while waiting for the response
      */
     public void publishAvroRecords(String projectId, String topicId)
             throws IOException, ExecutionException, InterruptedException {
@@ -131,8 +137,10 @@ public class Pubsub {
     }
 
     /**
-     * @param projectID
-     * @param topicId
+     * Creates a new Google Cloud Pub/Sub topic.
+     *
+     * @param projectID the Google Cloud project ID
+     * @param topicId   the Pub/Sub topic ID
      */
     public void createTopic(String projectID, String topicId) {
         try (TopicAdminClient topicAdminClient = TopicAdminClient.create(topicAdminSettings)) {
@@ -144,9 +152,11 @@ public class Pubsub {
     }
 
     /**
-     * @param subscriptionId
-     * @param projectID
-     * @param topicId
+     * Creates a new Google Cloud Pub/Sub subscription.
+     *
+     * @param subscriptionId the subscription ID
+     * @param projectID      the Google Cloud project ID
+     * @param topicId        the Pub/Sub topic ID
      */
     public void createSubscription(String subscriptionId, String projectID, String topicId) {
         try {
@@ -159,9 +169,11 @@ public class Pubsub {
     }
 
     /**
-     * @param projectID
-     * @param topicID
-     * @return
+     * Creates a Publisher instance for the specified Google Cloud Pub/Sub topic.
+     *
+     * @param projectID the Google Cloud project ID
+     * @param topicID   the Pub/Sub topic ID
+     * @return a Publisher instance for the specified topic
      */
     public Publisher createPublisher(String projectID, String topicID) {
         try {
@@ -176,7 +188,9 @@ public class Pubsub {
     }
 
     /**
-     * @return
+     * Creates a SubscriberStubSettings instance for the Google Cloud Pub/Sub service.
+     *
+     * @return a SubscriberStubSettings instance for the Pub/Sub service
      */
     public SubscriberStubSettings subscriberStubSettings() {
         try {

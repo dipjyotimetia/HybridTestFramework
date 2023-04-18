@@ -37,19 +37,24 @@ import java.io.OutputStream;
 import java.util.EnumSet;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * This class provides methods for performing SSH operations, such as listing folder structures on a remote server.
+ *
+ * @author Dipjyoti Metia
+ */
 @Slf4j
 public class SSH {
 
     /**
-     * List Folder Structure
+     * Lists the folder structure of a remote server using SSH. The output is logged using the info level.
      *
-     * @param username              username
-     * @param password              password
-     * @param host                  host
-     * @param port                  port
-     * @param defaultTimeoutSeconds defaultTime
-     * @param command               command
-     * @throws IOException exception
+     * @param username              a String representing the SSH username
+     * @param password              a String representing the SSH password
+     * @param host                  a String representing the remote server's host
+     * @param port                  an int representing the SSH port number
+     * @param defaultTimeoutSeconds a long representing the default timeout duration in seconds
+     * @param command               a String representing the command to list the folder structure
+     * @throws IOException if an error occurs while performing the SSH operation
      */
     public void listFolderStructure(String username, String password,
                                     String host, int port, long defaultTimeoutSeconds, String command) throws IOException {

@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   selenoid:
     network_mode: bridge
@@ -11,7 +12,15 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock"
     environment:
       - OVERRIDE_VIDEO_OUTPUT_DIR=PATH_TO_VIDEO_FOLDER
-    command: [ "-conf", "/etc/selenoid/browsers.json", "-video-output-dir", "/opt/selenoid/video", "-log-output-dir", "/opt/selenoid/logs", "-limit", "5" ] # change the limit to have more sessions
+    command:
+      - "-conf"
+      - "/etc/selenoid/browsers.json"
+      - "-video-output-dir"
+      - "/opt/selenoid/video"
+      - "-log-output-dir"
+      - "/opt/selenoid/logs"
+      - "-limit"
+      - "5" # Change the limit to have more sessions
     ports:
       - "4444:4444"
 
@@ -25,7 +34,9 @@ services:
       - "8083:8080"
     networks:
       - selenoid
-    command: [ "--selenoid-uri", "http://selenoid:4444" ]
+    command:
+      - "--selenoid-uri"
+      - "http://selenoid:4444"
 
 networks:
   selenoid:

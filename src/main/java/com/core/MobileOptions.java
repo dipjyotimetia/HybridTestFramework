@@ -38,6 +38,16 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 
+/**
+ * MobileOptions class is responsible for handling capabilities and configurations
+ * related to mobile devices and cloud providers. It sets desired capabilities for
+ * Android and iOS devices and sets up cloud service capabilities for providers
+ * like BrowserStack, Sauce Labs, and LambdaTest.
+ *
+ * @author Dipjyoti Metia
+ * @version 1.0
+ * @since 2020
+ */
 @Slf4j
 abstract class MobileOptions {
     private static final String nodeJS = System.getenv("NODE_HOME") + "/node.exe";
@@ -59,11 +69,11 @@ abstract class MobileOptions {
     DesiredCapabilities caps = new DesiredCapabilities();
 
     /**
-     * CreateURL
+     * Generates a URL for the given cloud provider.
      *
-     * @param cloudProvider cloud provider
-     * @return cloud server url
-     * @throws MalformedURLException exception
+     * @param cloudProvider name of the cloud provider.
+     * @return URL of the cloud server.
+     * @throws MalformedURLException exception.
      */
     URL createURL(String cloudProvider) throws MalformedURLException {
         switch (cloudProvider) {
@@ -87,11 +97,11 @@ abstract class MobileOptions {
     }
 
     /**
-     * Cloud Capabilities
+     * Sets up cloud capabilities based on the given cloud provider.
      *
-     * @param cloudProvider cloudProvider
-     * @param caps          capabilities
-     * @param device        device
+     * @param cloudProvider name of the cloud provider.
+     * @param caps          DesiredCapabilities instance.
+     * @param device        device name.
      */
     void cloudCapabilities(String cloudProvider, DesiredCapabilities caps, String device) {
         switch (cloudProvider) {
@@ -103,10 +113,10 @@ abstract class MobileOptions {
     }
 
     /**
-     * Browserstack capabilities
+     * Sets up BrowserStack capabilities.
      *
-     * @param caps   capabilities
-     * @param device device
+     * @param caps   DesiredCapabilities instance.
+     * @param device device name.
      */
     private void browserstackCapabilities(DesiredCapabilities caps, String device) {
         deviceCapabilities(caps, device);
@@ -122,10 +132,10 @@ abstract class MobileOptions {
     }
 
     /**
-     * LambdaTest capabilities
+     * Sets up LambdaTest capabilities.
      *
-     * @param caps   capabilities
-     * @param device device
+     * @param caps   DesiredCapabilities instance.
+     * @param device device name.
      */
     private void lambdaTestCapabilities(DesiredCapabilities caps, String device) {
         deviceCapabilities(caps, device);
@@ -138,11 +148,10 @@ abstract class MobileOptions {
     }
 
     /**
-     * Saucelabs capabilities
-     * <a href="https://saucelabs.com/platform/platform-configurator">...</a>
+     * Sets up Sauce Labs capabilities.
      *
-     * @param caps   capabilities
-     * @param device device
+     * @param caps   DesiredCapabilities instance.
+     * @param device device name.
      */
     private void saucelabsCapabilities(DesiredCapabilities caps, String device) {
         deviceCapabilities(caps, device);
@@ -153,10 +162,10 @@ abstract class MobileOptions {
     }
 
     /**
-     * Device capabilities
+     * Sets up device capabilities based on the given device name.
      *
-     * @param caps   capabilities
-     * @param device device
+     * @param caps   DesiredCapabilities instance.
+     * @param device device name.
      */
     private void deviceCapabilities(DesiredCapabilities caps, String device) {
         switch (device) {
@@ -189,9 +198,9 @@ abstract class MobileOptions {
     }
 
     /**
-     * Android capabilities
+     * Sets up Android capabilities.
      *
-     * @param caps capabilities
+     * @param caps DesiredCapabilities instance.
      */
     public void androidCapabilities(DesiredCapabilities caps) {
         caps.setCapability("platformName", "android");
@@ -201,9 +210,9 @@ abstract class MobileOptions {
     }
 
     /**
-     * IOS capabilities
+     * Sets up iOS capabilities.
      *
-     * @param caps capabilities
+     * @param caps DesiredCapabilities instance.
      */
     public void iosCapabilities(DesiredCapabilities caps) {
         caps.setCapability("platformName", "ios");
@@ -217,15 +226,12 @@ abstract class MobileOptions {
     }
 
     /**
-     * Create appium driver service
+     * Creates an Appium driver service.
      *
-     * @return appiumService
+     * @return DriverService instance.
      */
     public DriverService createAppiumService() {
-        return new AppiumServiceBuilder()
-                .usingDriverExecutable(new File(nodeJS))
-                .withAppiumJS(new File(appiumJS))
-                .withIPAddress(serverIp)
+        return new AppiumServiceBuilder().usingDriverExecutable(new File(nodeJS)).withAppiumJS(new File(appiumJS)).withIPAddress(serverIp)
 //                .usingPort(APPIUM_Port)
 //                .withArgument(Arg.TIMEOUT, "120")
 //                .withArgument(Arg.LOG_LEVEL, "warn")

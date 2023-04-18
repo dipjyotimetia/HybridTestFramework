@@ -43,11 +43,20 @@ import java.util.Collections;
 import java.util.Properties;
 
 /**
+ * This class provides methods for producing and consuming messages using the Kafka framework.
+ * It is used for creating topics, sending messages to Kafka topics, and consuming messages from Kafka topics.
+ *
  * @author Dipjyoti Metia
  */
 @Slf4j
 public class Kafka {
 
+    /**
+     * Creates a Properties object for the Kafka producer using the provided Config object.
+     *
+     * @param config the configuration object containing Kafka producer settings
+     * @return a Properties object with the Kafka producer configuration
+     */
     private Properties getKafkaStreamsConfig(Config config) {
         // Create producer properties
         Properties properties = new Properties();
@@ -61,6 +70,12 @@ public class Kafka {
         return properties;
     }
 
+    /**
+     * Creates a Properties object for the Kafka consumer using the provided Config object.
+     *
+     * @param config the configuration object containing Kafka consumer settings
+     * @return a Properties object with the Kafka consumer configuration
+     */
     private Properties setConsumerConfig(Config config) {
         Properties properties = new Properties();
         properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, config.getBootstrapURL());
@@ -75,9 +90,9 @@ public class Kafka {
     }
 
     /**
-     * create topics
+     * Creates a Kafka topic using the provided Config object.
      *
-     * @param config config
+     * @param config the configuration object containing the topic name and other settings
      */
     public void createTopic(Config config) {
         // Create the producer
@@ -101,10 +116,11 @@ public class Kafka {
     }
 
     /**
-     * Produce kafka messages
+     * Produces messages to a Kafka topic using the provided Config object.
+     * The messages contain Customer Avro records.
      *
-     * @param config
-     * @throws Exception
+     * @param config the configuration object containing the topic name and other settings
+     * @throws Exception if an error occurs while producing messages
      */
     public void producer(Config config) throws Exception {
         Properties configProperty = getKafkaStreamsConfig(config);
@@ -139,9 +155,10 @@ public class Kafka {
     }
 
     /**
-     * Consume kafka messages
+     * Consumes messages from a Kafka topic using the provided Config object.
+     * The messages contain Customer Avro records.
      *
-     * @param config
+     * @param config the configuration object containing the topic name and other settings
      */
     public void consumer(Config config) {
         Properties configProperties = setConsumerConfig(config);

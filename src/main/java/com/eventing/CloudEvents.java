@@ -43,8 +43,23 @@ import java.time.OffsetDateTime;
 import java.util.Properties;
 import java.util.UUID;
 
+/**
+ * This class provides methods for producing and consuming CloudEvents using the Apache Kafka framework.
+ * <p>
+ * It is used for creating producer and consumer configurations, producing CloudEvents to Kafka topics,
+ * <p>
+ * and consuming CloudEvents from Kafka topics.
+ *
+ * @author Dipjyoti Metia
+ */
 public class CloudEvents {
 
+    /**
+     * Creates a producer configuration for producing CloudEvents to a Kafka topic.
+     *
+     * @param config a Config object containing Kafka configuration settings
+     * @return a Properties object containing the producer configuration settings
+     */
     public Properties cloudEventProducerConfig(Config config) {
         Properties props = new Properties();
         props.setProperty(ProducerConfig.ACKS_CONFIG, "1");
@@ -55,6 +70,12 @@ public class CloudEvents {
         return props;
     }
 
+    /**
+     * Creates a consumer configuration for consuming CloudEvents from a Kafka topic.
+     *
+     * @param config a Config object containing Kafka configuration settings
+     * @return a Properties object containing the consumer configuration settings
+     */
     public Properties cloudEventConsumerConfig(Config config) {
         Properties props = new Properties();
         props.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, config.getBootstrapURL());
@@ -66,6 +87,13 @@ public class CloudEvents {
         return props;
     }
 
+    /**
+     * Produces a CloudEvent to the specified Kafka topic using the provided producer configuration.
+     *
+     * @param config    a Config object containing Kafka configuration settings
+     * @param props     a Properties object containing the producer configuration settings
+     * @param eventData a byte array containing the CloudEvent data payload
+     */
     public void CloudEventProducer(Config config, Properties props, byte[] eventData) {
         try (KafkaProducer<String, CloudEvent> producer = new KafkaProducer<>(props)) {
 
@@ -85,6 +113,11 @@ public class CloudEvents {
         }
     }
 
+    /**
+     * Consumes CloudEvents from the specified Kafka topic using the provided consumer configuration.
+     *
+     * @param props a Properties object containing the consumer configuration settings
+     */
     public void CloudEventConsumer(Properties props) {
         try (KafkaConsumer<String, CloudEvent> consumer = new KafkaConsumer<>(props)) {
 

@@ -30,6 +30,10 @@ import lombok.extern.slf4j.Slf4j;
 import java.sql.*;
 
 /**
+ * This class contains methods to interact with a database using JDBC.
+ * <p>
+ * It is used for establishing a database connection, executing queries, and handling result sets.
+ *
  * @author Dipjyoti Metia
  */
 @Slf4j
@@ -38,7 +42,8 @@ public class DataActions extends ApiActions {
     private static final String JDBC_URL = "jdbc:sqlserver://databaseserver;databaseName=Database;integratedSecurity=true";
 
     /**
-     * Get DB connection
+     * Establishes a connection to the database, retrieves data from it,
+     * and logs the results using the given query.
      */
     private void getDbConnection() {
         ResultSet rs = null;
@@ -63,10 +68,10 @@ public class DataActions extends ApiActions {
     }
 
     /**
-     * Execute query
+     * Executes the given SQL query and returns the result as a string.
      *
-     * @param query query
-     * @return result
+     * @param query the SQL query to execute
+     * @return the result of the query as a string
      */
     private String executeQuery(String query) {
         String resultValue = "";
@@ -106,6 +111,12 @@ public class DataActions extends ApiActions {
         return resultValue;
     }
 
+    /**
+     * Displays the values of a specific column from the ResultSet.
+     *
+     * @param title the name of the column to display
+     * @param rs    the ResultSet containing the data
+     */
     private void displayRow(String title, ResultSet rs) {
         try {
             while (rs.next()) {
@@ -116,6 +127,13 @@ public class DataActions extends ApiActions {
         }
     }
 
+    /**
+     * Closes the ResultSet, Connection, and Statement objects.
+     *
+     * @param rs      the ResultSet to close
+     * @param connObj the Connection to close
+     * @param stmt    the Statement to close
+     */
     private void finallyBlock(ResultSet rs, Connection connObj, Statement stmt) {
         if (rs != null) try {
             rs.close();
@@ -135,10 +153,10 @@ public class DataActions extends ApiActions {
     }
 
     /**
-     * Query executer
+     * Executes the given SQL query and returns the result as a ResultSet.
      *
-     * @param query query
-     * @return resultset
+     * @param query the SQL query to execute
+     * @return the result of the query as a ResultSet
      */
     private ResultSet query(String query) {
         Connection connObj = null;

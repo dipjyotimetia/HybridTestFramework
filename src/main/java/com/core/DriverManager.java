@@ -28,10 +28,28 @@ package com.core;
 import com.config.AppConfig;
 import org.openqa.selenium.WebDriver;
 
+/**
+ * DriverManager class is responsible for handling WebDriver instance management.
+ * It extends DriverController class to access its methods and configurations.
+ *
+ * @author Dipjyoti Metia
+ * @version 1.0
+ * @since 2020
+ */
 public class DriverManager extends DriverController {
+    /**
+     * AppConfig instance to access application configurations.
+     */
     public AppConfig appConfig;
+    /**
+     * WebDriver instance to manage the WebDriver for the current thread.
+     */
     public WebDriver driverThread;
 
+    /**
+     * Default constructor for DriverManager.
+     * Initializes AppConfig and WebDriver instances from the superclass.
+     */
     public DriverManager() {
         this.appConfig = super.getAppConfig();
         this.driverThread = super.getWebDriver();

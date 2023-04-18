@@ -1,32 +1,39 @@
+# Use the official Ubuntu image as the base image
 FROM ubuntu:bionic-20230308
 
+# Set the maintainer information
 LABEL maintainer="HybridTestFramework dipjyotimetia@gmail.com"
 
+# Define environment variables
 ENV GRADLE_VERSION 8.1
 ENV ALLURE_VERSION 2.21.0
+ENV JAVA_HOME="/usr/lib/jvm/openjdk-17-jdk-amd64"
+ENV PATH $JAVA_HOME/bin:$PATH
 
-# install packages
-RUN apt-get -o Acquire::Check-Valid-Until=false update
-RUN apt-get install -y openjdk-17-jdk vim wget curl zip unzip git python-pip python-dev build-essential
+# Update the package list and install necessary packages
+RUN apt-get -o Acquire::Check-Valid-Until=false update && \
+    apt-get install -y openjdk-17-jdk vim wget curl zip unzip git python-pip python-dev build-essential
 
 # Install Gradle
 RUN wget https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip && \
     unzip gradle-${GRADLE_VERSION}-bin.zip && \
     mv gradle-${GRADLE_VERSION} /opt/ && \
     rm gradle-${GRADLE_VERSION}-bin.zip
+
 ENV GRADLE_HOME /opt/gradle-${GRADLE_VERSION}
 ENV PATH $PATH:$GRADLE_HOME/bin
 
-ENV JAVA_HOME="/usr/lib/jvm/openjdk-17-jdk-amd64"
-ENV PATH $JAVA_HOME/bin:$PATH
-
-# Install allure
+# Install Allure
 RUN curl -o allure-commandline-${ALLURE_VERSION}.tgz -Ls https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/${ALLURE_VERSION}/allure-commandline-${ALLURE_VERSION}.tgz && \
-    tar -zxvf allure-commandline-${ALLURE_VERSION}.tgz -C /opt/ && ln -s /opt/allure-${ALLURE_VERSION}/bin/allure /usr/bin/allure && allure --version
+    tar -zxvf allure-commandline-${ALLURE_VERSION}.tgz -C /opt/ && \
+    ln -s /opt/allure-${ALLURE_VERSION}/bin/allure /usr/bin/allure && \
+    allure --version && \
+    rm allure-commandline-${ALLURE_VERSION}.tgz
 
 # Install Chrome
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-RUN dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+    dpkg -i google-chrome-stable_current_amd64.deb || apt-get -fy install && \
+    rm google-chrome-stable_current_amd64.deb
 
 # Install Firefox
 ARG FIREFOX_VERSION=latest
@@ -42,8 +49,10 @@ RUN FIREFOX_DOWNLOAD_URL=$(if [ $FIREFOX_VERSION = "latest" ] || [ $FIREFOX_VERS
   && mv /opt/firefox /opt/firefox-$FIREFOX_VERSION \
   && ln -fs /opt/firefox-$FIREFOX_VERSION/firefox /usr/bin/firefox
 
+# Set the working directory
 WORKDIR /app
 
+# Copy the files and directories to the working directory
 COPY . .
 ADD ./scripts ./scripts
 RUN chmod +x /app/gradlew

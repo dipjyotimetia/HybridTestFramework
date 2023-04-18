@@ -1,4 +1,3 @@
-# Complete infra creation for selenium chrome/firefox and owasp security testing
 version: '3.8'
 
 services:

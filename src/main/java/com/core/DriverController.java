@@ -55,6 +55,9 @@ import java.net.Inet4Address;
 import java.net.URI;
 import java.net.URL;
 
+/**
+ * Driver controller
+ */
 @Slf4j
 public class DriverController extends WebOptions {
     private static final AppConfig appConfig = new AppConfig(ConfigFactory.load());
@@ -64,9 +67,10 @@ public class DriverController extends WebOptions {
     private String testName = null;
 
     /**
-     * Added performance capability
+     * Configures and returns desired capabilities for performance testing.
+     * Initializes the BrowserMobProxy server and sets the required proxy settings.
      *
-     * @return capabilities
+     * @return DesiredCapabilities object with performance testing capabilities
      */
     protected static DesiredCapabilities performance() {
         log.info("Make sure that Docker containers are up and running");
@@ -87,6 +91,16 @@ public class DriverController extends WebOptions {
         return caps;
     }
 
+    /**
+     * Initializes the appropriate driver (web or mobile) based on the provided parameters.
+     * This method should be invoked before executing any test.
+     *
+     * @param type    The type of test to run, either "web" or "mobile"
+     * @param browser The browser to use for web testing (e.g. "chrome", "firefox", "edge")
+     * @param device  The mobile device to use for mobile testing (e.g. "NEXUS", "PIXEL", "samsung", "iPhone14", "IPHONE", "EMULATOR")
+     * @param grid    The environment to run the test in (e.g. "aws", "docker", "browserstack", "lambda", "local")
+     * @param perf    Flag to enable performance testing ("true" to enable, "false" to disable)
+     */
     @Parameters({"type", "browser", "device", "grid", "perf"})
     @BeforeClass
     public void setup(String type, String browser, String device, String grid, String perf) {
@@ -98,20 +112,31 @@ public class DriverController extends WebOptions {
         }
     }
 
+    /**
+     * Returns the AppConfig object, which provides application configurations.
+     *
+     * @return AppConfig object with application configurations
+     */
     public AppConfig getAppConfig() {
         return appConfig;
     }
 
+    /**
+     * Returns the WebDriver object for the current test.
+     *
+     * @return WebDriver object for the current test
+     */
     public WebDriver getWebDriver() {
         return driverThread;
     }
 
     /**
-     * Initialize web driver
+     * Initializes the web driver based on the provided browser, grid, and performance testing flag.
+     * Supports running tests on local and remote environments.
      *
-     * @param browser browser
-     * @param grid    grid
-     * @param perf    perf
+     * @param browser The browser to use for web testing (e.g. "chrome", "firefox", "edge")
+     * @param grid    The environment to run the test in (e.g. "aws", "docker", "browserstack", "lambda", "local")
+     * @param perf    Flag to enable performance testing ("true" to enable, "false" to disable)
      */
     private synchronized void initWebDriver(String browser, String grid, String perf) {
         try (DeviceFarmClient client = DeviceFarmClient.builder().region(Region.AP_SOUTHEAST_2).build()) {
@@ -169,9 +194,11 @@ public class DriverController extends WebOptions {
     }
 
     /**
-     * Initialize mobile driver
+     * Initializes the mobile driver based on the provided device and cloud platform.
+     * Supports running tests on local and remote environments.
      *
-     * @param device device
+     * @param device The mobile device to use for mobile testing (e.g. "NEXUS", "PIXEL", "samsung", "iPhone14", "IPHONE", "EMULATOR")
+     * @param cloud  The cloud platform to use for remote testing (e.g. "aws", "docker", "browserstack", "lambda", "local")
      */
     private synchronized void initMobileDriver(String device, String cloud) {
         try {
@@ -225,6 +252,10 @@ public class DriverController extends WebOptions {
         }
     }
 
+    /**
+     * Clean up after running tests. If performance testing was enabled, save the HAR file to the Reports folder.
+     * Close the WebDriver and stop the Appium server if it was used.
+     */
     @AfterClass
     public void tearDown() {
         try {
