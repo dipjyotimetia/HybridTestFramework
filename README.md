@@ -13,7 +13,8 @@ hence [HybridTestFramework](https://github.com/dipjyotimetia/HybridTestFramework
 between the kind of legacy systems
 or the systems which are still in a transition phase of migrate to cloud with super cool cloud-native systems.
 Ita comprehensive and versatile testing framework designed to cover various aspects of software testing.
-Its purpose is to help developers and testers streamline their testing process and ensure the highest quality in their applications.
+Its purpose is to help developers and testers streamline their testing process and ensure the highest quality in their
+applications.
 
 <img src="docs/img/framework.png" width="900">
 

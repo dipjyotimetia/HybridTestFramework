@@ -140,9 +140,8 @@ public class MobileActions extends DriverManager {
      * @param mobileElement mobileElement
      * @param mobileBy      typeOf element
      * @return element
-     * @throws Exception exception
      */
-    private WebElement getWebElement(String mobileElement, MobileBy mobileBy) throws Exception {
+    private WebElement getWebElement(String mobileElement, MobileBy mobileBy) {
         WebElement element = null;
         switch (mobileBy) {
             case XPATH -> element = driverThread.findElement(By.xpath(mobileElement));
@@ -275,7 +274,7 @@ public class MobileActions extends DriverManager {
      * @param element element
      * @return boolean
      */
-    public boolean isDisplayed(WebElement element) throws Exception {
+    public boolean isDisplayed(WebElement element) {
         if (element.isDisplayed()) {
             log.info(element + ": element is Displayed");
             return true;
@@ -400,7 +399,7 @@ public class MobileActions extends DriverManager {
      * @param containsText contains text
      * @return boolean
      */
-    public boolean isTextPresent(String containsText) throws Exception {
+    public boolean isTextPresent(String containsText) {
         if (driverThread.getPageSource().contains(containsText)) {
             return true;
         } else {
