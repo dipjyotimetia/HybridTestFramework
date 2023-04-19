@@ -23,6 +23,9 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ${{ secrets.DOCKER_HUB_USERNAME }}/hybridtestframework
+          tags: |
+            type=ref,event=tag
+            type=sha,prefix=commit-
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v4
