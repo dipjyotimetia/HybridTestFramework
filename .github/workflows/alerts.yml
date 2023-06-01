@@ -19,7 +19,7 @@ jobs:
       - run: echo 'The testing workflow passed'
       - name: Send alert to Slack
         id: slack
-        uses: slackapi/slack-github-action@v1.23.0
+        uses: slackapi/slack-github-action@v1.24.0
         with:
           payload: |
             {
@@ -46,7 +46,7 @@ jobs:
       - run: echo 'The testing workflow failed'
       - name: Send alert to Slack
         id: slack
-        uses: slackapi/slack-github-action@v1.23.0
+        uses: slackapi/slack-github-action@v1.24.0
         with:
           payload: |
             {
