@@ -129,7 +129,7 @@ dependencies {
     implementation 'org.apache.poi:poi-ooxml:5.2.3'
     implementation 'org.apache.poi:poi:5.2.3'
     implementation 'org.apache.xmlbeans:xmlbeans:5.1.1'
-    implementation 'com.microsoft.sqlserver:mssql-jdbc:12.3.0.jre11-preview'
+    implementation 'com.microsoft.sqlserver:mssql-jdbc:12.3.1.jre11-preview'
     implementation 'org.slf4j:slf4j-simple:2.0.7'
     implementation 'com.github.javafaker:javafaker:1.0.2'
     implementation 'io.rest-assured:rest-assured:5.3.0'
