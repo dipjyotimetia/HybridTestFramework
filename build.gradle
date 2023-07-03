@@ -36,7 +36,7 @@ ext {
     kafkaVersion = "7.4.0-ce"
     awsVersion = '2.20.92'
     ceVersion = "2.5.0"
-    allureVersion = "2.22.2"
+    allureVersion = "2.23.0"
 }
 
 group 'com.HybridTestFramework'
