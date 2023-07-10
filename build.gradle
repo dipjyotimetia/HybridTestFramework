@@ -31,7 +31,7 @@ plugins {
 
 ext {
     grpcVersion = '1.56.1'
-    protoVersion = '3.23.3'
+    protoVersion = '3.23.4'
     containerVersion = '1.18.3'
     kafkaVersion = "7.4.0-ce"
     awsVersion = '2.20.101'
