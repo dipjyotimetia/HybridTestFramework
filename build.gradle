@@ -153,7 +153,7 @@ dependencies {
     //implementation "org.apache.avro:avro-tools:1.11.0"
     implementation "org.apache.kafka:kafka-clients:${kafkaVersion}"
     implementation "org.apache.kafka:kafka-streams:${kafkaVersion}"
-    implementation "io.confluent:kafka-avro-serializer:7.4.0"
+    implementation "io.confluent:kafka-avro-serializer:7.4.1"
     implementation "io.cloudevents:cloudevents-core:${ceVersion}"
     implementation "io.cloudevents:cloudevents-api:${ceVersion}"
     implementation "io.cloudevents:cloudevents-kafka:${ceVersion}"
