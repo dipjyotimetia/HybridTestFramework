@@ -25,7 +25,7 @@ plugins {
     id "idea"
     id "org.openapi.generator" version "6.6.0"
     id "com.github.davidmc24.gradle.plugin.avro" version "1.7.1"
-    id 'com.google.protobuf' version '0.9.3'
+    id 'com.google.protobuf' version '0.9.4'
 }
 
 ext {
