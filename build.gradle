@@ -117,7 +117,7 @@ dependencies {
     implementation 'io.appium:java-client:8.5.1'
     implementation 'com.deque:axe-selenium:3.0'
     implementation 'org.awaitility:awaitility:4.2.0'
-    implementation 'com.github.tomakehurst:wiremock:2.27.2'
+    implementation 'com.github.tomakehurst:wiremock:3.0.1'
     implementation 'org.apache.sshd:sshd-core:2.10.0'
     implementation 'org.assertj:assertj-core:3.24.2'
     implementation 'org.hamcrest:hamcrest-all:1.3'
