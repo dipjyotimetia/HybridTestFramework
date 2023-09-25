@@ -5,40 +5,39 @@ FROM ubuntu:jammy
 LABEL maintainer="HybridTestFramework dipjyotimetia@gmail.com"
 
 # Define environment variables
-ENV GRADLE_VERSION 8.3
-ENV ALLURE_VERSION 2.21.0
+ARG GRADLE_VERSION=8.3
+ARG ALLURE_VERSION=2.21.0
 ENV JAVA_HOME="/usr/lib/jvm/openjdk-17-jdk-amd64"
 ENV PATH $JAVA_HOME/bin:$PATH
 
 # Update the package list and install necessary packages
-RUN apt-get -o Acquire::Check-Valid-Until=false update && \
-    apt-get install -y openjdk-17-jdk vim wget curl zip unzip git python-pip python-dev build-essential
+RUN apt-get update && \
+    apt-get install -y openjdk-17-jdk vim wget curl zip unzip git python-pip build-essential && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install Gradle
-RUN wget https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip && \
-    unzip gradle-${GRADLE_VERSION}-bin.zip && \
-    mv gradle-${GRADLE_VERSION} /opt/ && \
-    rm gradle-${GRADLE_VERSION}-bin.zip
-
+RUN wget https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip -P /tmp && \
+    unzip /tmp/gradle-${GRADLE_VERSION}-bin.zip -d /opt && \
+    rm /tmp/gradle-${GRADLE_VERSION}-bin.zip
 ENV GRADLE_HOME /opt/gradle-${GRADLE_VERSION}
 ENV PATH $PATH:$GRADLE_HOME/bin
 
 # Install Allure
-RUN curl -o allure-commandline-${ALLURE_VERSION}.tgz -Ls https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/${ALLURE_VERSION}/allure-commandline-${ALLURE_VERSION}.tgz && \
-    tar -zxvf allure-commandline-${ALLURE_VERSION}.tgz -C /opt/ && \
+RUN curl -o /tmp/allure-commandline-${ALLURE_VERSION}.tgz -Ls https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/${ALLURE_VERSION}/allure-commandline-${ALLURE_VERSION}.tgz && \
+    tar -zxvf /tmp/allure-commandline-${ALLURE_VERSION}.tgz -C /opt && \
     ln -s /opt/allure-${ALLURE_VERSION}/bin/allure /usr/bin/allure && \
     allure --version && \
-    rm allure-commandline-${ALLURE_VERSION}.tgz
+    rm /tmp/allure-commandline-${ALLURE_VERSION}.tgz
 
 # Install Chrome
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
-    dpkg -i google-chrome-stable_current_amd64.deb || apt-get -fy install && \
-    rm google-chrome-stable_current_amd64.deb
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -P /tmp && \
+    dpkg -i /tmp/google-chrome-stable_current_amd64.deb || apt-get -fy install && \
+    rm /tmp/google-chrome-stable_current_amd64.deb
 
 # Install Firefox
-RUN apt-get update -qqy \
-  && apt-get install -qqy --no-install-recommends firefox libavcodec-extra \
-  && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+RUN apt-get update -qqy && \
+    apt-get install -qqy --no-install-recommends firefox libavcodec-extra && \
+    rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
 # Set the working directory
 WORKDIR /app
