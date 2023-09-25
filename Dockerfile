@@ -4,9 +4,6 @@ FROM ubuntu:jammy
 # Set the maintainer information
 LABEL maintainer="HybridTestFramework dipjyotimetia@gmail.com"
 
-# Set the default user
-USER appuser
-
 # Define environment variables
 ENV GRADLE_VERSION 8.3
 ENV ALLURE_VERSION 2.21.0
