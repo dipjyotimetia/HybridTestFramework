@@ -116,5 +116,5 @@ dependencies {
     implementation "com.google.protobuf:protobuf-java:${protoVersion}"
     runtimeOnly "com.google.protobuf:protobuf-java-util:${protoVersion}"
     implementation group: 'org.apache.avro', name: 'avro', version: '1.11.2'
-    implementation 'org.openapitools:openapi-generator:7.0.0'
+    implementation 'org.openapitools:openapi-generator:7.0.1'
 }
