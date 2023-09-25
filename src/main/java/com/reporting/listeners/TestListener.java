@@ -1,7 +1,7 @@
 /*
 MIT License
 
-Copyright (c) 2020 Dipjyoti Metia
+Copyright (c) 2023 Dipjyoti Metia
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -62,21 +62,21 @@ public class TestListener extends DriverManager implements ITestListener {
     @Override
     public void onTestStart(ITestResult iTestResult) {
         this.testStatus = new TestStatus();
-        log.info("I am in onTestStart method " + getTestMethodName(iTestResult) + " start");
+        log.info("Test '{}' started", getTestMethodName(iTestResult));
         ExtentTestManager.startTest(iTestResult.getMethod().getMethodName(), "");
     }
 
     @Override
     public void onTestSuccess(ITestResult iTestResult) {
         //this.sendStatus(iTestResult,"PASS");
-        log.info("I am in onTestSuccess method " + getTestMethodName(iTestResult) + " succeed");
+        log.info("Test '{}' succeeded", getTestMethodName(iTestResult));
         ExtentTestManager.getTest().log(Status.PASS, "Test passed");
     }
 
     @Override
     public void onTestFailure(ITestResult iTestResult) {
         //this.sendStatus(iTestResult,"FAIL");
-        log.error("I am in onTestFailure method " + getTestMethodName(iTestResult) + " failed");
+        log.error("Test '{}' failed", getTestMethodName(iTestResult));
         Object testClass = iTestResult.getInstance();
         this.driverThread = ((DriverManager) testClass).getWebDriver();
         String base64Screenshot = "data:image/png;base64," + ((TakesScreenshot) driverThread).
@@ -88,7 +88,7 @@ public class TestListener extends DriverManager implements ITestListener {
     @Override
     public void onTestSkipped(ITestResult iTestResult) {
         //this.sendStatus(iTestResult,"SKIP");
-        log.warn("I am in onTestSkipped method " + getTestMethodName(iTestResult) + " skipped");
+        log.warn("Test '{}' skipped", getTestMethodName(iTestResult));
         ExtentTestManager.getTest().log(Status.SKIP, "Test Skipped");
     }
 

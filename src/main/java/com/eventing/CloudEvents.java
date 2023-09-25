@@ -1,7 +1,7 @@
 /*
 MIT License
 
-Copyright (c) 2020 Dipjyoti Metia
+Copyright (c) 2023 Dipjyoti Metia
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -20,7 +20,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
- */
+*/
 
 package com.eventing;
 
@@ -28,12 +28,8 @@ import io.cloudevents.CloudEvent;
 import io.cloudevents.core.builder.CloudEventBuilder;
 import io.cloudevents.kafka.CloudEventDeserializer;
 import io.cloudevents.kafka.CloudEventSerializer;
-import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.consumer.*;
+import org.apache.kafka.clients.producer.*;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 
@@ -45,12 +41,11 @@ import java.util.UUID;
 
 /**
  * This class provides methods for producing and consuming CloudEvents using the Apache Kafka framework.
- * <p>
  * It is used for creating producer and consumer configurations, producing CloudEvents to Kafka topics,
- * <p>
  * and consuming CloudEvents from Kafka topics.
  *
  * @author Dipjyoti Metia
+ * @since 2023
  */
 public class CloudEvents {
 
@@ -65,8 +60,8 @@ public class CloudEvents {
         props.setProperty(ProducerConfig.ACKS_CONFIG, "1");
         props.setProperty(ProducerConfig.RETRIES_CONFIG, "10");
         props.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, config.getBootstrapURL());
-        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, CloudEventSerializer.class);
+        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, CloudEventSerializer.class.getName());
         return props;
     }
 
@@ -79,8 +74,8 @@ public class CloudEvents {
     public Properties cloudEventConsumerConfig(Config config) {
         Properties props = new Properties();
         props.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, config.getBootstrapURL());
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, CloudEventDeserializer.class);
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, CloudEventDeserializer.class.getName());
         props.setProperty(ConsumerConfig.GROUP_ID_CONFIG, config.getGroupID());
         props.setProperty(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
         props.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest"); // "earliest/latest/none"
@@ -94,10 +89,10 @@ public class CloudEvents {
      * @param props     a Properties object containing the producer configuration settings
      * @param eventData a byte array containing the CloudEvent data payload
      */
-    public void CloudEventProducer(Config config, Properties props, byte[] eventData) {
-        try (KafkaProducer<String, CloudEvent> producer = new KafkaProducer<>(props)) {
+    public void cloudEventProducer(Config config, Properties props, byte[] eventData) {
+        try (Producer<String, CloudEvent> producer = new KafkaProducer<>(props)) {
 
-            // Build an event
+            // Build a CloudEvent
             CloudEvent event = CloudEventBuilder.v1()
                     .withId(UUID.randomUUID().toString())
                     .withSubject("order")
@@ -108,8 +103,9 @@ public class CloudEvents {
                     .withData(eventData)
                     .build();
 
-            // Produce the event
-            producer.send(new ProducerRecord<>(config.getTopic(), event));
+            // Produce the CloudEvent
+            ProducerRecord<String, CloudEvent> record = new ProducerRecord<>(config.getTopic(), event);
+            producer.send(record);
         }
     }
 
@@ -118,14 +114,16 @@ public class CloudEvents {
      *
      * @param props a Properties object containing the consumer configuration settings
      */
-    public void CloudEventConsumer(Properties props) {
+    public void cloudEventConsumer(Properties props) {
         try (KafkaConsumer<String, CloudEvent> consumer = new KafkaConsumer<>(props)) {
 
-            ConsumerRecords<String, CloudEvent> records = consumer.poll(Duration.ofSeconds(10));
-
-            records.forEach(rec -> {
-                System.out.println(rec.value().toString());
-            });
+            consumer.subscribe(java.util.Collections.singletonList(props.getProperty(ConsumerConfig.ALLOW_AUTO_CREATE_TOPICS_CONFIG)));
+            while (true) {
+                ConsumerRecords<String, CloudEvent> records = consumer.poll(Duration.ofSeconds(10));
+                records.forEach(rec -> {
+                    System.out.println(rec.value().toString());
+                });
+            }
         }
     }
 }

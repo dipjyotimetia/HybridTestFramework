@@ -17,74 +17,83 @@ public class WebDriverEventHandler implements WebDriverListener {
     @Setter
     public static String fieldAttribute = "placeholder";
 
-    public static String of(WebElement element) {
-        String eleText = element.toString();
-        Matcher matcher = Pattern.compile("->\\s(.*)(?=])")
-                .matcher(eleText);
+    private static String getElementName(WebElement element) {
+        String elementText = element.getText();
+        return elementText.isBlank() ? getLocatorText(element) : elementText;
+    }
+
+    private static String getLocatorText(WebElement element) {
+        String elementDescription = element.toString();
+        Matcher matcher = Pattern.compile("->\\s(.*)(?=])").matcher(elementDescription);
         return matcher.find() && matcher.groupCount() > 0
                 ? matcher.group(1)
-                : eleText;
+                : elementDescription;
+    }
+
+    private static void logEvent(String message) {
+        log.info(message);
     }
 
     @Override
     public void afterGetTitle(WebDriver driver, String result) {
-        log.info(String.format("Page title is [%s]", result));
+        logEvent("Page title is [" + result + "]");
     }
 
     @Override
     public void beforeGet(WebDriver driver, String url) {
-        log.info(String.format("Opening URL[%s]", url));
+        logEvent("Opening URL [" + url + "]");
     }
 
     @Override
     public void beforeTo(WebDriver.Navigation navigation, String url) {
-        log.info(String.format("Navigating to [%s]", url));
+        logEvent("Navigating to [" + url + "]");
     }
 
     @Override
     public void beforeClick(WebElement element) {
-        String elementName = element.getText();
-        log.info("Clicking on " + (elementName.isBlank() ? of(element) : elementName));
+        String elementName = getElementName(element);
+        logEvent("Clicking on " + elementName);
     }
 
     @Override
     public void beforeClear(WebElement element) {
-        log.info("Clearing " + element.getAttribute(fieldAttribute));
+        logEvent("Clearing " + element.getAttribute(fieldAttribute));
     }
 
     @Override
     public void beforeSendKeys(WebElement element, CharSequence... keysToSend) {
-        log.debug("Entering Text using locator " + of(element));
+        log.debug("Entering Text using locator " + getLocatorText(element));
+
         if (keysToSend != null) {
             Optional<CharSequence> keyChar = Arrays.stream(keysToSend).filter(Keys.class::isInstance).findFirst();
 
             if (keyChar.isPresent()) {
                 Arrays.stream(Keys.values()).filter(key -> key.equals(keyChar.get()))
-                        .findFirst().ifPresent(key -> log.info(key.name() + " Key Pressed"));
+                        .findFirst().ifPresent(key -> logEvent(key.name() + " Key Pressed"));
             } else {
-                log.info((String.format("Entering Text %s in %s Field", Arrays.toString(keysToSend),
-                        element.getAttribute(fieldAttribute))));
+                logEvent("Entering Text " + Arrays.toString(keysToSend) +
+                        " in " + element.getAttribute(fieldAttribute) + " Field");
             }
         }
     }
 
     @Override
     public void afterQuit(WebDriver driver) {
-        log.info("Browser closed");
+        logEvent("Browser closed");
     }
 
     @Override
     public void afterRefresh(WebDriver.Navigation navigation) {
-        log.info("Browser Refreshed");
+        logEvent("Browser Refreshed");
     }
 
     @Override
     public void afterMaximize(WebDriver.Window window) {
-        log.info("Browser Maximized");
+        logEvent("Browser Maximized");
     }
 
     @Override
     public void afterGetWindowHandle(WebDriver driver, String result) {
-        log.info("Switched to window " + result);
+        logEvent("Switched to window " + result);
     }
 }

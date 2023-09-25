@@ -31,11 +31,11 @@ import java.io.IOException;
 @Slf4j
 public class RpcActions {
     /**
-     * Channel credentials
+     * Returns channel credentials for the given authentication type.
      *
-     * @param authType authType
-     * @return credentials
-     * @throws IOException @exception
+     * @param authType the authentication type
+     * @return channel credentials
+     * @throws IOException if an error occurs while retrieving the channel credentials
      */
     public ChannelCredentials credentials(AuthType authType) throws IOException {
         ChannelCredentials credentials = null;
@@ -53,13 +53,13 @@ public class RpcActions {
     }
 
     /**
-     * Channel
+     * Returns a managed channel to the given target URL, using the given channel type and authentication type.
      *
-     * @param targetURL   targetURL
-     * @param channelType channelType
-     * @param authType    authType
-     * @return channel
-     * @throws IOException @exception
+     * @param targetURL the target URL
+     * @param channelType the channel type
+     * @param authType the authentication type
+     * @return a managed channel to the given target URL
+     * @throws IOException if an error occurs while creating the managed channel
      */
     public ManagedChannel channel(String targetURL, ChannelType channelType, AuthType authType) throws IOException {
         ManagedChannel channel = null;
@@ -71,15 +71,39 @@ public class RpcActions {
         return channel;
     }
 
+    /**
+     * Authentication types.
+     */
     public enum AuthType {
+        /**
+         * Transport layer security (TLS) authentication.
+         */
         TLS,
+        /**
+         * Insecure authentication.
+         */
         Insecure,
+        /**
+         * TLS authentication with a custom certificate authority (CA).
+         */
         TLS_CA,
+        /**
+         * Google Cloud Platform authentication.
+         */
         GOOGLE
     }
 
+    /**
+     * Channel types.
+     */
     public enum ChannelType {
+        /**
+         * A channel that connects to a localhost service.
+         */
         LOCALHOST,
+        /**
+         * A channel that uses TLS encryption to connect to a remote service.
+         */
         TLS
     }
 }

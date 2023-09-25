@@ -29,20 +29,16 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.sql.*;
 
-/**
- * This class contains methods to interact with a database using JDBC.
- * <p>
- * It is used for establishing a database connection, executing queries, and handling result sets.
- *
- * @author Dipjyoti Metia
- */
 @Slf4j
 public class DataActions extends ApiActions {
 
-    private static final String JDBC_URL = "jdbc:sqlserver://databaseserver;databaseName=Database;integratedSecurity=true";
+    // Update the PostgreSQL JDBC URL, username, and password as needed
+    private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/your_database";
+    private static final String USERNAME = "your_username";
+    private static final String PASSWORD = "your_password";
 
     /**
-     * Establishes a connection to the database, retrieves data from it,
+     * Establishes a connection to the PostgreSQL database, retrieves data from it,
      * and logs the results using the given query.
      */
     private void getDbConnection() {
@@ -50,11 +46,11 @@ public class DataActions extends ApiActions {
         Connection connObj = null;
         Statement statement = null;
         try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            connObj = DriverManager.getConnection(JDBC_URL);
+            Class.forName("org.postgresql.Driver"); // Update the driver class name
+            connObj = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD); // Provide username and password
             if (connObj != null) {
                 statement = connObj.createStatement();
-                String queryString = "select TOP 10 * from ;";
+                String queryString = "SELECT * FROM your_table LIMIT 10;"; // Update the SQL query
                 rs = statement.executeQuery(queryString);
                 while (rs.next()) {
                     log.info(rs.getString(2));
@@ -77,11 +73,11 @@ public class DataActions extends ApiActions {
         String resultValue = "";
         String columnName = "";
         try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Class.forName("org.postgresql.Driver"); // Update the driver class name
         } catch (ClassNotFoundException e) {
             log.error(e.getMessage());
         }
-        try (Connection connection = java.sql.DriverManager.getConnection(JDBC_URL)) {
+        try (Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD)) { // Provide username and password
             try (Statement stmt = connection.createStatement()) {
                 try (ResultSet rs = stmt.executeQuery(query)) {
                     while (rs.next()) {
@@ -161,8 +157,8 @@ public class DataActions extends ApiActions {
     private ResultSet query(String query) {
         Connection connObj = null;
         try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            connObj = DriverManager.getConnection(JDBC_URL);
+            Class.forName("org.postgresql.Driver"); // Update the driver class name
+            connObj = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD); // Provide username and password
             if (connObj != null) {
                 Statement statement = connObj.createStatement();
                 return statement.executeQuery(query);
@@ -172,6 +168,4 @@ public class DataActions extends ApiActions {
         }
         return null;
     }
-
 }
-

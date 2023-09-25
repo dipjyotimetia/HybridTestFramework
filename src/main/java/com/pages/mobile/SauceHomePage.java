@@ -67,7 +67,7 @@ public class SauceHomePage extends MobileActions {
     }
 
     public SauceHomePage searchDestination() {
-        if (driverThread.findElements(By.id("com.booking:id/bt_accept")).size() != 0) {
+        if (!driverThread.findElements(By.id("com.booking:id/bt_accept")).isEmpty()) {
             click(acceptCookie);
             click(closeButton);
         }
