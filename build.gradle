@@ -137,7 +137,7 @@ dependencies {
     implementation 'io.rest-assured:json-path:5.3.2'
     implementation 'com.atlassian.oai:swagger-request-validator-restassured:2.38.0'
     implementation 'com.atlassian.oai:swagger-request-validator-pact:2.37.0'
-    implementation 'org.json:json:20230618'
+    implementation 'org.json:json:20231013'
     implementation 'com.konghq:unirest-java:3.14.5'
     implementation 'net.lightbody.bmp:browsermob-core:2.1.5'
     implementation 'org.zaproxy:zap-clientapi:1.12.0'
