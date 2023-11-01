@@ -24,8 +24,8 @@ SOFTWARE.
 
 package com.core;
 
-import io.appium.java_client.remote.AndroidMobileCapabilityType;
-import io.appium.java_client.remote.IOSMobileCapabilityType;
+import io.appium.java_client.android.options.UiAutomator2Options;
+import io.appium.java_client.ios.options.XCUITestOptions;
 import io.appium.java_client.service.local.AppiumServiceBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.exec.OS;
@@ -205,8 +205,8 @@ abstract class MobileOptions {
     public void androidCapabilities(DesiredCapabilities caps) {
         caps.setCapability("platformName", "android");
         caps.setCapability("platformVersion", "13.0");
-        caps.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, "com.swaglabsmobileapp");
-        caps.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, "com.swaglabsmobileapp.MainActivity");
+        caps.setCapability(UiAutomator2Options.APP_PACKAGE_OPTION, "com.swaglabsmobileapp");
+        caps.setCapability(UiAutomator2Options.APP_ACTIVITY_OPTION, "com.swaglabsmobileapp.MainActivity");
     }
 
     /**
@@ -221,8 +221,8 @@ abstract class MobileOptions {
         // _caps.setCapability(IOSMobileCapabilityType.XCODE_SIGNING_ID, "");
         // _caps.setCapability(IOSMobileCapabilityType.UPDATE_WDA_BUNDLEID, "");
 //        caps.setCapability(IOSMobileCapabilityType.AUTO_DISMISS_ALERTS, true);
-        caps.setCapability(IOSMobileCapabilityType.BUNDLE_ID, "com.saucelabs.SwagLabsMobileApp");
-        caps.setCapability(IOSMobileCapabilityType.APP_NAME, "com.saucelabs.SwagLabsMobileApp");
+        caps.setCapability(XCUITestOptions.BUNDLE_ID_OPTION, "com.saucelabs.SwagLabsMobileApp");
+        caps.setCapability(XCUITestOptions.APP_OPTION, "com.saucelabs.SwagLabsMobileApp");
     }
 
     /**

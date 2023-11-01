@@ -27,7 +27,8 @@ package com.core;
 import com.config.AppConfig;
 import com.typesafe.config.ConfigFactory;
 import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.remote.MobileCapabilityType;
+import io.appium.java_client.android.options.UiAutomator2Options;
+import io.appium.java_client.ios.options.XCUITestOptions;
 import lombok.extern.slf4j.Slf4j;
 import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.client.ClientUtil;
@@ -205,16 +206,16 @@ public class DriverController extends WebOptions {
             switch (device) {
                 case "NEXUS" -> {
                     log.info("Selected device is NEXUS");
-                    caps.setCapability(MobileCapabilityType.UDID, "NEXUS");
-                    caps.setCapability(MobileCapabilityType.DEVICE_NAME, "NEXUS");
+                    caps.setCapability(UiAutomator2Options.UDID_OPTION, "NEXUS");
+                    caps.setCapability(UiAutomator2Options.DEVICE_NAME_OPTION, "NEXUS");
                     androidCapabilities(caps);
                     cloudCapabilities(cloud, caps, "NEXUS");
                     driverThread = new RemoteWebDriver(createURL(cloud), caps);
                 }
                 case "PIXEL" -> {
                     log.info("Selected device is PIXEL");
-                    caps.setCapability(MobileCapabilityType.UDID, "PIXEL");
-                    caps.setCapability(MobileCapabilityType.DEVICE_NAME, "PIXEL");
+                    caps.setCapability(UiAutomator2Options.UDID_OPTION, "PIXEL");
+                    caps.setCapability(UiAutomator2Options.DEVICE_NAME_OPTION, "PIXEL");
                     androidCapabilities(caps);
                     cloudCapabilities(cloud, caps, "PIXEL");
                     driverThread = new RemoteWebDriver(createURL(cloud), caps);
@@ -231,8 +232,8 @@ public class DriverController extends WebOptions {
                 }
                 case "IPHONE" -> {
                     log.info("Selected device is IPHONE");
-                    caps.setCapability(MobileCapabilityType.UDID, "iphone");
-                    caps.setCapability(MobileCapabilityType.DEVICE_NAME, "iphone");
+                    caps.setCapability(XCUITestOptions.UDID_OPTION, "iphone");
+                    caps.setCapability(XCUITestOptions.DEVICE_NAME_OPTION, "iphone");
                     iosCapabilities(caps);
                     cloudCapabilities(cloud, caps, "IPHONE");
                     driverThread = new RemoteWebDriver(createURL(cloud), caps);
@@ -240,8 +241,8 @@ public class DriverController extends WebOptions {
                 case "EMULATOR" -> {
                     log.info("Selected device is EMULATOR");
                     appiumService = createAppiumService();
-                    caps.setCapability(MobileCapabilityType.UDID, "NEXUS");
-                    caps.setCapability(MobileCapabilityType.DEVICE_NAME, "NEXUS");
+                    caps.setCapability(UiAutomator2Options.UDID_OPTION, "NEXUS");
+                    caps.setCapability(UiAutomator2Options.DEVICE_NAME_OPTION, "NEXUS");
                     appiumService.start();
                     driverThread = new AndroidDriver(createURL(cloud), caps);
                 }
