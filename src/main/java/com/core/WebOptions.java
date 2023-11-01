@@ -25,7 +25,6 @@ SOFTWARE.
 package com.core;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.SystemUtils;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.PageLoadStrategy;
@@ -66,7 +65,7 @@ abstract class WebOptions extends MobileOptions {
     protected ChromeOptions getChromeOptions(String perf) {
 //        WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
-        options.setHeadless(SystemUtils.IS_OS_LINUX);
+        options.addArguments("--headless=new");
         options.setPageLoadStrategy(PageLoadStrategy.NONE);
         options.addArguments("--ignore-certificate-errors");
         options.addArguments("--disable-popup-blocking");
@@ -100,7 +99,7 @@ abstract class WebOptions extends MobileOptions {
         profile.setAcceptUntrustedCertificates(true);
         profile.setAssumeUntrustedCertificateIssuer(false);
         profile.setPreference("network.proxy.type", 0);
-        options.setHeadless(SystemUtils.IS_OS_LINUX);
+        options.addArguments("--headless=new");
         //options.setCapability(FirefoxDriver.Capability.PROFILE, profile);
         //setFirefoxOWASP(options);
         log.info("Firefox options added");
@@ -115,7 +114,7 @@ abstract class WebOptions extends MobileOptions {
     protected EdgeOptions getEdgeOptions() {
 //        WebDriverManager.edgedriver().setup();
         EdgeOptions edgeOptions = new EdgeOptions();
-        edgeOptions.setHeadless(true);
+        edgeOptions.addArguments("--headless=new");
         edgeOptions.setPageLoadStrategy(PageLoadStrategy.NONE);
         edgeOptions.addArguments("--ignore-certificate-errors");
         edgeOptions.addArguments("--disable-popup-blocking");
