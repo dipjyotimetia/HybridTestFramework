@@ -113,7 +113,7 @@ dependencies {
     implementation "software.amazon.awssdk:devicefarm:${awsVersion}"
     implementation 'com.google.cloud:google-cloud-pubsub:1.125.10'
     implementation 'org.seleniumhq.selenium:selenium-java:4.14.1'
-    implementation 'org.seleniumhq.selenium:selenium-remote-driver:4.14.1'
+    implementation 'org.seleniumhq.selenium:selenium-remote-driver:4.15.0'
     implementation 'io.appium:java-client:9.0.0'
     implementation 'com.deque:axe-selenium:3.0'
     implementation 'org.awaitility:awaitility:4.2.0'
