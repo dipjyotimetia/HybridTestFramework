@@ -56,6 +56,7 @@ nav:
       - AWS: aws.md
 
 markdown_extensions:
+  - tables
   - admonition
   - abbr
   - attr_list
