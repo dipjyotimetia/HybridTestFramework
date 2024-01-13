@@ -5,8 +5,8 @@ FROM ubuntu:jammy
 LABEL maintainer="HybridTestFramework dipjyotimetia@gmail.com"
 
 # Define environment variables
-ARG GRADLE_VERSION=8.3
-ARG ALLURE_VERSION=2.21.0
+ARG GRADLE_VERSION=8.5
+ARG ALLURE_VERSION=2.25.0
 ENV JAVA_HOME="/usr/lib/jvm/openjdk-17-jdk-amd64"
 ENV PATH $JAVA_HOME/bin:$PATH
 

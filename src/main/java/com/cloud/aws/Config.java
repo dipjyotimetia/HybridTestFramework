@@ -25,12 +25,13 @@ SOFTWARE.
 package com.cloud.aws;
 
 import lombok.extern.slf4j.Slf4j;
+import org.testcontainers.containers.localstack.LocalStackContainer;
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.sns.SnsClient;
 import software.amazon.awssdk.services.sqs.SqsClient;
-
-import java.net.URI;
 
 @Slf4j
 public class Config {
@@ -42,11 +43,17 @@ public class Config {
      * @param env    environment
      * @return s3client
      */
-    public S3Client setupS3(Region region, String env) {
+    public S3Client setupS3(Region region, String env, LocalStackContainer localstack) {
         S3Client client = S3Client.builder().region(region).build();
         switch (env) {
             case "DEV" ->
-                    client = S3Client.builder().region(region).endpointOverride(URI.create("http://localhost:4566")).build();
+                    client = S3Client.builder()
+                            .endpointOverride(localstack.getEndpoint())
+                            .credentialsProvider(StaticCredentialsProvider.create(
+                                            AwsBasicCredentials.create(localstack.getAccessKey(), localstack.getSecretKey())
+                                    )
+                            )
+                    .region(Region.of(localstack.getRegion())).build();
             case "PROD" -> client = S3Client.builder().region(region).build();
             default -> log.info("");
         }
@@ -60,11 +67,18 @@ public class Config {
      * @param env    environment
      * @return sqsClient
      */
-    public SqsClient setupSQS(Region region, String env) {
+    public SqsClient setupSQS(Region region, String env,LocalStackContainer localstack) {
         SqsClient client = SqsClient.builder().region(region).build();
         switch (env) {
             case "DEV" ->
-                    client = SqsClient.builder().region(region).endpointOverride(URI.create("http://localhost:4566")).build();
+                    client = SqsClient.builder()
+                            .endpointOverride(localstack.getEndpoint())
+                            .credentialsProvider(
+                                    StaticCredentialsProvider.create(
+                                            AwsBasicCredentials.create(localstack.getAccessKey(), localstack.getSecretKey())
+                                    )
+                            )
+                            .region(Region.of(localstack.getRegion())).build();
             case "PROD" -> client = SqsClient.builder().region(region).build();
             default -> log.info("");
         }
@@ -78,11 +92,18 @@ public class Config {
      * @param env    environment
      * @return snsClient
      */
-    public SnsClient setupSNS(Region region, String env) {
+    public SnsClient setupSNS(Region region, String env,LocalStackContainer localstack) {
         SnsClient client = SnsClient.builder().region(region).build();
         switch (env) {
             case "DEV" ->
-                    client = SnsClient.builder().region(region).endpointOverride(URI.create("http://localhost:4566")).build();
+                    client = SnsClient.builder()
+                            .endpointOverride(localstack.getEndpoint())
+                            .credentialsProvider(
+                                    StaticCredentialsProvider.create(
+                                            AwsBasicCredentials.create(localstack.getAccessKey(), localstack.getSecretKey())
+                                    )
+                            )
+                            .region(Region.of(localstack.getRegion())).build();
             case "PROD" -> client = SnsClient.builder().region(region).build();
             default -> log.info("");
         }

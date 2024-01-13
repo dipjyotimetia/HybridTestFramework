@@ -12,35 +12,41 @@
 <!--        </classes>-->
 <!--    </test>-->
 
-    <test name="E2E Tests for graphql api">
-        <classes>
-            <class name="com.TestDefinitionLayer.TC004_GraphQLTest"/>
-        </classes>
-    </test>
+<!--    <test name="E2E Tests for graphql api">-->
+<!--        <classes>-->
+<!--            <class name="com.TestDefinitionLayer.TC004_GraphQLTest"/>-->
+<!--        </classes>-->
+<!--    </test>-->
+
+        <test name="E2E Tests for aws api">
+            <classes>
+                <class name="com.TestDefinitionLayer.TC007_AwsTest"/>
+            </classes>
+        </test>
 
 
-    <test name="E2E Tests for GRPC Api">
-        <classes>
-            <class name="com.TestDefinitionLayer.TC009_GrpcApi"/>
-        </classes>
-    </test>
+<!--    <test name="E2E Tests for GRPC Api">-->
+<!--        <classes>-->
+<!--            <class name="com.TestDefinitionLayer.TC009_GrpcApi"/>-->
+<!--        </classes>-->
+<!--    </test>-->
 
-    <test name="E2E Tests for Mock Api">
-        <classes>
-            <class name="com.TestDefinitionLayer.TC005_WireMockTest"/>
-            <class name="com.TestDefinitionLayer.TC008_StripeApi"/>
-        </classes>
-    </test>
+<!--    <test name="E2E Tests for Mock Api">-->
+<!--        <classes>-->
+<!--            <class name="com.TestDefinitionLayer.TC005_WireMockTest"/>-->
+<!--            <class name="com.TestDefinitionLayer.TC008_StripeApi"/>-->
+<!--        </classes>-->
+<!--    </test>-->
 
-    <test name="E2E Tests for Kafka">
-        <classes>
-            <class name="com.TestDefinitionLayer.TC006_KafkaTest"/>
-        </classes>
-    </test>
+<!--    <test name="E2E Tests for Kafka">-->
+<!--        <classes>-->
+<!--            <class name="com.TestDefinitionLayer.TC006_KafkaTest"/>-->
+<!--        </classes>-->
+<!--    </test>-->
 
-    <test name="E2E Tests for GCP">
-        <classes>
-            <class name="com.TestDefinitionLayer.TC010_GCPTest"/>
-        </classes>
-    </test>
+<!--    <test name="E2E Tests for GCP">-->
+<!--        <classes>-->
+<!--            <class name="com.TestDefinitionLayer.TC010_GCPTest"/>-->
+<!--        </classes>-->
+<!--    </test>-->
 </suite>

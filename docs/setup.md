@@ -51,27 +51,26 @@ $ gradle allureServe
 ### Spawns chrome, firefox, selenium hub and OWASP proxy server
 
 ```shell script
-$ docker-compose up -d
+docker-compose up -d
 ```
 
 ### Complete infrastructure creation for local run
 
 ```shell script
-$ $ docker-compose -f docker-compose-infra up -d
+docker-compose -f docker-compose-infra up -d
 ```
 
 ### Spawns four additional node-chrome/firefox instances linked to the hub
 
 ```shell script
-$ docker-compose scale chrome=5
-$ docker-compose scale firefox=5
+docker-compose scale chrome=5
+docker-compose scale firefox=5
 ```
 
 Error Handle for dynamic classpath error in intellij:
 Search and modify the below line in .idea workspace.xml
 
 ```xml
-
 <component name="PropertiesComponent">
     <property name="dynamic.classpath" value="true"/>
 </component>

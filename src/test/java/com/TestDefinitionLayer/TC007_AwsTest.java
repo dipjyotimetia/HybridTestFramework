@@ -25,6 +25,9 @@ import com.cloud.aws.S3;
 import com.cloud.aws.Sqs;
 import com.eventing.Sns;
 import lombok.extern.slf4j.Slf4j;
+import org.testcontainers.containers.localstack.LocalStackContainer;
+import org.testcontainers.utility.DockerImageName;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -34,14 +37,28 @@ import software.amazon.awssdk.services.sqs.SqsClient;
 @Slf4j
 public class TC007_AwsTest extends Config {
 
+    public static LocalStackContainer localstack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:latest"))
+            .withServices(
+                    LocalStackContainer.Service.S3,
+                    LocalStackContainer.Service.SNS,
+                    LocalStackContainer.Service.SQS,
+                    LocalStackContainer.EnabledService.named("events")
+            );
+
     Region region = Region.AP_SOUTHEAST_2;
-    S3Client s3Client = setupS3(region, "DEV");
-    SnsClient snsClient = setupSNS(region, "DEV");
-    SqsClient sqsClient = setupSQS(region, "DEV");
+    S3Client s3Client = setupS3(region, "DEV", localstack);
+    SnsClient snsClient = setupSNS(region, "DEV", localstack);
+    SqsClient sqsClient = setupSQS(region, "DEV", localstack);
 
     S3 s3 = new S3();
     Sns sns = new Sns();
     Sqs sqs = new Sqs();
+
+    @BeforeTest
+    public void beforeTest() {
+        localstack.start();
+        System.out.println("Starting AWS Localstack");
+    }
 
     @Test
     public void TestS3() {

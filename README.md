@@ -81,27 +81,27 @@ Create new class and name as the TC00*_E2E_TEST-***
 ### Spin-up chrome, firefox, selenium hub and OWASP proxy server
 
 ```shell script
-$ docker-compose up -d
+docker-compose up -d
 ```
 
 ### Complete infrastructure creation for local run
 
 ```shell script
-$ $ docker-compose -f docker-compose-infra up -d
+docker-compose -f docker-compose-infra up -d
 ```
 
 ### Spin-up four additional node-chrome/firefox instances linked to the hub
 
 ```shell script
-$ docker-compose scale chrome=5
-$ docker-compose scale firefox=5
+docker-compose scale chrome=5
+docker-compose scale firefox=5
 ```
 
 ### Spin-up kafka instances
 
 ```shell
-$ docker-compose -f docker-compose-kafka.yml up
-$ docker-compose -f docker-compose-kafka.yml down --rmi all
+docker-compose -f docker-compose-kafka.yml up
+docker-compose -f docker-compose-kafka.yml down --rmi all
 ```
 
 ### Spin-up selenium hub in kubernetes instance
