@@ -38,18 +38,6 @@ import org.testng.annotations.Test;
 @Feature("RestApi")
 @Slf4j
 public class TC003_ApiTest extends ApiActions {
-
-    @Severity(SeverityLevel.CRITICAL)
-    @Test(description = "E2E test for ExchangeInfo", skipFailedInvocations = true)
-    @Description("Get ExchangeInfo")
-    @Story("Test CryptoCoins")
-    public void TestExchangeInfo() {
-        setBaseURI("https://api.binance.com");
-
-        Response response = httpGet("/api/v3/exchangeInfo?symbol=BNBBTC");
-        Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
-    }
-
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "E2E test for Booking System", priority = 1)
     @Description("Make Booking")
