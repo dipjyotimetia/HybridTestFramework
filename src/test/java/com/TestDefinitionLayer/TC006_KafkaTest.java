@@ -34,7 +34,7 @@ import java.util.Properties;
 
 public class TC006_KafkaTest {
 
-    public static KafkaContainer kafkaContainer = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.0.0"));
+    public static KafkaContainer kafkaContainer = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.5.0"));
 
     final String topic = "second-topic";
     final String value = "hello kafka";
