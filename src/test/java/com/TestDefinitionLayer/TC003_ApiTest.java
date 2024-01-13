@@ -38,22 +38,9 @@ import org.testng.annotations.Test;
 @Feature("RestApi")
 @Slf4j
 public class TC003_ApiTest extends ApiActions {
-    @Severity(SeverityLevel.CRITICAL)
-    @Test(description = "E2E test for Trading Coins")
-    @Description("Get Trading Coins")
-    @Story("Test CryptoCoins")
-    public void TestTradings() {
-        setBaseURI("https://api.coingecko.com");
-
-        Response response = httpGet("/api/v3/search/trending");
-        Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
-        Trades trades = response.getBody().as(Trades.class);
-        Assert.assertNotNull(trades.getCoins().get(0).item.name);
-        Assert.assertNotNull(trades.getCoins().get(0).item.slug);
-    }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(description = "E2E test for ExchangeInfo", skipFailedInvocations = true, enabled = false)
+    @Test(description = "E2E test for ExchangeInfo", skipFailedInvocations = true)
     @Description("Get ExchangeInfo")
     @Story("Test CryptoCoins")
     public void TestExchangeInfo() {

@@ -14,6 +14,6 @@ logs/logfile.log
 /contract/bin
 /contract/build
 /Reports/**
-
+/volume/**
 # Mac Files
 .DS_Store

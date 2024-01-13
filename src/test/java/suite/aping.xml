@@ -6,11 +6,11 @@
         <listener class-name="com.reporting.listeners.AnnotationTransformer"/>
     </listeners>
 
-<!--    <test name="E2E Tests for rest api">-->
-<!--        <classes>-->
-<!--            <class name="com.TestDefinitionLayer.TC003_ApiTest"/>-->
-<!--        </classes>-->
-<!--    </test>-->
+    <test name="E2E Tests for rest api">
+        <classes>
+            <class name="com.TestDefinitionLayer.TC003_ApiTest"/>
+        </classes>
+    </test>
 
     <test name="E2E Tests for graphql api">
         <classes>
