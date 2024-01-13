@@ -1,43 +1,38 @@
-<!-- Thanks for submitting a pull request! We appreciate you spending the time to work on these changes. Please follow the template so that the reviewers can easily understand what the code changes affect -->
+# Description
 
-# Summary
+Please include a summary of the changes and the related issue. Please also include relevant motivation and context. List any dependencies that are required for this change.
 
-<!--
-Explain the **motivation** for making this change: here are some points to help you:
+Fixes # (issue)
 
-* What issues do the pull request solve? Please tag them so that they will get automatically closed once the PR is merged
-* What is the feature? (if applicable)
-* How did you implement the solution?
-* What areas of the library does it impact?
--->
+## Type of change
 
-## Test Plan
+Please delete options that are not relevant.
 
-<!-- Demonstrate the code is solid. Example: The exact commands you ran and their output, screenshots / videos if the pull request changes UI. -->
+- [ ] Bug fix (non-breaking change which fixes an issue)
+- [ ] New feature (non-breaking change which adds functionality)
+- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
+- [ ] This change requires a documentation update
 
-### What's required for testing (prerequisites)?
+# How Has This Been Tested?
 
-### What are the steps to reproduce (after prerequisites)?
+Please describe the tests that you ran to verify your changes. Provide instructions so we can reproduce. Please also list any relevant details for your test configuration
 
-## Web Compatibility
+- [ ] Test A
+- [ ] Test B
 
-| Browser | Implemented |
-|---------|:-----------:|
-| Chrome  |     ✅❌      |
-| Firefox |     ✅❌      |
-| Edge    |     ✅❌      |
+**Test Configuration**:
+* Operating System:
+* JDK:
+* Browsers:
+* APIS:
 
-## Mobile Compatibility
+# Checklist:
 
-| Mobile  | Implemented |
-|---------|:-----------:|
-| Android |     ✅❌      |
-| IOS     |     ✅❌      |
-
-## Checklist
-
-<!-- Check completed item, when applicable, via: [X] -->
-
-- [ ] Test are compatible for all browsers
-- [ ] I added the documentation in `README.md`
-- [ ] I updated function description
+- [ ] My code follows the style guidelines of this project
+- [ ] I have performed a self-review of my code
+- [ ] I have commented my code, particularly in hard-to-understand areas
+- [ ] I have made corresponding changes to the documentation
+- [ ] My changes generate no new warnings
+- [ ] I have added tests that prove my fix is effective or that my feature works
+- [ ] New and existing unit tests pass locally with my changes
+- [ ] Any dependent changes have been merged and published in downstream modules
