@@ -20,6 +20,7 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+          cache: 'gradle'
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Running End To End Web Test
@@ -33,6 +34,7 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+          cache: 'gradle'
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Upload app and set app location
@@ -69,6 +71,7 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+          cache: 'gradle'
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Running End To End Api Test

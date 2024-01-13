@@ -26,7 +26,6 @@ package com.core;
 
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
-import com.deque.axe.AXE;
 import com.github.javafaker.Faker;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -37,15 +36,13 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.awaitility.Awaitility;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.openqa.selenium.*;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.HasDevTools;
 import org.openqa.selenium.devtools.NetworkInterceptor;
-import org.openqa.selenium.devtools.v116.log.Log;
-import org.openqa.selenium.devtools.v116.performance.Performance;
-import org.openqa.selenium.devtools.v116.performance.model.Metric;
+import org.openqa.selenium.devtools.v120.log.Log;
+import org.openqa.selenium.devtools.v120.performance.Performance;
+import org.openqa.selenium.devtools.v120.performance.model.Metric;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.http.HttpResponse;
@@ -1124,23 +1121,6 @@ public class WebActions extends DriverManager {
                 driverThread.close();
                 driverThread.switchTo().window(parentWindow);
             }
-        }
-    }
-
-    /**
-     * Accessibility test
-     *
-     * @param scriptUrl url
-     */
-    protected void accessibilityTest(URL scriptUrl) {
-        AXE.inject(driverThread, scriptUrl);
-        JSONObject responseJSON = new AXE.Builder(driverThread, scriptUrl).analyze();
-        JSONArray violations = responseJSON.getJSONArray("violations");
-        if (violations.length() == 0) {
-            Assert.assertTrue(true, "No violations found");
-        } else {
-            AXE.writeResults("path & name of the file you want to save the  report", responseJSON);
-            Assert.fail(AXE.report(violations));
         }
     }
 

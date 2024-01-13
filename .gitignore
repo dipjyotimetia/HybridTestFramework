@@ -7,14 +7,13 @@
 .classpath
 bin/**/**
 Out
-Reports
 allure-results/**/**
 ScreensDoc/**/**
 logs/logfile.log
 /build/
 /contract/bin
 /contract/build
-/Reports/
+/Reports/**
 
 # Mac Files
 .DS_Store
