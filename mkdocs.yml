@@ -27,17 +27,24 @@ theme:
     text: Roboto
     code: Roboto Mono
   features:
+    - content.code.copy
+    - content.action.edit
+    - content.action.view
     - content.code.annotate
     - search.suggest
     - search.highlight
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.indexes
+    - navigation.footer
   icon:
     repo: fontawesome/brands/git-alt
 
 plugins:
   - search
+  - optimize
+  - social
+  - typeset
 
 nav:
   - Home: index.md
@@ -99,4 +106,4 @@ extra:
     - icon: fontawesome/brands/medium
       link: https://medium.com/@dipjyotimetia
 
-copyright: 2022 <a href="https://github.com/dipjyotimetia">Dipjyoti Metia</a>.
+copyright: 2024 <a href="https://github.com/dipjyotimetia">Dipjyoti Metia</a>.
