@@ -44,11 +44,11 @@ applications.
 * Install docker desktop
   https://www.docker.com/products/docker-desktop
 * Java JDK_17  
-  https://adoptium.net/temurin/archive
+  https://adoptium.net/temurin/releases/?version=17
 * Gradle
-  https://gradle.org/next-steps/?version=8.0.2&format=bin
+  https://gradle.org/next-steps/?version=8.5&format=bin
 * Allure
-  https://github.com/allure-framework/allure2/archive/2.21.0.zip
+  https://github.com/allure-framework/allure2/archive/2.25.0.zip
 * Set Environment variables
     * JAVA_HOME: Pointing to the Java SDK folder\bin
     * GRADLE_HOME: Pointing to Gradle directory\bin.

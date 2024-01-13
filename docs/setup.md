@@ -5,29 +5,29 @@
 * Install docker desktop
   https://www.docker.com/products/docker-desktop
 * Java JDK_17  
-  https://adoptium.net/temurin/archive
+  https://adoptium.net/temurin/releases/?version=17
 * Gradle
-  https://gradle.org/next-steps/?version=8.0.2&format=bin
+  https://gradle.org/next-steps/?version=8.5&format=bin
 * Allure
-  https://github.com/allure-framework/allure2/archive/2.21.0.zip
+  https://github.com/allure-framework/allure2/archive/2.25.0.zip
 * Set Environment variables
     * JAVA_HOME: Pointing to the Java SDK folder\bin
     * GRADLE_HOME: Pointing to Gradle directory\bin.
     * ALLURE_HOME: Pointing to allure directory\bin.
 
-## Java 11 JDK Installation and config
+## Java 17 JDK Installation and config
 
-* Download Java 17 JDK from [here](https://adoptium.net/temurin/archive)
+* Download Java 17 JDK from [here](https://adoptium.net/temurin/releases/?version=17)
 * Install downloaded Java 17 JDK.
 * System Properties -> Environment Variables -> System Variables -> New -> `JAVA_HOME` and Value
-  as `C:\Program Files\Eclipse Adoptium\jdk-17.0.5.8-hotspot` (path where JDK is installed)
+  as `C:\Program Files\Eclipse Adoptium\jdk-17.0.9` (path where JDK is installed)
 * System Properties -> Environment Variables -> System Variables -> Select `Path` and Edit -> Add `%JAVA_HOME%\bin`
 * Once Environment variables are configured, open command prompt and run `java -v` and `echo $JAVA_HOME` to check
   whether java version installed is returned. e.g <br/>
   `$ java -version`<br/>
-  `$ openjdk 11.0.13 2021-10-19<br/>
-  OpenJDK Runtime Environment Temurin-11.0.13+8 (build 11.0.13+8)<br/>
-  OpenJDK 64-Bit Server VM Temurin-11.0.13+8 (build 11.0.13+8, mixed mode)`
+  `$ openjdk 17.0.9 2023-10-17<br/>
+  OpenJDK Runtime Environment Temurin-17.0.9+9 (build 17.0.9+9)<br/>
+  OpenJDK 64-Bit Server VM Temurin-17.0.9+9 (build 17.0.9+9, mixed mode, sharing)`
 
 ## Recommended IDE
 
