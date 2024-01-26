@@ -32,7 +32,7 @@ plugins {
 ext {
     grpcVersion = '1.61.0'
     protoVersion = '3.25.2'
-    containerVersion = '1.19.3'
+    containerVersion = '1.19.4'
     kafkaVersion = "7.5.3-ce"
     awsVersion = '2.23.7'
     ceVersion = "2.5.0"
@@ -112,7 +112,7 @@ dependencies {
     implementation "software.amazon.awssdk:sns:${awsVersion}"
     implementation "software.amazon.awssdk:devicefarm:${awsVersion}"
     implementation 'com.google.cloud:google-cloud-pubsub:1.126.0'
-    implementation 'org.seleniumhq.selenium:selenium-java:4.16.1'
+    implementation 'org.seleniumhq.selenium:selenium-java:4.17.0'
     implementation 'org.seleniumhq.selenium:selenium-remote-driver:4.16.1'
     implementation 'io.appium:java-client:9.0.0'
     implementation 'org.awaitility:awaitility:4.2.0'
