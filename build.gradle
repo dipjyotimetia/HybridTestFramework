@@ -134,7 +134,7 @@ dependencies {
     implementation 'io.rest-assured:rest-assured:5.4.0'
     implementation 'io.rest-assured:json-schema-validator:5.4.0'
     implementation 'io.rest-assured:json-path:5.4.0'
-    implementation 'com.atlassian.oai:swagger-request-validator-restassured:2.39.0'
+    implementation 'com.atlassian.oai:swagger-request-validator-restassured:2.40.0'
     implementation 'com.atlassian.oai:swagger-request-validator-pact:2.39.0'
     implementation 'org.json:json:20231013'
     implementation 'com.konghq:unirest-java:3.14.5'
