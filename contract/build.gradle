@@ -23,7 +23,7 @@ import org.apache.avro.Conversions
 plugins {
     id "java"
     id "idea"
-    id "org.openapi.generator" version "7.2.0"
+    id "org.openapi.generator" version "7.3.0"
     id "com.github.davidmc24.gradle.plugin.avro" version "1.9.1"
     id 'com.google.protobuf' version '0.9.4'
 }
