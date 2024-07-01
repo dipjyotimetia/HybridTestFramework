@@ -116,7 +116,7 @@ dependencies {
     implementation 'org.seleniumhq.selenium:selenium-remote-driver:4.22.0'
     implementation 'io.appium:java-client:9.2.3'
     implementation 'org.awaitility:awaitility:4.2.1'
-    implementation 'org.wiremock:wiremock:3.7.0'
+    implementation 'org.wiremock:wiremock:3.8.0'
     implementation 'org.apache.sshd:sshd-core:2.13.0'
     implementation 'org.assertj:assertj-core:3.26.0'
     implementation 'org.hamcrest:hamcrest-all:1.3'
