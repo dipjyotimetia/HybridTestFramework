@@ -125,7 +125,7 @@ dependencies {
     implementation 'commons-io:commons-io:2.16.1'
     implementation 'com.aventstack:extentreports:5.1.2'
     implementation 'net.sourceforge.javacsv:javacsv:2.0'
-    implementation 'org.apache.poi:poi-ooxml:5.2.5'
+    implementation 'org.apache.poi:poi-ooxml:5.3.0'
     implementation 'org.apache.poi:poi:5.2.5'
     implementation 'org.apache.xmlbeans:xmlbeans:5.2.1'
     implementation 'com.microsoft.sqlserver:mssql-jdbc:12.7.0.jre11-preview'
