@@ -133,7 +133,7 @@ dependencies {
     implementation 'com.github.javafaker:javafaker:1.0.2'
     implementation 'io.rest-assured:rest-assured:5.4.0'
     implementation 'io.rest-assured:json-schema-validator:5.4.0'
-    implementation 'io.rest-assured:json-path:5.4.0'
+    implementation 'io.rest-assured:json-path:5.5.0'
     implementation 'com.atlassian.oai:swagger-request-validator-restassured:2.41.0'
     implementation 'com.atlassian.oai:swagger-request-validator-pact:2.41.0'
     implementation 'org.json:json:20240303'
