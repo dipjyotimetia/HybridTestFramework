@@ -65,7 +65,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Starting test dependencies
-        run: docker-compose up -d
+        run: docker compose up -d
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
