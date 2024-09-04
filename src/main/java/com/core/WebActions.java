@@ -40,9 +40,9 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.HasDevTools;
 import org.openqa.selenium.devtools.NetworkInterceptor;
-import org.openqa.selenium.devtools.v125.log.Log;
-import org.openqa.selenium.devtools.v125.performance.Performance;
-import org.openqa.selenium.devtools.v125.performance.model.Metric;
+import org.openqa.selenium.devtools.v128.log.Log;
+import org.openqa.selenium.devtools.v128.performance.Performance;
+import org.openqa.selenium.devtools.v128.performance.model.Metric;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.http.HttpResponse;
@@ -88,11 +88,9 @@ public class WebActions extends DriverManager {
 
     /**
      * sleep
-     *
-     * @param seconds time
      */
-    private static void sleep(Integer seconds) {
-        long secondsLong = (long) seconds;
+    private static void sleep() {
+        long secondsLong = (long) (Integer) 20;
         try {
             Thread.sleep(secondsLong);
         } catch (InterruptedException e) {
@@ -551,9 +549,9 @@ public class WebActions extends DriverManager {
     private void waitUntilJSReady() {
         WebDriverWait wait = new WebDriverWait(driverThread, Duration.ofSeconds(15));
         JavascriptExecutor jsExec = (JavascriptExecutor) driverThread;
-        ExpectedCondition<Boolean> jsLoad = driver -> ((JavascriptExecutor) driverThread)
-                .executeScript("return document.readyState").toString().equals("complete");
-        boolean jsReady = jsExec.executeScript("return document.readyState").toString().equals("complete");
+        ExpectedCondition<Boolean> jsLoad = driver -> Objects.requireNonNull(((JavascriptExecutor) driverThread)
+                .executeScript("return document.readyState")).toString().equals("complete");
+        boolean jsReady = Objects.requireNonNull(jsExec.executeScript("return document.readyState")).toString().equals("complete");
         if (!jsReady) {
             System.out.println("JS in NOT Ready!");
             wait.until(jsLoad);
@@ -568,11 +566,11 @@ public class WebActions extends DriverManager {
     private void waitUntilJQueryReady() {
         JavascriptExecutor jsExec = (JavascriptExecutor) driverThread;
         Boolean jQueryDefined = (Boolean) jsExec.executeScript("return typeof jQuery != 'undefined'");
-        if (jQueryDefined) {
-            sleep(20);
+        if (Boolean.TRUE.equals(jQueryDefined)) {
+            sleep();
             waitForJQueryLoad();
             waitUntilJSReady();
-            sleep(20);
+            sleep();
         } else {
             System.out.println("jQuery is not defined on this site!");
         }
@@ -584,13 +582,13 @@ public class WebActions extends DriverManager {
     private void waitUntilAngularReady() {
         JavascriptExecutor jsExec = (JavascriptExecutor) driverThread;
         Boolean angularUnDefined = (Boolean) jsExec.executeScript("return window.angular === undefined");
-        if (!angularUnDefined) {
+        if (Boolean.FALSE.equals(angularUnDefined)) {
             Boolean angularInjectorUnDefined = (Boolean) jsExec.executeScript("return angular.element(document).injector() === undefined");
-            if (!angularInjectorUnDefined) {
-                sleep(20);
+            if (Boolean.FALSE.equals(angularInjectorUnDefined)) {
+                sleep();
                 waitForAngularLoad();
                 waitUntilJSReady();
-                sleep(20);
+                sleep();
             } else {
                 System.out.println("Angular injector is not defined on this site!");
             }
@@ -613,7 +611,7 @@ public class WebActions extends DriverManager {
      * @param locator locator
      */
     private void waitForAppearance(By locator) {
-        wait.until(d -> d.findElements(locator).size() > 0);
+        wait.until(d -> !d.findElements(locator).isEmpty());
     }
 
     /**
@@ -929,22 +927,22 @@ public class WebActions extends DriverManager {
         switch (dataType) {
             case "FirstName":
                 value = "testauto" + faker.name().firstName();
-                log.info("FirstName: " + value);
+                log.info("FirstName: {}", value);
                 break;
             case "LastName":
                 value = faker.name().lastName();
-                log.info("LastName: " + value);
+                log.info("LastName: {}", value);
                 break;
             case "UserName":
                 value = RandomStringUtils.randomAlphabetic(6);
-                log.info("Username: " + value);
+                log.info("Username: {}", value);
                 break;
             case "Email":
                 value = "testauto" + faker.internet().emailAddress();
-                log.info("EmailAddress: " + value);
+                log.info("EmailAddress: {}", value);
             case "Mobile":
                 value = "0" + RandomStringUtils.randomNumeric(9);
-                log.info("MobileNo: " + value);
+                log.info("MobileNo: {}", value);
             default:
                 log.info("Random type not found");
                 break;
@@ -970,7 +968,7 @@ public class WebActions extends DriverManager {
      */
     protected String generateRandomEmail() {
         String email = faker.internet().emailAddress();
-        log.info("EmailAddress: " + email);
+        log.info("EmailAddress: {}", email);
         return email;
     }
 
@@ -981,7 +979,7 @@ public class WebActions extends DriverManager {
      */
     protected String generateRandomMobileNo() {
         String mobNo = "0" + RandomStringUtils.randomNumeric(9);
-        log.info("MobileNo: " + mobNo);
+        log.info("MobileNo: {}", mobNo);
         return mobNo;
     }
 
@@ -1057,8 +1055,8 @@ public class WebActions extends DriverManager {
      * @return boolean
      */
     protected boolean isExist(List<WebElement> element) {
-        if (element.size() != 0) {
-            log.info(element + ": element is exists");
+        if (!element.isEmpty()) {
+            log.info("{}: element is exists", element);
             return true;
         }
         return false;
@@ -1116,7 +1114,6 @@ public class WebActions extends DriverManager {
         for (String windowHandle : handles) {
             if (!windowHandle.equals(parentWindow)) {
                 driverThread.switchTo().window(windowHandle);
-                ///
                 driverThread.close();
                 driverThread.switchTo().window(parentWindow);
             }
