@@ -37,6 +37,7 @@ ext {
     awsVersion = '2.27.21'
     ceVersion = "4.0.1"
     allureVersion = "2.29.0"
+    playwrightVersion = "1.30.0"
 }
 
 group 'com.HybridTestFramework'
@@ -175,6 +176,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.34'
     implementation 'com.typesafe:config:1.4.3'
     implementation 'org.apache.logging.log4j:log4j-core:2.24.0'
+    implementation "com.microsoft.playwright:playwright:${playwrightVersion}"
 }
 
 // https://github.com/DiUS/java-faker/issues/331#issuecomment-1091166953

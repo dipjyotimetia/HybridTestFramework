@@ -27,6 +27,7 @@ package com.core;
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
 import com.github.javafaker.Faker;
+import com.microsoft.playwright.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.SystemUtils;
@@ -77,6 +78,7 @@ public class WebActions extends DriverManager {
     private static WebDriverWait wait;
     private static JavascriptExecutor jsExec;
     private final Map<String, String> dicttoread = new HashMap<>();
+    private Page playwrightPage;
 
     public static Map<String, String> get(Map<String, String> formParams) {
         return formParams
@@ -109,6 +111,10 @@ public class WebActions extends DriverManager {
         driverThread.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
     }
 
+    protected void playwrightNavigate(String url) {
+        playwrightPage.navigate(url);
+    }
+
     /**
      * Fluent Wait
      *
@@ -135,6 +141,10 @@ public class WebActions extends DriverManager {
      */
     protected void waitForElement(WebElement element) {
         new WebDriverWait(driverThread, Duration.ofSeconds(30)).until(ExpectedConditions.visibilityOf(element));
+    }
+
+    protected void playwrightWaitForElement(String selector) {
+        playwrightPage.waitForSelector(selector);
     }
 
     /**
@@ -206,6 +216,10 @@ public class WebActions extends DriverManager {
         new Actions(driverThread).doubleClick(element).build().perform();
     }
 
+    protected void playwrightDoubleClick(String selector) {
+        playwrightPage.dblclick(selector);
+    }
+
     /**
      * Drag and drop
      *
@@ -214,6 +228,10 @@ public class WebActions extends DriverManager {
      */
     protected void dragAndDrop(WebElement element1, WebElement element2) {
         new Actions(driverThread).dragAndDrop(element1, element2).build().perform();
+    }
+
+    protected void playwrightDragAndDrop(String sourceSelector, String targetSelector) {
+        playwrightPage.dragAndDrop(sourceSelector, targetSelector);
     }
 
     /**
@@ -308,6 +326,10 @@ public class WebActions extends DriverManager {
         action.perform();
     }
 
+    protected void playwrightMouseOver(String selector) {
+        playwrightPage.hover(selector);
+    }
+
     /**
      * Click
      *
@@ -316,6 +338,10 @@ public class WebActions extends DriverManager {
     protected void click(WebElement element) {
         fluentWait(element, 10);
         element.click();
+    }
+
+    protected void playwrightClick(String selector) {
+        playwrightPage.click(selector);
     }
 
     /**
@@ -327,6 +353,10 @@ public class WebActions extends DriverManager {
     protected void enter(WebElement element, String value) {
         fluentWait(element, 10);
         element.sendKeys(value);
+    }
+
+    protected void playwrightEnter(String selector, String value) {
+        playwrightPage.fill(selector, value);
     }
 
     /**

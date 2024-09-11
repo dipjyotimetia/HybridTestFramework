@@ -25,6 +25,7 @@ SOFTWARE.
 package com.core;
 
 import com.config.AppConfig;
+import com.microsoft.playwright.*;
 import com.typesafe.config.ConfigFactory;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
@@ -66,6 +67,7 @@ public class DriverController extends WebOptions {
     private static BrowserMobProxyServer proxy;
     DriverService appiumService = null;
     private String testName = null;
+    private Browser browserThread = null;
 
     /**
      * Configures and returns desired capabilities for performance testing.
@@ -107,7 +109,13 @@ public class DriverController extends WebOptions {
     public void setup(String type, String browser, String device, String grid, String perf) {
         testName = this.getClass().getName().substring(24);
         switch (type) {
-            case "web" -> initWebDriver(browser, grid, perf);
+            case "web" -> {
+                if (browser.equals("playwright")) {
+                    initPlaywright();
+                } else {
+                    initWebDriver(browser, grid, perf);
+                }
+            }
             case "mobile" -> initMobileDriver(device, grid);
             default -> log.info("select test type to proceed with one testing");
         }
@@ -254,6 +262,15 @@ public class DriverController extends WebOptions {
     }
 
     /**
+     * Initializes the Playwright browser.
+     */
+    private synchronized void initPlaywright() {
+        Playwright playwright = Playwright.create();
+        BrowserType browserType = playwright.chromium();
+        browserThread = browserType.launch(new BrowserType.LaunchOptions().setHeadless(false));
+    }
+
+    /**
      * Clean up after running tests. If performance testing was enabled, save the HAR file to the Reports folder.
      * Close the WebDriver and stop the Appium server if it was used.
      */
@@ -270,6 +287,8 @@ public class DriverController extends WebOptions {
         } finally {
             if (driverThread != null) {
                 driverThread.quit();
+            } else if (browserThread != null) {
+                browserThread.close();
             } else {
                 if (appiumService != null) {
                     appiumService.stop();
@@ -279,4 +298,3 @@ public class DriverController extends WebOptions {
         }
     }
 }
-
