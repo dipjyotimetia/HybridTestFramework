@@ -2,11 +2,11 @@
 FROM ubuntu:jammy
 
 # Set the maintainer information
-LABEL maintainer="HybridTestFramework dipjyotimetia@gmail.com"
+LABEL maintainer="HybridTestFramework"
 
 # Define environment variables
 ARG GRADLE_VERSION=8.5
-ARG ALLURE_VERSION=2.25.0
+ARG ALLURE_VERSION=2.29.0
 ENV JAVA_HOME="/usr/lib/jvm/openjdk-17-jdk-amd64"
 ENV PATH $JAVA_HOME/bin:$PATH
 
