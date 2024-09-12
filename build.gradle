@@ -68,6 +68,7 @@ dockerCompose {
 }
 
 tasks.register('web', Test) {
+    environment 'PLAYWRIGHT_LOG', 'off'
     useTestNG() {
         useDefaultListeners = true
         suites 'src/test/java/suite/webng.xml'
