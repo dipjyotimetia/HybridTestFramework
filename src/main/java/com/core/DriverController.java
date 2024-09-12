@@ -99,21 +99,22 @@ public class DriverController extends WebOptions {
      * This method should be invoked before executing any test.
      *
      * @param type    The type of test to run, either "web" or "mobile"
+     * @param engine  The engine to use for web testing (e.g. "playwright", "webdriver")
      * @param browser The browser to use for web testing (e.g. "chrome", "firefox", "edge")
      * @param device  The mobile device to use for mobile testing (e.g. "NEXUS", "PIXEL", "samsung", "iPhone14", "IPHONE", "EMULATOR")
      * @param grid    The environment to run the test in (e.g. "aws", "docker", "browserstack", "lambda", "local")
      * @param perf    Flag to enable performance testing ("true" to enable, "false" to disable)
      */
-    @Parameters({"type", "browser", "device", "grid", "perf"})
+    @Parameters({"type", "engine", "browser", "device", "grid", "perf"})
     @BeforeClass
-    public void setup(String type, String browser, String device, String grid, String perf) {
+    public void setup(String type, String engine, String browser, String device, String grid, String perf) {
         testName = this.getClass().getName().substring(24);
         switch (type) {
-            case "web" -> {
-                if (browser.equals("playwright")) {
-                    initPlaywright();
-                } else {
-                    initWebDriver(browser, grid, perf);
+            case "engine" -> {
+                switch (engine) {
+                    case "playwright" -> initPlaywright(browser);
+                    case "webdriver" -> initWebDriver(browser, grid, perf);
+                    default -> log.info("Select engine to proceed with one testing");
                 }
             }
             case "mobile" -> initMobileDriver(device, grid);
@@ -137,6 +138,15 @@ public class DriverController extends WebOptions {
      */
     public WebDriver getWebDriver() {
         return driverThread;
+    }
+
+    /**
+     * Returns the Playwright browser object for the current test.
+     *
+     * @return Playwright browser object for the current test
+     */
+    public Browser getPlaywright() {
+        return browserThread;
     }
 
     /**
@@ -262,12 +272,22 @@ public class DriverController extends WebOptions {
     }
 
     /**
-     * Initializes the Playwright browser.
+     * Initializes the Playwright browser based on the provided browser.
+     *
+     * @param browser The browser to use for Playwright testing (e.g. "firefox", "webkit", "chromium")
      */
-    private synchronized void initPlaywright() {
-        Playwright playwright = Playwright.create();
-        BrowserType browserType = playwright.chromium();
-        browserThread = browserType.launch(new BrowserType.LaunchOptions().setHeadless(false));
+    private synchronized void initPlaywright(String browser) {
+        try (Playwright playwright = Playwright.create()) {
+            BrowserType browserType = switch (browser.toLowerCase()) {
+                case "firefox" -> playwright.firefox();
+                case "webkit" -> playwright.webkit();
+                case "chromium" -> playwright.chromium();
+                default -> throw new IllegalArgumentException("Browser not supported: " + browser);
+            };
+            browserThread = browserType.launch(new BrowserType.LaunchOptions().setHeadless(false));
+        } catch (Exception e) {
+            log.error("Failed to initialize Playwright: {}", e.getMessage());
+        }
     }
 
     /**
