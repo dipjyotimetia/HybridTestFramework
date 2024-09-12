@@ -6,6 +6,7 @@
         <listener class-name="com.reporting.listeners.AnnotationTransformer"/>
     </listeners>
     <parameter name="type" value="mobile"/>
+    <parameter name="engine" value="NA"/>
     <parameter name="perf" value="NO"/>
     <parameter name="browser" value="chrome"/>
     <test name="E2E Tests iOS">

@@ -35,24 +35,19 @@ import java.util.List;
 @Slf4j
 public class LoginPage extends WebActions {
 
-    //Element that won't get changed
-    @CacheLookup
-    @FindBy(css = "#header div.header_user_info a")
-    private WebElement signInLink;
-
-    @FindBy(xpath = "//*[@id=\"email\"]")
+    @FindBy(css = "input[data-test='username']")
     private WebElement username;
 
-    @FindBy(xpath = "//*[@id=\"passwd\"]")
+    @FindBy(css = "input[data-test='password']")
     private WebElement password;
 
-    @FindBy(xpath = "//*[@id=\"login_form\"]/div/p[1]/a")
-    private WebElement forgotPasswordLink;
+    @FindBy(css = "input[data-test='login-button']")
+    private WebElement loginButton;
 
     //Multiple element match
     @FindAll({@FindBy(how = How.XPATH, using = "//*[@id=\"SubmitLogin\"]"),
             @FindBy(how = How.ID_OR_NAME, using = "SubmitLogin")})
-    private WebElement loginButton;
+    private WebElement loginButtonLink;
 
     //List of elements
     @FindBys(@FindBy(xpath = "//*[@id=\"down\"]"))
@@ -66,10 +61,9 @@ public class LoginPage extends WebActions {
     @Step("Login step for test:{0}, for method: {method}")
     public void Login(String tcName) {
         try {
-            navigate("http://automationpractice.com/index.php");
-            click(signInLink);
-            enter(username, "");
-            enter(password, "");
+            navigate("https://www.saucedemo.com/");
+            enter(username, "standard_user");
+            enter(password, "secret_sauce");
             click(loginButton);
 
             captureImage(tcName);

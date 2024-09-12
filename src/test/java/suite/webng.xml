@@ -6,6 +6,7 @@
         <listener class-name="com.reporting.listeners.AnnotationTransformer"/>
     </listeners>
     <parameter name="type" value="web"/>
+    <parameter name="engine" value="webdriver"/>
     <parameter name="device" value="NA"/>
     <parameter name="grid" value="browserstack"/> <!-- LOCAL or DOCKER or CLOUD or BROWSERSTACK-->
     <parameter name="perf" value="NO"/>

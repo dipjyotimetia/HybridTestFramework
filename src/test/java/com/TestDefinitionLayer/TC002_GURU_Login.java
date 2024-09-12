@@ -27,6 +27,7 @@ package com.TestDefinitionLayer;
 import com.core.WebActions;
 import com.pages.web.LoginPageGuru;
 import com.reporting.extentreport.ExtentTestManager;
+import com.microsoft.playwright.*;
 import io.qameta.allure.*;
 import org.testng.annotations.Test;
 
@@ -51,6 +52,33 @@ public class TC002_GURU_Login extends WebActions {
             //loginPage.login();
             loginPage.verifyPassword(tName);
             // CreateImageDoc(tName);
+        } catch (Exception e) {
+            catchBlock(e);
+        } finally {
+            ExtentTestManager.endTest();
+        }
+
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(description = "E2E test for App using Playwright")
+    @Description("Test Description with Playwright")
+    @Story("Test Guru with Playwright")
+    public void TestLoginWithPlaywright() {
+
+        String tName = "TC002_Test_Guru_Playwright";
+
+        ExtentTestManager.startTest("Test2", "Test Description guru99.com with Playwright");
+
+        try (Playwright playwright = Playwright.create()) {
+            BrowserType browserType = playwright.chromium();
+            Browser browser = browserType.launch(new BrowserType.LaunchOptions().setHeadless(true));
+            Page page = browser.newPage();
+            page.navigate("https://www.saucedemo.com/");
+            page.fill("input[data-test='username']", "standard_user");
+            page.fill("input[data-test='password']", "secret_sauce");
+            page.click("input[data-test='login-button']");
+            browser.close();
         } catch (Exception e) {
             catchBlock(e);
         } finally {
