@@ -12,7 +12,7 @@ ENV PATH $JAVA_HOME/bin:$PATH
 
 # Update the package list and install necessary packages
 RUN apt-get update && \
-    apt-get install -y openjdk-17-jdk vim wget curl zip unzip git python-pip build-essential && \
+    apt-get install -y openjdk-17-jdk vim wget curl zip unzip git python3-pip build-essential && \
     rm -rf /var/lib/apt/lists/*
 
 # Install Gradle
@@ -47,6 +47,9 @@ COPY . .
 ADD ./scripts ./scripts
 RUN chmod +x /app/gradlew
 RUN chmod +x /app/scripts/**
-RUN gradle wrapper
 
+# Ensure Gradle wrapper is available
+RUN ./gradlew wrapper
+
+# Set the entrypoint
 ENTRYPOINT ["./scripts/start.sh"]
