@@ -72,13 +72,12 @@ public class TC002_GURU_Login extends WebActions {
 
         try (Playwright playwright = Playwright.create()) {
             BrowserType browserType = playwright.chromium();
-            Browser browser = browserType.launch(new BrowserType.LaunchOptions().setHeadless(false));
+            Browser browser = browserType.launch(new BrowserType.LaunchOptions().setHeadless(true));
             Page page = browser.newPage();
-            page.navigate("https://example.com");
-            page.fill("input[name='username']", "testuser");
-            page.fill("input[name='password']", "password");
-            page.click("button[type='submit']");
-            // Add assertions and other actions as needed
+            page.navigate("https://www.saucedemo.com/");
+            page.fill("input[data-test='username']", "standard_user");
+            page.fill("input[data-test='password']", "secret_sauce");
+            page.click("input[data-test='login-button']");
             browser.close();
         } catch (Exception e) {
             catchBlock(e);
