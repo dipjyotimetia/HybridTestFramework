@@ -284,7 +284,7 @@ public class DriverController extends WebOptions {
                 case "chromium" -> playwright.chromium();
                 default -> throw new IllegalArgumentException("Browser not supported: " + browser);
             };
-            browserThread = browserType.launch(new BrowserType.LaunchOptions().setHeadless(false));
+            browserThread = browserType.launch(new BrowserType.LaunchOptions().setHeadless(true));
         } catch (Exception e) {
             log.error("Failed to initialize Playwright: {}", e.getMessage());
         }
