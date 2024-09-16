@@ -37,7 +37,7 @@ ext {
     awsVersion = '2.27.21'
     ceVersion = "4.0.1"
     allureVersion = "2.29.0"
-    playwrightVersion = "1.46.0"
+    playwrightVersion = "1.47.0"
 }
 
 group 'com.HybridTestFramework'
