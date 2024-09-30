@@ -176,7 +176,7 @@ dependencies {
     implementation 'org.projectlombok:lombok:1.18.34'
     annotationProcessor 'org.projectlombok:lombok:1.18.34'
     implementation 'com.typesafe:config:1.4.3'
-    implementation 'org.apache.logging.log4j:log4j-core:2.24.0'
+    implementation 'org.apache.logging.log4j:log4j-core:2.24.1'
     implementation "com.microsoft.playwright:playwright:${playwrightVersion}"
 }
 
