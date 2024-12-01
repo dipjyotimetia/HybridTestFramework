@@ -36,7 +36,7 @@ ext {
     kafkaVersion = "7.7.1-ce"
     awsVersion = '2.29.20'
     ceVersion = "4.0.1"
-    allureVersion = "2.29.0"
+    allureVersion = "2.29.1"
     playwrightVersion = "1.49.0"
 }
 
