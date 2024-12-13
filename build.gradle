@@ -31,10 +31,10 @@ plugins {
 
 ext {
     grpcVersion = '1.68.2'
-    protoVersion = '4.29.0'
+    protoVersion = '4.29.1'
     containerVersion = '1.20.4'
-    kafkaVersion = "7.7.2-ce"
-    awsVersion = '2.29.24'
+    kafkaVersion = "7.8.0-ce"
+    awsVersion = '2.29.29'
     ceVersion = "4.0.1"
     allureVersion = "2.29.1"
     playwrightVersion = "1.49.0"
@@ -130,14 +130,14 @@ dependencies {
     implementation 'org.apache.poi:poi-ooxml:5.3.0'
     implementation 'org.apache.poi:poi:5.3.0'
     implementation 'org.apache.xmlbeans:xmlbeans:5.2.2'
-    implementation 'com.microsoft.sqlserver:mssql-jdbc:12.8.1.jre11'
+    implementation 'com.microsoft.sqlserver:mssql-jdbc:12.9.0.jre11-preview'
     implementation 'org.slf4j:slf4j-simple:2.0.16'
     implementation 'com.github.javafaker:javafaker:1.0.2'
     implementation 'io.rest-assured:rest-assured:5.5.0'
     implementation 'io.rest-assured:json-schema-validator:5.5.0'
     implementation 'io.rest-assured:json-path:5.5.0'
-    implementation 'com.atlassian.oai:swagger-request-validator-restassured:2.43.0'
-    implementation 'com.atlassian.oai:swagger-request-validator-pact:2.43.0'
+    implementation 'com.atlassian.oai:swagger-request-validator-restassured:2.44.1'
+    implementation 'com.atlassian.oai:swagger-request-validator-pact:2.44.1'
     implementation 'org.json:json:20240303'
     implementation 'com.konghq:unirest-java:3.14.5'
     implementation 'net.lightbody.bmp:browsermob-core:2.1.5'
@@ -153,7 +153,7 @@ dependencies {
     //implementation "org.apache.avro:avro-tools:1.11.0"
     implementation "org.apache.kafka:kafka-clients:${kafkaVersion}"
     implementation "org.apache.kafka:kafka-streams:${kafkaVersion}"
-    implementation "io.confluent:kafka-avro-serializer:7.7.2"
+    implementation "io.confluent:kafka-avro-serializer:7.8.0"
     implementation "io.cloudevents:cloudevents-core:${ceVersion}"
     implementation "io.cloudevents:cloudevents-api:${ceVersion}"
     implementation "io.cloudevents:cloudevents-kafka:${ceVersion}"
