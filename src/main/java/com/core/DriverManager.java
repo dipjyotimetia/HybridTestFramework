@@ -34,8 +34,6 @@ import org.openqa.selenium.WebDriver;
  * It extends DriverController class to access its methods and configurations.
  *
  * @author Dipjyoti Metia
- * @version 1.0
- * @since 2020
  */
 public class DriverManager extends DriverController {
     /**
