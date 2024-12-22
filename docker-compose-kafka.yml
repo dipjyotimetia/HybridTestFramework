@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   redpanda:
     image: docker.vectorized.io/vectorized/redpanda:v23.1.4

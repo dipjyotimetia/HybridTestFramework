@@ -1,6 +1,6 @@
 /*
 MIT License
-Copyright (c) 2021 Dipjyoti Metia
+Copyright (c) 2025 Dipjyoti Metia
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
@@ -24,7 +24,7 @@ import com.eventing.Config;
 import com.eventing.Kafka;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.testcontainers.containers.KafkaContainer;
+import org.testcontainers.kafka.ConfluentKafkaContainer;
 import org.testcontainers.utility.DockerImageName;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
@@ -34,7 +34,7 @@ import java.util.Properties;
 
 public class TC006_KafkaTest {
 
-    public static KafkaContainer kafkaContainer = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.5.0"));
+    public static ConfluentKafkaContainer kafkaContainer = new ConfluentKafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.5.0"));
 
     final String topic = "second-topic";
     final String value = "hello kafka";

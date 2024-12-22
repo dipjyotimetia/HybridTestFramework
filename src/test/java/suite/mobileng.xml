@@ -11,7 +11,7 @@
     <parameter name="browser" value="chrome"/>
     <test name="E2E Tests iOS">
         <parameter name="device" value="iPhone14"/>
-        <parameter name="grid" value="browserstack"/> <!-- LOCAL or DOCKER or CLOUD or BROWSERSTACK-->
+        <parameter name="grid" value="browserstack"/> <!-- LOCAL or CLOUD or BROWSERSTACK-->
         <classes>
             <class name="com.TestDefinitionLayer.TC12_SauceLabsApp"/>
         </classes>
