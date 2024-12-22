@@ -27,6 +27,10 @@ package com.core;
 
 import com.config.AppConfig;
 import com.microsoft.playwright.Browser;
+import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.api.OpenTelemetry;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.Tracer;
 import org.openqa.selenium.WebDriver;
 
 /**
@@ -51,6 +55,12 @@ public class DriverManager extends DriverController {
     public Browser playThread;
 
     /**
+     * OpenTelemetry instance for tracing.
+     */
+    private static final OpenTelemetry openTelemetry = GlobalOpenTelemetry.get();
+    private static final Tracer tracer = openTelemetry.getTracer("com.core.DriverManager");
+
+    /**
      * Default constructor for DriverManager.
      * Initializes AppConfig and WebDriver instances from the superclass.
      */
@@ -58,5 +68,29 @@ public class DriverManager extends DriverController {
         this.appConfig = super.getAppConfig();
         this.driverThread = super.getWebDriver();
         this.playThread = super.getPlaywright();
+    }
+
+    /**
+     * Setup method to initialize tracing spans for key selenium actions.
+     */
+    public void setup() {
+        Span span = tracer.spanBuilder("setup").startSpan();
+        try {
+            // Your setup code here
+        } finally {
+            span.end();
+        }
+    }
+
+    /**
+     * TearDown method to end tracing spans for key selenium actions.
+     */
+    public void tearDown() {
+        Span span = tracer.spanBuilder("tearDown").startSpan();
+        try {
+            // Your tearDown code here
+        } finally {
+            span.end();
+        }
     }
 }

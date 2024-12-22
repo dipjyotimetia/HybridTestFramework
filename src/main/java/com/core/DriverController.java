@@ -30,6 +30,14 @@ import com.typesafe.config.ConfigFactory;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
 import io.appium.java_client.ios.options.XCUITestOptions;
+import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.api.OpenTelemetry;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.Tracer;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.trace.SdkTracerProvider;
+import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
+import io.opentelemetry.exporter.otlp.trace.OtlpGrpcSpanExporter;
 import lombok.extern.slf4j.Slf4j;
 import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.client.ClientUtil;
@@ -68,6 +76,8 @@ public class DriverController extends WebOptions {
     DriverService appiumService = null;
     private String testName = null;
     private Browser browserThread = null;
+    private static OpenTelemetry openTelemetry;
+    private static Tracer tracer;
 
     /**
      * Configures and returns desired capabilities for performance testing.
@@ -109,16 +119,39 @@ public class DriverController extends WebOptions {
     @BeforeClass
     public void setup(String type, String engine, String browser, String device, String grid, String perf) {
         testName = this.getClass().getName().substring(24);
-        switch (type) {
-            case "engine" -> {
-                switch (engine) {
-                    case "playwright" -> initPlaywright(browser);
-                    case "webdriver" -> initWebDriver(browser, grid, perf);
-                    default -> log.info("Select engine to proceed with one testing");
+
+        // Initialize OpenTelemetry SDK
+        OtlpGrpcSpanExporter spanExporter = OtlpGrpcSpanExporter.builder().build();
+        SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
+                .addSpanProcessor(SimpleSpanProcessor.create(spanExporter))
+                .build();
+        openTelemetry = OpenTelemetrySdk.builder()
+                .setTracerProvider(tracerProvider)
+                .buildAndRegisterGlobal();
+        tracer = openTelemetry.getTracer("com.core.DriverController");
+
+        Span span = tracer.spanBuilder("setup").startSpan();
+        span.setAttribute("type", type);
+        span.setAttribute("engine", engine);
+        span.setAttribute("browser", browser);
+        span.setAttribute("device", device);
+        span.setAttribute("grid", grid);
+        span.setAttribute("perf", perf);
+
+        try {
+            switch (type) {
+                case "engine" -> {
+                    switch (engine) {
+                        case "playwright" -> initPlaywright(browser);
+                        case "webdriver" -> initWebDriver(browser, grid, perf);
+                        default -> log.info("Select engine to proceed with one testing");
+                    }
                 }
+                case "mobile" -> initMobileDriver(device, grid);
+                default -> log.info("select test type to proceed with one testing");
             }
-            case "mobile" -> initMobileDriver(device, grid);
-            default -> log.info("select test type to proceed with one testing");
+        } finally {
+            span.end();
         }
     }
 
