@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   allure:
     image: "frankescobar/allure-docker-service"
