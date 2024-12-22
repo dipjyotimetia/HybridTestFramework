@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.48">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
     
     
       
@@ -399,25 +399,7 @@
         <li class="md-nav__item">
   <a href="#github-actions-execution" class="md-nav__link">
     <span class="md-ellipsis">
-      GitHub actions execution
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#jenkinsexecution" class="md-nav__link">
-    <span class="md-ellipsis">
-      JenkinsExecution
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#azure-devops-testresults" class="md-nav__link">
-    <span class="md-ellipsis">
-      Azure devops TestResults
+      GitHub Actions Execution
     </span>
   </a>
   
@@ -704,25 +686,7 @@
         <li class="md-nav__item">
   <a href="#github-actions-execution" class="md-nav__link">
     <span class="md-ellipsis">
-      GitHub actions execution
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#jenkinsexecution" class="md-nav__link">
-    <span class="md-ellipsis">
-      JenkinsExecution
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#azure-devops-testresults" class="md-nav__link">
-    <span class="md-ellipsis">
-      Azure devops TestResults
+      GitHub Actions Execution
     </span>
   </a>
   
@@ -780,41 +744,29 @@
 <h1 id="hybridtestframework">HybridTestFramework<a class="headerlink" href="#hybridtestframework" title="Permanent link">&para;</a></h1>
 <h3 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h3>
 <p><img alt="Selenium" src="img/framework.png" /></p>
-<p>In the era of <a href="https://docs.microsoft.com/en-us/dotnet/architecture/cloud-native/definition">cloud-native</a> world we
-cannot stick to a particular framework, however due to projects requirement we often need to evolve the existing testing
-solution in such a way so that it can cater multiple testing requirement,
-hence <a href="https://github.com/dipjyotimetia/HybridTestFramework">HybridTestFramework</a> is targeting to create a bridge
-between the kind of legacy systems
-or the systems which are still in a transition phase of migrate to cloud with super cool cloud-native systems.
-Also, it's worth to mention as we are trying to follow the pattern
-of <a href="https://martinfowler.com/articles/practical-test-pyramid.html">testing pyramid</a> where the testing is more focused
-for the api followed by WebUI, in future
-the framework focus will be more towards the apis and events.</p>
+<p>In the era of <a href="https://docs.microsoft.com/en-us/dotnet/architecture/cloud-native/definition">cloud-native</a> solutions,
+we often need to evolve existing testing frameworks to cater to multiple requirements. 
+<a href="https://github.com/dipjyotimetia/HybridTestFramework">HybridTestFramework</a> bridges legacy systems or those 
+still transitioning to the cloud with modern cloud-native systems.<br />
+Following a <a href="https://martinfowler.com/articles/practical-test-pyramid.html">testing pyramid</a> approach,
+the framework emphasizes API testing followed by Web UI. Future releases will focus even more on API and event-based testing.</p>
 <h3 id="framework-capabilities">Framework Capabilities<a class="headerlink" href="#framework-capabilities" title="Permanent link">&para;</a></h3>
 <ul>
-<li>Cross browser testing support.</li>
-<li>Added browserstack support for CrossBrowser testing.</li>
-<li>Running tests in docker containers selenium grid.</li>
-<li>Running tests in AWS DeviceFarm selenium grid.</li>
-<li>Running tests in selenium server in docker containers.</li>
-<li>Security testing using OWASP, running in docker container.</li>
-<li>Rest Api and GraphQL testing support powered by RestAssured.</li>
-<li>gRPC api testing support using native gRPC=java library.</li>
-<li>Event driven microservice testing based on pubsub model.</li>
-<li>Support for Kafka, Cloud Pubsub, AWS SNS testing and continue evolving.</li>
-<li>Visual regression testing using percy.io.</li>
+<li>Cross-browser testing support (including BrowserStack).</li>
+<li>Docker-based Selenium grid (local or AWS DeviceFarm).</li>
+<li>Security testing powered by OWASP in Docker containers.</li>
+<li>REST and GraphQL testing with RestAssured.</li>
+<li>gRPC testing via gRPC Java library.</li>
+<li>Event-driven microservice testing (Kafka, Cloud Pub/Sub, AWS SNS).</li>
+<li>Visual regression testing with percy.io.</li>
 <li>Accessibility testing using axe-selenium.</li>
-<li>Stubbed api testing using WireMock.</li>
-<li>Can send logs to ElasticSearch for kibana dashboard visualization.</li>
+<li>Stubbed API testing using WireMock.</li>
+<li>Integrated Elasticsearch logging for dashboards.</li>
 <li>Database testing support.</li>
 <li>Kubernetes support.</li>
 </ul>
-<h3 id="github-actions-execution">GitHub actions execution<a class="headerlink" href="#github-actions-execution" title="Permanent link">&para;</a></h3>
+<h3 id="github-actions-execution">GitHub Actions Execution<a class="headerlink" href="#github-actions-execution" title="Permanent link">&para;</a></h3>
 <p><img alt="image" src="img/githubAction.png" /></p>
-<h3 id="jenkinsexecution">JenkinsExecution<a class="headerlink" href="#jenkinsexecution" title="Permanent link">&para;</a></h3>
-<p><img alt="image" src="img/jenkinsExecution.png" /></p>
-<h3 id="azure-devops-testresults">Azure devops TestResults<a class="headerlink" href="#azure-devops-testresults" title="Permanent link">&para;</a></h3>
-<p><img alt="image" src="img/testResults.png" /></p>
 <h3 id="allure-reporting">Allure Reporting<a class="headerlink" href="#allure-reporting" title="Permanent link">&para;</a></h3>
 <p><img alt="image" src="img/allureReport.png" /></p>
 <h3 id="browserstack-dashboard">BrowserStack Dashboard<a class="headerlink" href="#browserstack-dashboard" title="Permanent link">&para;</a></h3>
@@ -936,7 +888,7 @@ the framework focus will be more towards the apis and events.</p>
     <script id="__config" type="application/json">{"base": ".", "features": ["content.code.copy", "content.action.edit", "content.action.view", "content.code.annotate", "search.suggest", "search.highlight", "navigation.tabs", "navigation.tabs.sticky", "navigation.indexes", "navigation.footer"], "search": "assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="assets/javascripts/bundle.83f73b43.min.js"></script>
+      <script src="assets/javascripts/bundle.88dd0f4e.min.js"></script>
       
     
   </body>
