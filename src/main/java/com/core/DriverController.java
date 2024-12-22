@@ -159,14 +159,14 @@ public class DriverController extends WebOptions {
      */
     private synchronized void initWebDriver(String browser, String grid, String perf) {
         try (DeviceFarmClient client = DeviceFarmClient.builder().region(Region.AP_SOUTHEAST_2).build()) {
-            CreateTestGridUrlRequest request = CreateTestGridUrlRequest.builder()
-                    .expiresInSeconds(300)
-                    .projectArn("arn:aws:devicefarm:ap-southeast-2:111122223333:testgrid-project:1111111-2222-3333-4444-555555555")
-                    .build();
             try {
                 switch (grid) {
                     case "aws":
                         log.info("Make sure that the environment variables AWS_ACCESS_KEY and AWS_SECRET_KEY are configured in your testing environment.");
+                        CreateTestGridUrlRequest request = CreateTestGridUrlRequest.builder()
+                                .expiresInSeconds(300)
+                                .projectArn("arn:aws:devicefarm:ap-southeast-2:111122223333:testgrid-project:1111111-2222-3333-4444-555555555")
+                                .build();
                         CreateTestGridUrlResponse response = client.createTestGridUrl(request);
                         driverThread = new RemoteWebDriver(new URL(response.url()), addCloudCapabilities(browser));
                         log.info("Grid client setup for AWS Device farm successful");

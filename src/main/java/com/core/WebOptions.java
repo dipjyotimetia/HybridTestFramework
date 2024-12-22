@@ -29,6 +29,7 @@ import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserType.LaunchOptions;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.PageLoadStrategy;
@@ -191,17 +192,7 @@ abstract class WebOptions extends MobileOptions {
      */
     protected DesiredCapabilities addBrowserStackCapabilities(String browser, String testName) {
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        HashMap<String, Object> browserStackOptions = new HashMap<>();
-        browserStackOptions.put("os", "Windows");
-        browserStackOptions.put("osVersion", "11");
-        browserStackOptions.put("projectName", "HybridTestFramework");
-        browserStackOptions.put("buildName", "BUILD_NAME");
-        browserStackOptions.put("sessionName", testName);
-        browserStackOptions.put("local", "false");
-        browserStackOptions.put("debug", "false");
-        browserStackOptions.put("consoleLogs", "info");
-        browserStackOptions.put("networkLogs", "true");
-        browserStackOptions.put("seleniumCdp", true);
+        var browserStackOptions = getBrowserStackOptions(testName);
         //browserStackOptions.put("local", "true");
         switch (browser) {
             case "chrome" -> {
@@ -220,6 +211,21 @@ abstract class WebOptions extends MobileOptions {
         }
         capabilities.setCapability("bstack:options", browserStackOptions);
         return capabilities;
+    }
+
+    private static @NotNull HashMap<String, Object> getBrowserStackOptions(String testName) {
+        var browserStackOptions = new HashMap<String, Object>();
+        browserStackOptions.put("os", "Windows");
+        browserStackOptions.put("osVersion", "11");
+        browserStackOptions.put("projectName", "HybridTestFramework");
+        browserStackOptions.put("buildName", "BUILD_NAME");
+        browserStackOptions.put("sessionName", testName);
+        browserStackOptions.put("local", "false");
+        browserStackOptions.put("debug", "false");
+        browserStackOptions.put("consoleLogs", "info");
+        browserStackOptions.put("networkLogs", "true");
+        browserStackOptions.put("seleniumCdp", true);
+        return browserStackOptions;
     }
 
     /**
