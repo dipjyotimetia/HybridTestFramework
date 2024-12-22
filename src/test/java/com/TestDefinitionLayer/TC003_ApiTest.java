@@ -27,7 +27,6 @@ package com.TestDefinitionLayer;
 import com.api.rest.ApiActions;
 import com.api.rest.pojo.Booking;
 import com.api.rest.pojo.Bookingdates;
-import com.api.rest.pojo.Trades;
 import io.qameta.allure.*;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
