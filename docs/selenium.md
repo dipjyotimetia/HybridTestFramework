@@ -2,10 +2,9 @@
 
 ### Write your first user journey web ui test
 
-Create new class and name as the TC00*_E2E_TEST-***
-
-- Provide jira link in @Link
-- Provide all the api components as @Feature
-- Provide test severity and description
-- Write test
-- Use CatchBlock in try/catch section
+Create a new test class named **TC00*_E2E_TEST-***:
+- Provide Jira link in `@Link`
+- List all API components in `@Feature`
+- Add test severity and description
+- Implement the test steps
+- Use a `try/catch` block for error handling
