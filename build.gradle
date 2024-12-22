@@ -1,27 +1,3 @@
-/*
-MIT License
-
-Copyright (c) 2023 Dipjyoti Metia
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
- */
-
 plugins {
     id "java"
     id "idea"
@@ -44,9 +20,7 @@ group 'com.HybridTestFramework'
 version = '1.0-SNAPSHOT'
 
 repositories {
-    maven { // The google mirror is less flaky than mavenCentral()
-        url "https://maven-central.storage-download.googleapis.com/maven2/"
-    }
+    maven { url "https://maven-central.storage-download.googleapis.com/maven2/" }
     mavenCentral()
     maven { url "https://packages.confluent.io/maven/" }
     google()
@@ -69,39 +43,42 @@ dockerCompose {
 
 tasks.register('web', Test) {
     environment 'PLAYWRIGHT_LOG', 'off'
-    useTestNG() {
+    useTestNG {
         useDefaultListeners = true
         suites 'src/test/java/suite/webng.xml'
-        // includeGroups 'smoke'
     }
-    testLogging.events "passed", "skipped", "failed"
-    testLogging.showStandardStreams = true
+    testLogging {
+        events "passed", "skipped", "failed"
+        showStandardStreams = true
+    }
     beforeTest { descriptor ->
         logger.lifecycle("Running test: " + descriptor)
     }
 }
 
 tasks.register('api', Test) {
-    useTestNG() {
+    useTestNG {
         useDefaultListeners = true
         suites 'src/test/java/suite/aping.xml'
-        // includeGroups 'smoke'
     }
-    testLogging.events "passed", "skipped", "failed"
-    testLogging.showStandardStreams = true
+    testLogging {
+        events "passed", "skipped", "failed"
+        showStandardStreams = true
+    }
     beforeTest { descriptor ->
         logger.lifecycle("Running test: " + descriptor)
     }
 }
 
 tasks.register('mobile', Test) {
-    useTestNG() {
+    useTestNG {
         useDefaultListeners = true
         suites 'src/test/java/suite/mobileng.xml'
-        // includeGroups 'smoke'
     }
-    testLogging.events "passed", "skipped", "failed"
-    testLogging.showStandardStreams = true
+    testLogging {
+        events "passed", "skipped", "failed"
+        showStandardStreams = true
+    }
     beforeTest { descriptor ->
         logger.lifecycle("Running test: " + descriptor)
     }
@@ -114,8 +91,8 @@ dependencies {
     implementation "software.amazon.awssdk:sns:${awsVersion}"
     implementation "software.amazon.awssdk:devicefarm:${awsVersion}"
     implementation 'com.google.cloud:google-cloud-pubsub:1.134.2'
-    implementation 'org.seleniumhq.selenium:selenium-java:4.26.0'
-    implementation 'org.seleniumhq.selenium:selenium-remote-driver:4.26.0'
+    implementation 'org.seleniumhq.selenium:selenium-java:4.27.0'
+    implementation 'org.seleniumhq.selenium:selenium-remote-driver:4.27.0'
     implementation 'io.appium:java-client:9.3.0'
     implementation 'org.awaitility:awaitility:4.2.2'
     implementation 'org.wiremock:wiremock:3.10.0'
@@ -144,7 +121,7 @@ dependencies {
     implementation 'org.zaproxy:zap-clientapi:1.14.0'
     implementation 'org.zaproxy:zap:2.15.0'
     implementation 'net.lingala.zip4j:zip4j:2.11.5'
-    implementation 'io.qameta.allure:allure-gradle:2.8.1'
+    implementation "io.qameta.allure:allure-gradle:2.8.1"
     implementation "io.qameta.allure:allure-testng:${allureVersion}"
     implementation "io.qameta.allure:allure-rest-assured:${allureVersion}"
     implementation "io.qameta.allure:allure-attachments:${allureVersion}"

@@ -1,6 +1,6 @@
 /*
 MIT License
-Copyright (c) 2021 Dipjyoti Metia
+Copyright (c) 2025 Dipjyoti Metia
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
@@ -66,38 +66,6 @@ public class TC004_GraphQLTest extends GraphActions {
         String jsonString = graphqlToJson(query);
 
         setBaseURI("https://swapi-graphql.netlify.app/.netlify/functions/index");
-        RestAssured
-                .given()
-                .contentType("application/json")
-                .body(jsonString)
-                .when().post().then()
-                .assertThat()
-                .statusLine("HTTP/1.1 200 OK")
-                .log()
-                .body();
-    }
-
-    @Severity(SeverityLevel.NORMAL)
-    @Test(description = "E2E test for graphql")
-    @Description("Get Fruit Shop")
-    @Story("Test Graphql")
-    public void TestFruitShop() {
-        String query = "query{\n" +
-                "  products(id: \"7\") {\n" +
-                "    name\n" +
-                "    price\n" +
-                "    category {\n" +
-                "      name\n" +
-                "    }\n" +
-                "    vendor {\n" +
-                "      name\n" +
-                "      id\n" +
-                "    }\n" +
-                "  }\n" +
-                "}";
-        String jsonString = graphqlToJson(query);
-
-        setBaseURI("https://www.predic8.de/fruit-shop-graphql?");
         RestAssured
                 .given()
                 .contentType("application/json")

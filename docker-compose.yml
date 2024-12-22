@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   #  https://dev.to/goodidea/how-to-fake-aws-locally-with-localstack-27me
   localstack:
@@ -20,7 +18,7 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock"
 
   stripe-mock:
-    image: stripemock/stripe-mock:latest
+    image: stripe/stripe-mock:latest
     container_name: stripemock
     ports:
       - '12111-12112:12111-12112'

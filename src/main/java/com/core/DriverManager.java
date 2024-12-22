@@ -1,7 +1,7 @@
 /*
 MIT License
 
-Copyright (c) 2023 Dipjyoti Metia
+Copyright (c) 2025 Dipjyoti Metia
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -34,8 +34,6 @@ import org.openqa.selenium.WebDriver;
  * It extends DriverController class to access its methods and configurations.
  *
  * @author Dipjyoti Metia
- * @version 1.0
- * @since 2020
  */
 public class DriverManager extends DriverController {
     /**

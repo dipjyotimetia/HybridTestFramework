@@ -1,7 +1,7 @@
 /*
 MIT License
 
-Copyright (c) 2023 Dipjyoti Metia
+Copyright (c) 2025 Dipjyoti Metia
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -41,9 +41,9 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.HasDevTools;
 import org.openqa.selenium.devtools.NetworkInterceptor;
-import org.openqa.selenium.devtools.v128.log.Log;
-import org.openqa.selenium.devtools.v128.performance.Performance;
-import org.openqa.selenium.devtools.v128.performance.model.Metric;
+import org.openqa.selenium.devtools.v131.log.Log;
+import org.openqa.selenium.devtools.v131.performance.Performance;
+import org.openqa.selenium.devtools.v131.performance.model.Metric;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.http.HttpResponse;
