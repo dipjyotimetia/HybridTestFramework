@@ -104,7 +104,7 @@ abstract class MobileOptions {
      */
     void cloudMobileCapabilities(String cloudProvider, DesiredCapabilities caps, String device) {
         switch (cloudProvider) {
-            case "browserstack" -> browserstackMobileCapabilities(caps, device);
+            case "browserstack" -> browserStackMobileCapabilities(caps, device);
             case "lambda" -> lambdaTestMobileCapabilities(caps, device);
             case "sauce" -> sauceLabsMobileCapabilities(caps, device);
             default -> log.info("Setting up local appium server");
@@ -117,7 +117,7 @@ abstract class MobileOptions {
      * @param caps   DesiredCapabilities instance.
      * @param device device name.
      */
-    private void browserstackMobileCapabilities(DesiredCapabilities caps, String device) {
+    private void browserStackMobileCapabilities(DesiredCapabilities caps, String device) {
         genericMobileCapabilities(caps, device);
         HashMap<String, Object> browserstackOptions = new HashMap<>();
         browserstackOptions.put("automationVersion", "latest");
@@ -159,11 +159,11 @@ abstract class MobileOptions {
         }
         // ltOptions.put("isRealMobile", false);
         ltOptions.put("w3c", true);
-        ltOptions.put("appiumVersion", "2.6.0");
+        ltOptions.put("appiumVersion", "2.3.0");
         ltOptions.put("build", "HybridTestFramework");
-        ltOptions.put("network", false);
-        ltOptions.put("visual", true);
-        ltOptions.put("devicelog", true);
+        ltOptions.put("deviceOrientation", "portrait");
+        ltOptions.put("autoGrantPermissions", true);
+        ltOptions.put("autoAcceptAlerts", true);
         caps.setCapability("lt:options", ltOptions);
         log.info("Setting up lambdatest capabilities");
     }
