@@ -68,6 +68,21 @@ tasks.register('web', Test) {
     }
 }
 
+tasks.register('lambda:web', Test) {
+    environment 'PLAYWRIGHT_LOG', 'off'
+    useTestNG {
+        useDefaultListeners = true
+        suites 'src/test/java/suite/webng_lambda.xml'
+    }
+    testLogging {
+        events "passed", "skipped", "failed"
+        showStandardStreams = true
+    }
+    beforeTest { descriptor ->
+        logger.lifecycle("Running test: " + descriptor)
+    }
+}
+
 tasks.register('api', Test) {
     useTestNG {
         useDefaultListeners = true
@@ -86,6 +101,20 @@ tasks.register('mobile', Test) {
     useTestNG {
         useDefaultListeners = true
         suites 'src/test/java/suite/mobileng.xml'
+    }
+    testLogging {
+        events "passed", "skipped", "failed"
+        showStandardStreams = true
+    }
+    beforeTest { descriptor ->
+        logger.lifecycle("Running test: " + descriptor)
+    }
+}
+
+tasks.register('lambda:mobile', Test) {
+    useTestNG {
+        useDefaultListeners = true
+        suites 'src/test/java/suite/mobileng_lambda.xml'
     }
     testLogging {
         events "passed", "skipped", "failed"

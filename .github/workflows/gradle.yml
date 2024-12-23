@@ -9,6 +9,8 @@ on:
 env:
   BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
   BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+  LT_USERNAME: ${{ secrets.LT_USERNAME }}
+  LT_ACCESS_KEY: ${{ secrets.LT_ACCESS_KEY }}
 
 jobs:
   browserstack_web:
@@ -24,12 +26,34 @@ jobs:
         run: chmod +x gradlew
       - name: Running End To End Web Test
         run: ./gradlew task web
-      - name: Upload Gradle Report
+      - name: Generate Report
         if: always()
-        uses: actions/upload-artifact@v4
+        run: ./gradlew task allureReport
+      - uses: actions/upload-artifact@v4
         with:
-          name: web-gradle-report
-          path: build/reports/tests/test
+          name: allure-report
+          path: build/reports/allure-report
+
+  Lambda_web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: 'gradle'
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Running End To End Web Test
+        run: ./gradlew task lambda:web
+      - name: Generate Report
+        if: always()
+        run: ./gradlew task allureReport
+      - uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: build/reports/allure-report
 
   browserstack_mobile:
     runs-on: ubuntu-latest
@@ -67,12 +91,50 @@ jobs:
         with:
           name: allure-report
           path: build/reports/allure-report
-      - name: Upload Gradle Report
-        if: always()
-        uses: actions/upload-artifact@v4
+
+  Lambda_mobile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
         with:
-          name: mobile-gradle-report
-          path: build/reports/tests/test
+          distribution: temurin
+          java-version: 17
+          cache: 'gradle'
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Get List of Devices
+        id: get-devices
+        run: |
+          curl -u "$USERNAME:$ACCESS" -X GET https://mobile-api.lambdatest.com/mobile-automation/api/v1/list?region=us | jq
+        env:
+          USERNAME: ${{ secrets.LT_USERNAME }}
+          ACCESS: ${{ secrets.LT_ACCESS_KEY }}
+      - name: Upload app and set app location
+        id: app-upload
+        run: |
+          IPA_UPLOAD_RESPONSE=$(curl -u "$USERNAME:$ACCESS" -X POST https://manual-api.lambdatest.com/app/upload/realDevice -F "url=https://github.com/saucelabs/sample-app-mobile/releases/download/2.7.1/iOS.RealDevice.SauceLabs.Mobile.Sample.app.2.7.1.ipa")
+          APK_UPLOAD_RESPONSE=$(curl -u "$USERNAME:$ACCESS" -X POST https://manual-api.lambdatest.com/app/upload/realDevice -F "url=https://github.com/saucelabs/sample-app-mobile/releases/download/2.7.1/Android.SauceLabs.Mobile.Sample.app.2.7.1.apk")
+          echo "::set-output name=IPA_URL::$(echo $IPA_UPLOAD_RESPONSE | jq -r '.app_url')"
+          echo "::set-output name=APK_URL::$(echo $APK_UPLOAD_RESPONSE | jq -r '.app_url')"
+        env:
+          USERNAME: ${{ secrets.LT_USERNAME }}
+          ACCESS: ${{ secrets.LT_ACCESS_KEY }}
+      - name: Running End To End Mobile Test
+        id: mobile-test
+        run: ./gradlew task lambda:mobile
+        env:
+          LT_USERNAME: ${{ secrets.LT_USERNAME }}
+          LT_ACCESS_KEY: ${{ secrets.LT_ACCESS_KEY }}
+          IPA_URL: ${{steps.app-upload.outputs.IPA_URL}}
+          APK_URL: ${{steps.app-upload.outputs.APK_URL}}
+      - name: Generate Report
+        if: always()
+        run: ./gradlew task allureReport
+      - uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: build/reports/allure-report
 
   api:
     runs-on: ubuntu-latest
@@ -94,10 +156,10 @@ jobs:
           AWS_ACCOUNT_ID: "000000000000"
           AWS_ACCESS_KEY_ID: dummy-access-key
           AWS_SECRET_ACCESS_KEY: dummy-secret-key
-
-      - name: Upload Gradle Report
+      - name: Generate Report
         if: always()
-        uses: actions/upload-artifact@v4
+        run: ./gradlew task allureReport
+      - uses: actions/upload-artifact@v4
         with:
-          name: api-gradle-report
-          path: build/reports/tests/test
+          name: allure-report
+          path: build/reports/allure-report
