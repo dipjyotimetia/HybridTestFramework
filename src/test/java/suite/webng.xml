@@ -6,7 +6,6 @@
         <listener class-name="com.reporting.listeners.AnnotationTransformer"/>
     </listeners>
     <parameter name="type" value="web"/>
-    <parameter name="engine" value="webdriver"/>
     <parameter name="device" value="NA"/>
     <parameter name="grid" value="browserstack"/> <!-- LOCAL or DOCKER or CLOUD or BROWSERSTACK-->
     <parameter name="perf" value="NO"/>
@@ -14,7 +13,7 @@
     <test name="E2E Tests for Web">
         <parameter name="browser" value="chrome"/>
         <classes>
-            <class name="com.TestDefinitionLayer.TC002_GURU_Login"/>
+            <class name="com.TestDefinitionLayer.TC001_Test"/>
         </classes>
     </test>
 </suite>

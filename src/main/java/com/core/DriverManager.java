@@ -26,7 +26,6 @@ package com.core;
 
 
 import com.config.AppConfig;
-import com.microsoft.playwright.Browser;
 import org.openqa.selenium.WebDriver;
 
 /**
@@ -46,17 +45,11 @@ public class DriverManager extends DriverController {
     public WebDriver driverThread;
 
     /**
-     * Browser instance to manage the Browser for the current thread.
-     */
-    public Browser playThread;
-
-    /**
      * Default constructor for DriverManager.
      * Initializes AppConfig and WebDriver instances from the superclass.
      */
     public DriverManager() {
         this.appConfig = super.getAppConfig();
         this.driverThread = super.getWebDriver();
-        this.playThread = super.getPlaywright();
     }
 }
