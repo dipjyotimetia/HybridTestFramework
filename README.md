@@ -2,7 +2,9 @@
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/2ffd9c97725645c2bcda860988dc0baf)](https://www.codacy.com/gh/dipjyotimetia/HybridTestFramework/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dipjyotimetia/HybridTestFramework&amp;utm_campaign=Badge_Grade)
 [![This project is using Percy.io for visual regression testing.](https://percy.io/static/images/percy-badge.svg)](https://percy.io/CypressTest/Selenium)
-[![CI](https://github.com/dipjyotimetia/HybridTestFramework/actions/workflows/gradle.yml/badge.svg)](https://github.com/dipjyotimetia/HybridTestFramework/actions/workflows/gradle.yml)
+[![CI](https://github.com/dipjyotimetia/HybridTestFramework/actions/workflows/gradle.yml/badge.svg)](https://github.com/dipjyotimetia/HybridTestFramework/actions/workflows/gradle.yml)  
+
+### Supported By  
 [![Discord Chat](https://www.vectorlogo.zone/logos/discord/discord-ar21.svg)](https://discord.gg/eE3gjXqXHx)   
 [![SupportedBy JetBrains](https://github.com/TestautoDev/Tricks-And-Tips/blob/master/jetbrains.svg)](https://www.jetbrains.com/?from=HybridTestFramework)
 <img src="docs/img/lambda_logo.svg" width="400">
@@ -16,6 +18,8 @@ or the systems which are still in a transition phase of migrate to cloud with su
 Ita comprehensive and versatile testing framework designed to cover various aspects of software testing.
 Its purpose is to help developers and testers streamline their testing process and ensure the highest quality in their
 applications.
+
+Don't forget to star the repository! Your support is what keeps me motivated!
 
 <img src="docs/img/framework.png" width="900" alt="">
 
