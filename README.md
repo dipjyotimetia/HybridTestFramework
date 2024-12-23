@@ -6,7 +6,7 @@
 [![Discord Chat](https://www.vectorlogo.zone/logos/discord/discord-ar21.svg)](https://discord.gg/eE3gjXqXHx)  
 ### Supported By   
 [![SupportedBy JetBrains](https://github.com/TestautoDev/Tricks-And-Tips/blob/master/jetbrains.svg)](https://www.jetbrains.com/?from=HybridTestFramework)
-<img src="docs/img/lambda_logo.svg" width="600">
+<img src="docs/img/lambda_logo.svg" width="500">
 
 In the era of [cloud-native](https://docs.microsoft.com/en-us/dotnet/architecture/cloud-native/definition) world we
 cannot stick to a particular framework, however due to projects requirement we often need to evolve the existing testing
