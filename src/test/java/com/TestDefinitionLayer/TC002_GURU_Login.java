@@ -25,9 +25,12 @@ SOFTWARE.
 package com.TestDefinitionLayer;
 
 import com.core.WebActions;
+import com.microsoft.playwright.Browser;
+import com.microsoft.playwright.BrowserType;
+import com.microsoft.playwright.Page;
+import com.microsoft.playwright.Playwright;
 import com.pages.web.LoginPageGuru;
 import com.reporting.extentreport.ExtentTestManager;
-import com.microsoft.playwright.*;
 import io.qameta.allure.*;
 import org.testng.annotations.Test;
 

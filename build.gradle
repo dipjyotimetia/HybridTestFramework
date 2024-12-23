@@ -93,7 +93,6 @@ dependencies {
     implementation "software.amazon.awssdk:s3:${awsVersion}"
     implementation "software.amazon.awssdk:sqs:${awsVersion}"
     implementation "software.amazon.awssdk:sns:${awsVersion}"
-    implementation "software.amazon.awssdk:devicefarm:${awsVersion}"
     implementation 'com.google.cloud:google-cloud-pubsub:1.134.2'
     implementation 'org.seleniumhq.selenium:selenium-java:4.26.0'
     implementation 'org.seleniumhq.selenium:selenium-remote-driver:4.26.0'
@@ -157,8 +156,10 @@ dependencies {
     implementation 'org.projectlombok:lombok:1.18.36'
     annotationProcessor 'org.projectlombok:lombok:1.18.36'
     implementation 'com.typesafe:config:1.4.3'
-    implementation 'org.apache.logging.log4j:log4j-core:2.24.2'
+    implementation 'org.apache.logging.log4j:log4j-core:2.24.3'
+    implementation 'org.apache.logging.log4j:log4j-api:2.24.3'
     implementation "com.microsoft.playwright:playwright:${playwrightVersion}"
+    implementation 'com.browserstack:browserstack-java-sdk:1.29.0'
 }
 
 // https://github.com/DiUS/java-faker/issues/331#issuecomment-1091166953

@@ -46,15 +46,10 @@ import org.openqa.selenium.remote.service.DriverService;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
-import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.services.devicefarm.DeviceFarmClient;
-import software.amazon.awssdk.services.devicefarm.model.CreateTestGridUrlRequest;
-import software.amazon.awssdk.services.devicefarm.model.CreateTestGridUrlResponse;
 
 import java.io.FileOutputStream;
 import java.net.Inet4Address;
 import java.net.URI;
-import java.net.URL;
 
 /**
  * Driver controller
@@ -140,19 +135,8 @@ public class DriverController extends WebOptions {
      * @param perf    Flag to enable performance testing ("true" to enable, "false" to disable)
      */
     private synchronized void initWebDriver(String browser, String grid, String perf) {
-        try (DeviceFarmClient client = DeviceFarmClient.builder().region(Region.AP_SOUTHEAST_2).build()) {
             try {
                 switch (grid) {
-                    case "aws":
-                        log.info("Make sure that the environment variables AWS_ACCESS_KEY and AWS_SECRET_KEY are configured in your testing environment.");
-                        CreateTestGridUrlRequest request = CreateTestGridUrlRequest.builder()
-                                .expiresInSeconds(300)
-                                .projectArn("arn:aws:devicefarm:ap-southeast-2:111122223333:testgrid-project:1111111-2222-3333-4444-555555555")
-                                .build();
-                        CreateTestGridUrlResponse response = client.createTestGridUrl(request);
-                        driverThread = new RemoteWebDriver(new URL(response.url()), addCloudCapabilities(browser),false);
-                        log.info("Grid client setup for AWS Device farm successful");
-                        break;
                     case "docker":
                         log.info("Make sure that docker containers are up and running");
                         driverThread = new RemoteWebDriver(URI.create("http://localhost:4445/wd/hub").toURL(), getBrowserOptions(browser, perf),false);
@@ -191,7 +175,6 @@ public class DriverController extends WebOptions {
             } catch (Exception e) {
                 log.error(e.getMessage());
             }
-        }
     }
 
     /**

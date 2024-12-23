@@ -232,32 +232,39 @@ abstract class WebOptions extends MobileOptions {
      * @return Capabilities object with LambdaTest capabilities for the specified browser and test name
      */
     protected Capabilities addLambdaTestCapabilities(String browser, String testName) {
-        DesiredCapabilities capabilities = new DesiredCapabilities();
         HashMap<String, Object> ltOptions = new HashMap<>();
-        ltOptions.put("seCdp", true);
+        //ltOptions.put("seCdp", true);
+        ltOptions.put("username", lambda_username);
+        ltOptions.put("accessKey", lambda_accessKey);
         ltOptions.put("project", "HybridTestFramework");
         ltOptions.put("name", testName);
-        ltOptions.put("selenium_version", "4.8.0");
+        ltOptions.put("build", "BUILD_NAME");
+        ltOptions.put("selenium_version", "4.0.0");
+        ltOptions.put("plugin", "java-testNG");
+        ltOptions.put("w3c", true);
         switch (browser) {
             case "chrome" -> {
                 ChromeOptions browserOptions = new ChromeOptions();
                 browserOptions.setPlatformName("Windows 11");
-                browserOptions.setBrowserVersion("111.0");
+                browserOptions.setBrowserVersion("131.0");
+                browserOptions.setCapability("LT:Options", ltOptions);
+                return browserOptions;
             }
             case "firefox" -> {
                 FirefoxOptions browserOptions = new FirefoxOptions();
                 browserOptions.setPlatformName("Windows 11");
-                browserOptions.setBrowserVersion("latest");
+                browserOptions.setBrowserVersion("132.0");
+                browserOptions.setCapability("LT:Options", ltOptions);
             }
             case "edge" -> {
                 EdgeOptions browserOptions = new EdgeOptions();
                 browserOptions.setPlatformName("Windows 11");
-                browserOptions.setBrowserVersion("latest");
+                browserOptions.setBrowserVersion("131.0");
+                browserOptions.setCapability("LT:Options", ltOptions);
             }
             default -> log.info("browser selection is required");
         }
-        capabilities.setCapability("LT:Options", ltOptions);
-        return capabilities;
+        return null;
     }
 
     /**

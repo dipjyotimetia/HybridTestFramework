@@ -27,14 +27,11 @@ package com.TestDefinitionLayer;
 import com.core.WebActions;
 import com.pages.web.LoginPage;
 import com.reporting.extentreport.ExtentTestManager;
-import com.microsoft.playwright.*;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Link;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.Test;
-
-import java.nio.file.Paths;
 
 @Link("https://jira.cloud.com")
 @Feature("Api1")
