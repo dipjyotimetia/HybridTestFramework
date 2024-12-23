@@ -46,7 +46,7 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Running End To End Web Test
-        run: ./gradlew task lambda:web
+        run: ./gradlew task lambdaweb
       - name: Generate Report
         if: always()
         run: ./gradlew task allureReport
@@ -122,7 +122,7 @@ jobs:
           ACCESS: ${{ secrets.LT_ACCESS_KEY }}
       - name: Running End To End Mobile Test
         id: mobile-test
-        run: ./gradlew task lambda:mobile
+        run: ./gradlew task lambdamobile
         env:
           LT_USERNAME: ${{ secrets.LT_USERNAME }}
           LT_ACCESS_KEY: ${{ secrets.LT_ACCESS_KEY }}
