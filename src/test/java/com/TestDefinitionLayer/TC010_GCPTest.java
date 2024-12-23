@@ -43,7 +43,7 @@ import java.io.IOException;
 @Feature("GRPCApi")
 public class TC010_GCPTest {
     public PubSubEmulatorContainer pubSubEmulatorContainer = new PubSubEmulatorContainer(
-            DockerImageName.parse("gcr.io/google.com/cloudsdktool/cloud-sdk:367.0.0-emulators")
+            DockerImageName.parse("gcr.io/google.com/cloudsdktool/cloud-sdk:441.0.0-emulators")
     );
     String PROJECT_ID = "DEMO_PROJECT_ID";
     String TOPIC_ID = "DEMO_TOPIC_ID";
