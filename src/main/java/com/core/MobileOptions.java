@@ -204,7 +204,7 @@ abstract class MobileOptions {
      */
     public void androidCapabilities(DesiredCapabilities caps) {
         caps.setCapability("platformName", "android");
-        caps.setCapability("platformVersion", "13.0");
+        caps.setCapability("platformVersion", "14.0");
         caps.setCapability(UiAutomator2Options.APP_PACKAGE_OPTION, "com.swaglabsmobileapp");
         caps.setCapability(UiAutomator2Options.APP_ACTIVITY_OPTION, "com.swaglabsmobileapp.MainActivity");
     }

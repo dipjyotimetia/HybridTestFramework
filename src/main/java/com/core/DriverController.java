@@ -168,22 +168,22 @@ public class DriverController extends WebOptions {
                                 .projectArn("arn:aws:devicefarm:ap-southeast-2:111122223333:testgrid-project:1111111-2222-3333-4444-555555555")
                                 .build();
                         CreateTestGridUrlResponse response = client.createTestGridUrl(request);
-                        driverThread = new RemoteWebDriver(new URL(response.url()), addCloudCapabilities(browser));
+                        driverThread = new RemoteWebDriver(new URL(response.url()), addCloudCapabilities(browser),false);
                         log.info("Grid client setup for AWS Device farm successful");
                         break;
                     case "docker":
                         log.info("Make sure that docker containers are up and running");
-                        driverThread = new RemoteWebDriver(URI.create("http://localhost:4445/wd/hub").toURL(), getBrowserOptions(browser, perf));
+                        driverThread = new RemoteWebDriver(URI.create("http://localhost:4445/wd/hub").toURL(), getBrowserOptions(browser, perf),false);
                         log.info("Grid client setup for Docker containers successful");
                         break;
                     case "browserstack":
                         log.info("Make sure that browserstack configs provided");
-                        driverThread = new RemoteWebDriver(createURL("browserstack"), addBrowserStackCapabilities(browser, testName));
+                        driverThread = new RemoteWebDriver(createURL("browserstack"), addBrowserStackCapabilities(browser, testName),false);
                         log.info("Grid client setup for browserstack successful");
                         break;
                     case "lambda":
                         log.info("Make sure that lambda configs provided");
-                        driverThread = new RemoteWebDriver(createURL("lambda"), addLambdaTestCapabilities(browser, testName));
+                        driverThread = new RemoteWebDriver(createURL("lambda"), addLambdaTestCapabilities(browser, testName),false);
                         log.info("Grid client setup for lambda successful");
                         break;
                     case "local":

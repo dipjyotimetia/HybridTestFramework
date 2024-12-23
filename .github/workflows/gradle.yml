@@ -24,6 +24,12 @@ jobs:
         run: chmod +x gradlew
       - name: Running End To End Web Test
         run: ./gradlew task web
+      - name: Upload Gradle Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-gradle-report
+          path: build/reports/tests/test
 
   mobile:
     runs-on: ubuntu-latest
@@ -47,6 +53,7 @@ jobs:
           USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
           ACCESS: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
       - name: Running End To End Mobile Test
+        id: mobile-test
         run: ./gradlew task mobile
         env:
           SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
@@ -54,11 +61,19 @@ jobs:
           IPA_URL: ${{steps.app-upload.outputs.IPA_URL}}
           APK_URL: ${{steps.app-upload.outputs.APK_URL}}
       - name: Generate Report
+        if: always()
         run: ./gradlew task allureReport
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: allure-report
           path: build/reports/allure-report
+      - name: Upload Gradle Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-gradle-report
+          path: build/reports/tests/test
 
   api:
     runs-on: ubuntu-latest
@@ -80,3 +95,10 @@ jobs:
           AWS_ACCOUNT_ID: "000000000000"
           AWS_ACCESS_KEY_ID: dummy-access-key
           AWS_SECRET_ACCESS_KEY: dummy-secret-key
+
+      - name: Upload Gradle Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-gradle-report
+          path: build/reports/tests/test
