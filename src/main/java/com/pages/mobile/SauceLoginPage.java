@@ -35,15 +35,15 @@ public class SauceLoginPage extends MobileActions {
 
     @iOSXCUITFindBys(value = {@iOSXCUITBy(accessibility = "test-Username"), @iOSXCUITBy(xpath = "//XCUIElementTypeTextField[@name=\"test-Username\"]")})
     @AndroidFindBy(accessibility = "test-Username")
-    private WebElement userName;
+    public WebElement userName;
 
     @iOSXCUITFindBy(accessibility = "test-Password")
     @AndroidFindBy(accessibility = "test-Password")
-    private WebElement password;
+    public WebElement password;
 
     @iOSXCUITFindBy(accessibility = "test-LOGIN")
     @AndroidFindBy(accessibility = "test-LOGIN")
-    private WebElement loginButton;
+    public WebElement loginButton;
 
     public SauceLoginPage() {
         super();

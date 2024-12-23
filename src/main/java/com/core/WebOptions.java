@@ -24,10 +24,6 @@ SOFTWARE.
 
 package com.core;
 
-import com.microsoft.playwright.BrowserType;
-import com.microsoft.playwright.Playwright;
-import com.microsoft.playwright.Browser;
-import com.microsoft.playwright.BrowserType.LaunchOptions;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.Capabilities;
@@ -333,29 +329,4 @@ abstract class WebOptions extends MobileOptions {
         return capabilities;
     }
 
-    /**
-     * Returns Playwright BrowserType.LaunchOptions with various settings for performance and security.
-     *
-     * @param headless Boolean indicating whether to run the browser in headless mode
-     * @return BrowserType.LaunchOptions object with desired settings
-     */
-    protected LaunchOptions getPlaywrightOptions(boolean headless) {
-        LaunchOptions options = new LaunchOptions();
-        options.setHeadless(headless);
-        options.setArgs(List.of("--ignore-certificate-errors", "--disable-popup-blocking", "--no-sandbox", "--disable-infobars", "--disable-dev-shm-usage", "--disable-browser-side-navigation", "--disable-gpu"));
-        log.info("Playwright options added");
-        return options;
-    }
-
-    /**
-     * Initializes and returns a Playwright Browser instance with the specified options.
-     *
-     * @param options BrowserType.LaunchOptions object with desired settings
-     * @return Browser instance
-     */
-    protected Browser initPlaywrightBrowser(LaunchOptions options) {
-        Playwright playwright = Playwright.create();
-        BrowserType browserType = playwright.chromium();
-        return browserType.launch(options);
-    }
 }

@@ -84,6 +84,5 @@ public class TC002_GURU_Login extends WebActions {
         } finally {
             ExtentTestManager.endTest();
         }
-
     }
 }

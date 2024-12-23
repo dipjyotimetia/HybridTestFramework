@@ -172,7 +172,7 @@ abstract class MobileOptions {
             case "samsung" -> {
                 caps.setCapability("browserName", "chrome");
                 caps.setCapability("platformName", "android");
-                caps.setCapability("appium:platformVersion", "13.0");
+                caps.setCapability("appium:platformVersion", "14.0");
                 caps.setCapability("appium:deviceName", "Samsung Galaxy S23");
                 caps.setCapability("appium:automationName", "uiautomator2");
                 caps.setCapability("appium:app", apk_url);
@@ -180,7 +180,7 @@ abstract class MobileOptions {
             case "pixel" -> {
                 caps.setCapability("browserName", "chrome");
                 caps.setCapability("platformName", "android");
-                caps.setCapability("appium:platformVersion", "13.0");
+                caps.setCapability("appium:platformVersion", "14.0");
                 caps.setCapability("appium:deviceName", "Google Pixel 3");
                 caps.setCapability("appium:automationName", "uiautomator2");
                 caps.setCapability("appium:app", apk_url);
@@ -189,7 +189,7 @@ abstract class MobileOptions {
                 caps.setCapability("browserName", "safari");
                 caps.setCapability("platformName", "ios");
                 caps.setCapability("appium:platformVersion", "16");
-                caps.setCapability("appium:deviceName", "iPhone 14");
+                caps.setCapability("appium:deviceName", "iPhone 15");
                 caps.setCapability("appium:automationName", "xcuitest");
                 caps.setCapability("appium:app", ipa_url);
             }
@@ -204,7 +204,7 @@ abstract class MobileOptions {
      */
     public void androidCapabilities(DesiredCapabilities caps) {
         caps.setCapability("platformName", "android");
-        caps.setCapability("platformVersion", "13.0");
+        caps.setCapability("platformVersion", "14.0");
         caps.setCapability(UiAutomator2Options.APP_PACKAGE_OPTION, "com.swaglabsmobileapp");
         caps.setCapability(UiAutomator2Options.APP_ACTIVITY_OPTION, "com.swaglabsmobileapp.MainActivity");
     }

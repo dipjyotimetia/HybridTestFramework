@@ -27,7 +27,6 @@ package com.core;
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
 import com.github.javafaker.Faker;
-import com.microsoft.playwright.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.SystemUtils;
@@ -41,9 +40,6 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.HasDevTools;
 import org.openqa.selenium.devtools.NetworkInterceptor;
-import org.openqa.selenium.devtools.v131.log.Log;
-import org.openqa.selenium.devtools.v131.performance.Performance;
-import org.openqa.selenium.devtools.v131.performance.model.Metric;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.http.HttpResponse;
@@ -78,7 +74,6 @@ public class WebActions extends DriverManager {
     private static WebDriverWait wait;
     private static JavascriptExecutor jsExec;
     private final Map<String, String> dicttoread = new HashMap<>();
-    private Page playwrightPage;
 
     public static Map<String, String> get(Map<String, String> formParams) {
         return formParams
@@ -111,10 +106,6 @@ public class WebActions extends DriverManager {
         driverThread.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
     }
 
-    protected void playwrightNavigate(String url) {
-        playwrightPage.navigate(url);
-    }
-
     /**
      * Fluent Wait
      *
@@ -141,10 +132,6 @@ public class WebActions extends DriverManager {
      */
     protected void waitForElement(WebElement element) {
         new WebDriverWait(driverThread, Duration.ofSeconds(30)).until(ExpectedConditions.visibilityOf(element));
-    }
-
-    protected void playwrightWaitForElement(String selector) {
-        playwrightPage.waitForSelector(selector);
     }
 
     /**
@@ -216,10 +203,6 @@ public class WebActions extends DriverManager {
         new Actions(driverThread).doubleClick(element).build().perform();
     }
 
-    protected void playwrightDoubleClick(String selector) {
-        playwrightPage.dblclick(selector);
-    }
-
     /**
      * Drag and drop
      *
@@ -228,10 +211,6 @@ public class WebActions extends DriverManager {
      */
     protected void dragAndDrop(WebElement element1, WebElement element2) {
         new Actions(driverThread).dragAndDrop(element1, element2).build().perform();
-    }
-
-    protected void playwrightDragAndDrop(String sourceSelector, String targetSelector) {
-        playwrightPage.dragAndDrop(sourceSelector, targetSelector);
     }
 
     /**
@@ -326,10 +305,6 @@ public class WebActions extends DriverManager {
         action.perform();
     }
 
-    protected void playwrightMouseOver(String selector) {
-        playwrightPage.hover(selector);
-    }
-
     /**
      * Click
      *
@@ -338,10 +313,6 @@ public class WebActions extends DriverManager {
     protected void click(WebElement element) {
         fluentWait(element, 10);
         element.click();
-    }
-
-    protected void playwrightClick(String selector) {
-        playwrightPage.click(selector);
     }
 
     /**
@@ -353,10 +324,6 @@ public class WebActions extends DriverManager {
     protected void enter(WebElement element, String value) {
         fluentWait(element, 10);
         element.sendKeys(value);
-    }
-
-    protected void playwrightEnter(String selector, String value) {
-        playwrightPage.fill(selector, value);
     }
 
     /**
@@ -1196,6 +1163,8 @@ public class WebActions extends DriverManager {
         Assert.fail("TestCase Failed", e);
     }
 
+    //************* BrowserStack Specific Methods *************
+    /**
     public void listenConsoleLog() throws InterruptedException {
         Boolean success = false;
         Augmenter augmenter = new Augmenter();
@@ -1218,6 +1187,7 @@ public class WebActions extends DriverManager {
             markTestStatus("failed", "Console logs did not stream", driverThread);
         }
     }
+     **/
 
     public void javascriptException(String url, WebElement element) throws InterruptedException {
         Boolean success = false;
@@ -1280,6 +1250,8 @@ public class WebActions extends DriverManager {
         interceptor.close();
     }
 
+    //************* Performance Metrics *************
+    /**
     public void performanceMetric(String url) {
         Boolean success = false;
         Augmenter augmenter = new Augmenter();
@@ -1303,6 +1275,7 @@ public class WebActions extends DriverManager {
             markTestStatus("failed", "Performance metrics were not fetched", driverThread);
         }
     }
+     **/
 
     public void markTestStatus(String status, String reason, WebDriver driver) {
         JavascriptExecutor jse = (JavascriptExecutor) driver;

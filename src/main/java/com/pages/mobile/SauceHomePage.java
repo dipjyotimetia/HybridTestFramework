@@ -35,31 +35,31 @@ public class SauceHomePage extends MobileActions {
 
     @AndroidFindBy(id = "com.booking:id/search_details_text")
     @iOSXCUITBy(xpath = "")
-    private WebElement destination;
+    public WebElement destination;
 
     @AndroidFindBy(id = "com.booking:id/disam_search")
-    private WebElement search;
+    public WebElement search;
 
     @AndroidFindBy(id = "com.booking:id/bt_accept")
-    private WebElement acceptCookie;
+    public WebElement acceptCookie;
 
     @AndroidFindBy(xpath = "//android.widget.ImageButton[@content-desc=\"Navigate up\"]")
-    private WebElement closeButton;
+    public WebElement closeButton;
 
     @AndroidFindBy(id = "com.booking:id/disambiguation_search_edittext")
-    private WebElement searchEdit;
+    public WebElement searchEdit;
 
     @AndroidFindBy(id = "com.booking:id/button_positive")
-    private WebElement gotIt;
+    public WebElement gotIt;
 
     @AndroidFindBy(xpath = "(//android.widget.TextView[contains(@text,'Paris')])[1]")
-    private WebElement select;
+    public WebElement select;
 
     @AndroidFindBy(id = "com.booking:id/calendar_confirm")
-    private WebElement selectDate;
+    public WebElement selectDate;
 
     @AndroidFindBy(id = "com.booking:id/search_search")
-    private WebElement searchButton;
+    public WebElement searchButton;
 
     public SauceHomePage() {
         super();

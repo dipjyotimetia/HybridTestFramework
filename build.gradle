@@ -20,15 +20,19 @@ group 'com.HybridTestFramework'
 version = '1.0-SNAPSHOT'
 
 repositories {
-    maven { url "https://maven-central.storage-download.googleapis.com/maven2/" }
     mavenCentral()
-    maven { url "https://packages.confluent.io/maven/" }
+    maven {
+        url 'https://maven-central.storage-download.googleapis.com/maven2/'
+    }
+    maven {
+        url 'https://packages.confluent.io/maven/'
+    }
     google()
     gradlePluginPortal()
 }
 
 allure {
-    version = "2.25.0"
+    version = "2.29.1"
 }
 
 // dockerCompose.isRequiredBy(test)
@@ -91,8 +95,8 @@ dependencies {
     implementation "software.amazon.awssdk:sns:${awsVersion}"
     implementation "software.amazon.awssdk:devicefarm:${awsVersion}"
     implementation 'com.google.cloud:google-cloud-pubsub:1.134.2'
-    implementation 'org.seleniumhq.selenium:selenium-java:4.27.0'
-    implementation 'org.seleniumhq.selenium:selenium-remote-driver:4.27.0'
+    implementation 'org.seleniumhq.selenium:selenium-java:4.26.0'
+    implementation 'org.seleniumhq.selenium:selenium-remote-driver:4.26.0'
     implementation 'io.appium:java-client:9.3.0'
     implementation 'org.awaitility:awaitility:4.2.2'
     implementation 'org.wiremock:wiremock:3.10.0'
@@ -159,10 +163,14 @@ dependencies {
 
 // https://github.com/DiUS/java-faker/issues/331#issuecomment-1091166953
 configurations.configureEach {
-    resolutionStrategy.eachDependency { details ->
-        if (details.requested.module.toString() == 'org.yaml:snakeyaml') {
-            details.artifactSelection {
-                it.selectArtifact(DependencyArtifact.DEFAULT_TYPE, null, null)
+    resolutionStrategy {
+        // Force specific versions for security updates
+        force "org.yaml:snakeyaml:2.0"
+        eachDependency { details ->
+            if (details.requested.module.toString() == 'org.yaml:snakeyaml') {
+                details.artifactSelection {
+                    it.selectArtifact(DependencyArtifact.DEFAULT_TYPE, null, null)
+                }
             }
         }
     }

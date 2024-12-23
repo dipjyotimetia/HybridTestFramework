@@ -25,7 +25,6 @@ SOFTWARE.
 package com.core;
 
 import com.config.AppConfig;
-import com.microsoft.playwright.*;
 import com.typesafe.config.ConfigFactory;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
@@ -67,7 +66,6 @@ public class DriverController extends WebOptions {
     private static BrowserMobProxyServer proxy;
     DriverService appiumService = null;
     private String testName = null;
-    private Browser browserThread = null;
 
     /**
      * Configures and returns desired capabilities for performance testing.
@@ -99,24 +97,17 @@ public class DriverController extends WebOptions {
      * This method should be invoked before executing any test.
      *
      * @param type    The type of test to run, either "web" or "mobile"
-     * @param engine  The engine to use for web testing (e.g. "playwright", "webdriver")
      * @param browser The browser to use for web testing (e.g. "chrome", "firefox", "edge")
      * @param device  The mobile device to use for mobile testing (e.g. "NEXUS", "PIXEL", "samsung", "iPhone14", "IPHONE", "EMULATOR")
      * @param grid    The environment to run the test in (e.g. "aws", "docker", "browserstack", "lambda", "local")
      * @param perf    Flag to enable performance testing ("true" to enable, "false" to disable)
      */
-    @Parameters({"type", "engine", "browser", "device", "grid", "perf"})
+    @Parameters({"type", "browser", "device", "grid", "perf"})
     @BeforeClass
-    public void setup(String type, String engine, String browser, String device, String grid, String perf) {
+    public void setup(String type, String browser, String device, String grid, String perf) {
         testName = this.getClass().getName().substring(24);
         switch (type) {
-            case "engine" -> {
-                switch (engine) {
-                    case "playwright" -> initPlaywright(browser);
-                    case "webdriver" -> initWebDriver(browser, grid, perf);
-                    default -> log.info("Select engine to proceed with one testing");
-                }
-            }
+            case "web" -> initWebDriver(browser, grid, perf);
             case "mobile" -> initMobileDriver(device, grid);
             default -> log.info("select test type to proceed with one testing");
         }
@@ -141,15 +132,6 @@ public class DriverController extends WebOptions {
     }
 
     /**
-     * Returns the Playwright browser object for the current test.
-     *
-     * @return Playwright browser object for the current test
-     */
-    public Browser getPlaywright() {
-        return browserThread;
-    }
-
-    /**
      * Initializes the web driver based on the provided browser, grid, and performance testing flag.
      * Supports running tests on local and remote environments.
      *
@@ -168,22 +150,22 @@ public class DriverController extends WebOptions {
                                 .projectArn("arn:aws:devicefarm:ap-southeast-2:111122223333:testgrid-project:1111111-2222-3333-4444-555555555")
                                 .build();
                         CreateTestGridUrlResponse response = client.createTestGridUrl(request);
-                        driverThread = new RemoteWebDriver(new URL(response.url()), addCloudCapabilities(browser));
+                        driverThread = new RemoteWebDriver(new URL(response.url()), addCloudCapabilities(browser),false);
                         log.info("Grid client setup for AWS Device farm successful");
                         break;
                     case "docker":
                         log.info("Make sure that docker containers are up and running");
-                        driverThread = new RemoteWebDriver(URI.create("http://localhost:4445/wd/hub").toURL(), getBrowserOptions(browser, perf));
+                        driverThread = new RemoteWebDriver(URI.create("http://localhost:4445/wd/hub").toURL(), getBrowserOptions(browser, perf),false);
                         log.info("Grid client setup for Docker containers successful");
                         break;
                     case "browserstack":
                         log.info("Make sure that browserstack configs provided");
-                        driverThread = new RemoteWebDriver(createURL("browserstack"), addBrowserStackCapabilities(browser, testName));
+                        driverThread = new RemoteWebDriver(createURL("browserstack"), addBrowserStackCapabilities(browser, testName),false);
                         log.info("Grid client setup for browserstack successful");
                         break;
                     case "lambda":
                         log.info("Make sure that lambda configs provided");
-                        driverThread = new RemoteWebDriver(createURL("lambda"), addLambdaTestCapabilities(browser, testName));
+                        driverThread = new RemoteWebDriver(createURL("lambda"), addLambdaTestCapabilities(browser, testName),false);
                         log.info("Grid client setup for lambda successful");
                         break;
                     case "local":
@@ -272,25 +254,6 @@ public class DriverController extends WebOptions {
     }
 
     /**
-     * Initializes the Playwright browser based on the provided browser.
-     *
-     * @param browser The browser to use for Playwright testing (e.g. "firefox", "webkit", "chromium")
-     */
-    private synchronized void initPlaywright(String browser) {
-        try (Playwright playwright = Playwright.create()) {
-            BrowserType browserType = switch (browser.toLowerCase()) {
-                case "firefox" -> playwright.firefox();
-                case "webkit" -> playwright.webkit();
-                case "chromium" -> playwright.chromium();
-                default -> throw new IllegalArgumentException("Browser not supported: " + browser);
-            };
-            browserThread = browserType.launch(new BrowserType.LaunchOptions().setHeadless(true));
-        } catch (Exception e) {
-            log.error("Failed to initialize Playwright: {}", e.getMessage());
-        }
-    }
-
-    /**
      * Clean up after running tests. If performance testing was enabled, save the HAR file to the Reports folder.
      * Close the WebDriver and stop the Appium server if it was used.
      */
@@ -307,8 +270,6 @@ public class DriverController extends WebOptions {
         } finally {
             if (driverThread != null) {
                 driverThread.quit();
-            } else if (browserThread != null) {
-                browserThread.close();
             } else {
                 if (appiumService != null) {
                     appiumService.stop();

@@ -1,6 +1,6 @@
 services:
   redpanda:
-    image: docker.vectorized.io/vectorized/redpanda:v23.1.4
+    image: redpandadata/redpanda:latest
     container_name: redpanda
     command:
       - redpanda start
@@ -18,7 +18,8 @@ services:
       - "29092:29092"
 
   console:
-    image: docker.redpanda.com/redpandadata/console:v2.2.3
+    image: redpandadata/console:latest
+    container_name: kafka_console
     entrypoint: /bin/sh
     command:
       - -c
