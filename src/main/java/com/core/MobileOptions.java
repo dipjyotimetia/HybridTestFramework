@@ -57,10 +57,10 @@ abstract class MobileOptions {
     private final String bs_accessKey = System.getenv("BROWSERSTACK_ACCESS_KEY");
     private final String sauce_username = System.getenv("SAUCE_USERNAME");
     private final String sauce_accessKey = System.getenv("SAUCE_ACCESS_KEY");
-    public final String lambda_username = System.getenv("LAMBDA_USERNAME");
-    public final String lambda_accessKey = System.getenv("LAMBDA_ACCESS_KEY");
-    private final String browserstackURL = "https://" + bs_username + ":" + bs_accessKey + "@hub.browserstack.com/wd/hub";
-    private final String sauceURL = "https://" + sauce_username + ":" + sauce_accessKey + "@ondemand.apac-southeast-1.saucelabs.com/wd/hub";
+    public final String lambda_username = System.getenv("LT_USERNAME");
+    public final String lambda_accessKey = System.getenv("LT_ACCESS_KEY");
+    private final String browserstackURL = "https://" + bs_username + ":" + bs_accessKey + "@hub-cloud.browserstack.com/wd/hub";
+    private final String sauceURL = "https://" + sauce_username + ":" + sauce_accessKey + "@ondemand.us-west-1.saucelabs.com:443/wd/hub";
     private final String lambdaURL = "https://" + lambda_username + ":" + lambda_accessKey + "@hub.lambdatest.com/wd/hub";
 
     DesiredCapabilities caps = new DesiredCapabilities();
