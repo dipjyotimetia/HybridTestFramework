@@ -32,7 +32,7 @@ repositories {
 }
 
 allure {
-    version = "2.29.1"
+    version = "2.32.0"
 }
 
 // dockerCompose.isRequiredBy(test)
