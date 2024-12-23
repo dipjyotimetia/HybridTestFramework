@@ -192,7 +192,7 @@ public class DriverController extends WebOptions {
                     caps.setCapability(UiAutomator2Options.UDID_OPTION, "NEXUS");
                     caps.setCapability(UiAutomator2Options.DEVICE_NAME_OPTION, "NEXUS");
                     androidCapabilities(caps);
-                    cloudCapabilities(cloud, caps, "NEXUS");
+                    cloudMobileCapabilities(cloud, caps, "NEXUS");
                     driverThread = new RemoteWebDriver(createURL(cloud), caps);
                 }
                 case "PIXEL" -> {
@@ -200,17 +200,17 @@ public class DriverController extends WebOptions {
                     caps.setCapability(UiAutomator2Options.UDID_OPTION, "PIXEL");
                     caps.setCapability(UiAutomator2Options.DEVICE_NAME_OPTION, "PIXEL");
                     androidCapabilities(caps);
-                    cloudCapabilities(cloud, caps, "PIXEL");
+                    cloudMobileCapabilities(cloud, caps, "PIXEL");
                     driverThread = new RemoteWebDriver(createURL(cloud), caps);
                 }
                 case "samsung" -> {
                     log.info("Selected device is SAMSUNG");
-                    cloudCapabilities(cloud, caps, "samsung");
+                    cloudMobileCapabilities(cloud, caps, "samsung");
                     driverThread = new RemoteWebDriver(createURL(cloud), caps);
                 }
                 case "iPhone14" -> {
                     log.info("Selected device is IPHONE");
-                    cloudCapabilities(cloud, caps, "iPhone14");
+                    cloudMobileCapabilities(cloud, caps, "iPhone14");
                     driverThread = new RemoteWebDriver(createURL(cloud), caps);
                 }
                 case "IPHONE" -> {
@@ -218,7 +218,7 @@ public class DriverController extends WebOptions {
                     caps.setCapability(XCUITestOptions.UDID_OPTION, "iphone");
                     caps.setCapability(XCUITestOptions.DEVICE_NAME_OPTION, "iphone");
                     iosCapabilities(caps);
-                    cloudCapabilities(cloud, caps, "IPHONE");
+                    cloudMobileCapabilities(cloud, caps, "IPHONE");
                     driverThread = new RemoteWebDriver(createURL(cloud), caps);
                 }
                 case "EMULATOR" -> {

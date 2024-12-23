@@ -61,8 +61,7 @@ abstract class MobileOptions {
     public final String lambda_accessKey = System.getenv("LT_ACCESS_KEY");
     private final String browserstackGridURL = "https://" + bs_username + ":" + bs_accessKey + "@hub-cloud.browserstack.com/wd/hub";
     private final String sauceGridURL = "https://" + sauce_username + ":" + sauce_accessKey + "@ondemand.us-west-1.saucelabs.com:443/wd/hub";
-    private final String lambdaWebGridURL = "https://" + lambda_username + ":" + lambda_accessKey + "@hub.lambdatest.com/wd/hub";
-    private final String lambdaMobileGridURL = "https://" + lambda_username + ":" + lambda_accessKey + "@mobile-hub.lambdatest.com/wd/hub";
+    private final String lambdaGridURL = "https://" + lambda_username + ":" + lambda_accessKey + "@hub.lambdatest.com/wd/hub";
 
     DesiredCapabilities caps = new DesiredCapabilities();
 
@@ -83,13 +82,9 @@ abstract class MobileOptions {
                 log.info("Argument to driver object : " + browserstackGridURL);
                 return new URL(browserstackGridURL);
             }
-            case "lambda:web" -> {
-                log.info("Argument to driver object : " + lambdaWebGridURL);
-                return new URL(lambdaWebGridURL);
-            }
-            case "lambda:mobile" -> {
-                log.info("Argument to driver object : " + lambdaMobileGridURL);
-                return new URL(lambdaMobileGridURL);
+            case "lambda" -> {
+                log.info("Argument to driver object : " + lambdaGridURL);
+                return new URL(lambdaGridURL);
             }
             default -> {
                 String appiumPort = "4723";
@@ -107,11 +102,11 @@ abstract class MobileOptions {
      * @param caps          DesiredCapabilities instance.
      * @param device        device name.
      */
-    void cloudCapabilities(String cloudProvider, DesiredCapabilities caps, String device) {
+    void cloudMobileCapabilities(String cloudProvider, DesiredCapabilities caps, String device) {
         switch (cloudProvider) {
-            case "sauce" -> sauceLabsCapabilities(caps, device);
-            case "browserstack" -> browserstackCapabilities(caps, device);
-            case "lambda" -> lambdaTestCapabilities(caps, device);
+            case "browserstack" -> browserstackMobileCapabilities(caps, device);
+            case "lambda" -> lambdaTestMobileCapabilities(caps, device);
+            case "sauce" -> sauceLabsMobileCapabilities(caps, device);
             default -> log.info("Setting up local appium server");
         }
     }
@@ -122,8 +117,8 @@ abstract class MobileOptions {
      * @param caps   DesiredCapabilities instance.
      * @param device device name.
      */
-    private void browserstackCapabilities(DesiredCapabilities caps, String device) {
-        deviceCapabilities(caps, device);
+    private void browserstackMobileCapabilities(DesiredCapabilities caps, String device) {
+        genericMobileCapabilities(caps, device);
         HashMap<String, Object> browserstackOptions = new HashMap<>();
         browserstackOptions.put("automationVersion", "latest");
         browserstackOptions.put("appiumVersion", "2.3.0");
@@ -141,9 +136,27 @@ abstract class MobileOptions {
      * @param caps   DesiredCapabilities instance.
      * @param device device name.
      */
-    private void lambdaTestCapabilities(DesiredCapabilities caps, String device) {
-        deviceCapabilities(caps, device);
+    private void lambdaTestMobileCapabilities(DesiredCapabilities caps, String device) {
+        genericMobileCapabilities(caps, device);
         HashMap<String, Object> ltOptions = new HashMap<>();
+        switch (device) {
+            case "samsung" -> {
+                ltOptions.put("platformName", "android");
+                ltOptions.put("deviceName", "Galaxy S23");
+                ltOptions.put("platformVersion", "14");
+            }
+            case "pixel" -> {
+                ltOptions.put("platformName", "android");
+                ltOptions.put("platformVersion", "14");
+                ltOptions.put("deviceName", "Pixel 9 Pro");
+            }
+            case "iPhone16" -> {
+                ltOptions.put("platformName", "ios");
+                ltOptions.put("platformVersion", "18");
+                ltOptions.put("deviceName", "iPhone 16");
+            }
+            default -> System.out.println("No device found");
+        }
         ltOptions.put("appiumVersion", "2.3.0");
         ltOptions.put("w3c", true);
         ltOptions.put("isRealMobile", true);
@@ -161,8 +174,8 @@ abstract class MobileOptions {
      * @param caps   DesiredCapabilities instance.
      * @param device device name.
      */
-    private void sauceLabsCapabilities(DesiredCapabilities caps, String device) {
-        deviceCapabilities(caps, device);
+    private void sauceLabsMobileCapabilities(DesiredCapabilities caps, String device) {
+        genericMobileCapabilities(caps, device);
         HashMap<String, Object> sauceOptions = new HashMap<>();
         sauceOptions.put("appiumVersion", "2.0.0");
         caps.setCapability("sauce:options", sauceOptions);
@@ -175,29 +188,15 @@ abstract class MobileOptions {
      * @param caps   DesiredCapabilities instance.
      * @param device device name.
      */
-    private void deviceCapabilities(DesiredCapabilities caps, String device) {
+    private void genericMobileCapabilities(DesiredCapabilities caps, String device) {
         switch (device) {
-            case "samsung" -> {
+            case "samsung", "pixel" -> {
                 caps.setCapability("browserName", "chrome");
-                caps.setCapability("platformName", "android");
-                caps.setCapability("appium:platformVersion", "13.0");
-                caps.setCapability("appium:deviceName", "Galaxy S23");
                 caps.setCapability("appium:automationName", "uiautomator2");
                 caps.setCapability("appium:app", apk_url);
             }
-            case "pixel" -> {
-                caps.setCapability("browserName", "chrome");
-                caps.setCapability("platformName", "android");
-                caps.setCapability("appium:platformVersion", "14.0");
-                caps.setCapability("appium:deviceName", "Pixel 9 Pro");
-                caps.setCapability("appium:automationName", "uiautomator2");
-                caps.setCapability("appium:app", apk_url);
-            }
-            case "iPhone14" -> {
+            case "iPhone16" -> {
                 caps.setCapability("browserName", "safari");
-                caps.setCapability("platformName", "ios");
-                caps.setCapability("appium:platformVersion", "16");
-                caps.setCapability("appium:deviceName", "iPhone 15");
                 caps.setCapability("appium:automationName", "xcuitest");
                 caps.setCapability("appium:app", ipa_url);
             }

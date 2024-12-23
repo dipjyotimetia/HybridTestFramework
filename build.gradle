@@ -68,7 +68,7 @@ tasks.register('web', Test) {
     }
 }
 
-tasks.register('lambda:web', Test) {
+tasks.register('lambdaweb', Test) {
     environment 'PLAYWRIGHT_LOG', 'off'
     useTestNG {
         useDefaultListeners = true
@@ -111,7 +111,7 @@ tasks.register('mobile', Test) {
     }
 }
 
-tasks.register('lambda:mobile', Test) {
+tasks.register('lambdamobile', Test) {
     useTestNG {
         useDefaultListeners = true
         suites 'src/test/java/suite/mobileng_lambda.xml'
