@@ -136,7 +136,7 @@ dependencies {
     implementation "io.cloudevents:cloudevents-kafka:${ceVersion}"
     implementation "io.cloudevents:cloudevents-protobuf:${ceVersion}"
     implementation 'cloud.localstack:localstack-utils:0.2.23'
-    implementation 'com.google.guava:guava:33.3.1-jre'
+    implementation 'com.google.guava:guava:33.4.0-jre'
     runtimeOnly "io.grpc:grpc-netty-shaded:${grpcVersion}"
     implementation "io.grpc:grpc-protobuf:${grpcVersion}"
     implementation "io.grpc:grpc-stub:${grpcVersion}"
