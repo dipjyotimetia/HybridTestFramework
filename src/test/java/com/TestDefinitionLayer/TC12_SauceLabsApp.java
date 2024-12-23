@@ -43,6 +43,7 @@ public class TC12_SauceLabsApp extends MobileActions {
         ExtentTestManager.startTest(TCname, "verify login");
 
         try {
+            sleep(10000);
             loginPage.login();
         } catch (Exception e) {
            catchBlock(e);

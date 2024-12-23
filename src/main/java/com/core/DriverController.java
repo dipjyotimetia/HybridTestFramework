@@ -188,14 +188,12 @@ public class DriverController extends WebOptions {
             switch (device) {
                 case "s23" -> {
                     log.info("Selected device is SAMSUNG");
-                    androidAppPkg(caps);
-                    cloudMobileCapabilities(cloud, caps, "samsung");
+                    cloudMobileCapabilities(cloud, caps, device);
                     driverThread = new RemoteWebDriver(createURL(cloud), caps);
                 }
                 case "iPhone16" -> {
                     log.info("Selected device is IPHONE");
-                    iosAppPkg(caps);
-                    cloudMobileCapabilities(cloud, caps, "iPhone14");
+                    cloudMobileCapabilities(cloud, caps, device);
                     driverThread = new RemoteWebDriver(createURL(cloud), caps);
                 }
                 case "EMULATOR" -> {

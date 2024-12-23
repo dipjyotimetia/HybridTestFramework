@@ -231,30 +231,6 @@ abstract class MobileOptions {
     }
 
     /**
-     * Sets up Android capabilities.
-     *
-     * @param caps DesiredCapabilities instance.
-     */
-    public void androidAppPkg(DesiredCapabilities caps) {
-        caps.setCapability(UiAutomator2Options.APP_PACKAGE_OPTION, "com.swaglabsmobileapp");
-        caps.setCapability(UiAutomator2Options.APP_ACTIVITY_OPTION, "com.swaglabsmobileapp.MainActivity");
-    }
-
-    /**
-     * Sets up iOS capabilities.
-     *
-     * @param caps DesiredCapabilities instance.
-     */
-    public void iosAppPkg(DesiredCapabilities caps) {
-        // caps.setCapability(IOSMobileCapabilityType.XCODE_ORG_ID, "");
-        // caps.setCapability(IOSMobileCapabilityType.XCODE_SIGNING_ID, "");
-        // caps.setCapability(IOSMobileCapabilityType.UPDATE_WDA_BUNDLEID, "");
-       // caps.setCapability(IOSMobileCapabilityType.AUTO_DISMISS_ALERTS, true);
-        caps.setCapability(XCUITestOptions.BUNDLE_ID_OPTION, "com.saucelabs.SwagLabsMobileApp");
-        caps.setCapability(XCUITestOptions.APP_OPTION, "com.saucelabs.SwagLabsMobileApp");
-    }
-
-    /**
      * Creates an Appium driver service.
      *
      * @return DriverService instance.

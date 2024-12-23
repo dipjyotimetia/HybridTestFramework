@@ -33,16 +33,28 @@ import org.openqa.selenium.support.PageFactory;
  */
 public class SauceLoginPage extends MobileActions {
 
-    @iOSXCUITFindBys(value = {@iOSXCUITBy(accessibility = "test-Username"), @iOSXCUITBy(xpath = "//XCUIElementTypeTextField[@name=\"test-Username\"]")})
-    @AndroidFindBy(accessibility = "test-Username")
-    public WebElement userName;
+    @iOSXCUITFindBys(value = {@iOSXCUITBy(iOSNsPredicate = "name == \"AddToCartUnselected Icons\""), @iOSXCUITBy(xpath = "//XCUIElementTypeImage[@name=\"AddToCartUnselected Icons\"]")})
+    @AndroidFindBy(xpath = "//android.widget.ImageView[@content-desc=\"Displays number of items in your cart\"]")
+    public WebElement cart;
 
-    @iOSXCUITFindBy(accessibility = "test-Password")
-    @AndroidFindBy(accessibility = "test-Password")
+    @iOSXCUITFindBy(accessibility = "Menu Icons")
+    @AndroidFindBy(xpath = "//android.widget.ImageView[@content-desc=\"View menu\"]")
+    public WebElement more;
+
+    @iOSXCUITFindBy(accessibility = "LogOut-menu-item")
+    @AndroidFindBy(xpath = "//android.widget.TextView[@content-desc=\"Login Menu Item\"]")
+    public WebElement login;
+
+    @iOSXCUITFindBy(xpath = "//XCUIElementTypeTextField")
+    @AndroidFindBy(uiAutomator = "new UiSelector().resourceId(\"com.saucelabs.mydemoapp.android:id/nameET\")")
+    public WebElement username;
+
+    @iOSXCUITFindBy(xpath = "//XCUIElementTypeSecureTextField")
+    @AndroidFindBy(uiAutomator = "new UiSelector().resourceId(\"com.saucelabs.mydemoapp.android:id/passwordET\")")
     public WebElement password;
 
-    @iOSXCUITFindBy(accessibility = "test-LOGIN")
-    @AndroidFindBy(accessibility = "test-LOGIN")
+    @iOSXCUITFindBy(xpath = "//XCUIElementTypeButton[@name=\"Login\"]")
+    @AndroidFindBy(id = "com.saucelabs.mydemoapp.android:id/loginBtn")
     public WebElement loginButton;
 
     public SauceLoginPage() {
@@ -51,8 +63,11 @@ public class SauceLoginPage extends MobileActions {
     }
 
     public void login() {
-        enter(userName, "standard_user");
-        enter(password, "secret_sauce");
+        click(cart);
+        click(more);
+        click(login);
+        enter(username, "bod@example.com");
+        enter(password, "10203040");
         click(loginButton);
     }
 }
