@@ -116,6 +116,7 @@ abstract class MobileOptions {
      *
      * @param caps   DesiredCapabilities instance.
      * @param device device name.
+     * @see <a href="https://www.browserstack.com/docs/app-automate/capabilities">BrowserStack Capabilities</a>
      */
     private void browserStackMobileCapabilities(DesiredCapabilities caps, String device) {
         genericMobileCapabilities(caps, device);
@@ -151,6 +152,7 @@ abstract class MobileOptions {
      *
      * @param caps   DesiredCapabilities instance.
      * @param device device name.
+     * @see <a href="https://www.lambdatest.com/support/docs/desired-capabilities-in-appium/">LambdaTest Capabilities</a>
      */
     private void lambdaTestMobileCapabilities(DesiredCapabilities caps, String device) {
         genericMobileCapabilities(caps, device);
@@ -191,11 +193,14 @@ abstract class MobileOptions {
      *
      * @param caps   DesiredCapabilities instance.
      * @param device device name.
+     * @see <a href="https://docs.saucelabs.com/mobile-apps/automated-testing/appium/virtual-devices/">Sauce Labs Capabilities</a>
      */
     private void sauceLabsMobileCapabilities(DesiredCapabilities caps, String device) {
         genericMobileCapabilities(caps, device);
         HashMap<String, Object> sauceOptions = new HashMap<>();
-        sauceOptions.put("appiumVersion", "2.0.0");
+        sauceOptions.put("username", sauce_username);
+        sauceOptions.put("accessKey", sauce_accessKey);
+        sauceOptions.put("appiumVersion", "latest");
         caps.setCapability("sauce:options", sauceOptions);
         log.info("Setting up saucelabs capabilities");
     }
@@ -205,6 +210,7 @@ abstract class MobileOptions {
      *
      * @param caps   DesiredCapabilities instance.
      * @param device device name.
+     * @see <a href="https://appium.io/docs/en/2.0/guides/caps/">Appium Capabilities</a>
      */
     private void genericMobileCapabilities(DesiredCapabilities caps, String device) {
         switch (device) {
@@ -229,9 +235,7 @@ abstract class MobileOptions {
      *
      * @param caps DesiredCapabilities instance.
      */
-    public void androidCapabilities(DesiredCapabilities caps) {
-        caps.setCapability("platformName", "android");
-        caps.setCapability("platformVersion", "14.0");
+    public void androidAppPkg(DesiredCapabilities caps) {
         caps.setCapability(UiAutomator2Options.APP_PACKAGE_OPTION, "com.swaglabsmobileapp");
         caps.setCapability(UiAutomator2Options.APP_ACTIVITY_OPTION, "com.swaglabsmobileapp.MainActivity");
     }
@@ -241,9 +245,7 @@ abstract class MobileOptions {
      *
      * @param caps DesiredCapabilities instance.
      */
-    public void iosCapabilities(DesiredCapabilities caps) {
-        caps.setCapability("platformName", "ios");
-        caps.setCapability("platformVersion", "18");
+    public void iosAppPkg(DesiredCapabilities caps) {
         // caps.setCapability(IOSMobileCapabilityType.XCODE_ORG_ID, "");
         // caps.setCapability(IOSMobileCapabilityType.XCODE_SIGNING_ID, "");
         // caps.setCapability(IOSMobileCapabilityType.UPDATE_WDA_BUNDLEID, "");

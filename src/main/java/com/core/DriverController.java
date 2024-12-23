@@ -28,7 +28,6 @@ import com.config.AppConfig;
 import com.typesafe.config.ConfigFactory;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
-import io.appium.java_client.ios.options.XCUITestOptions;
 import lombok.extern.slf4j.Slf4j;
 import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.client.ClientUtil;
@@ -187,38 +186,16 @@ public class DriverController extends WebOptions {
     private synchronized void initMobileDriver(String device, String cloud) {
         try {
             switch (device) {
-                case "NEXUS" -> {
-                    log.info("Selected device is NEXUS");
-                    caps.setCapability(UiAutomator2Options.UDID_OPTION, "NEXUS");
-                    caps.setCapability(UiAutomator2Options.DEVICE_NAME_OPTION, "NEXUS");
-                    androidCapabilities(caps);
-                    cloudMobileCapabilities(cloud, caps, "NEXUS");
-                    driverThread = new RemoteWebDriver(createURL(cloud), caps);
-                }
-                case "PIXEL" -> {
-                    log.info("Selected device is PIXEL");
-                    caps.setCapability(UiAutomator2Options.UDID_OPTION, "PIXEL");
-                    caps.setCapability(UiAutomator2Options.DEVICE_NAME_OPTION, "PIXEL");
-                    androidCapabilities(caps);
-                    cloudMobileCapabilities(cloud, caps, "PIXEL");
-                    driverThread = new RemoteWebDriver(createURL(cloud), caps);
-                }
-                case "samsung" -> {
+                case "s23" -> {
                     log.info("Selected device is SAMSUNG");
+                    androidAppPkg(caps);
                     cloudMobileCapabilities(cloud, caps, "samsung");
                     driverThread = new RemoteWebDriver(createURL(cloud), caps);
                 }
-                case "iPhone14" -> {
+                case "iPhone16" -> {
                     log.info("Selected device is IPHONE");
+                    iosAppPkg(caps);
                     cloudMobileCapabilities(cloud, caps, "iPhone14");
-                    driverThread = new RemoteWebDriver(createURL(cloud), caps);
-                }
-                case "IPHONE" -> {
-                    log.info("Selected device is IPHONE");
-                    caps.setCapability(XCUITestOptions.UDID_OPTION, "iphone");
-                    caps.setCapability(XCUITestOptions.DEVICE_NAME_OPTION, "iphone");
-                    iosCapabilities(caps);
-                    cloudMobileCapabilities(cloud, caps, "IPHONE");
                     driverThread = new RemoteWebDriver(createURL(cloud), caps);
                 }
                 case "EMULATOR" -> {
