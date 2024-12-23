@@ -29,8 +29,8 @@ plugins {
 }
 
 ext {
-    grpcVersion = '1.68.2'
-    protoVersion = '4.29.1'
+    grpcVersion = '1.69.0'
+    protoVersion = '4.29.2'
 }
 
 group 'com.HybridTestFramework'

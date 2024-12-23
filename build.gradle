@@ -2,12 +2,12 @@ plugins {
     id "java"
     id "idea"
     id "io.qameta.allure" version "2.12.0"
-    id "com.avast.gradle.docker-compose" version "0.17.11"
+    id "com.avast.gradle.docker-compose" version "0.17.12"
 }
 
 ext {
-    grpcVersion = '1.68.2'
-    protoVersion = '4.29.1'
+    grpcVersion = '1.69.0'
+    protoVersion = '4.29.2'
     containerVersion = '1.20.4'
     kafkaVersion = "7.8.0-ce"
     awsVersion = '2.29.39'
@@ -136,7 +136,7 @@ dependencies {
     implementation "io.cloudevents:cloudevents-kafka:${ceVersion}"
     implementation "io.cloudevents:cloudevents-protobuf:${ceVersion}"
     implementation 'cloud.localstack:localstack-utils:0.2.23'
-    implementation 'com.google.guava:guava:33.3.1-jre'
+    implementation 'com.google.guava:guava:33.4.0-jre'
     runtimeOnly "io.grpc:grpc-netty-shaded:${grpcVersion}"
     implementation "io.grpc:grpc-protobuf:${grpcVersion}"
     implementation "io.grpc:grpc-stub:${grpcVersion}"
