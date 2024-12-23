@@ -13,7 +13,7 @@ env:
   LT_ACCESS_KEY: ${{ secrets.LT_ACCESS_KEY }}
 
 jobs:
-  browserstack_web:
+  Browserstack_web:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -31,7 +31,7 @@ jobs:
         run: ./gradlew task allureReport
       - uses: actions/upload-artifact@v4
         with:
-          name: allure-report
+          name: allure-report-web-browserstack
           path: build/reports/allure-report
 
   Lambda_web:
@@ -52,10 +52,10 @@ jobs:
         run: ./gradlew task allureReport
       - uses: actions/upload-artifact@v4
         with:
-          name: allure-report
+          name: allure-report-lambda-web
           path: build/reports/allure-report
 
-  browserstack_mobile:
+  Browserstack_mobile:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -89,7 +89,7 @@ jobs:
         run: ./gradlew task allureReport
       - uses: actions/upload-artifact@v4
         with:
-          name: allure-report
+          name: allure-report-mobile-browserstack
           path: build/reports/allure-report
 
   Lambda_mobile:
@@ -133,7 +133,7 @@ jobs:
         run: ./gradlew task allureReport
       - uses: actions/upload-artifact@v4
         with:
-          name: allure-report
+          name: allure-report-mobile-lambda
           path: build/reports/allure-report
 
   api:
@@ -161,5 +161,5 @@ jobs:
         run: ./gradlew task allureReport
       - uses: actions/upload-artifact@v4
         with:
-          name: allure-report
+          name: allure-report-api
           path: build/reports/allure-report

@@ -157,9 +157,9 @@ abstract class MobileOptions {
             }
             default -> System.out.println("No device found");
         }
-        ltOptions.put("appiumVersion", "2.3.0");
+        // ltOptions.put("isRealMobile", false);
         ltOptions.put("w3c", true);
-        ltOptions.put("isRealMobile", true);
+        ltOptions.put("appiumVersion", "2.6.0");
         ltOptions.put("build", "HybridTestFramework");
         ltOptions.put("network", false);
         ltOptions.put("visual", true);
@@ -202,8 +202,6 @@ abstract class MobileOptions {
             }
             default -> System.out.println("No device found");
         }
-        caps.setCapability("deviceOrientation", "PORTRAIT");
-        caps.setCapability("autoGrantPermissions", true);
     }
 
     /**
