@@ -81,7 +81,7 @@ public class TC005_WireMockTest extends ApiActions {
         Response response = httpGet("/api/branches");
         Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
         String title = (String) jsonPathEvaluator(response, "Data.Branches[0].BranchIdentification");
-        Assert.assertEquals("Belfast City Branch", title);
+        Assert.assertEquals(title, "Belfast City Branch");
     }
 
     @Severity(SeverityLevel.NORMAL)
@@ -92,7 +92,7 @@ public class TC005_WireMockTest extends ApiActions {
         Response response = httpGet("/api/bank");
         Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
         String title = (String) jsonPathEvaluator(response, "short_name");
-        Assert.assertEquals("The Royal Bank of Scotland", title);
+        Assert.assertEquals(title, "The Royal Bank of Scotland");
     }
 
     @Severity(SeverityLevel.NORMAL)
@@ -104,6 +104,6 @@ public class TC005_WireMockTest extends ApiActions {
         Assert.assertEquals(getStatusCode(response) /*actual value*/, 200 /*expected value*/, "Correct status code returned");
         Assert.assertEquals(getContentType(response) /*actual value*/, "application/json" /*expected value*/, "Correct status code returned");
         String title = (String) jsonPathEvaluator(response, "Data.Atm[0].AtmServices[0]");
-        Assert.assertEquals("CashWithdrawal", title);
+        Assert.assertEquals(title, "CashWithdrawal");
     }
 }

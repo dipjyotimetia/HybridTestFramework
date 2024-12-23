@@ -11,7 +11,7 @@ env:
   BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
 
 jobs:
-  web:
+  browserstack_web:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -31,7 +31,7 @@ jobs:
           name: web-gradle-report
           path: build/reports/tests/test
 
-  mobile:
+  browserstack_mobile:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -56,8 +56,8 @@ jobs:
         id: mobile-test
         run: ./gradlew task mobile
         env:
-          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
-          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
+          BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
           IPA_URL: ${{steps.app-upload.outputs.IPA_URL}}
           APK_URL: ${{steps.app-upload.outputs.APK_URL}}
       - name: Generate Report
