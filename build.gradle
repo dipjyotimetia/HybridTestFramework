@@ -16,16 +16,21 @@ ext {
     playwrightVersion = "1.49.0"
 }
 
-group 'com.HybridTestFramework'
+group = 'com.HybridTestFramework'
 version = '1.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
 
 repositories {
     mavenCentral()
     maven {
-        url 'https://maven-central.storage-download.googleapis.com/maven2/'
+        url = 'https://maven-central.storage-download.googleapis.com/maven2/'
     }
     maven {
-        url 'https://packages.confluent.io/maven/'
+        url = 'https://packages.confluent.io/maven/'
     }
     google()
     gradlePluginPortal()
@@ -35,8 +40,6 @@ allure {
     version = "2.32.0"
 }
 
-// dockerCompose.isRequiredBy(test)
-
 dockerCompose {
     useComposeFiles = ['docker-compose.yml']
     startedServices = ['chrome', 'firefox']
@@ -44,6 +47,11 @@ dockerCompose {
     stopContainers = true
     removeContainers = true
 }
+
+//tasks.withType(JavaCompile) {
+//    options.compilerArgs << "-Xlint:deprecation"
+//    options.compilerArgs << "-Xlint:unchecked"
+//}
 
 tasks.register('web', Test) {
     environment 'PLAYWRIGHT_LOG', 'off'
@@ -130,7 +138,7 @@ dependencies {
     implementation "io.qameta.allure:allure-attachments:${allureVersion}"
     implementation 'org.apache.avro:avro:1.12.0'
     // https://stackoverflow.com/questions/40923471/cannot-compile-with-protocol-buffers-3-1-0
-    //implementation "org.apache.avro:avro-tools:1.11.0"
+    implementation "org.apache.avro:avro-tools:1.12.0"
     implementation "org.apache.kafka:kafka-clients:${kafkaVersion}"
     implementation "org.apache.kafka:kafka-streams:${kafkaVersion}"
     implementation "io.confluent:kafka-avro-serializer:7.8.0"
