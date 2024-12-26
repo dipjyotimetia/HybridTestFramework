@@ -144,6 +144,7 @@ abstract class MobileOptions {
         bstackOptions.put("buildName", "browserstack-build-1");
         bstackOptions.put("sessionName", "first_test");
         caps.setCapability("bstack:options", bstackOptions);
+        caps.setCapability("automationName", "Appium");
         log.info("Setting up browserstack capabilities");
     }
 
