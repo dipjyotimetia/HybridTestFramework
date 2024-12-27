@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="End To End Testing" allow-return-values="true" parallel="tests" thread-count="2">
+    <listeners>
+        <listener class-name="com.reporting.listeners.TestListener"/>
+    </listeners>
+    <parameter name="type" value="mobile"/>
+    <parameter name="perf" value="false"/>
+    <parameter name="browser" value="chrome"/>
+    <parameter name="grid" value="lambda"/> <!-- LOCAL or CLOUD or BROWSERSTACK-->
+    <test name="E2E Tests iOS">
+        <parameter name="device" value="iPhone16"/>
+        <classes>
+            <class name="com.TestDefinitionLayer.TC12_SauceLabsApp"/>
+        </classes>
+    </test>
+    <test name="E2E Tests Android">
+        <parameter name="device" value="s23"/>
+        <classes>
+            <class name="com.TestDefinitionLayer.TC12_SauceLabsApp"/>
+        </classes>
+    </test>
+</suite>

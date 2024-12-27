@@ -59,9 +59,10 @@ abstract class MobileOptions {
     private final String bs_accessKey = System.getenv("BROWSERSTACK_ACCESS_KEY");
     private final String sauce_username = System.getenv("SAUCE_USERNAME");
     private final String sauce_accessKey = System.getenv("SAUCE_ACCESS_KEY");
-    private final String browserstackGridURL = "https://" + bs_username + ":" + bs_accessKey + "@hub-cloud.browserstack.com/wd/hub";
-    private final String sauceGridURL = "https://" + sauce_username + ":" + sauce_accessKey + "@ondemand.us-west-1.saucelabs.com:443/wd/hub";
-    private final String lambdaGridURL = "https://" + lambda_username + ":" + lambda_accessKey + "@hub.lambdatest.com/wd/hub";
+    public final String browserstackGridURL = "https://" + bs_username + ":" + bs_accessKey + "@hub-cloud.browserstack.com/wd/hub";
+    public final String sauceGridURL = "https://" + sauce_username + ":" + sauce_accessKey + "@ondemand.us-west-1.saucelabs.com:443/wd/hub";
+    public final String lambdaGridURL = "https://" + lambda_username + ":" + lambda_accessKey + "@hub.lambdatest.com/wd/hub";
+    public final String lambdaMobileGridURL = "https://" + lambda_username + ":" + lambda_accessKey + "@mobile-hub.lambdatest.com/wd/hub";
 
     /**
      * Generates a URL for the given cloud provider.
@@ -70,7 +71,7 @@ abstract class MobileOptions {
      * @return URL of the cloud server.
      * @throws MalformedURLException exception.
      */
-    URL setupGridURL(String provider) throws MalformedURLException {
+    URL setupMobileGrid(String provider) throws MalformedURLException {
         log.info("Creating URL for cloud provider: {}", provider);
         switch (provider) {
             case "sauce" -> {
@@ -80,15 +81,14 @@ abstract class MobileOptions {
                 return new URL(browserstackGridURL);
             }
             case "lambda" -> {
-                return new URL(lambdaGridURL);
+                return new URL(lambdaMobileGridURL);
             }
             case "local" -> {
-                return URI.create("http://localhost:4445/wd/hub").toURL();
+                return URI.create("http://" + serverIp + ":" + "4723").toURL();
             }
             default -> {
-                String appiumPort = "4723";
-                String serverUrl = "http://" + serverIp + ":" + appiumPort;
-                return new URL(serverUrl);
+                log.error("Invalid cloud provider");
+                return null;
             }
         }
     }

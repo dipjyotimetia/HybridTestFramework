@@ -152,14 +152,14 @@ public class DriverController extends WebOptions {
             switch (device) {
                 case "s23", "iPhone16" -> {
                     cloudMobileCapabilities(cloud, caps, device);
-                    driverThread = new AppiumDriver(setupGridURL(cloud), caps);
+                    driverThread = new AppiumDriver(setupMobileGrid(cloud), caps);
                 }
                 case "EMULATOR" -> {
                     appiumService = createAppiumService();
                     caps.setCapability(UiAutomator2Options.UDID_OPTION, "emulator-5554");
                     caps.setCapability(UiAutomator2Options.DEVICE_NAME_OPTION, "PIXEL");
                     appiumService.start();
-                    driverThread = new AndroidDriver(setupGridURL(cloud), caps);
+                    driverThread = new AndroidDriver(setupMobileGrid(cloud), caps);
                 }
                 default -> log.info("Required device selection");
             }

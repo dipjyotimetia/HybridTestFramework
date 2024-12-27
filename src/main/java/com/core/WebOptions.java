@@ -44,6 +44,8 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,6 +62,35 @@ import java.util.logging.Level;
  */
 @Slf4j
 abstract class WebOptions extends MobileOptions {
+
+    /**
+     * Generates a URL for the given cloud provider.
+     *
+     * @param provider name of the cloud provider.
+     * @return URL of the cloud server.
+     * @throws MalformedURLException exception.
+     */
+    URL setupWebGrid(String provider) throws MalformedURLException {
+        log.info("Creating URL for cloud provider: {}", provider);
+        switch (provider) {
+            case "sauce" -> {
+                return new URL(sauceGridURL);
+            }
+            case "browserstack" -> {
+                return new URL(browserstackGridURL);
+            }
+            case "lambda" -> {
+                return new URL(lambdaGridURL);
+            }
+            case "local" -> {
+                return URI.create("http://localhost:4445/wd/hub").toURL();
+            }
+            default -> {
+                log.error("No cloud provider option provided");
+                return null;
+            }
+        }
+    }
 
     private static @NotNull HashMap<String, Object> getBrowserStackOptions(String testName) {
         log.info("Setting up BrowserStack options");
@@ -170,21 +201,21 @@ abstract class WebOptions extends MobileOptions {
     /**
      * Sets up cloud capabilities based on the given cloud provider.
      *
-     * @param grid     name of the cloud provider ("browserstack", "lambda", or "aws")
+     * @param cloud     name of the cloud provider ("browserstack", "lambda", or "aws")
      * @param browser  name of the browser to use. ("chrome", "firefox", "edge")
      * @param testName name of the test to run
      */
-    protected WebDriver setupWebDriver(String grid, String browser, String testName, Boolean perf) throws MalformedURLException {
-        log.info("Setting up capabilities for {} grid provider with {} browser", grid, browser);
-        switch (grid) {
+    protected WebDriver setupWebDriver(String cloud, String browser, String testName, Boolean perf) throws MalformedURLException {
+        log.info("Setting up capabilities for {} grid provider with {} browser", cloud, browser);
+        switch (cloud) {
             case "browserstack" -> {
-                return new RemoteWebDriver(setupGridURL(grid), addBrowserStackCapabilities(browser, testName), false);
+                return new RemoteWebDriver(setupWebGrid(cloud), addBrowserStackCapabilities(browser, testName), false);
             }
             case "lambda" -> {
-                return new RemoteWebDriver(setupGridURL(grid), addLambdaTestCapabilities(browser, testName), false);
+                return new RemoteWebDriver(setupWebGrid(cloud), addLambdaTestCapabilities(browser, testName), false);
             }
             case "docker" -> {
-                new RemoteWebDriver(setupGridURL(grid), getBrowserOptions(browser, perf), false);
+                new RemoteWebDriver(setupWebGrid(cloud), getBrowserOptions(browser, perf), false);
             }
             case "local" -> {
                 switch (browser) {
