@@ -26,7 +26,6 @@ package com.core;
 
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
-import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -150,18 +149,18 @@ abstract class WebOptions extends MobileOptions {
     /**
      * Sets up cloud capabilities based on the given cloud provider.
      *
-     * @param cloudProvider name of the cloud provider ("browserstack", "lambda", or "aws")
+     * @param grid name of the cloud provider ("browserstack", "lambda", or "aws")
      * @param browser       name of the browser to use. ("chrome", "firefox", "edge")
      * @param testName      name of the test to run
      */
-    protected DesiredCapabilities cloudWebCapabilities(String cloudProvider, String browser, String testName) {
-        log.info("Setting up capabilities for cloud provider: {} and browser: {}", cloudProvider, browser);
-        switch (cloudProvider) {
+    protected DesiredCapabilities cloudWebCapabilities(String grid, String browser, String testName) {
+        log.info("Setting up capabilities for cloud provider: {} and browser: {}", grid, browser);
+        switch (grid) {
             case "browserstack" -> {
                 return addBrowserStackCapabilities(browser, testName);
             }
             case "lambda" -> {
-                return (DesiredCapabilities) addLambdaTestCapabilities(browser, testName);
+                return addLambdaTestCapabilities(browser, testName);
             }
             default -> log.error("No cloud provider option provided");
         }
@@ -221,6 +220,7 @@ abstract class WebOptions extends MobileOptions {
      * @return Capabilities object with LambdaTest capabilities for the specified browser and test name
      */
     protected DesiredCapabilities addLambdaTestCapabilities(String browser, String testName) {
+        DesiredCapabilities capabilities = new DesiredCapabilities();
         HashMap<String, Object> ltOptions = new HashMap<>();
         //ltOptions.put("seCdp", true);
         ltOptions.put("username", lambda_username);
@@ -235,23 +235,24 @@ abstract class WebOptions extends MobileOptions {
                 ChromeOptions browserOptions = new ChromeOptions();
                 browserOptions.setPlatformName("Windows 11");
                 browserOptions.setBrowserVersion("131.0");
-                browserOptions.setCapability("LT:Options", ltOptions);
+                browserOptions.merge(capabilities);
             }
             case "firefox" -> {
                 FirefoxOptions browserOptions = new FirefoxOptions();
                 browserOptions.setPlatformName("Windows 11");
                 browserOptions.setBrowserVersion("132.0");
-                browserOptions.setCapability("LT:Options", ltOptions);
+                browserOptions.merge(capabilities);
             }
             case "edge" -> {
                 EdgeOptions browserOptions = new EdgeOptions();
                 browserOptions.setPlatformName("Windows 11");
                 browserOptions.setBrowserVersion("131.0");
-                browserOptions.setCapability("LT:Options", ltOptions);
+                browserOptions.merge(capabilities);
             }
             default -> log.error("No browser option provided");
         }
-        return null;
+        capabilities.setCapability("LT:Options", ltOptions);;
+        return capabilities;
     }
 
     /**
