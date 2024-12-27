@@ -99,7 +99,6 @@ tasks.register('api', Test) {
 
 tasks.register('mobile', Test) {
     useTestNG {
-        useDefaultListeners = true
         suites 'src/test/java/suite/mobileng.xml'
     }
     testLogging {
@@ -194,4 +193,9 @@ dependencies {
     implementation 'com.typesafe:config:1.4.3'
     implementation "com.microsoft.playwright:playwright:${playwrightVersion}"
     implementation 'com.browserstack:browserstack-java-sdk:1.29.0'
+}
+
+configurations.configureEach {
+    exclude group: 'org.slf4j', module: 'slf4j-reload4j'
+    exclude group: 'org.slf4j', module: 'slf4j-simple'
 }

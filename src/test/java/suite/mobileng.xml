@@ -3,7 +3,6 @@
 <suite name="End To End Testing" allow-return-values="true" parallel="tests" thread-count="2">
     <listeners>
         <listener class-name="com.reporting.listeners.TestListener"/>
-        <listener class-name="com.reporting.listeners.AnnotationTransformer"/>
     </listeners>
     <parameter name="type" value="mobile"/>
     <parameter name="perf" value="false"/>
