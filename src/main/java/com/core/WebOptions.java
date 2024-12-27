@@ -235,19 +235,19 @@ abstract class WebOptions extends MobileOptions {
                 ChromeOptions browserOptions = new ChromeOptions();
                 browserOptions.setPlatformName("Windows 11");
                 browserOptions.setBrowserVersion("131.0");
-                browserOptions.merge(capabilities);
+                capabilities.setCapability(ChromeOptions.CAPABILITY, browserOptions);
             }
             case "firefox" -> {
                 FirefoxOptions browserOptions = new FirefoxOptions();
                 browserOptions.setPlatformName("Windows 11");
                 browserOptions.setBrowserVersion("132.0");
-                browserOptions.merge(capabilities);
+                capabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, browserOptions);
             }
             case "edge" -> {
                 EdgeOptions browserOptions = new EdgeOptions();
                 browserOptions.setPlatformName("Windows 11");
                 browserOptions.setBrowserVersion("131.0");
-                browserOptions.merge(capabilities);
+                capabilities.setCapability(EdgeOptions.CAPABILITY, browserOptions);
             }
             default -> log.error("No browser option provided");
         }
