@@ -143,9 +143,8 @@ public class DriverController extends WebOptions {
                         log.info("Grid client setup for Docker containers successful");
                     }
                     case "browserstack", "lambda" -> {
-                        log.info("Make sure that browserstack configs provided");
                         driverThread = new RemoteWebDriver(cloudGridURL(grid), cloudWebCapabilities(grid, browser, testName), false);
-                        log.info("Grid client setup for browserstack successful");
+                        log.info("Grid client setup for {} successful", grid);
                     }
                     case "local" -> {
                         switch (browser) {

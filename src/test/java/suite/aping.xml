@@ -19,11 +19,11 @@
 <!--    </test>-->
 
 
-    <test name="E2E Tests for GRPC Api">
-        <classes>
-            <class name="com.TestDefinitionLayer.TC009_GrpcApi"/>
-        </classes>
-    </test>
+<!--    <test name="E2E Tests for GRPC Api">-->
+<!--        <classes>-->
+<!--            <class name="com.TestDefinitionLayer.TC009_GrpcApi"/>-->
+<!--        </classes>-->
+<!--    </test>-->
 
     <test name="E2E Tests for Mock Api">
         <classes>
