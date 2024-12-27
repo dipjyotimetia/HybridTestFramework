@@ -220,7 +220,7 @@ abstract class WebOptions extends MobileOptions {
      * @param testName String containing the name of the test
      * @return Capabilities object with LambdaTest capabilities for the specified browser and test name
      */
-    protected Capabilities addLambdaTestCapabilities(String browser, String testName) {
+    protected DesiredCapabilities addLambdaTestCapabilities(String browser, String testName) {
         HashMap<String, Object> ltOptions = new HashMap<>();
         //ltOptions.put("seCdp", true);
         ltOptions.put("username", lambda_username);
@@ -228,7 +228,6 @@ abstract class WebOptions extends MobileOptions {
         ltOptions.put("project", "HybridTestFramework");
         ltOptions.put("name", testName);
         ltOptions.put("build", "BUILD_NAME");
-        ltOptions.put("selenium_version", "4.0.0");
         ltOptions.put("plugin", "java-testNG");
         ltOptions.put("w3c", true);
         switch (browser) {
@@ -237,7 +236,6 @@ abstract class WebOptions extends MobileOptions {
                 browserOptions.setPlatformName("Windows 11");
                 browserOptions.setBrowserVersion("131.0");
                 browserOptions.setCapability("LT:Options", ltOptions);
-                return browserOptions;
             }
             case "firefox" -> {
                 FirefoxOptions browserOptions = new FirefoxOptions();
