@@ -9,7 +9,6 @@
     <parameter name="device" value="NA"/>
     <parameter name="grid" value="lambda"/> <!-- LOCAL or DOCKER or CLOUD or BROWSERSTACK-->
     <parameter name="perf" value="NO"/>
-
     <test name="E2E Tests for Web">
         <parameter name="browser" value="chrome"/>
         <classes>

@@ -149,7 +149,7 @@ dependencies {
     implementation 'org.apache.xmlbeans:xmlbeans:5.2.2'
     implementation 'com.microsoft.sqlserver:mssql-jdbc:12.9.0.jre11-preview'
     implementation 'org.slf4j:slf4j-simple:2.0.16'
-    implementation 'com.github.javafaker:javafaker:1.0.2'
+    implementation 'net.datafaker:datafaker:2.4.2'
     implementation 'io.rest-assured:rest-assured:5.5.0'
     implementation 'io.rest-assured:json-schema-validator:5.5.0'
     implementation 'io.rest-assured:json-path:5.5.0'
@@ -166,7 +166,6 @@ dependencies {
     implementation "io.qameta.allure:allure-rest-assured:${allureVersion}"
     implementation "io.qameta.allure:allure-attachments:${allureVersion}"
     implementation 'org.apache.avro:avro:1.12.0'
-    // https://stackoverflow.com/questions/40923471/cannot-compile-with-protocol-buffers-3-1-0
     implementation "org.apache.avro:avro-tools:1.12.0"
     implementation "org.apache.kafka:kafka-clients:${kafkaVersion}"
     implementation "org.apache.kafka:kafka-streams:${kafkaVersion}"
@@ -195,19 +194,4 @@ dependencies {
     implementation 'com.typesafe:config:1.4.3'
     implementation "com.microsoft.playwright:playwright:${playwrightVersion}"
     implementation 'com.browserstack:browserstack-java-sdk:1.29.0'
-}
-
-// https://github.com/DiUS/java-faker/issues/331#issuecomment-1091166953
-configurations.configureEach {
-    resolutionStrategy {
-        // Force specific versions for security updates
-        force "org.yaml:snakeyaml:2.0"
-        eachDependency { details ->
-            if (details.requested.module.toString() == 'org.yaml:snakeyaml') {
-                details.artifactSelection {
-                    it.selectArtifact(DependencyArtifact.DEFAULT_TYPE, null, null)
-                }
-            }
-        }
-    }
 }

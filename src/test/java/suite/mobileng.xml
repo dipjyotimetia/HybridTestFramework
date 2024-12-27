@@ -8,16 +8,15 @@
     <parameter name="type" value="mobile"/>
     <parameter name="perf" value="NO"/>
     <parameter name="browser" value="chrome"/>
+    <parameter name="grid" value="browserstack"/> <!-- LOCAL or CLOUD or BROWSERSTACK-->
     <test name="E2E Tests iOS">
         <parameter name="device" value="iPhone16"/>
-        <parameter name="grid" value="browserstack"/> <!-- LOCAL or CLOUD or BROWSERSTACK-->
         <classes>
             <class name="com.TestDefinitionLayer.TC12_SauceLabsApp"/>
         </classes>
     </test>
     <test name="E2E Tests Android">
         <parameter name="device" value="s23"/>
-        <parameter name="grid" value="browserstack"/> <!-- sauce or browserstack or local-->
         <classes>
             <class name="com.TestDefinitionLayer.TC12_SauceLabsApp"/>
         </classes>

@@ -148,35 +148,24 @@ abstract class WebOptions extends MobileOptions {
     }
 
     /**
-     * Returns DesiredCapabilities object with cloud capabilities for the specified browser.
+     * Sets up cloud capabilities based on the given cloud provider.
      *
-     * @param browser String indicating the browser to use ("chrome", "firefox", "edge")
-     * @return DesiredCapabilities object with cloud capabilities for the specified browser
+     * @param cloudProvider name of the cloud provider ("browserstack", "lambda", or "aws")
+     * @param browser       name of the browser to use. ("chrome", "firefox", "edge")
+     * @param testName      name of the test to run
      */
-    protected DesiredCapabilities addCloudCapabilities(String browser) {
-        DesiredCapabilities capabilities = new DesiredCapabilities();
-        switch (browser) {
-            case "chrome" -> {
-                capabilities.setCapability("browserName", "chrome");
-                capabilities.setCapability("browserVersion", "latest");
-                capabilities.setCapability("platform", "windows");
-                log.info("Adding aws chrome capabilities");
+    protected DesiredCapabilities cloudWebCapabilities(String cloudProvider, String browser, String testName) {
+        log.info("Setting up capabilities for cloud provider: {} and browser: {}", cloudProvider, browser);
+        switch (cloudProvider) {
+            case "browserstack" -> {
+                return addBrowserStackCapabilities(browser, testName);
             }
-            case "firefox" -> {
-                capabilities.setCapability("browserName", "firefox");
-                capabilities.setCapability("browserVersion", "latest");
-                capabilities.setCapability("platform", "windows");
-                log.info("Adding aws firefox capabilities");
+            case "lambda" -> {
+                return (DesiredCapabilities) addLambdaTestCapabilities(browser, testName);
             }
-            case "edge" -> {
-                capabilities.setCapability("browserName", "edge");
-                capabilities.setCapability("browserVersion", "latest");
-                capabilities.setCapability("platform", "windows");
-                log.info("Adding aws firefox capabilities");
-            }
-            default -> log.info("No supported browser provided");
+            default -> log.error("No cloud provider option provided");
         }
-        return capabilities;
+        return null;
     }
 
     /**
@@ -203,7 +192,7 @@ abstract class WebOptions extends MobileOptions {
                 capabilities.setCapability("browserName", "Edge");
                 capabilities.setCapability("browserVersion", "latest");
             }
-            default -> log.info("browser selection is required");
+            default -> log.error("No browser option provided");
         }
         capabilities.setCapability("bstack:options", browserStackOptions);
         return capabilities;
@@ -262,7 +251,7 @@ abstract class WebOptions extends MobileOptions {
                 browserOptions.setBrowserVersion("131.0");
                 browserOptions.setCapability("LT:Options", ltOptions);
             }
-            default -> log.info("browser selection is required");
+            default -> log.error("No browser option provided");
         }
         return null;
     }

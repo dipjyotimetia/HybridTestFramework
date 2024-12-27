@@ -73,6 +73,7 @@ jobs:
           APK_UPLOAD_RESPONSE=$(curl -u "$USERNAME:$ACCESS" -X POST https://api-cloud.browserstack.com/app-automate/upload -F "url=https://github.com/saucelabs/my-demo-app-android/releases/download/2.2.0/mda-2.2.0-25.apk")
           echo "IPA_URL=$(echo $IPA_UPLOAD_RESPONSE | jq -r '.app_url')" >> $GITHUB_OUTPUT
           echo "APK_URL=$(echo $APK_UPLOAD_RESPONSE | jq -r '.app_url')" >> $GITHUB_OUTPUT
+          curl -u "$USERNAME:$ACCESS" -X GET "https://api-cloud.browserstack.com/app-automate/recent_apps" | jq
         env:
           USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
           ACCESS: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}

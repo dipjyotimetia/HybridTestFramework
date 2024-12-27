@@ -33,7 +33,7 @@ import org.openqa.selenium.support.PageFactory;
  */
 public class SauceLoginPage extends MobileActions {
 
-    @iOSXCUITFindBys(value = {@iOSXCUITBy(iOSNsPredicate = "name == \"AddToCartUnselected Icons\""), @iOSXCUITBy(xpath = "//XCUIElementTypeImage[@name=\"AddToCartUnselected Icons\"]")})
+    @iOSXCUITFindBy(xpath = "//XCUIElementTypeImage[@name=\"AddToCartUnselected Icons\"]")
     @AndroidFindBy(xpath = "//android.widget.ImageView[@content-desc=\"Displays number of items in your cart\"]")
     public WebElement cart;
 

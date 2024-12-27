@@ -26,7 +26,6 @@ package com.core;
 
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
-import com.github.javafaker.Faker;
 import com.google.common.collect.Ordering;
 import io.appium.java_client.AppiumFluentWait;
 import io.appium.java_client.android.*;
@@ -36,6 +35,7 @@ import io.appium.java_client.android.nativekey.KeyEvent;
 import io.appium.java_client.ios.IOSDriver;
 import io.qameta.allure.Step;
 import lombok.extern.slf4j.Slf4j;
+import net.datafaker.Faker;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.poi.util.Units;

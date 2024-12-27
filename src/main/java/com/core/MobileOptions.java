@@ -24,13 +24,11 @@ SOFTWARE.
 
 package com.core;
 
-import io.appium.java_client.android.options.UiAutomator2Options;
-import io.appium.java_client.ios.options.XCUITestOptions;
+import io.appium.java_client.service.local.AppiumDriverLocalService;
 import io.appium.java_client.service.local.AppiumServiceBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.exec.OS;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.service.DriverService;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,6 +51,7 @@ abstract class MobileOptions {
     private final String apk_url = System.getenv("APK_URL");
     private final String ipa_url = System.getenv("IPA_URL");
     private final String serverIp = "127.0.0.1";    //Local
+    private final String github_run_number = System.getenv("GITHUB_RUN_NUMBER");
     private final String bs_username = System.getenv("BROWSERSTACK_USERNAME");
     private final String bs_accessKey = System.getenv("BROWSERSTACK_ACCESS_KEY");
     private final String sauce_username = System.getenv("SAUCE_USERNAME");
@@ -63,33 +62,28 @@ abstract class MobileOptions {
     private final String sauceGridURL = "https://" + sauce_username + ":" + sauce_accessKey + "@ondemand.us-west-1.saucelabs.com:443/wd/hub";
     private final String lambdaGridURL = "https://" + lambda_username + ":" + lambda_accessKey + "@hub.lambdatest.com/wd/hub";
 
-    DesiredCapabilities caps = new DesiredCapabilities();
-
     /**
      * Generates a URL for the given cloud provider.
      *
-     * @param cloudProvider name of the cloud provider.
+     * @param provider name of the cloud provider.
      * @return URL of the cloud server.
      * @throws MalformedURLException exception.
      */
-    URL createURL(String cloudProvider) throws MalformedURLException {
-        switch (cloudProvider) {
+    URL cloudGridURL(String provider) throws MalformedURLException {
+        log.info("Creating URL for cloud provider: {}", provider);
+        switch (provider) {
             case "sauce" -> {
-                log.info("Argument to driver object : " + sauceGridURL);
                 return new URL(sauceGridURL);
             }
             case "browserstack" -> {
-                log.info("Argument to driver object : " + browserstackGridURL);
                 return new URL(browserstackGridURL);
             }
             case "lambda" -> {
-                log.info("Argument to driver object : " + lambdaGridURL);
                 return new URL(lambdaGridURL);
             }
             default -> {
                 String appiumPort = "4723";
                 String serverUrl = "http://" + serverIp + ":" + appiumPort;
-                log.info("Argument to driver object : " + serverUrl);
                 return new URL(serverUrl);
             }
         }
@@ -103,6 +97,7 @@ abstract class MobileOptions {
      * @param device        device name.
      */
     void cloudMobileCapabilities(String cloudProvider, DesiredCapabilities caps, String device) {
+        log.info("Setting up capabilities for cloud provider: {} and device: {}", cloudProvider, device);
         switch (cloudProvider) {
             case "browserstack" -> browserStackMobileCapabilities(caps, device);
             case "lambda" -> lambdaTestMobileCapabilities(caps, device);
@@ -119,6 +114,8 @@ abstract class MobileOptions {
      * @see <a href="https://www.browserstack.com/docs/app-automate/capabilities">BrowserStack Capabilities</a>
      */
     private void browserStackMobileCapabilities(DesiredCapabilities caps, String device) {
+        log.info("Setting up capabilities for BrowserStack");
+        HashMap<String, Object> bStackOptions = new HashMap<>();
         genericMobileCapabilities(caps, device);
         switch (device) {
             case "s23" -> {
@@ -135,17 +132,14 @@ abstract class MobileOptions {
             }
             default -> System.out.println("No device found");
         }
-        HashMap<String, Object> bstackOptions = new HashMap<>();
-        bstackOptions.put("userName", bs_username);
-        bstackOptions.put("accessKey", bs_accessKey);
-        bstackOptions.put("appiumVersion", "2.6.0");
-        bstackOptions.put("projectName", "HybridTestFramework");
-        //bsOptions.put("local", "true");
-        bstackOptions.put("buildName", "browserstack-build-1");
-        bstackOptions.put("sessionName", "first_test");
-        caps.setCapability("bstack:options", bstackOptions);
-        caps.setCapability("automationName", "Appium");
-        log.info("Setting up browserstack capabilities");
+        bStackOptions.put("userName", bs_username);
+        bStackOptions.put("accessKey", bs_accessKey);
+        bStackOptions.put("appiumVersion", "2.6.0");
+        bStackOptions.put("projectName", "HybridTestFramework");
+        bStackOptions.put("local", "false");
+        bStackOptions.put("buildName", github_run_number);
+        bStackOptions.put("sessionName", "Demo session");
+        caps.setCapability("bstack:options", bStackOptions);
     }
 
     /**
@@ -156,6 +150,7 @@ abstract class MobileOptions {
      * @see <a href="https://www.lambdatest.com/support/docs/desired-capabilities-in-appium/">LambdaTest Capabilities</a>
      */
     private void lambdaTestMobileCapabilities(DesiredCapabilities caps, String device) {
+        log.info("Setting up capabilities for LambdaTest");
         genericMobileCapabilities(caps, device);
         HashMap<String, Object> ltOptions = new HashMap<>();
         switch (device) {
@@ -186,7 +181,6 @@ abstract class MobileOptions {
         ltOptions.put("autoGrantPermissions", true);
         ltOptions.put("autoAcceptAlerts", true);
         caps.setCapability("lt:options", ltOptions);
-        log.info("Setting up lambdatest capabilities");
     }
 
     /**
@@ -197,13 +191,13 @@ abstract class MobileOptions {
      * @see <a href="https://docs.saucelabs.com/mobile-apps/automated-testing/appium/virtual-devices/">Sauce Labs Capabilities</a>
      */
     private void sauceLabsMobileCapabilities(DesiredCapabilities caps, String device) {
+        log.info("Setting up capabilities for Sauce Labs");
         genericMobileCapabilities(caps, device);
         HashMap<String, Object> sauceOptions = new HashMap<>();
         sauceOptions.put("username", sauce_username);
         sauceOptions.put("accessKey", sauce_accessKey);
         sauceOptions.put("appiumVersion", "latest");
         caps.setCapability("sauce:options", sauceOptions);
-        log.info("Setting up saucelabs capabilities");
     }
 
     /**
@@ -216,14 +210,12 @@ abstract class MobileOptions {
     private void genericMobileCapabilities(DesiredCapabilities caps, String device) {
         switch (device) {
             case "s23", "pixel" -> {
-                caps.setCapability("platformName", "android");
-                caps.setCapability("browserName", "chrome");
+                caps.setCapability("appium:platformName", "android");
                 caps.setCapability("appium:automationName", "uiautomator2");
                 caps.setCapability("appium:app", apk_url);
             }
             case "iPhone16" -> {
-                caps.setCapability("platformName", "ios");
-                caps.setCapability("browserName", "safari");
+                caps.setCapability("appium:platformName", "ios");
                 caps.setCapability("appium:automationName", "xcuitest");
                 caps.setCapability("appium:app", ipa_url);
             }
@@ -236,11 +228,14 @@ abstract class MobileOptions {
      *
      * @return DriverService instance.
      */
-    public DriverService createAppiumService() {
-        return new AppiumServiceBuilder().usingDriverExecutable(new File(nodeJS)).withAppiumJS(new File(appiumJS)).withIPAddress(serverIp)
-//                .usingPort(APPIUM_Port)
-//                .withArgument(Arg.TIMEOUT, "120")
-//                .withArgument(Arg.LOG_LEVEL, "warn")
+    public AppiumDriverLocalService createAppiumService() {
+        log.info("Creating Appium service");
+        return new AppiumServiceBuilder().
+                usingDriverExecutable(new File(nodeJS)).
+                withAppiumJS(new File(appiumJS)).
+                withIPAddress(serverIp)
+                .usingPort(4723)
+                .withArgument(() -> "--log")
                 .build();
     }
 
@@ -248,13 +243,14 @@ abstract class MobileOptions {
      * Stop appium server
      */
     public void stopAppiumServer() {
+        log.info("Stopping Appium server");
         if (OS.isFamilyWindows()) {
             Runtime runtime = Runtime.getRuntime();
             try {
                 runtime.exec("taskkill /F /IM node.exe");
                 runtime.exec("taskkill /F /IM cmd.exe");
             } catch (IOException e) {
-                e.printStackTrace();
+               log.error(e.getMessage());
             }
         }
     }

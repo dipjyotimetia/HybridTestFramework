@@ -26,6 +26,7 @@ package com.core;
 
 import com.config.AppConfig;
 import com.typesafe.config.ConfigFactory;
+import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
 import lombok.extern.slf4j.Slf4j;
@@ -136,22 +137,17 @@ public class DriverController extends WebOptions {
     private synchronized void initWebDriver(String browser, String grid, String perf) {
             try {
                 switch (grid) {
-                    case "docker":
+                    case "docker" -> {
                         log.info("Make sure that docker containers are up and running");
-                        driverThread = new RemoteWebDriver(URI.create("http://localhost:4445/wd/hub").toURL(), getBrowserOptions(browser, perf),false);
+                        driverThread = new RemoteWebDriver(URI.create("http://localhost:4445/wd/hub").toURL(), getBrowserOptions(browser, perf), false);
                         log.info("Grid client setup for Docker containers successful");
-                        break;
-                    case "browserstack":
+                    }
+                    case "browserstack", "lambda" -> {
                         log.info("Make sure that browserstack configs provided");
-                        driverThread = new RemoteWebDriver(createURL("browserstack"), addBrowserStackCapabilities(browser, testName),false);
+                        driverThread = new RemoteWebDriver(cloudGridURL(grid), cloudWebCapabilities(grid, browser, testName), false);
                         log.info("Grid client setup for browserstack successful");
-                        break;
-                    case "lambda":
-                        log.info("Make sure that lambda configs provided");
-                        driverThread = new RemoteWebDriver(createURL("lambda"), addLambdaTestCapabilities(browser, testName),false);
-                        log.info("Grid client setup for lambda successful");
-                        break;
-                    case "local":
+                    }
+                    case "local" -> {
                         switch (browser) {
                             case "firefox" -> {
                                 driverThread = new FirefoxDriver(getFirefoxOptions());
@@ -167,9 +163,8 @@ public class DriverController extends WebOptions {
                             }
                             default -> log.info("Browser listed not supported");
                         }
-                    default:
-                        log.info("Running in local docker container");
-                        break;
+                    }
+                    default -> log.info("Grid not selected");
                 }
             } catch (Exception e) {
                 log.error(e.getMessage());
@@ -184,25 +179,19 @@ public class DriverController extends WebOptions {
      * @param cloud  The cloud platform to use for remote testing (e.g. "aws", "docker", "browserstack", "lambda", "local")
      */
     private synchronized void initMobileDriver(String device, String cloud) {
+        DesiredCapabilities caps = new DesiredCapabilities();
         try {
             switch (device) {
-                case "s23" -> {
-                    log.info("Selected device is SAMSUNG");
+                case "s23", "iPhone16" -> {
                     cloudMobileCapabilities(cloud, caps, device);
-                    driverThread = new RemoteWebDriver(createURL(cloud), caps);
-                }
-                case "iPhone16" -> {
-                    log.info("Selected device is IPHONE");
-                    cloudMobileCapabilities(cloud, caps, device);
-                    driverThread = new RemoteWebDriver(createURL(cloud), caps);
+                    driverThread = new AppiumDriver(cloudGridURL(cloud), caps);
                 }
                 case "EMULATOR" -> {
-                    log.info("Selected device is EMULATOR");
                     appiumService = createAppiumService();
-                    caps.setCapability(UiAutomator2Options.UDID_OPTION, "NEXUS");
-                    caps.setCapability(UiAutomator2Options.DEVICE_NAME_OPTION, "NEXUS");
+                    caps.setCapability(UiAutomator2Options.UDID_OPTION, "emulator-5554");
+                    caps.setCapability(UiAutomator2Options.DEVICE_NAME_OPTION, "PIXEL");
                     appiumService.start();
-                    driverThread = new AndroidDriver(createURL(cloud), caps);
+                    driverThread = new AndroidDriver(cloudGridURL(cloud), caps);
                 }
                 default -> log.info("Required device selection");
             }

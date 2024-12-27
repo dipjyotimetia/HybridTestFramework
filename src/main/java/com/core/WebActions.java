@@ -26,8 +26,8 @@ package com.core;
 
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
-import com.github.javafaker.Faker;
 import lombok.extern.slf4j.Slf4j;
+import net.datafaker.Faker;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.apache.commons.lang3.RandomStringUtils;
