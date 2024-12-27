@@ -62,7 +62,6 @@ abstract class MobileOptions {
     public final String browserstackGridURL = "https://" + bs_username + ":" + bs_accessKey + "@hub-cloud.browserstack.com/wd/hub";
     public final String sauceGridURL = "https://" + sauce_username + ":" + sauce_accessKey + "@ondemand.us-west-1.saucelabs.com:443/wd/hub";
     public final String lambdaGridURL = "https://" + lambda_username + ":" + lambda_accessKey + "@hub.lambdatest.com/wd/hub";
-    public final String lambdaMobileGridURL = "https://" + lambda_username + ":" + lambda_accessKey + "@mobile-hub.lambdatest.com/wd/hub";
 
     /**
      * Generates a URL for the given cloud provider.
@@ -81,7 +80,7 @@ abstract class MobileOptions {
                 return new URL(browserstackGridURL);
             }
             case "lambda" -> {
-                return new URL(lambdaMobileGridURL);
+                return new URL(lambdaGridURL);
             }
             case "local" -> {
                 return URI.create("http://" + serverIp + ":" + "4723").toURL();
