@@ -1164,29 +1164,30 @@ public class WebActions extends DriverManager {
     }
 
     //************* BrowserStack Specific Methods *************
+
     /**
-    public void listenConsoleLog() throws InterruptedException {
-        Boolean success = false;
-        Augmenter augmenter = new Augmenter();
-        driverThread = augmenter.augment(driverThread);
-
-        DevTools devTools = ((HasDevTools) driverThread).getDevTools();
-        devTools.createSession();
-
-        devTools.send(Log.enable());
-        devTools.addListener(Log.entryAdded(),
-                logEntry -> {
-                    log.info("text: " + logEntry.getText());
-                    log.info("level: " + logEntry.getLevel());
-                });
-        success = true;
-        Thread.sleep(1000 * 10);
-        if (success) {
-            markTestStatus("passed", "Console logs streaming", driverThread);
-        } else {
-            markTestStatus("failed", "Console logs did not stream", driverThread);
-        }
-    }
+     * public void listenConsoleLog() throws InterruptedException {
+     * Boolean success = false;
+     * Augmenter augmenter = new Augmenter();
+     * driverThread = augmenter.augment(driverThread);
+     * <p>
+     * DevTools devTools = ((HasDevTools) driverThread).getDevTools();
+     * devTools.createSession();
+     * <p>
+     * devTools.send(Log.enable());
+     * devTools.addListener(Log.entryAdded(),
+     * logEntry -> {
+     * log.info("text: " + logEntry.getText());
+     * log.info("level: " + logEntry.getLevel());
+     * });
+     * success = true;
+     * Thread.sleep(1000 * 10);
+     * if (success) {
+     * markTestStatus("passed", "Console logs streaming", driverThread);
+     * } else {
+     * markTestStatus("failed", "Console logs did not stream", driverThread);
+     * }
+     * }
      **/
 
     public void javascriptException(String url, WebElement element) throws InterruptedException {
@@ -1251,30 +1252,31 @@ public class WebActions extends DriverManager {
     }
 
     //************* Performance Metrics *************
+
     /**
-    public void performanceMetric(String url) {
-        Boolean success = false;
-        Augmenter augmenter = new Augmenter();
-        driverThread = augmenter.augment(driverThread);
-
-        DevTools devTools = ((HasDevTools) driverThread).getDevTools();
-        devTools.createSession();
-
-        devTools.send(Performance.enable(Optional.empty()));
-        List<Metric> metricList = devTools.send(Performance.getMetrics());
-
-        driverThread.get(url);
-
-        for (Metric m : metricList) {
-            System.out.println(m.getName() + " = " + m.getValue());
-            success = true;
-        }
-        if (success) {
-            markTestStatus("passed", "Performance metrics fetched", driverThread);
-        } else {
-            markTestStatus("failed", "Performance metrics were not fetched", driverThread);
-        }
-    }
+     * public void performanceMetric(String url) {
+     * Boolean success = false;
+     * Augmenter augmenter = new Augmenter();
+     * driverThread = augmenter.augment(driverThread);
+     * <p>
+     * DevTools devTools = ((HasDevTools) driverThread).getDevTools();
+     * devTools.createSession();
+     * <p>
+     * devTools.send(Performance.enable(Optional.empty()));
+     * List<Metric> metricList = devTools.send(Performance.getMetrics());
+     * <p>
+     * driverThread.get(url);
+     * <p>
+     * for (Metric m : metricList) {
+     * System.out.println(m.getName() + " = " + m.getValue());
+     * success = true;
+     * }
+     * if (success) {
+     * markTestStatus("passed", "Performance metrics fetched", driverThread);
+     * } else {
+     * markTestStatus("failed", "Performance metrics were not fetched", driverThread);
+     * }
+     * }
      **/
 
     public void markTestStatus(String status, String reason, WebDriver driver) {

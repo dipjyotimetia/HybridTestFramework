@@ -28,7 +28,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.PageLoadStrategy;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -37,8 +40,10 @@ import org.openqa.selenium.firefox.ProfilesIni;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,13 +61,29 @@ import java.util.logging.Level;
 @Slf4j
 abstract class WebOptions extends MobileOptions {
 
+    private static @NotNull HashMap<String, Object> getBrowserStackOptions(String testName) {
+        log.info("Setting up BrowserStack options");
+        var browserStackOptions = new HashMap<String, Object>();
+        browserStackOptions.put("os", "Windows");
+        browserStackOptions.put("osVersion", "11");
+        browserStackOptions.put("projectName", "HybridTestFramework");
+        browserStackOptions.put("buildName", "BUILD_NAME");
+        browserStackOptions.put("sessionName", testName);
+        browserStackOptions.put("local", "false");
+        browserStackOptions.put("debug", "false");
+        browserStackOptions.put("consoleLogs", "info");
+        browserStackOptions.put("networkLogs", "true");
+        browserStackOptions.put("seleniumCdp", true);
+        return browserStackOptions;
+    }
+
     /**
      * Returns ChromeOptions with various settings for performance and security.
      *
      * @param perf String indicating whether performance testing is enabled ("YES" to enable, other values to disable)
      * @return ChromeOptions object with desired settings
      */
-    protected ChromeOptions getChromeOptions(String perf) {
+    protected ChromeOptions getChromeOptions(Boolean perf) {
 //        WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless=new");
@@ -79,7 +100,7 @@ abstract class WebOptions extends MobileOptions {
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--disable-browser-side-navigation");
         options.addArguments("--disable-gpu");
-        if (perf.equalsIgnoreCase("YES")) {
+        if (perf) {
             options.merge(DriverController.performance());
         }
         log.info("Chrome options added");
@@ -130,7 +151,7 @@ abstract class WebOptions extends MobileOptions {
      * @param perf    String indicating whether performance testing is enabled ("YES" to enable, other values to disable)
      * @return MutableCapabilities object with the specified browser options and performance settings
      */
-    protected MutableCapabilities getBrowserOptions(String browser, String perf) {
+    protected MutableCapabilities getBrowserOptions(String browser, Boolean perf) {
         switch (browser) {
             case "firefox" -> {
                 return getFirefoxOptions();
@@ -149,18 +170,35 @@ abstract class WebOptions extends MobileOptions {
     /**
      * Sets up cloud capabilities based on the given cloud provider.
      *
-     * @param grid name of the cloud provider ("browserstack", "lambda", or "aws")
-     * @param browser       name of the browser to use. ("chrome", "firefox", "edge")
-     * @param testName      name of the test to run
+     * @param grid     name of the cloud provider ("browserstack", "lambda", or "aws")
+     * @param browser  name of the browser to use. ("chrome", "firefox", "edge")
+     * @param testName name of the test to run
      */
-    protected DesiredCapabilities cloudWebCapabilities(String grid, String browser, String testName) {
-        log.info("Setting up capabilities for cloud provider: {} and browser: {}", grid, browser);
+    protected WebDriver setupWebDriver(String grid, String browser, String testName, Boolean perf) throws MalformedURLException {
+        log.info("Setting up capabilities for {} grid provider with {} browser", grid, browser);
         switch (grid) {
             case "browserstack" -> {
-                return addBrowserStackCapabilities(browser, testName);
+                return new RemoteWebDriver(setupGridURL(grid), addBrowserStackCapabilities(browser, testName), false);
             }
             case "lambda" -> {
-                return addLambdaTestCapabilities(browser, testName);
+                return new RemoteWebDriver(setupGridURL(grid), addLambdaTestCapabilities(browser, testName), false);
+            }
+            case "docker" -> {
+                new RemoteWebDriver(setupGridURL(grid), getBrowserOptions(browser, perf), false);
+            }
+            case "local" -> {
+                switch (browser) {
+                    case "firefox" -> {
+                        return new FirefoxDriver(getFirefoxOptions());
+                    }
+                    case "chrome" -> {
+                        return new ChromeDriver(getChromeOptions(perf));
+                    }
+                    case "edge" -> {
+                        return new EdgeDriver(getEdgeOptions());
+                    }
+                    default -> log.error("No browser option provided");
+                }
             }
             default -> log.error("No cloud provider option provided");
         }
@@ -197,21 +235,6 @@ abstract class WebOptions extends MobileOptions {
         return capabilities;
     }
 
-    private static @NotNull HashMap<String, Object> getBrowserStackOptions(String testName) {
-        var browserStackOptions = new HashMap<String, Object>();
-        browserStackOptions.put("os", "Windows");
-        browserStackOptions.put("osVersion", "11");
-        browserStackOptions.put("projectName", "HybridTestFramework");
-        browserStackOptions.put("buildName", "BUILD_NAME");
-        browserStackOptions.put("sessionName", testName);
-        browserStackOptions.put("local", "false");
-        browserStackOptions.put("debug", "false");
-        browserStackOptions.put("consoleLogs", "info");
-        browserStackOptions.put("networkLogs", "true");
-        browserStackOptions.put("seleniumCdp", true);
-        return browserStackOptions;
-    }
-
     /**
      * Returns Capabilities object with LambdaTest capabilities for the specified browser and test name.
      *
@@ -220,6 +243,7 @@ abstract class WebOptions extends MobileOptions {
      * @return Capabilities object with LambdaTest capabilities for the specified browser and test name
      */
     protected DesiredCapabilities addLambdaTestCapabilities(String browser, String testName) {
+        log.info("Setting up LambdaTest options");
         DesiredCapabilities capabilities = new DesiredCapabilities();
         HashMap<String, Object> ltOptions = new HashMap<>();
         //ltOptions.put("seCdp", true);
@@ -251,7 +275,8 @@ abstract class WebOptions extends MobileOptions {
             }
             default -> log.error("No browser option provided");
         }
-        capabilities.setCapability("LT:Options", ltOptions);;
+        capabilities.setCapability("LT:Options", ltOptions);
+        ;
         return capabilities;
     }
 
@@ -261,6 +286,7 @@ abstract class WebOptions extends MobileOptions {
      * @return LoggingPreferences object with logging preferences
      */
     private LoggingPreferences pref() {
+        log.info("Setting up performance capability");
         LoggingPreferences pref = new LoggingPreferences();
         pref.enable(LogType.BROWSER, Level.OFF);
         pref.enable(LogType.CLIENT, Level.OFF);
@@ -278,6 +304,7 @@ abstract class WebOptions extends MobileOptions {
      * @return chromeOptions
      */
     private List<String> setChromeOWASP() {
+        log.info("Setting up OWASP for Chrome");
         List<String> chromeOWASP = new ArrayList<>();
         chromeOWASP.add("--proxy-server=http://localhost:8082");
         chromeOWASP.add("--ignore-certificate-errors");
@@ -292,6 +319,7 @@ abstract class WebOptions extends MobileOptions {
      * @return firefox options
      */
     private FirefoxOptions setFirefoxOWASP(FirefoxOptions options) {
+        log.info("Setting up OWASP for Firefox");
         options.addPreference("network.proxy.type", 1);
         options.addPreference("network.proxy.http", "localhost");
         options.addPreference("network.proxy.http_port", 8082);

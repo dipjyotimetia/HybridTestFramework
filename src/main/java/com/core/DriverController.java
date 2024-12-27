@@ -36,12 +36,8 @@ import net.lightbody.bmp.core.har.Har;
 import net.lightbody.bmp.proxy.CaptureType;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.service.DriverService;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -49,7 +45,6 @@ import org.testng.annotations.Parameters;
 
 import java.io.FileOutputStream;
 import java.net.Inet4Address;
-import java.net.URI;
 
 /**
  * Driver controller
@@ -93,8 +88,8 @@ public class DriverController extends WebOptions {
      *
      * @param type    The type of test to run, either "web" or "mobile"
      * @param browser The browser to use for web testing (e.g. "chrome", "firefox", "edge")
-     * @param device  The mobile device to use for mobile testing (e.g. "NEXUS", "PIXEL", "samsung", "iPhone14", "IPHONE", "EMULATOR")
-     * @param grid    The environment to run the test in (e.g. "aws", "docker", "browserstack", "lambda", "local")
+     * @param device  The mobile device to use for mobile testing (e.g. "PIXEL", "samsung", "iPhone16", "IPHONE", "EMULATOR")
+     * @param grid    The environment to run the test in (e.g. "docker", "browserstack", "lambda", "local")
      * @param perf    Flag to enable performance testing ("true" to enable, "false" to disable)
      */
     @Parameters({"type", "browser", "device", "grid", "perf"})
@@ -102,7 +97,7 @@ public class DriverController extends WebOptions {
     public void setup(String type, String browser, String device, String grid, String perf) {
         testName = this.getClass().getName().substring(24);
         switch (type) {
-            case "web" -> initWebDriver(browser, grid, perf);
+            case "web" -> initWebDriver(browser, grid, Boolean.valueOf(perf));
             case "mobile" -> initMobileDriver(device, grid);
             default -> log.info("select test type to proceed with one testing");
         }
@@ -134,40 +129,13 @@ public class DriverController extends WebOptions {
      * @param grid    The environment to run the test in (e.g. "aws", "docker", "browserstack", "lambda", "local")
      * @param perf    Flag to enable performance testing ("true" to enable, "false" to disable)
      */
-    private synchronized void initWebDriver(String browser, String grid, String perf) {
-            try {
-                switch (grid) {
-                    case "docker" -> {
-                        log.info("Make sure that docker containers are up and running");
-                        driverThread = new RemoteWebDriver(URI.create("http://localhost:4445/wd/hub").toURL(), getBrowserOptions(browser, perf), false);
-                        log.info("Grid client setup for Docker containers successful");
-                    }
-                    case "browserstack", "lambda" -> {
-                        driverThread = new RemoteWebDriver(cloudGridURL(grid), cloudWebCapabilities(grid, browser, testName), false);
-                        log.info("Grid client setup for {} successful", grid);
-                    }
-                    case "local" -> {
-                        switch (browser) {
-                            case "firefox" -> {
-                                driverThread = new FirefoxDriver(getFirefoxOptions());
-                                log.info("Initiating firefox driver");
-                            }
-                            case "chrome" -> {
-                                driverThread = new ChromeDriver(getChromeOptions(perf));
-                                log.info("Initiating chrome driver");
-                            }
-                            case "edge" -> {
-                                driverThread = new EdgeDriver(getEdgeOptions());
-                                log.info("Initiating edge driver");
-                            }
-                            default -> log.info("Browser listed not supported");
-                        }
-                    }
-                    default -> log.info("Grid not selected");
-                }
-            } catch (Exception e) {
-                log.error(e.getMessage());
-            }
+    private synchronized void initWebDriver(String browser, String grid, Boolean perf) {
+        log.info("Setup WebDriver Browser: {} Grid: {} Performance: {}", browser, grid, perf);
+        try {
+            driverThread = setupWebDriver(grid, browser, testName, perf);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
     }
 
     /**
@@ -178,19 +146,20 @@ public class DriverController extends WebOptions {
      * @param cloud  The cloud platform to use for remote testing (e.g. "aws", "docker", "browserstack", "lambda", "local")
      */
     private synchronized void initMobileDriver(String device, String cloud) {
+        log.info("Setup Mobile Driver Device: {} Cloud: {}", device, cloud);
         DesiredCapabilities caps = new DesiredCapabilities();
         try {
             switch (device) {
                 case "s23", "iPhone16" -> {
                     cloudMobileCapabilities(cloud, caps, device);
-                    driverThread = new AppiumDriver(cloudGridURL(cloud), caps);
+                    driverThread = new AppiumDriver(setupGridURL(cloud), caps);
                 }
                 case "EMULATOR" -> {
                     appiumService = createAppiumService();
                     caps.setCapability(UiAutomator2Options.UDID_OPTION, "emulator-5554");
                     caps.setCapability(UiAutomator2Options.DEVICE_NAME_OPTION, "PIXEL");
                     appiumService.start();
-                    driverThread = new AndroidDriver(cloudGridURL(cloud), caps);
+                    driverThread = new AndroidDriver(setupGridURL(cloud), caps);
                 }
                 default -> log.info("Required device selection");
             }

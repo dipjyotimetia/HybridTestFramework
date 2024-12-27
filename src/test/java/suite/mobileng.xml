@@ -6,7 +6,7 @@
         <listener class-name="com.reporting.listeners.AnnotationTransformer"/>
     </listeners>
     <parameter name="type" value="mobile"/>
-    <parameter name="perf" value="NO"/>
+    <parameter name="perf" value="false"/>
     <parameter name="browser" value="chrome"/>
     <parameter name="grid" value="browserstack"/> <!-- LOCAL or CLOUD or BROWSERSTACK-->
     <test name="E2E Tests iOS">

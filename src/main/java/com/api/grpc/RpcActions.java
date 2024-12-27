@@ -55,9 +55,9 @@ public class RpcActions {
     /**
      * Returns a managed channel to the given target URL, using the given channel type and authentication type.
      *
-     * @param targetURL the target URL
+     * @param targetURL   the target URL
      * @param channelType the channel type
-     * @param authType the authentication type
+     * @param authType    the authentication type
      * @return a managed channel to the given target URL
      * @throws IOException if an error occurs while creating the managed channel
      */

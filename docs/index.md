@@ -5,11 +5,12 @@
 ![Selenium](img/framework.png)
 
 In the era of [cloud-native](https://docs.microsoft.com/en-us/dotnet/architecture/cloud-native/definition) solutions,
-we often need to evolve existing testing frameworks to cater to multiple requirements. 
-[HybridTestFramework](https://github.com/dipjyotimetia/HybridTestFramework) bridges legacy systems or those 
+we often need to evolve existing testing frameworks to cater to multiple requirements.
+[HybridTestFramework](https://github.com/dipjyotimetia/HybridTestFramework) bridges legacy systems or those
 still transitioning to the cloud with modern cloud-native systems.  
 Following a [testing pyramid](https://martinfowler.com/articles/practical-test-pyramid.html) approach,
-the framework emphasizes API testing followed by Web UI. Future releases will focus even more on API and event-based testing.
+the framework emphasizes API testing followed by Web UI. Future releases will focus even more on API and event-based
+testing.
 
 ### Framework Capabilities
 

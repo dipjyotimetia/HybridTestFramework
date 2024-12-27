@@ -3,6 +3,7 @@
 ### Write your first user journey web ui test
 
 Create a new test class named **TC00*_E2E_TEST-***:
+
 - Provide Jira link in `@Link`
 - List all API components in `@Feature`
 - Add test severity and description

@@ -64,12 +64,12 @@ public class SSH {
     /**
      * Executes a command on a remote server using SSH, logs the output, and specifies a custom timeout.
      *
-     * @param username              a String representing the SSH username
-     * @param password              a String representing the SSH password
-     * @param host                  a String representing the remote server's host
-     * @param port                  an int representing the SSH port number
-     * @param timeoutSeconds        a long representing the timeout duration in seconds
-     * @param command               a String representing the command to execute
+     * @param username       a String representing the SSH username
+     * @param password       a String representing the SSH password
+     * @param host           a String representing the remote server's host
+     * @param port           an int representing the SSH port number
+     * @param timeoutSeconds a long representing the timeout duration in seconds
+     * @param command        a String representing the command to execute
      * @throws IOException if an error occurs while performing the SSH operation
      */
     public static void executeCommand(String username, String password, String host, int port, long timeoutSeconds, String command) throws IOException {

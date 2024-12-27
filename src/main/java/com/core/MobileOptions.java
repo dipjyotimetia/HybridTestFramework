@@ -33,6 +33,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
 
@@ -48,6 +49,8 @@ import java.util.HashMap;
 abstract class MobileOptions {
     private static final String nodeJS = System.getenv("NODE_HOME") + "/node.exe";
     private static final String appiumJS = System.getenv("APPIUM_HOME") + "/main.js";
+    public final String lambda_username = System.getenv("LT_USERNAME");
+    public final String lambda_accessKey = System.getenv("LT_ACCESS_KEY");
     private final String apk_url = System.getenv("APK_URL");
     private final String ipa_url = System.getenv("IPA_URL");
     private final String serverIp = "127.0.0.1";    //Local
@@ -56,8 +59,6 @@ abstract class MobileOptions {
     private final String bs_accessKey = System.getenv("BROWSERSTACK_ACCESS_KEY");
     private final String sauce_username = System.getenv("SAUCE_USERNAME");
     private final String sauce_accessKey = System.getenv("SAUCE_ACCESS_KEY");
-    public final String lambda_username = System.getenv("LT_USERNAME");
-    public final String lambda_accessKey = System.getenv("LT_ACCESS_KEY");
     private final String browserstackGridURL = "https://" + bs_username + ":" + bs_accessKey + "@hub-cloud.browserstack.com/wd/hub";
     private final String sauceGridURL = "https://" + sauce_username + ":" + sauce_accessKey + "@ondemand.us-west-1.saucelabs.com:443/wd/hub";
     private final String lambdaGridURL = "https://" + lambda_username + ":" + lambda_accessKey + "@hub.lambdatest.com/wd/hub";
@@ -69,7 +70,7 @@ abstract class MobileOptions {
      * @return URL of the cloud server.
      * @throws MalformedURLException exception.
      */
-    URL cloudGridURL(String provider) throws MalformedURLException {
+    URL setupGridURL(String provider) throws MalformedURLException {
         log.info("Creating URL for cloud provider: {}", provider);
         switch (provider) {
             case "sauce" -> {
@@ -80,6 +81,9 @@ abstract class MobileOptions {
             }
             case "lambda" -> {
                 return new URL(lambdaGridURL);
+            }
+            case "local" -> {
+                return URI.create("http://localhost:4445/wd/hub").toURL();
             }
             default -> {
                 String appiumPort = "4723";
@@ -250,7 +254,7 @@ abstract class MobileOptions {
                 runtime.exec("taskkill /F /IM node.exe");
                 runtime.exec("taskkill /F /IM cmd.exe");
             } catch (IOException e) {
-               log.error(e.getMessage());
+                log.error(e.getMessage());
             }
         }
     }

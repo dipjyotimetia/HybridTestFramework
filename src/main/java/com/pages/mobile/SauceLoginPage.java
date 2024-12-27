@@ -22,9 +22,7 @@ package com.pages.mobile;
 
 import com.core.MobileActions;
 import io.appium.java_client.pagefactory.AndroidFindBy;
-import io.appium.java_client.pagefactory.iOSXCUITBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
-import io.appium.java_client.pagefactory.iOSXCUITFindBys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
