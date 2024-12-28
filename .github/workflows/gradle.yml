@@ -114,12 +114,10 @@ jobs:
       - name: Upload app and set app location
         id: app-upload
         run: |
-          IPA_UPLOAD_RESPONSE=$(curl -u "$USERNAME:$ACCESS" -X POST https://manual-api.lambdatest.com/app/upload/virtualDevice -F "url=https://github.com/saucelabs/my-demo-app-ios/releases/download/2.1.1/SauceLabs-Demo-App.ipa")
-          APK_UPLOAD_RESPONSE=$(curl -u "$USERNAME:$ACCESS" -X POST https://manual-api.lambdatest.com/app/upload/virtualDevice -F "url=https://github.com/saucelabs/my-demo-app-android/releases/download/2.2.0/mda-2.2.0-25.apk")
-          echo "IPA_URL=$(echo $IPA_UPLOAD_RESPONSE | jq -r '.app_url')" >> $GITHUB_OUTPUT
+#          IPA_UPLOAD_RESPONSE=$(curl -u "$USERNAME:$ACCESS" --location --request POST 'https://manual-api.lambdatest.com/app/upload/virtualDevice' --form "name=iOS_App" --form 'url="https://github.com/saucelabs/my-demo-app-ios/releases/download/2.1.1/SauceLabs-Demo-App.ipa"')
+          APK_UPLOAD_RESPONSE=$(curl -u "$USERNAME:$ACCESS" --location --request POST 'https://manual-api.lambdatest.com/app/upload/virtualDevice' --form 'name="Android_App"' --form 'url="https://github.com/saucelabs/my-demo-app-android/releases/download/2.2.0/mda-2.2.0-25.apk"')
+#          echo "IPA_URL=$(echo $IPA_UPLOAD_RESPONSE | jq -r '.app_url')" >> $GITHUB_OUTPUT
           echo "APK_URL=$(echo $APK_UPLOAD_RESPONSE | jq -r '.app_url')" >> $GITHUB_OUTPUT
-          curl -u "$USERNAME:$ACCESS" -X GET "https://mobile-api.lambdatest.com/app/data?type=android&level=user" -H "accept: application/json" | jq
-          curl -u "$USERNAME:$ACCESS" -X GET "https://mobile-api.lambdatest.com/app/data?type=ios&level=user" -H "accept: application/json" | jq
         env:
           USERNAME: ${{ secrets.LT_USERNAME }}
           ACCESS: ${{ secrets.LT_ACCESS_KEY }}

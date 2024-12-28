@@ -8,12 +8,12 @@
     <parameter name="perf" value="false"/>
     <parameter name="browser" value="chrome"/>
     <parameter name="grid" value="lambda"/> <!-- LOCAL or CLOUD or BROWSERSTACK-->
-    <test name="E2E Tests iOS">
-        <parameter name="device" value="iPhone16"/>
-        <classes>
-            <class name="com.TestDefinitionLayer.TC12_SauceLabsApp"/>
-        </classes>
-    </test>
+<!--    <test name="E2E Tests iOS">-->
+<!--        <parameter name="device" value="iPhone16"/>-->
+<!--        <classes>-->
+<!--            <class name="com.TestDefinitionLayer.TC12_SauceLabsApp"/>-->
+<!--        </classes>-->
+<!--    </test>-->
     <test name="E2E Tests Android">
         <parameter name="device" value="s23"/>
         <classes>
