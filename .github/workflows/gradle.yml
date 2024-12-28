@@ -114,9 +114,7 @@ jobs:
       - name: Upload app and set app location
         id: app-upload
         run: |
-#          IPA_UPLOAD_RESPONSE=$(curl -u "$USERNAME:$ACCESS" --location --request POST 'https://manual-api.lambdatest.com/app/upload/virtualDevice' --form "name=iOS_App" --form 'url="https://github.com/saucelabs/my-demo-app-ios/releases/download/2.1.1/SauceLabs-Demo-App.ipa"')
           APK_UPLOAD_RESPONSE=$(curl -u "$USERNAME:$ACCESS" --location --request POST 'https://manual-api.lambdatest.com/app/upload/virtualDevice' --form 'name="Android_App"' --form 'url="https://github.com/saucelabs/my-demo-app-android/releases/download/2.2.0/mda-2.2.0-25.apk"')
-#          echo "IPA_URL=$(echo $IPA_UPLOAD_RESPONSE | jq -r '.app_url')" >> $GITHUB_OUTPUT
           echo "APK_URL=$(echo $APK_UPLOAD_RESPONSE | jq -r '.app_url')" >> $GITHUB_OUTPUT
         env:
           USERNAME: ${{ secrets.LT_USERNAME }}
