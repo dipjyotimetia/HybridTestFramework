@@ -174,7 +174,7 @@ abstract class MobileOptions {
             }
             default -> System.out.println("No device found");
         }
-        // ltOptions.put("isRealMobile", false);
+        ltOptions.put("isRealMobile", false);
         ltOptions.put("user", lambda_username);
         ltOptions.put("accessKey", lambda_accessKey);
         ltOptions.put("w3c", true);
