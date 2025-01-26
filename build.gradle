@@ -132,7 +132,7 @@ dependencies {
     implementation 'com.google.cloud:google-cloud-pubsub:1.136.0'
     implementation 'org.seleniumhq.selenium:selenium-java:4.26.0'
     implementation 'org.seleniumhq.selenium:selenium-remote-driver:4.26.0'
-    implementation 'io.appium:java-client:9.3.0'
+    implementation 'io.appium:java-client:9.4.0'
     implementation 'org.awaitility:awaitility:4.2.2'
     implementation 'org.wiremock:wiremock:3.10.0'
     implementation 'org.apache.sshd:sshd-core:2.14.0'
