@@ -131,7 +131,7 @@ dependencies {
     implementation "software.amazon.awssdk:sns:${awsVersion}"
     implementation 'com.google.cloud:google-cloud-pubsub:1.137.0'
     implementation 'org.seleniumhq.selenium:selenium-java:4.28.1'
-    implementation 'org.seleniumhq.selenium:selenium-remote-driver:4.28.1'
+    implementation 'org.seleniumhq.selenium:selenium-remote-driver:4.29.0'
     implementation 'io.appium:java-client:9.4.0'
     implementation 'org.awaitility:awaitility:4.2.2'
     implementation 'org.wiremock:wiremock:3.12.0'
