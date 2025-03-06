@@ -147,7 +147,7 @@ dependencies {
     implementation 'org.apache.poi:poi:5.4.0'
     implementation 'org.apache.xmlbeans:xmlbeans:5.2.2'
     implementation 'com.microsoft.sqlserver:mssql-jdbc:12.9.0.jre11-preview'
-    implementation 'org.slf4j:slf4j-simple:2.0.16'
+    implementation 'org.slf4j:slf4j-simple:2.0.17'
     implementation 'net.datafaker:datafaker:2.4.2'
     implementation 'io.rest-assured:rest-assured:5.5.1'
     implementation 'io.rest-assured:json-schema-validator:5.5.1'
