@@ -188,8 +188,8 @@ dependencies {
     implementation "org.testcontainers:kafka:${containerVersion}"
     implementation "org.testcontainers:localstack:${containerVersion}"
     implementation "org.testcontainers:gcloud:${containerVersion}"
-    implementation 'org.projectlombok:lombok:1.18.36'
-    annotationProcessor 'org.projectlombok:lombok:1.18.36'
+    implementation 'org.projectlombok:lombok:1.18.38'
+    annotationProcessor 'org.projectlombok:lombok:1.18.38'
     implementation 'com.typesafe:config:1.4.3'
     implementation "com.microsoft.playwright:playwright:${playwrightVersion}"
     implementation 'com.browserstack:browserstack-java-sdk:1.31.1'
