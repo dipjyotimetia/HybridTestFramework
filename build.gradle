@@ -10,7 +10,7 @@ ext {
     protoVersion = '4.30.2'
     containerVersion = '1.20.6'
     kafkaVersion = "7.9.0-ce"
-    awsVersion = '2.31.21'
+    awsVersion = '2.31.45'
     ceVersion = "4.0.1"
     allureVersion = "2.29.1"
     playwrightVersion = "1.52.0"
