@@ -130,7 +130,7 @@ dependencies {
     implementation "software.amazon.awssdk:sqs:${awsVersion}"
     implementation "software.amazon.awssdk:sns:${awsVersion}"
     implementation 'com.google.cloud:google-cloud-pubsub:1.138.0'
-    implementation 'org.seleniumhq.selenium:selenium-java:4.31.0'
+    implementation 'org.seleniumhq.selenium:selenium-java:4.32.0'
     implementation 'org.seleniumhq.selenium:selenium-remote-driver:4.32.0'
     implementation 'io.appium:java-client:9.4.0'
     implementation 'org.awaitility:awaitility:4.3.0'
