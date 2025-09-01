@@ -192,7 +192,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.36'
     implementation 'com.typesafe:config:1.4.3'
     implementation "com.microsoft.playwright:playwright:${playwrightVersion}"
-    implementation 'com.browserstack:browserstack-java-sdk:1.32.6'
+    implementation 'com.browserstack:browserstack-java-sdk:1.40.0'
 }
 
 configurations.configureEach {
