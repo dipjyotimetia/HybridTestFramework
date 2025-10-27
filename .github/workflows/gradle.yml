@@ -29,7 +29,7 @@ jobs:
       - name: Generate Report
         if: always()
         run: ./gradlew task allureReport
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: allure-report-web-browserstack
           path: build/reports/allure-report
@@ -50,7 +50,7 @@ jobs:
       - name: Generate Report
         if: always()
         run: ./gradlew task allureReport
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: allure-report-lambda-web
           path: build/reports/allure-report
@@ -88,7 +88,7 @@ jobs:
       - name: Generate Report
         if: always()
         run: ./gradlew task allureReport
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: allure-report-mobile-browserstack
           path: build/reports/allure-report
@@ -130,7 +130,7 @@ jobs:
       - name: Generate Report
         if: always()
         run: ./gradlew task allureReport
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: allure-report-mobile-lambda
           path: build/reports/allure-report
@@ -158,7 +158,7 @@ jobs:
       - name: Generate Report
         if: always()
         run: ./gradlew task allureReport
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: allure-report-api
           path: build/reports/allure-report
