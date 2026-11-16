@@ -5,129 +5,139 @@
 [![CI](https://github.com/dipjyotimetia/HybridTestFramework/actions/workflows/gradle.yml/badge.svg)](https://github.com/dipjyotimetia/HybridTestFramework/actions/workflows/gradle.yml)  
 [![Discord Chat](https://www.vectorlogo.zone/logos/discord/discord-ar21.svg)](https://discord.gg/eE3gjXqXHx)
 
+Docs: [dipjyotimetia.github.io/HybridTestFramework](https://dipjyotimetia.github.io/HybridTestFramework/)
+
 ### Supported By
 
 [![SupportedBy JetBrains](https://github.com/TestautoDev/Tricks-And-Tips/blob/master/jetbrains.svg)](https://www.jetbrains.com/?from=HybridTestFramework)
 <img src="docs/img/lambda_logo.svg" width="500">
 
-In the era of [cloud-native](https://docs.microsoft.com/en-us/dotnet/architecture/cloud-native/definition) world we
-cannot stick to a particular framework, however due to projects requirement we often need to evolve the existing testing
-solution in such a way so that it can cater multiple testing requirement,
-hence [HybridTestFramework](https://github.com/dipjyotimetia/HybridTestFramework) is targeting to create a bridge
-between the kind of legacy systems
-or the systems which are still in a transition phase of migrate to cloud with super cool cloud-native systems.
-Ita comprehensive and versatile testing framework designed to cover various aspects of software testing.
-Its purpose is to help developers and testers streamline their testing process and ensure the highest quality in their
-applications.
+HybridTestFramework is a Java 17 / Gradle end-to-end test framework for web, mobile, API, gRPC, Kafka, cloud, and security checks.
 
-Don't forget to star the repository! Your support is what keeps me motivated!
+It is for developers and testers who want those layers in one TestNG project, with suites under `src/test/java/suite`.
 
-<img src="docs/img/framework.png" width="900" alt="">
+Shared actions, Allure reports, and Testcontainers keep local runs and CI on the libraries declared in `build.gradle`.
 
-### Framework Capabilities
+<img src="docs/img/framework.png" width="900" alt="HybridTestFramework architecture">
 
-* Cross browser testing support.
-* Added browserstack support for CrossBrowser testing.
-* Running tests in docker containers selenium grid.
-* Running tests in AWS DeviceFarm selenium grid.
-* Running tests in selenium server in docker containers.
-* Security testing using OWASP, running in docker container.
-* Rest Api and GraphQL testing support powered by RestAssured.
-* gRPC api testing support using native gRPC=java library.
-* Event driven microservice testing based on pubsub model.
-* Support for Kafka, Cloud Pubsub, AWS SNS testing and continue evolving.
-* Visual regression testing using percy.io.
-* Accessibility testing using axe-selenium.
-* Stubbed api testing using WireMock.
-* Logging integration with ElasticSearch for Kibana dashboard visualization
-* Database testing support.
-* Kubernetes support.
+## Capability matrix
 
-### Setup & Tools
+Each row is a library or client that `build.gradle` declares and that `src/` actually calls. There is no Maven `pom.xml`; versions live in the root `build.gradle` and `contract/build.gradle`.
 
-* Install IntelliJ IDEA
-  https://www.jetbrains.com/idea/download/
-* Install docker desktop
-  https://www.docker.com/products/docker-desktop
-* Java JDK_17  
-  https://adoptium.net/temurin/releases/?version=17
-* Gradle
-  https://gradle.org/next-steps/?version=8.5&format=bin
-* Allure
-  https://github.com/allure-framework/allure2/archive/2.25.0.zip
-* Set Environment variables
-    * JAVA_HOME: Pointing to the Java SDK folder\bin
-    * GRADLE_HOME: Pointing to Gradle directory\bin.
-    * ALLURE_HOME: Pointing to allure directory\bin.
+| Capability | Tool |
+| --- | --- |
+| Web | Selenium Java (`org.seleniumhq.selenium:selenium-java`) and Playwright (`com.microsoft.playwright`). Remote grids in `WebOptions`: BrowserStack, LambdaTest, Sauce Labs, and `http://localhost:4445/wd/hub`. |
+| Mobile | Appium Java Client (`io.appium:java-client`). `MobileOptions` builds BrowserStack, LambdaTest, and Sauce Labs capabilities. |
+| API | REST Assured (`io.rest-assured:rest-assured`) for REST and GraphQL. WireMock (`org.wiremock:wiremock`) for stubs. |
+| gRPC | gRPC Java (`io.grpc`) with protobuf in `contract/src/main/proto` (`contract/build.gradle`). |
+| Kafka / events | Apache Kafka clients (`org.apache.kafka:kafka-clients`), CloudEvents (`io.cloudevents`), Google Cloud Pub/Sub, and AWS SNS (`com.eventing`). |
+| Cloud | AWS SDK for Java v2 (`software.amazon.awssdk`: S3, SQS, SNS) and Google Cloud Pub/Sub. Testcontainers modules in use: Kafka, LocalStack, and the Pub/Sub emulator. |
+| Security | OWASP ZAP client (`org.zaproxy:zap-clientapi`) in `com.security`, with the ZAP daemon service in `docker-compose-infra.yml`. |
 
-### Getting Started
+`web` and `mobile` default to BrowserStack (`webng.xml`, `mobileng.xml`). `lambdaweb` and `lambdamobile` use the LambdaTest suites. gRPC (`TC009_GrpcApi`) and GraphQL (`TC004_GraphQLTest`) are implemented and commented out of `aping.xml`. `TC002_SecurityTest` is not attached to a suite XML.
 
-```shell script
-git clone 
-cd 
-# import project from intellij as a gradle project
-gradle clean
-gradle build
-gradle task api
-gradle task web
-gradle task mobile
-gradle allureReport
-gradle allureServe
+## Quick Start
+
+JDK 17 is enough for the WireMock path. The wrapper downloads Gradle 8.12. Docker is required for `./gradlew api` (Testcontainers) and for the compose files below.
+
+```bash
+git clone https://github.com/dipjyotimetia/HybridTestFramework.git
+cd HybridTestFramework
+chmod +x gradlew
+./gradlew api --tests com.TestDefinitionLayer.TC005_WireMockTest
+./gradlew allureReport
 ```
 
-### Write your first user journey
+`TC005_WireMockTest` is the in-process WireMock class in `src/test/java/suite/aping.xml`. The report is written to `build/reports/allure-report`. To browse it:
 
-Create new class and name as the TC00*_E2E_TEST-***
-
-- Provide jira link in @Link
-- Provide all the api components as @Feature
-- Provide test severity and description
-- Write test
-- Use CatchBlock in try/catch section
-
-### Spin-up chrome, firefox, selenium hub and OWASP proxy server
-
-```shell script
-docker-compose up -d
+```bash
+./gradlew allureServe
 ```
 
-### Complete infrastructure creation for local run
+The same tasks are registered in `build.gradle` and invoked from `.github/workflows/gradle.yml`:
 
-```shell script
-docker-compose -f docker-compose-infra up -d
+```bash
+./gradlew api
+./gradlew web
+./gradlew lambdaweb
+./gradlew mobile
+./gradlew lambdamobile
 ```
 
-### Spin-up four additional node-chrome/firefox instances linked to the hub
+`./gradlew api` runs the REST booking test, WireMock, Kafka (`TC006_KafkaTest`), and the Pub/Sub emulator (`TC010_GCPTest`). Kafka and Pub/Sub start Testcontainers, so Docker has to be running. Before `api`, CI also runs `docker compose up -d` (LocalStack and stripe-mock from `docker-compose.yml`).
 
-```shell script
-docker-compose scale chrome=5
-docker-compose scale firefox=5
+`web` and `mobile` need `BROWSERSTACK_USERNAME` and `BROWSERSTACK_ACCESS_KEY`. `lambdaweb` and `lambdamobile` need `LT_USERNAME` and `LT_ACCESS_KEY`.
+
+## Setup
+
+* JDK 17: https://adoptium.net/temurin/releases/?version=17
+* Docker: https://www.docker.com/products/docker-desktop
+* IntelliJ IDEA: https://www.jetbrains.com/idea/download/
+* Gradle comes from `./gradlew` (8.12). Allure is the `io.qameta.allure` plugin (`allureReport` / `allureServe`), version `2.32.0` in `build.gradle`.
+
+## Tests
+
+Classes are in `src/test/java/com/TestDefinitionLayer`. Suites are in `src/test/java/suite`.
+
+`TC001_Test` is the Selenium web login (`@Link`, `@Feature`, `@Severity`). `TC003_ApiTest` is the REST Assured booking call. `TC002_GURU_Login` is the Playwright example.
+
+## Docker
+
+### LocalStack and stripe-mock
+
+`docker-compose.yml` is what CI starts before the API job:
+
+```bash
+docker compose up -d
+docker compose down
 ```
 
-### Spin-up kafka instances
+### Allure service and OWASP ZAP
 
-```shell
-docker-compose -f docker-compose-kafka.yml up
-docker-compose -f docker-compose-kafka.yml down --rmi all
+`docker-compose-infra.yml`:
+
+```bash
+docker compose -f docker-compose-infra.yml up -d
+docker compose -f docker-compose-infra.yml down
 ```
 
-### Spin-up selenium hub in kubernetes instance
+### Kafka API (Redpanda)
 
-```shell
-kubectl apply -f selenium-k8s-deploy-svc.yaml
+`docker-compose-kafka.yml`:
+
+```bash
+docker compose -f docker-compose-kafka.yml up -d
+docker compose -f docker-compose-kafka.yml down --rmi all
+```
+
+### Selenoid grid
+
+`docker-compose-grid.yml` starts Selenoid and Selenoid UI:
+
+```bash
+docker compose -f docker-compose-grid.yml up -d
+docker compose -f docker-compose-grid.yml down
+```
+
+## Kubernetes
+
+`selenium-k8-deploy-svc.yaml` deploys `selenium-hub`, `selenium-node-chrome`, and `selenium-node-firefox`.
+
+```bash
+kubectl apply -f selenium-k8-deploy-svc.yaml
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.5.0/aio/deploy/recommended.yaml
 kubectl proxy
 kubectl describe secret -n kube-system | grep deployment -A 12
-## To delete deployments
+# To delete deployments
 kubectl delete deployment selenium-node-firefox
 kubectl delete deployment selenium-node-chrome
 kubectl delete deployment selenium-hub
 ```
 
-navigate
-to `http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/`   
+Dashboard: `http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/`
+
 <img src="https://github.com/dipjyotimetia/HybridTestFramework/blob/master/docs/img/kubernetes.png" width="800">
 
-### Browserstack Execution Gif
+## BrowserStack
 
 ![browserstack](https://github.com/dipjyotimetia/HybridTestFramework/blob/master/docs/gif/videogif.gif)
